@@ -8,6 +8,15 @@ const args = process.argv.slice(2);
 const wcscPath = path.resolve(__dirname, "./wcsc.bin");
 const DEBUG_OUTPUT = process.env["WX_DEBUG_COMPILER_OUTPUT"];
 
+// 向错误输出流写入信息
+process.stderr.write(`环境及执行信息：
+编译器版本: ${version}
+node版本: ${process.version}
+参数: ${args.join(' ')}
+
+具体报错：
+`);
+
 function encode1(s) {
     return encodeURI(s).replace(
         /%(u[0-9A-F]{4})|(%[0-9A-F]{2})/gm,
