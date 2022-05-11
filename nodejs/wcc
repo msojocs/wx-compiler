@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // wcc.exe md5 = "33807bac814b4b639d98be3270bdc56c"
-const version = "20220426";
+const version = "20220511";
 const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs");
@@ -74,7 +74,7 @@ function parseDeps(source, x, pageConfig){
                 );
             }
         }
-        // process.stderr.write(dep + '=====' + x.indexOf(dep) + "-" + t_x.indexOf(dep) + '\n')
+        
         dep_d_ +=
             m0_str
                 .replace(
@@ -87,14 +87,9 @@ function parseDeps(source, x, pageConfig){
                 )
                 .replace(/m\d+/g, `m${i - 1}`)
                 // .replace('={f', `=e_[x[${t_x.indexOf(dep)}]]||{f`) + "\n";
-        DEBUG_OUTPUT &&
-            process.stderr.write("dep_d_: " + dep_d_ + "\n");
         let gz_name = m0_str.match(/var z=gz(.*?)\(\)/)[1];
-        // process.stderr.write("get funcName - " + t[0].match(/var z=gz(.*?)\(\)/)[1] + "\n")
         // gz
         const exp = `function gz\\${gz_name}\\(\\)\\{[\\s\\S]*?__WXML_GLOBAL__\\.ops_cached\\.\\${gz_name}\n}`;
-        DEBUG_OUTPUT &&
-            process.stderr.write("COMMON=====" + dep + "----" + exp + "\n");
         const gz = source.match(new RegExp(exp));
         dep_gz +=
             gz[0].replace(
@@ -123,10 +118,6 @@ function genFunctionContent_LLW(wxmlName, config = {}, source, x) {
 
     // template 检测 模板处理位于二者之间： d_[x[index]]={} ---{template}-- var m0; x[index]中index为wxml在x数组中的索引, m0中数字为当前函数代码
     const templateReg = source.match(new RegExp(`d_\\[x\\[${x.indexOf(`./${wxmlName}.wxml`)}\\]\\]=\\{\\}\n([\\s\\S]*?)\nvar m${config.num}=`))
-    if(templateReg)
-    DEBUG_OUTPUT && process.stderr.write(templateReg[1] + '\n------\n')
-    else
-    DEBUG_OUTPUT && process.stderr.write('无匹配\n------\n')
 
     // gz函数
     const exp = `function gz\\${funcName}_${
@@ -247,10 +238,6 @@ function genFunctionContent_LLA(wxmlName, config = {}, source, x) {
 
     // template 检测 模板处理位于二者之间： d_[x[index]]={} ---{template}-- var m0; x[index]中index为wxml在x数组中的索引, m0中数字为当前函数代码
     const templateReg = source.match(new RegExp(`d_\\[x\\[${x.indexOf(`./${wxmlName}.wxml`)}\\]\\]=\\{\\}\n([\\s\\S]*?)\nvar m${config.num}=`))
-    if(templateReg)
-    DEBUG_OUTPUT && process.stderr.write(templateReg[1] + '\n------\n')
-    else
-    DEBUG_OUTPUT && process.stderr.write('无匹配\n------\n')
 
     DEBUG_OUTPUT && process.stderr.write(`wxmlName: ${wxmlName} debugWXS: ${!!debugWXS}, hasDeps: ${!!hasDeps}, templateReg: ${!!templateReg}\n${JSON.stringify(x)} ${JSON.stringify(config)}\n\n`)
     // gz函数
@@ -384,7 +371,11 @@ function genCommonContent_LLA(source, pageConfig, x) {
 }
 // genCommonContent_LLA END
 if (args.includes("-llw")) {
-    const argss = args.filter((e) => e != "-llw");
+    // 参数预处理
+    const split_mark = args[args.indexOf("--split") + 1];
+    const needArrStr = args[args.indexOf("-llw") + 1]
+    const needArr = needArrStr.split(split_mark);
+    const argss = args.filter((e) => e != "-llw" && e != needArrStr);
     const wcc = spawn(wccPath, argss, {
         cwd: process.cwd(),
     });
@@ -410,14 +401,9 @@ if (args.includes("-llw")) {
                     __COMMON__: funcName,
                 },
             };
-            // 取分割符
-            const split_mark = argss[argss.indexOf("--split") + 1];
             // ./miniprogram_npm/miniprogram-barrage/index>_<4685./m
-            const needArr = argss
-                .filter(
-                    (arg) => arg.includes(split_mark) && arg.startsWith("./")
-                )[0]
-                .split(split_mark);
+            DEBUG_OUTPUT && process.stderr.write(`split_mark: ${split_mark}\r\n`)
+            DEBUG_OUTPUT && process.stderr.write(`needArr: ${needArr.join(', ')}\r\n`)
             // 获取x数组并解析
             const indexArr = eval(str.match(/var x=(\[.*\]);/)[1]);
             const pageConfig = {};
@@ -493,7 +479,11 @@ if (args.includes("-llw")) {
         }
     });
 } else if (args.includes("-lla")) {
-    const argss = args.filter((e) => e != "-lla");
+    // 参数预处理
+    const split_mark = args[args.indexOf("--split") + 1];
+    const needArrStr = args[args.indexOf("-lla") + 1]
+    const needArr = needArrStr.split(split_mark);
+    const argss = args.filter((e) => e != "-lla" && e != needArrStr);
     const wcc = spawn(wccPath, argss, {
         cwd: process.cwd(),
     });
@@ -519,12 +509,6 @@ if (args.includes("-llw")) {
                     __COMMON__: funcName,
                 },
             };
-            const split_mark = argss[argss.indexOf("--split") + 1];
-            const needArr = argss
-                .filter(
-                    (arg) => arg.includes(split_mark) && arg.startsWith("./")
-                )[0]
-                .split(split_mark);
             const indexArr = eval(str.match(/var x=(\[.*\]);/)[1]);
             const pageConfig = {};
             let i = 0;

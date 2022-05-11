@@ -6,6 +6,21 @@ const fs = require("fs");
 const { exit } = require("process");
 
 const samples = []
+const sample2 = {
+    projectPath: "/mnt/disk1/WeChatProjects/qs-wxapp/",
+    args:[
+    "-d",
+    "--split",
+    ">_<9912",
+    "-cc",
+    "1>_<9912./pages/index/index.wxml>_<99120",
+    "-llw",
+    "./pages/index/index",
+    "./pages/index/index.wxml",
+    "-gn",
+    "$gwx",
+]};
+samples.push([sample2, 2])
 const sample3 = {
     projectPath: "/mnt/disk1/WeChatProjects/miniprogram-demo/miniprogram/",
     args:[
@@ -99,6 +114,11 @@ const sample5 = {
 samples.push([sample5, 5])
 
 const test_wine = (config, id) => {
+    try {
+        fs.mkdirSync(path.resolve(__dirname, '' + id))
+    } catch (ignore) {
+        
+    }
     const wine = spawn(
         path.resolve(__dirname, "../../../../package.nw/js/vendor/wcc.exe"),
         config.args,
@@ -141,6 +161,11 @@ const test_wine = (config, id) => {
     });
 };
 const test_node = (config, id) => {
+    try {
+        fs.mkdirSync(path.resolve(__dirname, '' + id))
+    } catch (ignore) {
+        
+    }
     const node_exec = spawn(
         path.resolve(__dirname, "../../../nodejs/wcc"),
         config.args,
@@ -165,7 +190,7 @@ const test_node = (config, id) => {
     return new Promise((resolve, reject) => {
         node_exec.on("close", (n) => {
             console.log("node n: ", n);
-            process.stderr.write(Buffer.concat(errData).toString());
+            process.stderr.write(`=========stderr输出=========\n${Buffer.concat(errData).toString()}\n\n=========stderr输出 END=========\n`);
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
                 // require('fs').writeFileSync('/mnt/disk2/wechat-web-devtools-linux/tmp/llw2.json', result)
@@ -180,18 +205,16 @@ const test_node = (config, id) => {
                 );
                 resolve(result);
             } else {
-                process.stderr.write(Buffer.concat(errData).toString());
-                // process.stderr.write(Buffer.concat(spwanData).toString());
                 reject(n);
             }
         });
     });
 };
 
-const test = async () => {
+const test = async (config, id) => {
     try {
-        const node_result = await test_node();
-        const wine_result = await test_wine();
+        const node_result = await test_node(config, id);
+        const wine_result = await test_wine(config, id);
         console.log("结果是否一致：", wine_result.trim() === node_result);
     } catch (err) {
         console.error("错误：", err);
@@ -199,6 +222,7 @@ const test = async () => {
 };
 (async ()=>{
     for (const sample of samples) {
+        // if(sample[1] === 2)
         await test(sample[0], sample[1])
     }
 })()
