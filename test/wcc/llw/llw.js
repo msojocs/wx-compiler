@@ -120,7 +120,7 @@ const test_wine = (config, id) => {
         
     }
     const wine = spawn(
-        path.resolve(__dirname, "../../../../package.nw/js/vendor/wcc.exe"),
+        path.resolve(__dirname, "../../../wine/wcc.exe"),
         config.args,
         {
             cwd: config.projectPath,

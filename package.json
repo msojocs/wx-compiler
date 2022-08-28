@@ -1,5 +1,15 @@
 {
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "miniprogram-compiler": "^0.2.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/register": "^7.18.9",
+    "mocha": "^10.0.0"
   }
 }

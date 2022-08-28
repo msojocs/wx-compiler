@@ -19,3 +19,18 @@
 懒加载实现是对比 windows 版本 与 Linux 简版 的生成代码，找出其中的规律；
 
 按照规律，将 Linux 版本代码修改为符合 windows 版本结构的代码。
+
+```
+.
+├── generatemd5.js
+├── nodejs                        --- 预览编译器
+├── node_modules
+├── package.json
+├── package-lock.json
+├── README.md
+├── test
+├── wcc_node                      --- 可视化编译器
+├── wcc_node_old                  --- 可视化编译器 - 旧
+├── wcsc_node_old                 --- 可视化编译器 - 旧
+└── wine                          --- windows版本编译器
+```

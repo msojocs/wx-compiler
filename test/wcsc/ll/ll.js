@@ -128,7 +128,7 @@ const sample4 = {
 samples.push([sample4, 4])
 const test_wine = (config, id) => {
     const wine = spawn(
-        path.resolve(__dirname, "../../../../../package.nw/js/vendor/wcsc.exe"),
+        path.resolve(__dirname, "../../../wine/wcsc.exe"),
         config.args,
         {
             cwd: config.projectPath,
