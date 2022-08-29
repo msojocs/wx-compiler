@@ -20,6 +20,8 @@
 
 按照规律，将 Linux 版本代码修改为符合 windows 版本结构的代码。
 
+## 目录结构
+
 ```
 .
 ├── generatemd5.js
@@ -28,7 +30,7 @@
 ├── package.json
 ├── package-lock.json
 ├── README.md
-├── test
+├── test                          --- 测试用例
 ├── wcc_node                      --- 可视化编译器
 ├── wcc_node_old                  --- 可视化编译器 - 旧
 ├── wcsc_node_old                 --- 可视化编译器 - 旧
