@@ -25,7 +25,7 @@ const wcsc = (args, projectPath) => {
             // console.log("wine n: ", n);
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
-                result = JSON.parse(result);
+                // result = JSON.parse(result);
                 resolve(result);
             } else {
                 process.stderr.write(
@@ -59,7 +59,7 @@ const wcc = (args, projectPath) => {
             // console.log("wine n: ", n);
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
-                result = JSON.parse(result);
+                // result = JSON.parse(result);
                 resolve(result);
             } else {
                 process.stderr.write(

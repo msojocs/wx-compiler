@@ -29,7 +29,7 @@ const wcsc = (args, projectPath) => {
         node_exec.on("close", (n) => {
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
-                result = JSON.parse(result);
+                // result = JSON.parse(result);
                 resolve(result);
             } else {
                 // process.stderr.write(Buffer.concat(errData).toString());
@@ -68,7 +68,7 @@ const wcc = (args, projectPath, id) => {
                 let result = Buffer.concat(spwanData).toString();
                 // require('fs').writeFileSync('/mnt/disk2/wechat-web-devtools-linux/tmp/llw2.json', result)
                 // process.stdout.write(result);
-                result = JSON.parse(result);
+                // result = JSON.parse(result);
                 resolve(result);
             } else {
                 process.stderr.write(Buffer.concat(errData).toString());
