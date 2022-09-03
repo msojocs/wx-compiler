@@ -7,9 +7,9 @@ const fs = require("fs");
 const args = process.argv.slice(2);
 const funcName = args[args.indexOf("-gn") + 1];
 const debugWXS = args.includes("-ds");
-let hasDeps = false;
 const wccPath = path.resolve(__dirname, "./wcc.bin");
 const DEBUG_OUTPUT = process.env["WX_DEBUG_COMPILER_OUTPUT"];
+const globalData = {};
 
 // 向错误输出流写入信息
 process.stderr.write(`环境及执行信息：
@@ -25,44 +25,26 @@ const COMMON_PREFIX =
 const FUNC_PREFIX = `=function(_,_v,_n,_p,_s,_wp,_wl,$gwn,$gwl,$gwh,wh,$gstack,$gwrt,gra,grb,TestTest,wfor,_ca,_da,_r,_rz,_o,_oz,_1,_1z,_2,_2z,_m,_mz,nv_getDate,nv_getRegExp,nv_console,nv_parseInt,nv_parseFloat,nv_isNaN,nv_isFinite,nv_decodeURI,nv_decodeURIComponent,nv_encodeURI,nv_encodeURIComponent,$gdc,nv_JSON,_af,_gv,_ai,_grp,_gd,_gapi,$ixc,_ic,_w,_ev,_tsd){return function(path,global){\u000aif(typeof global==='undefined'){if (typeof __GWX_GLOBAL__==='undefined')global={};else global=__GWX_GLOBAL__;}if(typeof __WXML_GLOBAL__ === 'undefined') {__WXML_GLOBAL__={};\u000a}__WXML_GLOBAL__.modules = __WXML_GLOBAL__.modules || {};\u000avar e_={}\u000aif(typeof(global.entrys)==='undefined')global.entrys={};e_=global.entrys;\u000avar d_={}\u000aif(typeof(global.defines)==='undefined')global.defines={};d_=global.defines;\u000avar f_={}\u000aif(typeof(global.modules)==='undefined')global.modules={};f_=global.modules || {};\u000avar p_={}\u000a`;
 function parseDeps(source, x, pageConfig){
 
-    DEBUG_OUTPUT && process.stderr.write(`parseDeps - x:${x}\r\n${JSON.stringify(pageConfig, null, 4)}`);
+    DEBUG_OUTPUT && process.stderr.write(`\r\nunNeedFiles:${x}\r\n${JSON.stringify(globalData.unNeedFiles, null, 4)}`);
+    // DEBUG_OUTPUT && process.stderr.write(`\r\nparseDeps - x:${x}\r\n${JSON.stringify(pageConfig, null, 4)}`);
     // 插入引用信息
     let dep_x = `var x=[`;
     let dep_gz = "";
     let dep_d_ = "";
-    let t_x = [];
-    if (funcName !== "$gwx") {
-        // TODO: 可能存在自定义目录无法识别的问题？
-        // 非标准函数名
-        t_x = x.filter(
-            (ele) =>
-                ele.startsWith("./miniprogram_npm") ||
-                ele.startsWith("../") ||
-                ele.startsWith("./page")
-        );
-    }
-    for (let key in pageConfig) {
-        if (pageConfig[key].deps.length > 0) {
-            for (let dep of pageConfig[key].deps) {
-                let index = x.indexOf(dep);
-                if (index < 0) {
-                    continue;
-                }
-                // x
-                if (!t_x.includes(dep)) t_x.push(dep);
-            }
-        }
-    }
+    let t_x = globalData.unNeedFiles.filter(e=>!globalData.depFiles[e]);
+    
+    DEBUG_OUTPUT && process.stderr.write(`\r\nt_x:${x}\r\n${JSON.stringify(t_x, null, 4)}`);
     let i = 1;
-    for (let dep of t_x) {
-        if (dep.startsWith("../")) continue;
+    for (let dep of globalData.unNeedFiles) {
+        if(dep.startsWith('../'))continue;
+        const idx = x.indexOf(dep)
+        // 处理../../
+        // TODO: 不同目录的文件，引用不同文件，但是引用路径形式相同
+        // if(globalData.depFiles[dep])
+        //     dep = globalData.depFiles[dep]
 
         // d_
-        const d_Exp = `d_\\[x\\[${x.indexOf(
-            dep
-        )}\\]\\]={}\n[\\s\\S]*?e_\\[x\\[${x.indexOf(
-            dep
-        )}\\]\\]={f:m\\d+,j:\\[.*?\\],i:\\[.*?\\],ti:\\[(.*?)\\],ic:\\[.*?\\]}\n`;
+        const d_Exp = `d_\\[x\\[${idx}\\]\\]={}\n[\\s\\S]*?e_\\[x\\[${idx}\\]\\]={f:m\\d+,j:\\[.*?\\],i:\\[.*?\\],ti:\\[(.*?)\\],ic:\\[.*?\\]}\n`;
 
         let m0 = source.match(new RegExp(d_Exp));
         let m0_str = m0[0];
@@ -79,7 +61,7 @@ function parseDeps(source, x, pageConfig){
         dep_d_ +=
             m0_str
                 .replace(
-                    new RegExp(`x\\[${x.indexOf(dep)}\\]`, "g"),
+                    new RegExp(`x\\[${idx}\\]`, "g"),
                     `x[${t_x.indexOf(dep)}]`
                 )
                 .replace(
@@ -200,12 +182,12 @@ function genCommonContent_LLW(source, pageConfig, x = []) {
     const depsData = parseDeps(source, x, pageConfig)
     common += depsData.dep_gz;
     // nv_require
-    const nv_require = source.match(
-        new RegExp(
-            `(__WXML_GLOBAL__\\.ops_set\\.\\${funcName}=[\\s\\S]*)var x=\\[`
-        )
-    );
-    common += nv_require[1];
+    // const nv_require = source.match(
+    //     new RegExp(
+    //         `(__WXML_GLOBAL__\\.ops_set\\.\\${funcName}=[\\s\\S]*)var x=\\[`
+    //     )
+    // );
+    common += globalData.nv_require;
 
     common += depsData.dep_x + depsData.dep_d_;
     common +=
@@ -232,20 +214,18 @@ function genFunctionContent_LLA(wxmlName, config = {}, source, x) {
     let content = `var cs = cs || [];\u000a${config.funcName}${FUNC_PREFIX}`;
 
     // cs
-    const cs = source.match(/var cs([\s\S]*?)function gz/);
     content +=
         "var cs = cs || [];" +
-        cs[1].replace(new RegExp(`\\${funcName}`, "g"), config.funcName);
+        globalData.cs.replace(new RegExp(`\\${funcName}`, "g"), config.funcName);
 
     // template 检测 模板处理位于二者之间： d_[x[index]]={} ---{template}-- var m0; x[index]中index为wxml在x数组中的索引, m0中数字为当前函数代码
-    const templateReg = source.match(new RegExp(`d_\\[x\\[${x.indexOf(`./${wxmlName}.wxml`)}\\]\\]=\\{\\}\n([\\s\\S]*?)\nvar m${config.index}=`))
+    const templateReg = source.match(new RegExp(`d_\\[x\\[${x.indexOf(`./${wxmlName}.wxml`)}\\]\\]=\\{\\}\n([\\s\\S]*?)\nvar m${config.num}=`))
 
-    DEBUG_OUTPUT && process.stderr.write(`genFunctionContent_LLA - wxmlName: ${wxmlName} debugWXS: ${!!debugWXS}, hasDeps: ${!!hasDeps}, templateReg: ${!!templateReg}\n${JSON.stringify(x)} ${JSON.stringify(config)}\n\n`)
     // gz函数
     let gz;
-    if (!debugWXS && !hasDeps && !templateReg) {
+    if (!debugWXS && globalData.depFiles.length === 0 && !templateReg) {
         const exp = `function gz\\${funcName}_${
-            config.index + 1
+            config.num + 1
         }\\(\\)\\{[\\s\\S]*?\\)\\}`;
         gz = source.match(new RegExp(exp));
         gz =
@@ -257,9 +237,9 @@ function genFunctionContent_LLA(wxmlName, config = {}, source, x) {
     } else {
         // gz函数2
         const exp = `function gz\\${funcName}_${
-            config.index + 1
+            config.num + 1
         }\\(\\)\\{[\\s\\S]*?__WXML_GLOBAL__\\.ops_cached\\.\\${funcName}_${
-            config.index + 1
+            config.num + 1
         }\n}`;
         gz = source.match(new RegExp(exp));
         gz = gz[0].replace(
@@ -280,40 +260,56 @@ function genFunctionContent_LLA(wxmlName, config = {}, source, x) {
         .replace(new RegExp(`\\${funcName}`, "g"), config.funcName);
     content += debug;
 
-    // m0 --- m{index}
+    // m0 --- m{num}
     content += `var x=['./${wxmlName}.wxml'`;
-    if (!debugWXS && !hasDeps && !templateReg) {
+    if (!debugWXS && globalData.depFiles.length === 0 && !templateReg) {
         content += `];d_[x[0]]={}\u000a`;
         // e_[x[0]]||
         content += `var m0=function(e,s,r,gg){\u000avar z=gz${config.funcName}_1()\u000areturn r\u000a}\u000ae_[x[0]]={f:m0,j:[],i:[],ti:[],ic:[]}`;
     } else {
-        // m0 --- m{index}
-        const m0Exp = `var m${config.index}=function\\(e,s,r,gg\\){[\\s\\S]*e_\\[x\\[(\\d+)\\]\\]={f:m${config.index},j:\\[.*?\\],i:\\[.*?\\],ti:\\[(.*?)\\],ic:\\[.*?\\]}`;
+        // m0 --- m{num}
+        const m0Exp = `var m${config.num}=function\\(e,s,r,gg\\){[\\s\\S]*e_\\[x\\[(\\d+)\\]\\]={f:m${config.num},j:\\[.*?\\],i:\\[.*?\\],ti:\\[(.*?)\\],ic:\\[.*?\\]}`;
         let m0 = source.match(new RegExp(m0Exp));
-        let m0_str = m0[0].replace(new RegExp(`m${config.index}`, "g"), "m0");
-        const cur_x = m0[1]; // cur_x与config.index不一定相同
+        let m0_str = m0[0].replace(new RegExp(`m${config.num}`, "g"), "m0");
+        const aiDataM = m0_str.match(/_ai\([\s\S]*?cs\.push/)
+        const cur_x = m0[1]; // cur_x与config.num不一定相同
         m0_str = m0_str.replace(new RegExp(`x\\[${cur_x}\\]`, "g"), "x[0]");
+
+        // _ai引用处理
         const depIndex = m0[2].match(/\d+/g);
+        let aiArr,tiArr = []
         if (depIndex) {
-            let i = 1;
-            for (let index of depIndex) {
-                content += `,'${x[index]}'`;
-                m0_str = m0_str.replace(
-                    new RegExp(`x\\[${index}\\]`, "g"),
-                    `x[${i++}]`
-                );
-            }
+            // process.stderr.write(`\r\n-----\r\n`)
+            // process.stderr.write(m0_str)
+            aiArr = aiDataM[0].split('\n');
+            depIndex.forEach((v, i)=>{
+                content += `,'${x[v]}'`;
+                aiArr[i] = aiArr[i].replace(`x[${v}]`, `x[${i + 1}]`).replace(`x[${cur_x}]`, `x[0]`)
+                tiArr.push(`x[${i + 1}]`)
+            })
         }
+
         content += `];d_[x[0]]={}\u000a`;
         templateReg && (content += templateReg[1].replace(
             new RegExp(`\\${funcName}\\_\\d+`, "g"),
             `${config.funcName}_1`
         ) + '\n')
         m0_str = m0_str.replace(
-            new RegExp(`x\\[${config.index}\\]`, "g"),
+            new RegExp(`x\\[${config.num}\\]`, "g"),
             "x[0]"
         )
-        // .replace('={f', '=e_[x[0]]||{f');
+
+        // _ai引用处理
+        if (depIndex) {
+            m0_str = m0_str.replace(
+                new RegExp(`_ai\\([\\s\\S]*?cs\\.push`, "g"),
+                `${aiArr.join('\n')}`
+            )
+            // fix ti
+            m0_str = m0_str.replace(/ti:\[.*?\]\],/, `ti:[${tiArr.join(',')}],`);
+
+        }
+
         content += m0_str.replace(
             new RegExp(`\\${funcName}\\_\\d+`, "g"),
             `${config.funcName}_1`
@@ -345,12 +341,12 @@ function genCommonContent_LLA(source, pageConfig, x) {
     common += depsData.dep_gz;
 
     // nv_require
-    const nv_require = source.match(
-        new RegExp(
-            `(__WXML_GLOBAL__\\.ops_set\\.\\${funcName}=[\\s\\S]*)var x=\\[`
-        )
-    );
-    common += nv_require[1];
+    // const nv_require = source.match(
+    //     new RegExp(
+    //         `(__WXML_GLOBAL__\\.ops_set\\.\\${funcName}=[\\s\\S]*)var x=\\[`
+    //     )
+    // );
+    common += globalData.nv_require;
 
     common += depsData.dep_x + depsData.dep_d_;
     common +=
@@ -372,6 +368,88 @@ function genCommonContent_LLA(source, pageConfig, x) {
     return common;
 }
 // genCommonContent_LLA END
+
+const wxmlParser = (()=>{
+    const getFileArr = (code)=>{
+        // 获取x数组并解析
+        const indexArr = eval(code.match(/var x=(\[.*\]);/)[1]);
+        return indexArr;
+    }
+    const parseGZFuncMap = (code)=>{
+        const exp = `function gz\\$(.*?)\\(\\)\\{[\\s\\S]*?__WXML_GLOBAL__\\.ops_cached\\.\\$.*?\n}`;
+        const gzs = code.matchAll(new RegExp(exp, 'g'));
+        const gzFunc = {}
+        for (const gz of gzs) {
+            gzFunc[`gz$${gz[1]}`] = gz[0];
+        }
+        return gzFunc;
+    }
+    const parseDepsMap = (code, fileArr)=>{
+
+        // 获取所有依赖 _ai函数 被引入的文件, 文件
+        // _ai(i, depPath, e, mainPath, r, c)
+        const deps = code.matchAll(
+            /_ai\(.*?,x\[(\d+)\],.*?,x\[(\d+)\],\d+,\d+\)/g
+        );
+        // 处理依赖
+        const depsResult = {}
+        const depsFiles = {}
+        for (let dep of deps) {
+            // if(depsResult[dep[2]]){
+            //     depsResult[dep[2]].push(deps[1])
+            // }else{
+            //     depsResult[dep[2]] = [deps[1]]
+            // }
+            const file = fileArr[dep[2]]
+            let depFile = fileArr[dep[1]]
+            depsFiles[depFile] = file
+            depFile = `./${path.join(path.dirname(file), depFile)}`
+            if(depsResult[file]){
+                depsResult[file].unshift(depFile)
+                // depsResult[file].push(dep[1])
+            }else{
+                depsResult[file] = [depFile]
+                // depsResult[file] = [dep[1]]
+            }
+        }
+        return {
+            relation: depsResult,
+            depsFiles
+        }
+    }
+    const parseDMEMap = (code)=>{
+        // ti: import依赖引入
+        const regExp = /d_\[x\[(\d+)\]\]={}[\s\S]*?e_\[x\[\d+\]\]={f:m\d+,j:\[.*?\],i:\[.*?\],ti:\[(.*?)\],ic:\[.*?\]}/g;
+        const ms = code.matchAll(regExp);
+        const mFunc = {}
+        for (const m of ms) {
+            mFunc[`x[${m[1]}]`] = m[0]
+        }
+        return mFunc
+    }
+    const parseNvRequireCode = (code)=>{
+        const ret = code.match(/(__WXML_GLOBAL__\.ops_set\.\$.*?=[\s\S]*)var x=\[/)
+        return ret[1]
+    }
+    const parseCSCode = (code)=>{
+        const cs = code.match(/var cs([\s\S]*?)function gz/);
+        return cs[1];
+    }
+    const parse = (data, code)=>{
+        data.nv_require = parseNvRequireCode(code)
+        data.cs = parseCSCode(code)
+        data.gz = parseGZFuncMap(code)
+        data.fileArr = getFileArr(code);
+        const dep_t = parseDepsMap(code, data.fileArr)
+        data.deps = dep_t.relation
+        data.depFiles = dep_t.depsFiles
+        data.dme = parseDMEMap(code)
+    }
+    return {
+        parse
+    }
+})()
+
 if (args.includes("-llw")) {
     // 参数预处理
     const split_mark = args[args.indexOf("--split") + 1];
@@ -483,7 +561,7 @@ if (args.includes("-llw")) {
     // 参数预处理
     const split_mark = args[args.indexOf("--split") + 1];
     const needArrStr = args[args.indexOf("-lla") + 1]
-    const needArr = needArrStr.split(split_mark);
+    const needArr = needArrStr.split(split_mark).sort();
     const argss = args.filter((e) => e != "-lla" && e != needArrStr);
     const wcc = spawn(wccPath, argss, {
         cwd: process.cwd(),
@@ -510,38 +588,38 @@ if (args.includes("-llw")) {
                     __COMMON__: funcName,
                 },
             };
-            const indexArr = eval(str.match(/var x=(\[.*\]);/)[1]);
+            wxmlParser.parse(globalData, str);
+            const indexArr = globalData.fileArr;
             const pageConfig = {};
+ 
+            globalData.unNeedFiles = indexArr.filter(e=>!needArr.includes(e.substring(0, e.length - 5)))
+            // for (let i = 0; i < globalData.unNeedFiles.length; i++) {
+            //     const subFile = globalData.unNeedFiles[i];
+            //     if(globalData.depFiles[subFile]){
+            //         globalData.unNeedFiles[i] = globalData.depFiles[subFile]
+            //     }
+                
+            // }
+
+            process.stderr.write('\r\ndepFiles: ' + JSON.stringify(globalData.depFiles, null, 4))
+            process.stderr.write('\r\depTree: ' + JSON.stringify(globalData.deps, null, 4))
+            process.stderr.write('\r\indexArr: ' + JSON.stringify(indexArr, null, 4))
+            process.stderr.write('\r\nneedArr:' + JSON.stringify(needArr, null, 4))
+
             let i = 0;
-            indexArr.forEach((ele, index) => {
-                if (!ele.startsWith("../")) {
+            indexArr.forEach((ele) => {
+                if(!globalData.depFiles[ele]){
                     pageConfig[ele.substring(2, ele.length - 5)] = {
                         funcName: `${funcName}_XC_`,
-                        num: 0,
-                        index: i,
-                        deps: [],
+                        num: i++,
+                        deps: globalData.deps[ele] || [],
                     };
-                    i++;
                 }
             });
-            // 引入解析
-            const deps = str.matchAll(
-                /_ai\(.*?,x\[(\d+)\],.*?,x\[(\d+)\],\d+,\d+\)/g
-            );
-            for (let dep of deps) {
-                hasDeps = true;
-                // console.log(dep[1]) // 被引用文件下标
-                // console.log(dep[2]) // 引用文件下标
-                const target = indexArr[dep[2]];
-                pageConfig[target.substring(2, target.length - 5)].deps.unshift(
-                    "./" + path.join(path.dirname(target), indexArr[dep[1]])
-                );
-            }
             i = 0;
             for (let key in pageConfig) {
                 if (needArr.includes("./" + key)) {
                     pageConfig[key].funcName += i++;
-                    // pageConfig[key].num = i++;
                     resultObj.generateFunctionName[key] =
                         pageConfig[key].funcName;
                     resultObj.generateFunctionContent[key] =
