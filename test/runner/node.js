@@ -27,6 +27,8 @@ const wcsc = (args, projectPath, outputPath = undefined) => {
     });
     return new Promise((resolve, reject) => {
         node_exec.on("close", (n) => {
+            outputPath && require('fs').writeFileSync(`${outputPath}/linux_err.js`, Buffer.concat(errData).toString())
+            
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
                 // result = JSON.parse(result);

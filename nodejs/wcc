@@ -131,18 +131,19 @@ function genFunctionContent_LLW(wxmlName, config = {}, source, x) {
     const m0Exp = `var m${config.num}=function\\(e,s,r,gg\\){[\\s\\S]*e_\\[x\\[(\\d+)\\]\\]={f:m${config.num},j:\\[.*?\\],i:\\[.*?\\],ti:\\[(.*?)\\],ic:\\[.*?\\]}`;
     let m0 = source.match(new RegExp(m0Exp));
     let m0_str = m0[0].replace(new RegExp(`m${config.num}`, "g"), "m0");
+    const aiDataM = m0_str.match(/_ai\([\s\S]*?cs\.push/)
     const cur_x = m0[1]; // cur_x与config.num不一定相同
     m0_str = m0_str.replace(new RegExp(`x\\[${cur_x}\\]`, "g"), "x[0]");
+
     const depIndex = m0[2].match(/\d+/g);
+    let aiArr,tiArr = []
     if (depIndex) {
-        let i = 1;
-        for (let index of depIndex) {
-            content += `,'${x[index]}'`;
-            m0_str = m0_str.replace(
-                new RegExp(`x\\[${index}\\]`, "g"),
-                `x[${i++}]`
-            );
-        }
+        aiArr = aiDataM[0].split('\n');
+        depIndex.forEach((v, i)=>{
+            content += `,'${x[v]}'`;
+            aiArr[i] = aiArr[i].replace(`x[${v}]`, `x[${i + 1}]`).replace(`x[${cur_x}]`, `x[0]`)
+            tiArr.push(`x[${i + 1}]`)
+        })
     }
     content += `];d_[x[0]]={}\u000a`;
     templateReg && (content += templateReg[1].replace(
@@ -150,6 +151,19 @@ function genFunctionContent_LLW(wxmlName, config = {}, source, x) {
         `${config.funcName}_1`
     ) + '\n')
     m0_str = m0_str.replace(new RegExp(`x\\[${config.num}\\]`, "g"), "x[0]");
+
+
+    // _ai引用处理
+    if (depIndex) {
+        m0_str = m0_str.replace(
+            new RegExp(`_ai\\([\\s\\S]*?cs\\.push`, "g"),
+            `${aiArr.join('\n')}`
+        )
+        // fix ti
+        m0_str = m0_str.replace(/ti:\[.*?\]\],/, `ti:[${tiArr.join(',')}],`);
+
+    }
+
     content += m0_str.replace(
         new RegExp(`\\${funcName}\\_\\d+`, "g"),
         `${config.funcName}_1`
@@ -481,40 +495,33 @@ if (args.includes("-llw")) {
                     __COMMON__: funcName,
                 },
             };
-            // ./miniprogram_npm/miniprogram-barrage/index>_<4685./m
-            DEBUG_OUTPUT && process.stderr.write(`llw - split_mark: ${split_mark}\r\n`)
-            DEBUG_OUTPUT && process.stderr.write(`llw - needArr: ${needArr.join(', ')}\r\n`)
-            // 获取x数组并解析
-            const indexArr = eval(str.match(/var x=(\[.*\]);/)[1]);
+            wxmlParser.parse(globalData, str);
+            const indexArr = globalData.fileArr;
             const pageConfig = {};
+
+            globalData.unNeedFiles = indexArr.filter(e=>!needArr.includes(e.substring(0, e.length - 5)))
+
+            process.stderr.write('\r\ndepFiles: ' + JSON.stringify(globalData.depFiles, null, 4))
+            process.stderr.write('\r\depTree: ' + JSON.stringify(globalData.deps, null, 4))
+            process.stderr.write('\r\indexArr: ' + JSON.stringify(indexArr, null, 4))
+            process.stderr.write('\r\nneedArr:' + JSON.stringify(needArr, null, 4))
+
             let i = 0;
-            indexArr.forEach((ele, index) => {
-                // 非 ../ 开头
-                if (!ele.startsWith("../")) {
+            indexArr.forEach((ele) => {
+                if (!globalData.depFiles[ele]) {
                     // a/b/c -> {}
                     pageConfig[ele.substring(2, ele.length - 5)] = {
-                        funcName: `${funcName}_XC_${i}`,
-                        num: i,
-                        deps: [],
+                        funcName: `${funcName}_XC_`,
+                        num: i++,
+                        deps: globalData.deps[ele] || [],
                     };
-                    i++;
                 }
             });
-            // 获取所有依赖 _ai函数 被引入的文件, 文件
-            // _ai(i, depPath, e, mainPath, r, c)
-            const deps = str.matchAll(
-                /_ai\(.*?,x\[(\d+)\],.*?,x\[(\d+)\],\d+,\d+\)/g
-            );
-            // 处理依赖
-            for (let dep of deps) {
-                const target = indexArr[dep[2]];
-                pageConfig[target.substring(2, target.length - 5)].deps.unshift(
-                    "./" + path.join(path.dirname(target), indexArr[dep[1]])
-                );
-            }
             // 生成函数内容
+            i = 0;
             for (let key in pageConfig) {
                 if (needArr.includes(`./${key}`)) {
+                    pageConfig[key].funcName += i++
                     resultObj.generateFunctionName[key] =
                         pageConfig[key].funcName;
                     resultObj.generateFunctionContent[key] =
@@ -542,6 +549,9 @@ if (args.includes("-llw")) {
                         break;
                     case "\\t":
                         c = "\t";
+                        break;
+                    case "\\b":
+                        c = "\b";
                         break;
 
                     default:
@@ -593,13 +603,6 @@ if (args.includes("-llw")) {
             const pageConfig = {};
  
             globalData.unNeedFiles = indexArr.filter(e=>!needArr.includes(e.substring(0, e.length - 5)))
-            // for (let i = 0; i < globalData.unNeedFiles.length; i++) {
-            //     const subFile = globalData.unNeedFiles[i];
-            //     if(globalData.depFiles[subFile]){
-            //         globalData.unNeedFiles[i] = globalData.depFiles[subFile]
-            //     }
-                
-            // }
 
             process.stderr.write('\r\ndepFiles: ' + JSON.stringify(globalData.depFiles, null, 4))
             process.stderr.write('\r\depTree: ' + JSON.stringify(globalData.deps, null, 4))
@@ -619,7 +622,7 @@ if (args.includes("-llw")) {
             i = 0;
             for (let key in pageConfig) {
                 if (needArr.includes("./" + key)) {
-                    pageConfig[key].funcName += i++;
+                    pageConfig[key].funcName += i++
                     resultObj.generateFunctionName[key] =
                         pageConfig[key].funcName;
                     resultObj.generateFunctionContent[key] =

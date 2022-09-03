@@ -11,7 +11,7 @@ describe("wcc - llw", function () {
         //     console.error('failed', this.currentTest)
         //   }
         // })
-        it("初次加载1", async function () {
+        it("初次加载1   # 变量名不同，需要手动检测", async function () {
             const projectPath = path.resolve(
                 __dirname,
                 "../../examples/miniprogram-demo/miniprogram"
@@ -43,8 +43,6 @@ describe("wcc - llw", function () {
                 "-gn",
                 "$gwx",
             ];
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath));
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test.title}`
@@ -52,6 +50,8 @@ describe("wcc - llw", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
+            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await wine.wcc(args, projectPath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -115,8 +115,6 @@ describe("wcc - llw", function () {
                 "-gn",
                 "$7061636b616765436f6d706f6e656e742f",
             ];
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath));
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test.title}`
@@ -124,6 +122,8 @@ describe("wcc - llw", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
+            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await wine.wcc(args, projectPath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -157,8 +157,6 @@ describe("wcc - llw", function () {
                 "-gn",
                 "$7061636b616765536b796c696e652f",
             ];
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath));
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test.title}`
@@ -166,6 +164,8 @@ describe("wcc - llw", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
+            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await wine.wcc(args, projectPath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -176,7 +176,7 @@ describe("wcc - llw", function () {
             );
             assert.deepEqual(w, n);
         });
-        it("组件 - skyline - 自定义路由", async function () {
+        it("组件 - skyline - 自定义路由   # 变量名不同，需要手动检测", async function () {
             const projectPath = path.resolve(
                 __dirname,
                 "../../examples/miniprogram-demo/miniprogram/"
@@ -208,8 +208,6 @@ describe("wcc - llw", function () {
                 "-gn",
                 "$gwx",
             ];
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath));
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test.title}`
@@ -217,6 +215,8 @@ describe("wcc - llw", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
+            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await wine.wcc(args, projectPath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -227,7 +227,7 @@ describe("wcc - llw", function () {
             );
             assert.deepEqual(w, n);
         });
-        it("扩展能力 - 表单 - cell", async function () {
+        it("扩展能力 - 表单 - cell    # 变量名不同，需要手动检测", async function () {
             const projectPath = path.resolve(
                 __dirname,
                 "../../examples/miniprogram-demo/miniprogram/"
@@ -259,8 +259,6 @@ describe("wcc - llw", function () {
                 "-gn",
                 "$gwx",
             ];
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath));
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test.title}`
@@ -268,6 +266,8 @@ describe("wcc - llw", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
+            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await wine.wcc(args, projectPath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -374,8 +374,6 @@ describe("wcc - llw", function () {
                 "-gn",
                 "$7061636b6167654150492f",
             ];
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath));
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test.title}`
@@ -383,6 +381,8 @@ describe("wcc - llw", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
+            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await wine.wcc(args, projectPath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
