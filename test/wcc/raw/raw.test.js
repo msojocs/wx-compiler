@@ -53,18 +53,6 @@ describe("wcc - raw", function () {
 
             fs.writeFileSync(`${storagePath}/wine-output.js`, w);
             fs.writeFileSync(`${storagePath}/node-output.js`, n);
-            let minLen = w.length;
-            if (n.length < minLen) minLen = n.length;
-
-            for (let i = 0; i < minLen; i++) {
-                if (w[i] != n[i]) {
-                    console.log("n:", n[i]);
-                    console.log("----------------");
-                    console.log("w:", w[i]);
-                    return;
-                }
-            }
-            console.log("test result:", w.length, n.length, w == n);
             assert.equal(w, n);
         });
         it("初次加载2", async function () {

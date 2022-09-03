@@ -3,14 +3,14 @@ const path = require("path");
 const fs = require("fs");
 const { spawn } = require("child_process");
 
-const wcsc = (args, projectPath) => {
+const wcsc = (args, projectPath, outputPath = undefined) => {
     const node_exec = spawn(
         path.resolve(__dirname, "../../nodejs/wcsc"),
         args,
         {
             cwd: projectPath,
             env: {
-                // WX_DEBUG_COMPILER_OUTPUT: path.resolve(__dirname, '' + id),
+                WX_DEBUG_COMPILER_OUTPUT: outputPath,
             },
             // stdio: 'inherit'
         }
@@ -39,14 +39,14 @@ const wcsc = (args, projectPath) => {
         });
     });
 };
-const wcc = (args, projectPath, id) => {
+const wcc = (args, projectPath, outputPath = undefined) => {
     const node_exec = spawn(
         path.resolve(__dirname, "../../nodejs/wcc"),
         args,
         {
             cwd: projectPath,
             env: {
-                // WX_DEBUG_COMPILER_OUTPUT: path.resolve(__dirname, '' + id),
+                WX_DEBUG_COMPILER_OUTPUT: outputPath,
             },
             // stdio: 'inherit'
         }
@@ -64,9 +64,9 @@ const wcc = (args, projectPath, id) => {
     return new Promise((resolve, reject) => {
         node_exec.on("close", (n) => {
             // console.log("node n: ", n);
+            outputPath && require('fs').writeFileSync(`${outputPath}/linux_err.js`, Buffer.concat(errData).toString())
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
-                // require('fs').writeFileSync('/mnt/disk2/wechat-web-devtools-linux/tmp/llw2.json', result)
                 // process.stdout.write(result);
                 // result = JSON.parse(result);
                 resolve(result);

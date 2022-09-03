@@ -25,6 +25,7 @@ const COMMON_PREFIX =
 const FUNC_PREFIX = `=function(_,_v,_n,_p,_s,_wp,_wl,$gwn,$gwl,$gwh,wh,$gstack,$gwrt,gra,grb,TestTest,wfor,_ca,_da,_r,_rz,_o,_oz,_1,_1z,_2,_2z,_m,_mz,nv_getDate,nv_getRegExp,nv_console,nv_parseInt,nv_parseFloat,nv_isNaN,nv_isFinite,nv_decodeURI,nv_decodeURIComponent,nv_encodeURI,nv_encodeURIComponent,$gdc,nv_JSON,_af,_gv,_ai,_grp,_gd,_gapi,$ixc,_ic,_w,_ev,_tsd){return function(path,global){\u000aif(typeof global==='undefined'){if (typeof __GWX_GLOBAL__==='undefined')global={};else global=__GWX_GLOBAL__;}if(typeof __WXML_GLOBAL__ === 'undefined') {__WXML_GLOBAL__={};\u000a}__WXML_GLOBAL__.modules = __WXML_GLOBAL__.modules || {};\u000avar e_={}\u000aif(typeof(global.entrys)==='undefined')global.entrys={};e_=global.entrys;\u000avar d_={}\u000aif(typeof(global.defines)==='undefined')global.defines={};d_=global.defines;\u000avar f_={}\u000aif(typeof(global.modules)==='undefined')global.modules={};f_=global.modules || {};\u000avar p_={}\u000a`;
 function parseDeps(source, x, pageConfig){
 
+    DEBUG_OUTPUT && process.stderr.write(`parseDeps - x:${x}\r\n${JSON.stringify(pageConfig, null, 4)}`);
     // 插入引用信息
     let dep_x = `var x=[`;
     let dep_gz = "";
@@ -237,14 +238,14 @@ function genFunctionContent_LLA(wxmlName, config = {}, source, x) {
         cs[1].replace(new RegExp(`\\${funcName}`, "g"), config.funcName);
 
     // template 检测 模板处理位于二者之间： d_[x[index]]={} ---{template}-- var m0; x[index]中index为wxml在x数组中的索引, m0中数字为当前函数代码
-    const templateReg = source.match(new RegExp(`d_\\[x\\[${x.indexOf(`./${wxmlName}.wxml`)}\\]\\]=\\{\\}\n([\\s\\S]*?)\nvar m${config.num}=`))
+    const templateReg = source.match(new RegExp(`d_\\[x\\[${x.indexOf(`./${wxmlName}.wxml`)}\\]\\]=\\{\\}\n([\\s\\S]*?)\nvar m${config.index}=`))
 
-    DEBUG_OUTPUT && process.stderr.write(`wxmlName: ${wxmlName} debugWXS: ${!!debugWXS}, hasDeps: ${!!hasDeps}, templateReg: ${!!templateReg}\n${JSON.stringify(x)} ${JSON.stringify(config)}\n\n`)
+    DEBUG_OUTPUT && process.stderr.write(`genFunctionContent_LLA - wxmlName: ${wxmlName} debugWXS: ${!!debugWXS}, hasDeps: ${!!hasDeps}, templateReg: ${!!templateReg}\n${JSON.stringify(x)} ${JSON.stringify(config)}\n\n`)
     // gz函数
     let gz;
     if (!debugWXS && !hasDeps && !templateReg) {
         const exp = `function gz\\${funcName}_${
-            config.num + 1
+            config.index + 1
         }\\(\\)\\{[\\s\\S]*?\\)\\}`;
         gz = source.match(new RegExp(exp));
         gz =
@@ -256,9 +257,9 @@ function genFunctionContent_LLA(wxmlName, config = {}, source, x) {
     } else {
         // gz函数2
         const exp = `function gz\\${funcName}_${
-            config.num + 1
+            config.index + 1
         }\\(\\)\\{[\\s\\S]*?__WXML_GLOBAL__\\.ops_cached\\.\\${funcName}_${
-            config.num + 1
+            config.index + 1
         }\n}`;
         gz = source.match(new RegExp(exp));
         gz = gz[0].replace(
@@ -279,18 +280,18 @@ function genFunctionContent_LLA(wxmlName, config = {}, source, x) {
         .replace(new RegExp(`\\${funcName}`, "g"), config.funcName);
     content += debug;
 
-    // m0 --- m{num}
+    // m0 --- m{index}
     content += `var x=['./${wxmlName}.wxml'`;
     if (!debugWXS && !hasDeps && !templateReg) {
         content += `];d_[x[0]]={}\u000a`;
         // e_[x[0]]||
         content += `var m0=function(e,s,r,gg){\u000avar z=gz${config.funcName}_1()\u000areturn r\u000a}\u000ae_[x[0]]={f:m0,j:[],i:[],ti:[],ic:[]}`;
     } else {
-        // m0 --- m{num}
-        const m0Exp = `var m${config.num}=function\\(e,s,r,gg\\){[\\s\\S]*e_\\[x\\[(\\d+)\\]\\]={f:m${config.num},j:\\[.*?\\],i:\\[.*?\\],ti:\\[(.*?)\\],ic:\\[.*?\\]}`;
+        // m0 --- m{index}
+        const m0Exp = `var m${config.index}=function\\(e,s,r,gg\\){[\\s\\S]*e_\\[x\\[(\\d+)\\]\\]={f:m${config.index},j:\\[.*?\\],i:\\[.*?\\],ti:\\[(.*?)\\],ic:\\[.*?\\]}`;
         let m0 = source.match(new RegExp(m0Exp));
-        let m0_str = m0[0].replace(new RegExp(`m${config.num}`, "g"), "m0");
-        const cur_x = m0[1]; // cur_x与config.num不一定相同
+        let m0_str = m0[0].replace(new RegExp(`m${config.index}`, "g"), "m0");
+        const cur_x = m0[1]; // cur_x与config.index不一定相同
         m0_str = m0_str.replace(new RegExp(`x\\[${cur_x}\\]`, "g"), "x[0]");
         const depIndex = m0[2].match(/\d+/g);
         if (depIndex) {
@@ -309,7 +310,7 @@ function genFunctionContent_LLA(wxmlName, config = {}, source, x) {
             `${config.funcName}_1`
         ) + '\n')
         m0_str = m0_str.replace(
-            new RegExp(`x\\[${config.num}\\]`, "g"),
+            new RegExp(`x\\[${config.index}\\]`, "g"),
             "x[0]"
         )
         // .replace('={f', '=e_[x[0]]||{f');
@@ -342,6 +343,7 @@ function genCommonContent_LLA(source, pageConfig, x) {
 
     const depsData = parseDeps(source, x, pageConfig)
     common += depsData.dep_gz;
+
     // nv_require
     const nv_require = source.match(
         new RegExp(
@@ -402,8 +404,8 @@ if (args.includes("-llw")) {
                 },
             };
             // ./miniprogram_npm/miniprogram-barrage/index>_<4685./m
-            DEBUG_OUTPUT && process.stderr.write(`split_mark: ${split_mark}\r\n`)
-            DEBUG_OUTPUT && process.stderr.write(`needArr: ${needArr.join(', ')}\r\n`)
+            DEBUG_OUTPUT && process.stderr.write(`llw - split_mark: ${split_mark}\r\n`)
+            DEBUG_OUTPUT && process.stderr.write(`llw - needArr: ${needArr.join(', ')}\r\n`)
             // 获取x数组并解析
             const indexArr = eval(str.match(/var x=(\[.*\]);/)[1]);
             const pageConfig = {};
@@ -421,6 +423,7 @@ if (args.includes("-llw")) {
                 }
             });
             // 获取所有依赖 _ai函数 被引入的文件, 文件
+            // _ai(i, depPath, e, mainPath, r, c)
             const deps = str.matchAll(
                 /_ai\(.*?,x\[(\d+)\],.*?,x\[(\d+)\],\d+,\d+\)/g
             );
@@ -473,8 +476,6 @@ if (args.includes("-llw")) {
         } else {
             const err = Buffer.concat(errData).toString();
             process.stderr.write(err);
-            DEBUG_OUTPUT &&
-                fs.writeFileSync(`${DEBUG_OUTPUT}/linux_err.js`, err);
             process.exitCode = n;
         }
     });
@@ -515,8 +516,9 @@ if (args.includes("-llw")) {
             indexArr.forEach((ele, index) => {
                 if (!ele.startsWith("../")) {
                     pageConfig[ele.substring(2, ele.length - 5)] = {
-                        funcName: `${funcName}_XC_${i}`,
-                        num: i,
+                        funcName: `${funcName}_XC_`,
+                        num: 0,
+                        index: i,
                         deps: [],
                     };
                     i++;
@@ -535,8 +537,11 @@ if (args.includes("-llw")) {
                     "./" + path.join(path.dirname(target), indexArr[dep[1]])
                 );
             }
+            i = 0;
             for (let key in pageConfig) {
                 if (needArr.includes("./" + key)) {
+                    pageConfig[key].funcName += i++;
+                    // pageConfig[key].num = i++;
                     resultObj.generateFunctionName[key] =
                         pageConfig[key].funcName;
                     resultObj.generateFunctionContent[key] =
@@ -577,8 +582,6 @@ if (args.includes("-llw")) {
         } else {
             const err = Buffer.concat(errData).toString();
             process.stderr.write(err);
-            DEBUG_OUTPUT &&
-                fs.writeFileSync(`${DEBUG_OUTPUT}/linux_err.js`, err);
             process.exitCode = n;
         }
     });

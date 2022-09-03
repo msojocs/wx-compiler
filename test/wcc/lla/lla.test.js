@@ -43,12 +43,12 @@ describe("wcc - lla", function () {
                 "-gn",
                 "$gwx",
             ];
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath));
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test.title}`
             );
+            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await wine.wcc(args, projectPath));
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
@@ -125,11 +125,11 @@ describe("wcc - lla", function () {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
             fs.writeFileSync(
-                `${storagePath}/wine-output.js`,
+                `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
             );
             fs.writeFileSync(
-                `${storagePath}/node-output.js`,
+                `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
             assert.deepEqual(w, n);
@@ -167,11 +167,11 @@ describe("wcc - lla", function () {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
             fs.writeFileSync(
-                `${storagePath}/wine-output.js`,
+                `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
             );
             fs.writeFileSync(
-                `${storagePath}/node-output.js`,
+                `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
             assert.deepEqual(w, n);
@@ -218,11 +218,11 @@ describe("wcc - lla", function () {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
             fs.writeFileSync(
-                `${storagePath}/wine-output.js`,
+                `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
             );
             fs.writeFileSync(
-                `${storagePath}/node-output.js`,
+                `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
             assert.deepEqual(w, n);
@@ -311,11 +311,11 @@ describe("wcc - lla", function () {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
             fs.writeFileSync(
-                `${storagePath}/wine-output.js`,
+                `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
             );
             fs.writeFileSync(
-                `${storagePath}/node-output.js`,
+                `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
             assert.deepEqual(w, n);
@@ -426,11 +426,11 @@ describe("wcc - lla", function () {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
             fs.writeFileSync(
-                `${storagePath}/wine-output.js`,
+                `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
             );
             fs.writeFileSync(
-                `${storagePath}/node-output.js`,
+                `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
             assert.deepEqual(w, n);
