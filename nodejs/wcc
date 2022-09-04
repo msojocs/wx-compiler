@@ -293,8 +293,6 @@ function genFunctionContent_LLA(wxmlName, config = {}, source, x) {
         const depIndex = m0[2].match(/\d+/g);
         let aiArr,tiArr = []
         if (depIndex) {
-            // process.stderr.write(`\r\n-----\r\n`)
-            // process.stderr.write(m0_str)
             aiArr = aiDataM[0].split('\n');
             depIndex.forEach((v, i)=>{
                 content += `,'${x[v]}'`;
@@ -501,10 +499,10 @@ if (args.includes("-llw")) {
 
             globalData.unNeedFiles = indexArr.filter(e=>!needArr.includes(e.substring(0, e.length - 5)))
 
-            process.stderr.write('\r\ndepFiles: ' + JSON.stringify(globalData.depFiles, null, 4))
-            process.stderr.write('\r\depTree: ' + JSON.stringify(globalData.deps, null, 4))
-            process.stderr.write('\r\indexArr: ' + JSON.stringify(indexArr, null, 4))
-            process.stderr.write('\r\nneedArr:' + JSON.stringify(needArr, null, 4))
+            DEBUG_OUTPUT && process.stderr.write('\r\ndepFiles: ' + JSON.stringify(globalData.depFiles, null, 4))
+            DEBUG_OUTPUT && process.stderr.write('\r\depTree: ' + JSON.stringify(globalData.deps, null, 4))
+            DEBUG_OUTPUT && process.stderr.write('\r\indexArr: ' + JSON.stringify(indexArr, null, 4))
+            DEBUG_OUTPUT && process.stderr.write('\r\nneedArr:' + JSON.stringify(needArr, null, 4))
 
             let i = 0;
             indexArr.forEach((ele) => {
@@ -604,10 +602,10 @@ if (args.includes("-llw")) {
  
             globalData.unNeedFiles = indexArr.filter(e=>!needArr.includes(e.substring(0, e.length - 5)))
 
-            process.stderr.write('\r\ndepFiles: ' + JSON.stringify(globalData.depFiles, null, 4))
-            process.stderr.write('\r\depTree: ' + JSON.stringify(globalData.deps, null, 4))
-            process.stderr.write('\r\indexArr: ' + JSON.stringify(indexArr, null, 4))
-            process.stderr.write('\r\nneedArr:' + JSON.stringify(needArr, null, 4))
+            DEBUG_OUTPUT && process.stderr.write('\r\ndepFiles: ' + JSON.stringify(globalData.depFiles, null, 4))
+            DEBUG_OUTPUT && process.stderr.write('\r\depTree: ' + JSON.stringify(globalData.deps, null, 4))
+            DEBUG_OUTPUT && process.stderr.write('\r\indexArr: ' + JSON.stringify(indexArr, null, 4))
+            DEBUG_OUTPUT && process.stderr.write('\r\nneedArr:' + JSON.stringify(needArr, null, 4))
 
             let i = 0;
             indexArr.forEach((ele) => {
