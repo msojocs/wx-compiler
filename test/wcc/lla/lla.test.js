@@ -1,8 +1,23 @@
 const assert = require("assert");
 const node = require("../../runner/node");
 const wine = require("../../runner/wine");
+const CODE = require("../../runner/code");
 const path = require("path");
 const fs = require("fs");
+
+const originDE = assert.deepEqual
+assert.deepEqual = function(){
+    // console.log(arguments[0])
+    try {
+        originDE.apply(this, arguments)
+    } catch (error) {
+        
+        const dw = CODE.delVariables(JSON.stringify(arguments[0]))
+        const dn = CODE.delVariables(JSON.stringify(arguments[1]))
+        console.log('\tdeepEqual检测失败，尝试检测语法（测试中）')
+        assert.equal(dw, dn);
+    }
+}
 
 describe("wcc - lla", function () {
     describe("lla: node output should deep equal with wine", function () {
