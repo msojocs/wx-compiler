@@ -1,4 +1,4 @@
 node_modules
 test/**/*.json
 test/**/*-output.js
-test-result.log
+nwjs

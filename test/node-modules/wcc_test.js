@@ -173,6 +173,7 @@ const test = async (options, id) => {
         result = JSON.stringify(wcc_result, null, 4)
     fs.writeFileSync(path.resolve(__dirname, `${id}/wcc_node_${MODE}.txt`), result)
 };
+
 (async () => {
     for(let options of wcc_options){
         await test(options[0], options[1]);
