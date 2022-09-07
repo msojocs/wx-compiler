@@ -2,7 +2,9 @@
 
 const fs = require('fs')
 const path = require('path')
+const scan = require('./utils/scan')
 const MODE = typeof nw === 'object' ? 'wine' : 'linux'
+
 const wcc_options = []
 const wcc_options1 = {
     "files": ["./miniprogram_npm/miniprogram-barrage/index.wxml", "./miniprogram_npm/miniprogram-recycle-view/recycle-item.wxml", "./miniprogram_npm/miniprogram-recycle-view/recycle-view.wxml", "./miniprogram_npm/wxml-to-canvas/index.wxml", "./page/API/index.wxml", "./page/API/components/set-tab-bar/set-tab-bar.wxml", "./page/cloud/index.wxml", "./page/common/foot.wxml", "./page/common/head.wxml", "./page/component/index.wxml", "./page/extend/index.wxml"],
@@ -158,52 +160,38 @@ const wcc_options11 = {
 }
 wcc_options.push([wcc_options11, 11])
 
-const test = async (options, id) => {
-    console.log("============")
+const run = async (filepath) => {
+    const configStr = fs.readFileSync(filepath).toString()
+    const options = JSON.parse(configStr)
+    options.cwd = path.join(__dirname, '../examples', options.cwd)
+    const outputPath = path.dirname(filepath) + '/output'
+    console.log('outputPath:', outputPath)
     try {
-        fs.mkdirSync(path.resolve(__dirname, `${id}`))
+        fs.mkdirSync(outputPath)
     } catch (err) {
     }
-    process.env.WX_DEBUG_COMPILER_OUTPUT = path.resolve(__dirname, `${id}`)
-    console.log(process.env.WX_DEBUG_COMPILER_OUTPUT)
-    const wcc = require("wcc_" + MODE).wcc;
+    // process.env.WX_DEBUG_COMPILER_OUTPUT = outputPath
+    // console.log(process.env.WX_DEBUG_COMPILER_OUTPUT)
+    const wcc = require(`./wcc_${MODE}/lib`).wcc;
     const wcc_result = await wcc(options);
     let result = wcc_result
-    if (!!options.lazyloadConfig)
+    if (!!options.lazyloadConfig){
         result = JSON.stringify(wcc_result, null, 4)
-    fs.writeFileSync(path.resolve(__dirname, `${id}/wcc_node_${MODE}.txt`), result)
+        fs.writeFileSync(path.resolve(outputPath, `wcc_node_${MODE}.json`), result)
+    }else{
+        fs.writeFileSync(path.resolve(outputPath, `wcc_node_${MODE}.js`), result)
+    }
+    console.log('run done')
 };
 
-// (async () => {
-//     for(let options of wcc_options){
-//         await test(options[0], options[1]);
-//     }
-// })();
-const scanFiles = function(dir) {
-    var results = []
-    var list = fs.readdirSync(dir)
-    list.forEach(function(file) {
-    	// 排除static静态目录（可按你需求进行新增）
-        // if (file === 'static') {
-        //     return false
-        // }
-        file = dir + '/' + file
-        var stat = fs.statSync(file)
-        if (stat && stat.isDirectory()) {
-            results = results.concat(scanFiles(file))
-        } else {
-        	// 过滤后缀名（可按你需求进行新增）
-            console.log('path:', path)
-            if (path.extname(file) === '.json') {
-                results.push(path.resolve(__dirname, file))
-            }
-        }
-    })
-    return results
-}
+
+
 const init = ()=>{
-    const files = scanFiles(__dirname)
+    const files = scan.scanFiles(`${__dirname}/cases/wcc`)
     console.log(files)
+    for (const file of files) {
+        run(file)
+    }
 }
 module.exports = {
     init

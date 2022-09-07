@@ -1,14 +1,6 @@
-#!/usr/bin/env node
 const fs = require('fs')
 const path = require('path')
-console.log("---index.js----")
 
-const WCC = require('./wcc_test')
-WCC.init();
-const WCSC = require('./wcsc_test')
-WCSC.init();
-
-// const WCSC = require('./wcsc_test')
 const scanFiles = function(dir) {
     var results = []
     var list = fs.readdirSync(dir)
@@ -33,9 +25,6 @@ const scanFiles = function(dir) {
     })
     return results
 }
-const init = ()=>{
-    console.log(__dirname)
-    const files = scanFiles(__dirname)
-    console.log(files)
+module.exports = {
+    scanFiles
 }
-init()
