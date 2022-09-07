@@ -1,6 +1,6 @@
 module.exports = {
     require: ["@babel/register"],
     recursive: true,
-    spec: "test/**/llw.test.js",
+    spec: "test/**/*.test.js",
     timeout: 20000,
 }

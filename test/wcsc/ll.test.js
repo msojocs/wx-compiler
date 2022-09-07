@@ -46,11 +46,11 @@ describe("wcsc", function () {
                 fs.mkdirSync(storagePath, {recursive: true});
             } catch (error) {}
             fs.writeFileSync(
-                `${storagePath}/wine.json`,
+                `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
             );
             fs.writeFileSync(
-                `${storagePath}/node.json`,
+                `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
             assert.deepEqual(w, n);
@@ -68,11 +68,11 @@ describe("wcsc", function () {
                 fs.mkdirSync(storagePath, {recursive: true});
             } catch (error) {}
             fs.writeFileSync(
-                `${storagePath}/wine.json`,
+                `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
             );
             fs.writeFileSync(
-                `${storagePath}/node.json`,
+                `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
             assert.deepEqual(w, n);

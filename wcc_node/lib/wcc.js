@@ -40,7 +40,7 @@ exports = async function (options) {
     },
     options,
   )
-
+  
   return new Promise(async (resolve, reject) => {
     let st = Date.now()
 
