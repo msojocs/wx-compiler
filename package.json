@@ -1,6 +1,18 @@
 {
+  "forceVendor": true,
+  "name": "wx_compiler",
+  "main": "test/node-modules/index.html",
+  "productName": "wx_compiler",
+  "appname": "wx_compiler",
+  "version": "1.0",
+  "chromium-args": "--mixed-context",
+  "window": {
+    "frame": true
+  },
+
   "scripts": {
-    "test": "mocha --reporter-option maxDiffSize=1e9"
+    "test": "mocha --reporter-option maxDiffSize=1e9",
+    "start": "nw ./test/node-modules"
   },
   "dependencies": {
     "miniprogram-compiler": "^0.2.1"

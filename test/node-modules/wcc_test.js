@@ -174,8 +174,37 @@ const test = async (options, id) => {
     fs.writeFileSync(path.resolve(__dirname, `${id}/wcc_node_${MODE}.txt`), result)
 };
 
-(async () => {
-    for(let options of wcc_options){
-        await test(options[0], options[1]);
-    }
-})()
+// (async () => {
+//     for(let options of wcc_options){
+//         await test(options[0], options[1]);
+//     }
+// })();
+const scanFiles = function(dir) {
+    var results = []
+    var list = fs.readdirSync(dir)
+    list.forEach(function(file) {
+    	// 排除static静态目录（可按你需求进行新增）
+        // if (file === 'static') {
+        //     return false
+        // }
+        file = dir + '/' + file
+        var stat = fs.statSync(file)
+        if (stat && stat.isDirectory()) {
+            results = results.concat(scanFiles(file))
+        } else {
+        	// 过滤后缀名（可按你需求进行新增）
+            console.log('path:', path)
+            if (path.extname(file) === '.json') {
+                results.push(path.resolve(__dirname, file))
+            }
+        }
+    })
+    return results
+}
+const init = ()=>{
+    const files = scanFiles(__dirname)
+    console.log(files)
+}
+module.exports = {
+    init
+}

@@ -1,4 +1,4 @@
 node_modules
-test/**/*.json
+test/**/*-output.json
 test/**/*-output.js
 nwjs
