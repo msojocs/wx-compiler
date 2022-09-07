@@ -1,7 +1,7 @@
 const assert = require("assert");
 const node = require("../../runner/node");
 const wine = require("../../runner/wine");
-const CODE = require("../../runner/code");
+const ASTHelper = require("../../runner/ast-helper");
 const path = require("path");
 const fs = require("fs");
 
@@ -11,11 +11,10 @@ assert.deepEqual = function(){
     try {
         originDE.apply(this, arguments)
     } catch (error) {
-        
-        const dw = CODE.delVariables(JSON.stringify(arguments[0]))
-        const dn = CODE.delVariables(JSON.stringify(arguments[1]))
-        console.log('\tdeepEqual检测失败，尝试检测语法（测试中）')
-        assert.equal(dw, dn);
+        console.log('\t默认deepEqual检测失败，尝试检测语法')
+        const dw = ASTHelper.code2ast(JSON.stringify(arguments[0]))
+        const dn = ASTHelper.code2ast(JSON.stringify(arguments[1]))
+        originDE(dw, dn);
     }
 }
 
