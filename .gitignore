@@ -1,4 +1,6 @@
 node_modules
-test/**/*-output.json
-test/**/*-output.js
+test/wcc/**/*-output.json
+test/wcsc/**/*-output.json
+test/wcc/**/linux_err.js
+test/wcsc/**/linux_err.js
 nwjs

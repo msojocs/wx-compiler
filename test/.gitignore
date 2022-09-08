@@ -1,5 +1,2 @@
-linux_output.js
-linux_err.js
-node_output.json
-node_stderr.json
-wine_output.json
+node-output.js
+node-output.json

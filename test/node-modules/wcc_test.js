@@ -4,38 +4,35 @@ const fs = require('fs')
 const path = require('path')
 const scan = require('./utils/scan')
 const MODE = typeof nw === 'object' ? 'wine' : 'linux'
-
-const run = async (filepath) => {
-    const configStr = fs.readFileSync(filepath).toString()
-    const options = JSON.parse(configStr)
-    options.cwd = path.join(filepath, options.cwd)
-    const outputPath = path.dirname(filepath) + '/output'
-    console.log('outputPath:', outputPath)
-    try {
-        fs.mkdirSync(outputPath)
-    } catch (err) {
-    }
-    // process.env.WX_DEBUG_COMPILER_OUTPUT = outputPath
-    // console.log(process.env.WX_DEBUG_COMPILER_OUTPUT)
-    const wcc = require(`./wcc_${MODE}/lib`).wcc;
-    const wcc_result = await wcc(options);
-    let result = wcc_result
-    if (!!options.lazyloadConfig){
-        result = JSON.stringify(wcc_result, null, 4)
-        fs.writeFileSync(path.resolve(outputPath, `wcc_node_${MODE}.json`), result)
-    }else{
-        fs.writeFileSync(path.resolve(outputPath, `wcc_node_${MODE}.js`), result)
-    }
-    console.log('run done')
-};
+const COMPILER = require(`./wcc_${MODE}/lib`)
 
 
+const init = async()=>{
+    const configPaths = scan.scanFiles(`${__dirname}/cases/wcc`);
+    for (const configPath of configPaths) {
+        const casePath = path.dirname(configPath);
+        const caseName = path.basename(casePath);
+        const type = path.basename(path.dirname(casePath));
+        const config = JSON.parse(fs.readFileSync(configPath).toString());
+        // const projectPath = path.join(casePath, config.cwd);
+        const storagePath = path.join(casePath, `output`);
+        config.cwd = path.join(configPath, config.cwd);
+        if(!fs.existsSync(config.cwd)){
+            throw new Error('cwd not exists!')
+        }
 
-const init = ()=>{
-    const files = scan.scanFiles(`${__dirname}/cases/wcc`)
-    console.log(files)
-    for (const file of files) {
-        run(file)
+        try {
+            fs.mkdirSync(storagePath, { recursive: true });
+        } catch (error) {}
+
+        let nodeResult = await COMPILER.wcc(config);
+
+        if(!!config.lazyloadConfig){
+            fs.writeFileSync(`${storagePath}/wine-output.json`, JSON.stringify(nodeResult, null, 4));
+        }else{
+            // nodeResult = nodeResult.substring(0, nodeResult.length - 1);
+            fs.writeFileSync(`${storagePath}/wine-output.js`, nodeResult);
+        }
     }
 }
 module.exports = {
