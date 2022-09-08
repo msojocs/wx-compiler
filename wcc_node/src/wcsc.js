@@ -119,17 +119,16 @@ async function wxssToJS(options) {
                 return c
               })
           }
-          const t = funcList
-          funcList = {
-            common: t.comm,
+          const t = Object.keys(funcList).sort()
+          result = {
+            common: funcList.comm,
             pageWxss: {}
           }
-          for(let key in t){
+          for(let key of t){
             if(key.endsWith('.wxss')){
-              funcList.pageWxss[key] = t[key]
+              result.pageWxss[key] = funcList[key]
             }
           }
-          result = funcList
         }
         resolve(result) 
       } else {

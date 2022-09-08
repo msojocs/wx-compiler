@@ -19,7 +19,7 @@
         "./common/lib/weui.wxss",
         "./page/common/index-skyline.wxss"
     ],
-    "cwd": "../../../../examples/miniprogram-demo/miniprogram/",
+    "cwd": "../../../../../../examples/miniprogram-demo/miniprogram/",
     "lazyload": true,
     "replaceContent": {
         "./page/component/index.wxss": "@import \"../../common/reset.wxss\";\r\n@import \"../common/index-skyline.wxss\";\r\n\r\n.weui-agree__link {\r\n  display: inline;\r\n  color: #576b95;\r\n}\r\n\r\n[data-weui-theme=dark] .weui-agree__link {\r\n  color: #7d90a9;\r\n}\r\n"
