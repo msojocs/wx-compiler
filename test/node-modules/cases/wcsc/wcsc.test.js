@@ -51,8 +51,8 @@ describe("module wcsc", function () {
                     const wineResult = fs.readFileSync(
                         `${casePath}/output/wine-output.js`
                     );
-                    fs.writeFileSync(`${storagePath}/node-output.js`, nodeResult);
-                    assert.equal(wineResult, nodeResult);
+                    fs.writeFileSync(`${storagePath}/node-output.json`, JSON.stringify(nodeResult, null, 4));
+                    assert.deepEqual(wineResult, nodeResult);
                 }
             });
         });

@@ -1,0 +1,28 @@
+{
+    "pageCount": 12,
+    "files": [
+        "./page/component/index.wxss",
+        "./page/API/index.wxss",
+        "./page/cloud/index.wxss",
+        "./page/extend/index.wxss",
+        "./component/navigation-bar/navigation-bar.wxss",
+        "./components/navigation-bar/index.wxss",
+        "./components/page-scroll/index.wxss",
+        "./miniprogram_npm/miniprogram-barrage/index.wxss",
+        "./miniprogram_npm/miniprogram-recycle-view/recycle-item.wxss",
+        "./miniprogram_npm/miniprogram-recycle-view/recycle-view.wxss",
+        "./miniprogram_npm/wxml-to-canvas/index.wxss",
+        "./page/API/components/set-tab-bar/set-tab-bar.wxss",
+        "./app.wxss",
+        "./common/common-skyline.wxss",
+        "./common/reset.wxss",
+        "./common/lib/weui.wxss",
+        "./page/common/index-skyline.wxss"
+    ],
+    "cwd": "../../../../../../examples/miniprogram-demo/miniprogram/",
+    "lazyload": true,
+    "replaceContent": {
+        "./page/component/index.wxss": "@import \"../../common/reset.wxss\";\n@import \"../common/index-skyline.wxss\";\n\n.weui-agree__link {\n  display: inline;\n  color: #576b95;\n}\n\n[data-weui-theme=dark] .weui-agree__link {\n  color: #7d90a9;\n}\n"
+    },
+    "debug": true
+}

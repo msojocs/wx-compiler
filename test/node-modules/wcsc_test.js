@@ -29,7 +29,7 @@ const init = async ()=>{
             fs.writeFileSync(`${storagePath}/wine-output.json`, JSON.stringify(nodeResult, null, 4));
         }else{
             // nodeResult = nodeResult.substring(0, nodeResult.length - 1);
-            fs.writeFileSync(`${storagePath}/wine-output.js`, nodeResult);
+            fs.writeFileSync(`${storagePath}/wine-output.json`, JSON.stringify(nodeResult, null, 4));
         }
     }
 }

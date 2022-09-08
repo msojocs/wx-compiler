@@ -1,0 +1,31 @@
+{
+    "files": [
+        "./common/foot.wxml",
+        "./common/head.wxml",
+        "./component/navigation-bar/navigation-bar.wxml",
+        "./components/navigation-bar/index.wxml",
+        "./components/page-scroll/index.wxml",
+        "./miniprogram_npm/miniprogram-barrage/index.wxml",
+        "./miniprogram_npm/miniprogram-recycle-view/recycle-item.wxml",
+        "./miniprogram_npm/miniprogram-recycle-view/recycle-view.wxml",
+        "./miniprogram_npm/wxml-to-canvas/index.wxml",
+        "./page/API/index.wxml",
+        "./page/API/components/set-tab-bar/set-tab-bar.wxml",
+        "./page/cloud/index.wxml",
+        "./page/common/foot.wxml",
+        "./page/common/head.wxml",
+        "./page/component/index.wxml",
+        "./page/extend/index.wxml"
+    ],
+    "debugWXS": false,
+    "debug": true,
+    "genfuncname": "$gwx",
+    "isCut": true,
+    "wxmlCompileConfig": "12>_<5704./component/navigation-bar/navigation-bar.wxml>_<57041>_<5704mp-navigation-bar>_<5704./components/navigation-bar/index.wxml>_<57041>_<5704mp-navigation-bar>_<5704./components/page-scroll/index.wxml>_<57041>_<5704mp-navigation-bar>_<5704./miniprogram_npm/miniprogram-barrage/index.wxml>_<57040>_<5704./miniprogram_npm/miniprogram-recycle-view/recycle-item.wxml>_<57040>_<5704./miniprogram_npm/miniprogram-recycle-view/recycle-view.wxml>_<57040>_<5704./miniprogram_npm/wxml-to-canvas/index.wxml>_<57040>_<5704./page/API/index.wxml>_<57042>_<5704set-tab-bar>_<5704mp-navigation-bar>_<5704./page/API/components/set-tab-bar/set-tab-bar.wxml>_<57041>_<5704mp-navigation-bar>_<5704./page/cloud/index.wxml>_<57041>_<5704mp-navigation-bar>_<5704./page/component/index.wxml>_<57041>_<5704mp-navigation-bar>_<5704./page/extend/index.wxml>_<57041>_<5704mp-navigation-bar",
+    "wxmlCompileConfigSplit": ">_<5704",
+    "replaceContent": {
+        "./page/component/index.wxml": "<mp-navigation-bar title=\"小程序官方组件展示\" back=\"{{false}}\" data-ib-structured-id=\"0\"></mp-navigation-bar>\n<scroll-view class=\"page-scroll-view\" scroll-y type=\"list\" data-ib-structured-id=\"1\">\n<view class=\"page\" data-weui-theme=\"{{theme}}\" data-ib-structured-id=\"2\">\n  <view class=\"index\" data-ib-structured-id=\"3\">\n    <view class=\"index-hd\" data-ib-structured-id=\"4\">\n      <image class=\"index-logo\" src=\"resources/kind/logo.png\" data-ib-structured-id=\"5\"></image>\n      <text class=\"index-desc\" data-ib-structured-id=\"6\">以下将展示小程序官方组件能力，组件样式仅供参考，开发者可根据自身需求自定义组件样式，具体属性参数详见 <text class=\"weui-agree__link\" bindtap=\"navToDoc\" data-ib-structured-id=\"7\">小程序开发文档</text>。</text>\n    </view>\n    <view class=\"index-bd\" data-ib-structured-id=\"8\">\n      <view class=\"kind-list\" data-ib-structured-id=\"9\">\n        <block wx:for-items=\"{{list}}\" wx:key=\"{{item.id}}\" data-ib-structured-id=\"10\">\n          <view class=\"kind-list-item\" data-ib-structured-id=\"11\">\n            <view id=\"{{item.id}}\" class=\"kind-list-item-hd {{item.open ? 'kind-list-item-hd-show' : ''}}\" bindtap=\"kindToggle\" data-ib-structured-id=\"12\">\n              <view class=\"kind-list-text\" data-ib-structured-id=\"13\">{{item.name}}</view>\n              <image wx:if=\"{{theme === 'dark'}}\" class=\"kind-list-img\" src=\"resources/kind/{{item.id}}_dark.png\" data-ib-structured-id=\"14\"></image>\n              <image wx:else class=\"kind-list-img\" src=\"resources/kind/{{item.id}}.png\" data-ib-structured-id=\"15\"></image>\n            </view>\n            <view class=\"kind-list-item-bd {{item.open ? 'kind-list-item-bd-show' : ''}}\" data-ib-structured-id=\"16\">\n              <view class=\"navigator-box {{item.open ? 'navigator-box-show' : ''}}\" data-ib-structured-id=\"17\">\n                <block wx:for-items=\"{{item.pages}}\" wx:for-item=\"page\" wx:key=\"*item\" data-ib-structured-id=\"18\">\n                  <view wx:if=\"{{page.appid}}\" data-ib-structured-id=\"19\">\n                    <navigator target=\"miniProgram\" open-type=\"navigate\" app-id=\"{{page.appid}}\" path=\"\" extra-data=\"\" version=\"release\" class=\"navigator {{index + 1 === item.pages.length ? '' : 'navigator-bottom-line'}}\" data-ib-structured-id=\"20\">{{page.name}}</navigator>\n                    <view class=\"navigator-arrow\" data-ib-structured-id=\"21\"></view>\n                  </view>\n                  <!-- custom-route，自定义路由暂时不能用 navigator -->\n                  <view wx:elif=\"{{page.key == 'custom-route'}}\" data-ib-structured-id=\"22\">\n                    <view bindtap=\"goToCustomRoute\" class=\"navigator {{index + 1 === item.pages.length ? '' : 'navigator-bottom-line'}}\" data-ib-structured-id=\"23\">{{page.name}}</view>\n                    <view class=\"navigator-arrow\" data-ib-structured-id=\"24\"></view>\n                  </view>\n                  <!-- skyline -->\n                  <view wx:elif=\"{{item.id == 'Skyline'}}\" data-ib-structured-id=\"25\">\n                    <navigator url=\"/packageSkyline/pages/{{page.url}}\" class=\"navigator {{index + 1 === item.pages.length ? '' : 'navigator-bottom-line'}}\" data-ib-structured-id=\"26\">{{page.name}}</navigator>\n                    <view class=\"navigator-arrow\" data-ib-structured-id=\"27\"></view>\n                  </view>\n                  <view wx:else data-ib-structured-id=\"28\">\n                    <navigator url=\"/packageComponent/pages/{{item.id}}/{{page}}/{{page}}\" class=\"navigator {{index + 1 === item.pages.length ? '' : 'navigator-bottom-line'}}\" data-ib-structured-id=\"29\">{{page}}</navigator>\n                    <view class=\"navigator-arrow\" data-ib-structured-id=\"30\"></view>\n                  </view>\n                </block>\n              </view>\n            </view>\n          </view>\n        </block>\n      </view>\n    </view>\n  </view>\n</view>\n</scroll-view>\n"
+    },
+    "cwd": "../../../../../../examples/miniprogram-demo/miniprogram/",
+    "lazyloadConfig": ""
+}
