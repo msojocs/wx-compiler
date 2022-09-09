@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // wcc.exe md5 = "33807bac814b4b639d98be3270bdc56c"
-const version = "20220511";
+const version = "20220908";
 const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs");

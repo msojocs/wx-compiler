@@ -42,14 +42,14 @@ describe("module wcc", function () {
                 if(!!config.lazyloadConfig){
                     const wineResult = JSON.parse(fs.readFileSync(
                         `${casePath}/output/wine-output.json`
-                    ));
+                    ).toString());
                     fs.writeFileSync(`${storagePath}/node-output.json`, JSON.stringify(nodeResult, null, 4));
                     assert.deepEqual2(wineResult, nodeResult);
                 }else{
                     nodeResult = nodeResult.substring(0, nodeResult.length - 1);
                     const wineResult = fs.readFileSync(
                         `${casePath}/output/wine-output.js`
-                    );
+                    ).toString();
                     fs.writeFileSync(`${storagePath}/node-output.js`, nodeResult);
                     assert.equal(wineResult, nodeResult);
                 }
