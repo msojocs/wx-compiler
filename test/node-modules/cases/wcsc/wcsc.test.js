@@ -5,16 +5,15 @@ const scan = require("../../utils/scan");
 const fs = require("fs");
 const COMPILER = require("../../../../wcc_node/lib/index");
 
-const originDE = assert.deepEqual;
-assert.deepEqual = function () {
+assert.deepEqual2 = function () {
     // console.log(arguments[0])
     try {
-        originDE.apply(this, arguments);
+        assert.deepEqual.apply(this, arguments);
     } catch (error) {
         console.log("\t默认deepEqual检测失败，尝试检测语法");
         const dw = ASTHelper.code2ast(JSON.stringify(arguments[0]));
         const dn = ASTHelper.code2ast(JSON.stringify(arguments[1]));
-        originDE(dw, dn);
+        assert.deepEqual(dw, dn);
     }
 };
 
@@ -44,7 +43,7 @@ describe("module wcsc", function () {
                     `${casePath}/output/wine-output.json`
                 ).toString());
                 fs.writeFileSync(`${storagePath}/node-output.json`, JSON.stringify(nodeResult, null, 4));
-                assert.deepEqual(wineResult, nodeResult);
+                assert.deepEqual2(wineResult, nodeResult);
             });
         });
     }

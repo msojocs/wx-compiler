@@ -1,6 +1,6 @@
 const assert = require("assert");
-const node = require("../runner/node");
-const wine = require("../runner/wine");
+const node = require("../../runner/node");
+const wine = require("../../runner/wine");
 const path = require("path");
 const fs = require("fs");
 

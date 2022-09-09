@@ -81,7 +81,7 @@ const wcc = (args, projectPath, outputPath = undefined) => {
     });
 };
 
-export {
+module.exports= {
     wcsc,
     wcc
 }

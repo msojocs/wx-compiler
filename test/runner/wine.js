@@ -73,7 +73,7 @@ const wcc = (args, projectPath) => {
     });
 };
 
-export {
+module.exports = {
     wcsc,
     wcc
 }

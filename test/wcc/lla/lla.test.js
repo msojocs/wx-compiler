@@ -5,16 +5,15 @@ const ASTHelper = require("../../runner/ast-helper");
 const path = require("path");
 const fs = require("fs");
 
-const originDE = assert.deepEqual
-assert.deepEqual = function(){
+assert.deepEqual2 = function(){
     // console.log(arguments[0])
     try {
-        originDE.apply(this, arguments)
+        assert.deepEqual.apply(this, arguments)
     } catch (error) {
         console.log('\t默认deepEqual检测失败，尝试检测语法')
         const dw = ASTHelper.code2ast(JSON.stringify(arguments[0]))
         const dn = ASTHelper.code2ast(JSON.stringify(arguments[1]))
-        originDE(dw, dn);
+        assert.deepEqual(dw, dn);
     }
 }
 
@@ -74,7 +73,7 @@ describe("wcc - lla", function () {
                 `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
-            assert.deepEqual(w, n);
+            assert.deepEqual2(w, n);
         });
         it("组件 - 视图容器", async function () {
             const projectPath = path.resolve(
@@ -136,8 +135,10 @@ describe("wcc - lla", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
-            const w = JSON.parse(await wine.wcc(args, projectPath));
             const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            // console.log(n)
+            const w = JSON.parse(await wine.wcc(args, projectPath));
+            console.log(w)
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -146,7 +147,8 @@ describe("wcc - lla", function () {
                 `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
-            assert.deepEqual(w, n);
+            console.log(w, n)
+            assert.deepEqual2(w, n);
         });
         it("组件 - skyline", async function () {
             const projectPath = path.resolve(
@@ -188,7 +190,7 @@ describe("wcc - lla", function () {
                 `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
-            assert.deepEqual(w, n);
+            assert.deepEqual2(w, n);
         });
         it("组件 - skyline - 自定义路由  #变量名不同导致比较不通过，需要手动检查", async function () {
             const projectPath = path.resolve(
@@ -239,7 +241,7 @@ describe("wcc - lla", function () {
                 `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
-            assert.deepEqual(w, n);
+            assert.deepEqual2(w, n);
         });
         it("扩展能力 - 表单 - cell", async function () {
             const projectPath = path.resolve(
@@ -332,7 +334,7 @@ describe("wcc - lla", function () {
                 `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
-            assert.deepEqual(w, n);
+            assert.deepEqual2(w, n);
         });
         it("接口 - 微信登录", async function () {
             const projectPath = path.resolve(
@@ -447,7 +449,7 @@ describe("wcc - lla", function () {
                 `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
-            assert.deepEqual(w, n);
+            assert.deepEqual2(w, n);
         });
     });
 });
