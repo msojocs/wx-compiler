@@ -4,45 +4,25 @@ const path = require("path");
 const nfs = require("fs");
 const os = require("os");
 const DEBUG_OUTPUT = process.env.WX_DEBUG_COMPILER_OUTPUT;
+const globalData = {}
 
 function parseDeps(source, x, pageConfig, funcName) {
     // 插入引用信息
     let dep_x = `var x=[`;
     let dep_gz = "";
     let dep_d_ = "";
-    let t_x = [];
-    if (funcName !== "$gwx") {
-        // TODO: 可能存在自定义目录无法识别的问题？
-        // 非标准函数名
-        t_x = x.filter(
-            (ele) =>
-                ele.startsWith("./miniprogram_npm") ||
-                ele.startsWith("../") ||
-                ele.startsWith("./page")
-        );
-    }
-    for (let key in pageConfig) {
-        if (pageConfig[key].deps.length > 0) {
-            for (let dep of pageConfig[key].deps) {
-                let index = x.indexOf(dep);
-                if (index < 0) {
-                    continue;
-                }
-                // x
-                if (!t_x.includes(dep)) t_x.push(dep);
-            }
-        }
-    }
+    let t_x = globalData.unNeedFiles.filter(e=>!globalData.depFiles[e]);
     let i = 1;
-    for (let dep of t_x) {
-        if (dep.startsWith("../")) continue;
+    for (let dep of globalData.unNeedFiles) {
+        if(dep.startsWith('../'))continue;
+        const idx = x.indexOf(dep)
+        // 处理../../
+        // TODO: 不同目录的文件，引用不同文件，但是引用路径形式相同
+        // if(globalData.depFiles[dep])
+        //     dep = globalData.depFiles[dep]
 
         // d_
-        const d_Exp = `d_\\[x\\[${x.indexOf(
-            dep
-        )}\\]\\]={}\n[\\s\\S]*?e_\\[x\\[${x.indexOf(
-            dep
-        )}\\]\\]={f:m\\d+,j:\\[.*?\\],i:\\[.*?\\],ti:\\[(.*?)\\],ic:\\[.*?\\]}`;
+        const d_Exp = `d_\\[x\\[${idx}\\]\\]={}\n[\\s\\S]*?e_\\[x\\[${idx}\\]\\]={f:m\\d+,j:\\[.*?\\],i:\\[.*?\\],ti:\\[(.*?)\\],ic:\\[.*?\\]}\n`;
 
         let m0 = source.match(new RegExp(d_Exp));
         let m0_str = m0[0];
@@ -55,24 +35,22 @@ function parseDeps(source, x, pageConfig, funcName) {
                 );
             }
         }
-        // process.stderr.write(dep + '=====' + x.indexOf(dep) + "-" + t_x.indexOf(dep) + '\n')
+        
         dep_d_ +=
             m0_str
                 .replace(
-                    new RegExp(`x\\[${x.indexOf(dep)}\\]`, "g"),
+                    new RegExp(`x\\[${idx}\\]`, "g"),
                     `x[${t_x.indexOf(dep)}]`
                 )
                 .replace(
                     new RegExp(`\\${funcName}\\_\\d+`, "g"),
                     `${funcName}_${i}`
                 )
-                .replace(/m\d+/g, `m${i - 1}`) + "\n";
+                .replace(/m\d+/g, `m${i - 1}`)
+                // .replace('={f', `=e_[x[${t_x.indexOf(dep)}]]||{f`) + "\n";
         let gz_name = m0_str.match(/var z=gz(.*?)\(\)/)[1];
-        // process.stderr.write("get funcName - " + t[0].match(/var z=gz(.*?)\(\)/)[1] + "\n")
         // gz
         const exp = `function gz\\${gz_name}\\(\\)\\{[\\s\\S]*?__WXML_GLOBAL__\\.ops_cached\\.\\${gz_name}\n}`;
-        DEBUG_OUTPUT &&
-            process.stderr.write("COMMON=====" + dep + "----" + exp + "\n");
         const gz = source.match(new RegExp(exp));
         dep_gz +=
             gz[0].replace(
@@ -86,8 +64,8 @@ function parseDeps(source, x, pageConfig, funcName) {
     return {
         dep_x,
         dep_gz,
-        dep_d_,
-    };
+        dep_d_
+    }
 }
 function genFunctionContent_LL(wxmlName, config = {}, source, funcName, x, isCut) {
     // 起始
@@ -308,6 +286,86 @@ function getAllFiles(rootPath, files) {
     return ret;
 }
 
+const wxmlParser = (()=>{
+    const getFileArr = (code)=>{
+        // 获取x数组并解析
+        const indexArr = eval(code.match(/var x=(\[.*\]);/)[1]);
+        return indexArr;
+    }
+    const parseGZFuncMap = (code)=>{
+        const exp = `function gz\\$(.*?)\\(\\)\\{[\\s\\S]*?__WXML_GLOBAL__\\.ops_cached\\.\\$.*?\n}`;
+        const gzs = code.matchAll(new RegExp(exp, 'g'));
+        const gzFunc = {}
+        for (const gz of gzs) {
+            gzFunc[`gz$${gz[1]}`] = gz[0];
+        }
+        return gzFunc;
+    }
+    const parseDepsMap = (code, fileArr)=>{
+
+        // 获取所有依赖 _ai函数 被引入的文件, 文件
+        // _ai(i, depPath, e, mainPath, r, c)
+        const deps = code.matchAll(
+            /_ai\(.*?,x\[(\d+)\],.*?,x\[(\d+)\],\d+,\d+\)/g
+        );
+        // 处理依赖
+        const depsResult = {}
+        const depsFiles = {}
+        for (let dep of deps) {
+            // if(depsResult[dep[2]]){
+            //     depsResult[dep[2]].push(deps[1])
+            // }else{
+            //     depsResult[dep[2]] = [deps[1]]
+            // }
+            const file = fileArr[dep[2]]
+            let depFile = fileArr[dep[1]]
+            depsFiles[depFile] = file
+            depFile = `./${path.join(path.dirname(file), depFile)}`
+            if(depsResult[file]){
+                depsResult[file].unshift(depFile)
+                // depsResult[file].push(dep[1])
+            }else{
+                depsResult[file] = [depFile]
+                // depsResult[file] = [dep[1]]
+            }
+        }
+        return {
+            relation: depsResult,
+            depsFiles
+        }
+    }
+    const parseDMEMap = (code)=>{
+        // ti: import依赖引入
+        const regExp = /d_\[x\[(\d+)\]\]={}[\s\S]*?e_\[x\[\d+\]\]={f:m\d+,j:\[.*?\],i:\[.*?\],ti:\[(.*?)\],ic:\[.*?\]}/g;
+        const ms = code.matchAll(regExp);
+        const mFunc = {}
+        for (const m of ms) {
+            mFunc[`x[${m[1]}]`] = m[0]
+        }
+        return mFunc
+    }
+    const parseNvRequireCode = (code)=>{
+        const ret = code.match(/(__WXML_GLOBAL__\.ops_set\.\$.*?=[\s\S]*)var x=\[/)
+        return ret[1]
+    }
+    const parseCSCode = (code)=>{
+        const cs = code.match(/var cs([\s\S]*?)function gz/);
+        return cs[1];
+    }
+    const parse = (data, code)=>{
+        data.nv_require = parseNvRequireCode(code)
+        data.cs = parseCSCode(code)
+        data.gz = parseGZFuncMap(code)
+        data.fileArr = getFileArr(code);
+        const dep_t = parseDepsMap(code, data.fileArr)
+        data.deps = dep_t.relation
+        data.depFiles = dep_t.depsFiles
+        data.dme = parseDMEMap(code)
+    }
+    return {
+        parse
+    }
+})()
 /**
  * 入口
  * 编译 wxml 到 js
@@ -380,6 +438,9 @@ function wxmlToJS(options = {}) {
 
         if (options.lazyload) {
             // 懒加载处理
+            const needArr = options.wxmlCompileConfig.split(
+                options.wxmlCompileConfigSplit
+            );
             const str = result;
             const resultObj = {
                 generateFunctionName: {
@@ -389,37 +450,28 @@ function wxmlToJS(options = {}) {
                     __COMMON__: null,
                 },
             };
-
-            const needArr = options.wxmlCompileConfig.split(
-                options.wxmlCompileConfigSplit
-            );
-            const indexArr = eval(str.match(/var x=(\[.*\]);/)[1]);
+            wxmlParser.parse(globalData, str);
+            const indexArr = globalData.fileArr;
             const pageConfig = {};
+
+            globalData.unNeedFiles = indexArr.filter(e=>!needArr.includes(e))
+
             let i = 0;
-            indexArr.forEach((ele, index) => {
-                if (!ele.startsWith("../")) {
+            indexArr.forEach((ele) => {
+                if (!globalData.depFiles[ele]) {
                     pageConfig[ele.substring(2, ele.length - 5)] = {
-                        funcName: `${options.genfuncname}_XC_${i}`,
-                        num: i,
-                        deps: [],
+                        funcName: `${options.genfuncname}_XC_`,
+                        num: i++,
+                        deps: globalData.deps[ele] || [],
                     };
-                    i++;
                 }
             });
-            // 引入解析
-            const deps = str.matchAll(
-                /_ai\(.*?,x\[(\d+)\],.*?,x\[(\d+)\],\d+,\d+\)/g
-            );
-            for (let dep of deps) {
-                // console.log(dep[1]) // 被引用文件下标
-                // console.log(dep[2]) // 引用文件下标
-                const target = indexArr[dep[2]];
-                pageConfig[target.substring(2, target.length - 5)].deps.unshift(
-                    "./" + path.join(path.dirname(target), indexArr[dep[1]])
-                );
-            }
+            // console.log(pageConfig)
+            // 生成函数内容
+            i = 0;
             for (let key in pageConfig) {
                 if (needArr.includes(`./${key}.wxml`)) {
+                    pageConfig[key].funcName += i++
                     resultObj.generateFunctionName[key] =
                         pageConfig[key].funcName;
                     resultObj.generateFunctionContent[key] =

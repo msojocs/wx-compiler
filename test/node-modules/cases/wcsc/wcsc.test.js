@@ -40,20 +40,11 @@ describe("module wcsc", function () {
 
                 let nodeResult = await COMPILER.wcsc(config);
 
-                if(config.lazyload){
-                    const wineResult = JSON.parse(fs.readFileSync(
-                        `${casePath}/output/wine-output.json`
-                    ).toString());
-                    fs.writeFileSync(`${storagePath}/node-output.json`, JSON.stringify(nodeResult, null, 4));
-                    assert.deepEqual(wineResult, nodeResult);
-                }else{
-                    nodeResult = nodeResult.substring(0, nodeResult.length - 1);
-                    const wineResult = fs.readFileSync(
-                        `${casePath}/output/wine-output.js`
-                    );
-                    fs.writeFileSync(`${storagePath}/node-output.json`, JSON.stringify(nodeResult, null, 4));
-                    assert.deepEqual(wineResult, nodeResult);
-                }
+                const wineResult = JSON.parse(fs.readFileSync(
+                    `${casePath}/output/wine-output.json`
+                ).toString());
+                fs.writeFileSync(`${storagePath}/node-output.json`, JSON.stringify(nodeResult, null, 4));
+                assert.deepEqual(wineResult, nodeResult);
             });
         });
     }
