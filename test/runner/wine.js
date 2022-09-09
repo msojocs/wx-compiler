@@ -5,6 +5,9 @@ const { spawn } = require("child_process");
 
 
 const wcsc = (args, projectPath) => {
+    if(!fs.existsSync(projectPath)){
+        throw new Error('projectPath not exists.')
+    }
     const wine = spawn(
         path.resolve(__dirname, "../../wine/wcsc.exe"),
         args,
@@ -39,6 +42,9 @@ const wcsc = (args, projectPath) => {
     });
 };
 const wcc = (args, projectPath) => {
+    if(!fs.existsSync(projectPath)){
+        throw new Error('projectPath not exists.')
+    }
     const wine = spawn(
         path.resolve(__dirname, "../../wine/wcc.exe"),
         args,

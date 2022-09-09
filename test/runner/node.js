@@ -4,6 +4,9 @@ const fs = require("fs");
 const { spawn } = require("child_process");
 
 const wcsc = (args, projectPath, outputPath = undefined) => {
+    if(!fs.existsSync(projectPath)){
+        throw new Error('projectPath not exists.')
+    }
     const node_exec = spawn(
         path.resolve(__dirname, "../../nodejs/wcsc"),
         args,
@@ -42,6 +45,9 @@ const wcsc = (args, projectPath, outputPath = undefined) => {
     });
 };
 const wcc = (args, projectPath, outputPath = undefined) => {
+    if(!fs.existsSync(projectPath)){
+        throw new Error('projectPath not exists.')
+    }
     const node_exec = spawn(
         path.resolve(__dirname, "../../nodejs/wcc"),
         args,

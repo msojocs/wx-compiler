@@ -138,7 +138,7 @@ describe("wcc - lla", function () {
             const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
             // console.log(n)
             const w = JSON.parse(await wine.wcc(args, projectPath));
-            console.log(w)
+            // console.log(w)
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -147,7 +147,7 @@ describe("wcc - lla", function () {
                 `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
-            console.log(w, n)
+            // console.log(w, n)
             assert.deepEqual2(w, n);
         });
         it("组件 - skyline", async function () {
