@@ -3,7 +3,7 @@ const ASTHelper = require("../../../runner/ast-helper");
 const path = require("path");
 const scan = require("../../utils/scan");
 const fs = require("fs");
-const COMPILER = require("../../wcc_node/lib/index");
+const COMPILER = require("../../../../wcc_node/lib/index");
 
 const originDE = assert.deepEqual;
 assert.deepEqual = function () {
