@@ -1,0 +1,60 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(mylrc VERSION 0.1.0)
+
+find_package(cJSON REQUIRED)
+find_package(OpenSSL REQUIRED)
+
+include(CTest)
+enable_testing()
+include_directories(./src/include)
+add_executable(
+    mylrc
+    main.cpp
+    src/common.cpp
+    src/tmc.cpp
+    src/ae.cpp
+    src/ae/keyExpansion.cpp
+    src/ae/storeStateArray.cpp
+    src/ae/shiftRows.cpp
+    src/ae/loadStateArray.cpp
+    src/ae/mixColumns.cpp
+    src/ae/subBytes.cpp
+    src/ae/addRoundKey.cpp
+    src/ka.cpp
+    src/kq.cpp
+    src/print_hex.cpp
+    )
+target_link_libraries(
+    mylrc
+    PRIVATE cjson
+    OpenSSL::SSL
+    )
+
+add_executable(mylrc_test test/test.cpp)
+add_executable(
+    storeStateArray_test
+    test/storeStateArray_test.cpp
+    src/common.cpp
+    src/ae/storeStateArray.cpp
+)
+add_executable(
+    printHex_test
+    test/printHex_test.cpp
+    src/print_hex.cpp
+)
+add_executable(
+    md5_test
+    test/md5_test.cpp
+    src/kq.cpp
+)
+target_link_libraries(md5_test OpenSSL::SSL)
+# add_subdirectory(src)
+add_test(
+    mylrc_test
+    $<TARGET_FILE:mylrc_test>#
+    )
+
+
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+include(CPack)
