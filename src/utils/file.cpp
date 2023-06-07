@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include "../include/file.h"
 
 /**
  * 读取文件内容

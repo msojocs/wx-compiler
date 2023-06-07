@@ -1,13 +1,13 @@
 #include <iostream>
 
 //----- (00401726) --------------------------------------------------------
-int  usage()
+int  usage(int argc, const char **argv)
 {
   printf("Wechat WXML Compiler, version %s\n", "v0.5vv_20200413_syb_scopedata");
   printf(
     "Usage: %s [-d] [-o OUTPUT] [-xc XComponentDefine] [-om XComponentDefine] [-cb [callback.js...]] [-llcommon] [-llw/-l"
     "la XCPath] <FILES... | -s <SINGLE_FILE>\n",
-    *a2);
+    *argv);
   printf("  Options:\n");
   printf("  -d: output code for debug\n");
   printf("  -o: output destination (default stdout)\n");

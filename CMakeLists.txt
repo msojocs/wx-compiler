@@ -9,7 +9,9 @@ add_executable(wcc
     src/wcc/usage.cpp
     src/utils/file.cpp
     )
-add_executable(wcsc src/wcsc.cpp)
+add_executable(wcsc
+    src/wcsc.cpp
+    )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
