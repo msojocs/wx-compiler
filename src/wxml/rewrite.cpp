@@ -4,11 +4,11 @@
 namespace WXML {
     
     
-    DOMLib::DOMLib(/* args */)
+    Rewrite::Rewrite(/* args */)
     {
     }
     
-    DOMLib::~DOMLib()
+    Rewrite::~Rewrite()
     {
     }
 }

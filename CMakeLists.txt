@@ -7,6 +7,8 @@ enable_testing()
 add_executable(wcc
     src/wcc.cpp
     src/wcc/usage.cpp
+    src/wxml/compiler.cpp
+    src/utils/string_utils.cpp
     src/utils/file.cpp
     )
 add_executable(wcsc

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include "../include/file.h"
+#include "../include/string_utils.h"
 
 /**
  * 读取文件内容
@@ -10,17 +11,15 @@
  * 
  * @return int 0成功 | -1失败
 */
-int readFile (std::string fileName, std::string &result) {
-    FILE *f = NULL;
+int readFile (const char* fileName, std::string &result) {
+    FILE *f = stdin;
     char temp[1020];
     char buf[1024];
     unsigned int len;
 
     result = "\0";
-    if (fileName.empty()) {
-        return -1;
-    }
-    f = fopen(fileName.c_str(), "r");
+    if (fileName)
+        f = fopen(fileName, "r");
     if (!f) {
         return -1;
     }
@@ -39,25 +38,13 @@ int readFile (std::string fileName, std::string &result) {
     return 0;
 }
 
-std::string& trim(std::string &s) 
-{
-    if (s.empty()) 
-    {
-        return s;
-    }
- 
-    s.erase(0,s.find_first_not_of(" "));
-    s.erase(s.find_last_not_of(" ") + 1);
-    return s;
-}
-
 /**
  * 
  * @param line 存储行数据的容器
  * @param data 配置内容数据
  * @param lineEndMark 行结束标志 \n
 */
-void getNextArg(std::string &line, std::string &data, char lineEndMark) {
+std::string getNextArg(std::string &data, std::string const & lineEndMark) {
     int pos = data.find(lineEndMark, 0);
     std::string lineData;
     if (pos == -1) {
@@ -69,5 +56,5 @@ void getNextArg(std::string &line, std::string &data, char lineEndMark) {
         data = data.substr(pos);
     }
     trim(lineData);
-    line = lineData;
+    return lineData;
 }

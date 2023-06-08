@@ -46,7 +46,7 @@ int  main(int argc, const char **argv, const char **envp)
   int v41; // edx
   char v43; // [esp+1h] [ebp-38Bh]
   char v44; // [esp+2h] [ebp-38Ah]
-  char v45; // [esp+3h] [ebp-389h]
+  char isReadFromStdin; // [esp+3h] [ebp-389h]
   const char **innerArgv; // [esp+4h] [ebp-388h]
   int innerArgc; // [esp+8h] [ebp-384h]
   FILE *v48; // [esp+Ch] [ebp-380h]
@@ -90,13 +90,13 @@ int  main(int argc, const char **argv, const char **envp)
   void **v86; // [esp+68h] [ebp-324h] BYREF
   void **v87; // [esp+6Ch] [ebp-320h]
   int v88; // [esp+70h] [ebp-31Ch]
-  _DWORD *fileList; // [esp+74h] [ebp-318h] BYREF
+  _DWORD *paramList; // [esp+74h] [ebp-318h] BYREF
   int v90; // [esp+78h] [ebp-314h]
   int v91; // [esp+7Ch] [ebp-310h]
   void **v92; // [esp+80h] [ebp-30Ch] BYREF
   int v93; // [esp+84h] [ebp-308h]
   int v94; // [esp+88h] [ebp-304h]
-  char *v95; // [esp+8Ch] [ebp-300h] BYREF
+  char *xc_Or_completeCode_Param; // [esp+8Ch] [ebp-300h] BYREF
   int v96; // [esp+90h] [ebp-2FCh]
   char v97; // [esp+94h] [ebp-2F8h] BYREF
   char *configPathData; // [esp+A4h] [ebp-2E8h] BYREF
@@ -144,7 +144,7 @@ int  main(int argc, const char **argv, const char **envp)
   char *v140; // [esp+29Ch] [ebp-F0h] BYREF
   int v141; // [esp+2A0h] [ebp-ECh]
   int v142[4]; // [esp+2A4h] [ebp-E8h] BYREF
-  int configPathParamName; // [esp+2B4h] [ebp-D8h] BYREF
+  int tempData; // [esp+2B4h] [ebp-D8h] BYREF
   int v144; // [esp+2B8h] [ebp-D4h]
   char v145[4]; // [esp+2BCh] [ebp-D0h] BYREF
   char v146[196]; // [esp+2C0h] [ebp-CCh] BYREF
@@ -154,7 +154,7 @@ int  main(int argc, const char **argv, const char **envp)
   innerArgc = argc;
   innerArgv = argv;
   __main();
-  v95 = &v97;
+  xc_Or_completeCode_Param = &v97;
   configPathData = &v100;
   v86 = 0;
   v87 = 0;
@@ -163,7 +163,7 @@ int  main(int argc, const char **argv, const char **envp)
   v97 = 0;
   v99 = 0;
   v100 = 0;
-  fileList = 0;
+  paramList = 0;
   v90 = 0;
   v91 = 0;
   v92 = 0;
@@ -183,14 +183,14 @@ int  main(int argc, const char **argv, const char **envp)
   v106[4] = 0;
   for ( argcIndex = 1; argcIndex < innerArgc; ++argcIndex )
   {
-    std::string::basic_string((void **)&configPathParamName, "--config-path");
+    std::string::basic_string((void **)&tempData, "--config-path");
     currentIndex = argcIndex;
     currentArg = (char *)&innerArgv[argcIndex];
     hasConfigParam = 0;
-    if ( !std::string::compare((int)&configPathParamName, *(char **)currentArg) )
+    if ( !std::string::compare((int)&tempData, *(char **)currentArg) )
       // 一样
       hasConfigParam = argcIndex + 1 < innerArgc;
-    std::string::_M_dispose((void **)&configPathParamName);
+    std::string::_M_dispose((void **)&tempData);
     if ( hasConfigParam )
     {
       // 有--config-path参数，下一个参数是路径，跳过
@@ -201,9 +201,9 @@ int  main(int argc, const char **argv, const char **envp)
     else
     {
       // 没有--config-path参数
-      std::string::basic_string((void **)&configPathParamName, *(char **)currentArg);
-      std::vector<std::string>::emplace_back<std::string>((void **)&fileList, &configPathParamName);
-      std::string::_M_dispose((void **)&configPathParamName);
+      std::string::basic_string((void **)&tempData, *(char **)currentArg);
+      std::vector<std::string>::emplace_back<std::string>((void **)&paramList, &tempData);
+      std::string::_M_dispose((void **)&tempData);
     }
   }
 
@@ -217,9 +217,9 @@ int  main(int argc, const char **argv, const char **envp)
     while ( v138 )
     {
       std::string::basic_string((void **)&v140, "\n");
-      GetNextArg((int)&configPathParamName, &v137, (int)&v140);
-      std::vector<std::string>::emplace_back<std::string>((void **)&fileList, &configPathParamName);
-      std::string::_M_dispose((void **)&configPathParamName);
+      GetNextArg((int)&tempData, &v137, (int)&v140);
+      std::vector<std::string>::emplace_back<std::string>((void **)&paramList, &tempData);
+      std::string::_M_dispose((void **)&tempData);
       std::string::_M_dispose((void **)&v140);
     }
     std::string::_M_dispose((void **)&v137);
@@ -231,13 +231,13 @@ int  main(int argc, const char **argv, const char **envp)
   v44 = 0;
   mark = 0;
   v53 = 0;
-  v55 = -1431655765 * ((v90 - (int)fileList) >> 3);
-  v45 = 0;
+  v55 = -1431655765 * ((v90 - (int)paramList) >> 3);
+  isReadFromStdin = 0;
   FileNamea = 0;
   while ( (int)Streama < v55 )
   {
     v67 = 6 * (_DWORD)Streama;
-    v4 = &fileList[6 * (_DWORD)Streama];
+    v4 = &paramList[6 * (_DWORD)Streama];
     v5 = (_BYTE *)*v4;
     // ASCII 45 => '-'
     if ( *(_BYTE *)*v4 != '-' /*45*/ )
@@ -274,8 +274,8 @@ int  main(int argc, const char **argv, const char **envp)
         }
         if ( (int)&Streama->_ptr + 1 < v55 )
         {
-          std::vector<std::string>::push_back((int)&v86, (int)&fileList[v67 + 6]);
-          v45 = 1;
+          std::vector<std::string>::push_back((int)&v86, (int)&paramList[v67 + 6]);
+          isReadFromStdin = 1;
           goto LABEL_84;
         }
         break;
@@ -295,7 +295,7 @@ int  main(int argc, const char **argv, const char **envp)
           v53 = 1;
           if ( *(_BYTE *)v89[v67 + 6] != '-'/*45*/ )
           {
-            std::string::_M_assign((int)&v95, (int)&fileList[v67 + 6]);
+            std::string::_M_assign((int)&xc_Or_completeCode_Param, (int)&paramList[v67 + 6]);
             v53 = 1;
             Streama = (FILE *)((char *)Streama + 1);
           }
@@ -310,7 +310,7 @@ int  main(int argc, const char **argv, const char **envp)
           v53 = 0;
           if ( *(_BYTE *)v89[v67 + 6] != '-'/*45*/ )
           {
-            std::string::_M_assign((int)&v95, (int)&fileList[v67 + 6]);
+            std::string::_M_assign((int)&xc_Or_completeCode_Param, (int)&paramList[v67 + 6]);
             v53 = 0;
             Streama = (FILE *)((char *)Streama + 1);
           }
@@ -323,7 +323,7 @@ int  main(int argc, const char **argv, const char **envp)
         v8 = (FILE *)((char *)&Streama->_ptr + 1);
         if ( (int)&Streama->_ptr + 1 < v55 )
         {
-          FileNamea = (char *)fileList[v67 + 6];
+          FileNamea = (char *)paramList[v67 + 6];
 LABEL_72:
           Streama = v8;
           goto LABEL_84;
@@ -333,7 +333,7 @@ LABEL_72:
       // gwxMark
         if ( v5[2] == 'n'/*110*/ && (int)&Streama->_ptr + 1 < v55 )
         {
-          std::string::_M_assign((int)gwxMark, (int)&fileList[v67 + 6]);
+          std::string::_M_assign((int)gwxMark, (int)&paramList[v67 + 6]);
           v8 = (FILE *)((char *)&Streama->_ptr + 1);
           goto LABEL_72;
         }
@@ -348,54 +348,56 @@ LABEL_72:
         mark |= 0x40u;
         goto LABEL_84;
     }
-    std::string::basic_string((void **)&configPathParamName, "--split");
-    v51 = std::operator==<char>((int)&fileList[v67], (int)&configPathParamName);
+    // switch end
+    
+    std::string::basic_string((void **)&tempData, "--split");
+    v51 = std::operator==<char>((int)&paramList[v67], (int)&tempData);
     // 相等
     if ( v51 )
       v51 = (int)&Streama->_ptr + 1 < v55;
-    std::string::_M_dispose((void **)&configPathParamName);
+    std::string::_M_dispose((void **)&tempData);
     if ( v51 )
     {
       Streama = (FILE *)((char *)Streama + 1);
-      std::string::_M_assign((int)blankStr, (int)&fileList[v67 + 6]);
+      std::string::_M_assign((int)blankStr, (int)&paramList[v67 + 6]);
       goto LABEL_84;
     }
-    v9 = fileList[6 * (_DWORD)Streama];
+    v9 = paramList[6 * (_DWORD)Streama];
     if ( *(_BYTE *)(v9 + 1) == 'c'/*99*/ && *(_BYTE *)(v9 + 2) == 'b'/*98*/ )
     {
       LOBYTE(v142[0]) = 0;
       v140 = (char *)v142;
-      v10 = (char *)fileList[v67 + 6];
+      v10 = (char *)paramList[v67 + 6];
       Streama = (FILE *)((char *)Streama + 1);
       mark |= 0x80u;
       v141 = 0;
       ReadFile(v10, (unsigned int *)&v140);
       if ( v141 )
       {
-        std::string::basic_string((void **)&configPathParamName, "life_cycle_callback_content");
-        v11 = std::map<std::string,std::string>::operator[](&v105, &configPathParamName);
+        std::string::basic_string((void **)&tempData, "life_cycle_callback_content");
+        v11 = std::map<std::string,std::string>::operator[](&v105, &tempData);
         std::string::_M_assign((int)v11, (int)&v140);
-        std::string::_M_dispose((void **)&configPathParamName);
+        std::string::_M_dispose((void **)&tempData);
       }
       std::string::_M_dispose((void **)&v140);
     }
     else
     {
-      if ( !std::string::compare((int)&fileList[v67], "--pm") )
+      if ( !std::string::compare((int)&paramList[v67], "--pm") )
       {
         v48 = (FILE *)((char *)&Streama->_ptr + 1);
         if ( (int)&Streama->_ptr + 1 < v55 )
         {
-          Streamk = (FILE *)&fileList[v67 + 6];
-          std::string::basic_string((void **)&configPathParamName, "plain_text_marker");
-          v12 = std::map<std::string,std::string>::operator[](&v105, &configPathParamName);
+          Streamk = (FILE *)&paramList[v67 + 6];
+          std::string::basic_string((void **)&tempData, "plain_text_marker");
+          v12 = std::map<std::string,std::string>::operator[](&v105, &tempData);
           std::string::_M_assign((int)v12, (int)Streamk);
-          std::string::_M_dispose((void **)&configPathParamName);
+          std::string::_M_dispose((void **)&tempData);
           v8 = v48;
           goto LABEL_72;
         }
       }
-      v49 = fileList[6 * (_DWORD)Streama];
+      v49 = paramList[6 * (_DWORD)Streama];
       if ( *(_BYTE *)(v49 + 1) == 'l'/*108*/ && *(_BYTE *)(v49 + 2) == 'l'/*108*/ )
       {
         v13 = *(_BYTE *)(v49 + 3);
@@ -411,11 +413,11 @@ LABEL_72:
           v51 = 1;
         }
         if ( !std::string::compare((int)blankStr, " ") )
-          std::string::basic_string((void **)&configPathParamName, ",");
+          std::string::basic_string((void **)&tempData, ",");
         else
-          std::string::basic_string((char *)&configPathParamName, (int)blankStr);
+          std::string::basic_string((char *)&tempData, (int)blankStr);
         Streama = (FILE *)((char *)Streama + 1);
-        Split((int)&v131, &fileList[v67 + 6], (int)&configPathParamName);
+        Split((int)&v131, &paramList[v67 + 6], (int)&tempData);
         v15 = (void **)v131;
         v16 = (char *)v92;
         v131 = 0;
@@ -430,19 +432,23 @@ LABEL_72:
         v133 = 0;
         std::vector<std::string>::~vector((void ***)&v140, v17);
         std::vector<std::string>::~vector((void ***)&v131, v18);
-        std::string::_M_dispose((void **)&configPathParamName);
+        std::string::_M_dispose((void **)&tempData);
         v43 = 1;
         v53 = v51;
       }
     }
 LABEL_84:
     Streama = (FILE *)((char *)Streama + 1);
+    
   }
+  // for end
+
+  // 查看版本 有-v参数
   if ( v44 )
   {
-    std::string::basic_string((void **)&configPathParamName, "global");
-    WXML::Compiler::GetVersionInfo((int)&v140, &configPathParamName);
-    std::string::_M_dispose((void **)&configPathParamName);
+    std::string::basic_string((void **)&tempData, "global");
+    WXML::Compiler::GetVersionInfo((int)&v140, &tempData);
+    std::string::_M_dispose((void **)&tempData);
     Streamb = ___acrt_iob_func(1u);
     if ( FileNamea && *FileNamea )
       Streamb = fopen(FileNamea, "w");
@@ -450,6 +456,8 @@ LABEL_84:
     fclose(Streamb);
     std::string::_M_dispose((void **)&v140);
   }
+
+  // v86 temp
   if ( v86 == v87 )
   {
     v68 = Usage(innerArgc, innerArgv);
@@ -467,34 +475,39 @@ LABEL_84:
     v110[3] = (int)v110;
     v110[4] = 0;
     Streamc = 0;
-    if ( v45 )
+    // v86 temp
+    // v107 fileData
+    if ( isReadFromStdin )
     {
-      configPathParamName = (int)v145;
+      tempData = (int)v145;
       v144 = 0;
       v145[0] = 0;
-      ReadFile(0, (unsigned int *)&configPathParamName);
+      ReadFile(0, (unsigned int *)&tempData);
       v19 = std::map<std::string,std::string>::operator[](&v107, (int)v86);
-      std::string::_M_assign((int)v19, (int)&configPathParamName);
-      std::string::_M_dispose((void **)&configPathParamName);
+      std::string::_M_assign((int)v19, (int)&tempData);
+      std::string::_M_dispose((void **)&tempData);
+      // v107[v86] = tempData
     }
     else
     {
       while ( -1431655765 * (((char *)v87 - (char *)v86) >> 3) > (unsigned int)Streamc )
       {
         v145[0] = 0;
-        configPathParamName = (int)v145;
+        tempData = (int)v145;
         v20 = (char *)v86[6 * (_DWORD)Streamc];
         v144 = 0;
-        ReadFile(v20, (unsigned int *)&configPathParamName);
+        ReadFile(v20, (unsigned int *)&tempData);
         v21 = std::map<std::string,std::string>::operator[](&v107, (int)&v86[6 * (_DWORD)Streamc]);
-        std::string::_M_assign((int)v21, (int)&configPathParamName);
-        std::string::_M_dispose((void **)&configPathParamName);
+        std::string::_M_assign((int)v21, (int)&tempData);
+        std::string::_M_dispose((void **)&tempData);
+        // v107[v86[6 * (_DWORD)Streamc]] = tempData
         Streamc = (FILE *)((char *)Streamc + 1);
       }
     }
     if ( v96 )
     {
-      GetNextArg((int)String, (int *)&v95, (int)blankStr);
+      GetNextArg((int)String, (int *)&xc_Or_completeCode_Param, (int)blankStr);
+      // char -> unsigned long long
       v52 = strtoull(String[0], 0, 10);
       std::string::_M_dispose((void **)String);
       v131 = 0;
@@ -506,28 +519,29 @@ LABEL_84:
         v140 = (char *)v142;
         LOBYTE(v142[0]) = 0;
         memset(String, 0, 12);
-        GetNextArg((int)v135, (int *)&v95, (int)blankStr);
+        GetNextArg((int)v135, (int *)&xc_Or_completeCode_Param, (int)blankStr);
         std::string::operator=((unsigned __int8 **)&v140, (int)v135);
         std::string::_M_dispose(v135);
-        GetNextArg((int)v136, (int *)&v95, (int)blankStr);
+        GetNextArg((int)v136, (int *)&xc_Or_completeCode_Param, (int)blankStr);
         v50 = strtoull(v136[0], 0, 10);
         std::string::_M_dispose((void **)v136);
         for ( Streamd = 0; (int)Streamd < v50; Streamd = (FILE *)((char *)Streamd + 1) )
         {
           v144 = 0;
-          configPathParamName = (int)v145;
+          tempData = (int)v145;
           v145[0] = 0;
-          GetNextArg((int)&v137, (int *)&v95, (int)blankStr);
-          std::string::operator=((unsigned __int8 **)&configPathParamName, (int)&v137);
+          GetNextArg((int)&v137, (int *)&xc_Or_completeCode_Param, (int)blankStr);
+          std::string::operator=((unsigned __int8 **)&tempData, (int)&v137);
           std::string::_M_dispose((void **)&v137);
-          std::vector<std::string>::push_back((int)String, (int)&configPathParamName);
+          std::vector<std::string>::push_back((int)String, (int)&tempData);
           v69 = v132;
           if ( v69 == std::find<__gnu_cxx::__normal_iterator<std::string *,std::vector<std::string>>,std::string>(
                         v131,
                         v132,
-                        (int)&configPathParamName) )
-            std::vector<std::string>::push_back((int)&v131, (int)&configPathParamName);
-          std::string::_M_dispose((void **)&configPathParamName);
+                        (int)&tempData) )
+            // v131 splitedData
+            std::vector<std::string>::push_back((int)&v131, (int)&tempData);
+          std::string::_M_dispose((void **)&tempData);
         }
         Streame = (FILE *)std::_Rb_tree<std::string,std::pair<std::string const,std::vector<std::string>>,std::_Select1st<std::pair<std::string const,std::vector<std::string>>>,std::less<std::string>,std::allocator<std::pair<std::string const,std::vector<std::string>>>>::lower_bound(
                             &v109,
@@ -562,10 +576,10 @@ LABEL_84:
         std::vector<std::string>::~vector((void ***)String, v23);
         std::string::_M_dispose((void **)&v140);
       }
-      std::string::basic_string((void **)&configPathParamName, "ALL");
-      v24 = std::map<std::string,std::vector<std::string>>::operator[](&v109, &configPathParamName);
+      std::string::basic_string((void **)&tempData, "ALL");
+      v24 = std::map<std::string,std::vector<std::string>>::operator[](&v109, &tempData);
       std::vector<std::string>::operator=((int)v24, &v131);
-      std::string::_M_dispose((void **)&configPathParamName);
+      std::string::_M_dispose((void **)&tempData);
       std::vector<std::string>::~vector((void ***)&v131, v25);
     }
     v111[1] = 0;
@@ -579,6 +593,8 @@ LABEL_84:
     v118 = &v116;
     v119 = &v116;
     v120 = 0;
+
+    // 有llx参数
     if ( v43 )
     {
       v70 = v93;
@@ -586,9 +602,9 @@ LABEL_84:
       {
         if ( *Streamg->_ptr == 46 && Streamg->_ptr[1] == 47 )
         {
-          std::string::substr(&configPathParamName, Streamg, 2u, 0xFFFFFFFF);
-          std::string::operator=((unsigned __int8 **)Streamg, (int)&configPathParamName);
-          std::string::_M_dispose((void **)&configPathParamName);
+          std::string::substr(&tempData, Streamg, 2u, 0xFFFFFFFF);
+          std::string::operator=((unsigned __int8 **)Streamg, (int)&tempData);
+          std::string::_M_dispose((void **)&tempData);
         }
       }
       v122[0] = 0;
@@ -596,7 +612,7 @@ LABEL_84:
       v123 = v122;
       v124 = v122;
       v125 = 0;
-      std::string::basic_string((void **)&configPathParamName, "l_");
+      std::string::basic_string((void **)&tempData, "l_");
       std::string::basic_string((void **)&v140, "f_");
       std::string::basic_string((void **)&v137, "$gdwx");
       std::string::basic_string((void **)v136, "boxofchocolate");
@@ -623,16 +639,17 @@ LABEL_84:
                    (int)gwxMark,
                    mark,
                    10,
-                   (int *)v127,
-                   (int *)v128,
-                   (int *)v129,
-                   (int *)v130,
-                   &v131,
-                   (int *)String,
-                   (int)v135,
-                   (int)v136,
-                   (int)&v137,
-                   (int *)&v140);
+                   (int *)v127,   // 'e'
+                   (int *)v128,   // const char off_5403C3[] = {'s','\0','e','\0'}
+                   (int *)v129,   // "gg"
+                   (int *)v130,   // "e_"
+                   &v131,         // "d_"
+                   (int *)String,  // "p_"
+                   (int)v135,    // '\0'
+                   (int)v136,    // "boxofchocolate"
+                   (int)&v137,   // "$gdwx"
+                   (int *)&v140  // "f_"
+                   );
       std::_Rb_tree<std::string,std::pair<std::string const,std::vector<std::string>>,std::_Select1st<std::pair<std::string const,std::vector<std::string>>>,std::less<std::string>,std::allocator<std::pair<std::string const,std::vector<std::string>>>>::~_Rb_tree((int)v126);
       std::string::_M_dispose(v127);
       std::string::_M_dispose(v128);
@@ -644,7 +661,7 @@ LABEL_84:
       std::string::_M_dispose((void **)v136);
       std::string::_M_dispose((void **)&v137);
       std::string::_M_dispose((void **)&v140);
-      std::string::_M_dispose((void **)&configPathParamName);
+      std::string::_M_dispose((void **)&tempData);
       std::string::basic_string((void **)&v140, "__COMMON__");
       v61 = v117;
       Streamh = &v116;
@@ -682,16 +699,18 @@ LABEL_84:
           "var Behavior=Behavior||function(){};var __vd_version_info__=__vd_version_info__||{};var __GWX_GLOBAL__=__GWX_G"
           "LOBAL__||{};var __globalThis=(typeof __vd_version_info__!=='undefined'&&typeof __vd_version_info__.globalThis!"
           "=='undefined')?__vd_version_info__.globalThis:(typeof window!=='undefined'?window:globalThis);");
-        std::operator+<char>(&configPathParamName, &v137, (unsigned int *)&v140);
+        std::operator+<char>(&tempData, &v137, (unsigned int *)&v140);
         std::string::basic_string((void **)v136, "__COMMON__");
         v33 = (unsigned __int8 **)std::map<std::string,std::string>::operator[](&v115, v136);
-        std::string::operator=(v33, (int)&configPathParamName);
+        std::string::operator=(v33, (int)&tempData);
+        // v115["__COMMON__"] = tempData;
         std::string::_M_dispose((void **)v136);
-        std::string::_M_dispose((void **)&configPathParamName);
+        std::string::_M_dispose((void **)&tempData);
         std::string::_M_dispose((void **)&v137);
       }
       else
       {
+        // v115 outputMap
         std::string::basic_string((void **)&v140, "__COMMON__");
         Streamm = (FILE *)std::map<std::string,std::string>::operator[](&v115, &v140);
         WXML::Compiler::WXMLHelperCode[abi:cxx11]((void **)v136);
@@ -705,18 +724,18 @@ LABEL_84:
           "=='undefined')?__vd_version_info__.globalThis:(typeof window!=='undefined'?window:globalThis);");
         std::operator+<char>(&v137, v135, (unsigned int *)v136);
         v31 = std::string::append(&v137, (int)Streamm);
-        std::string::basic_string(&configPathParamName, v31);
+        std::string::basic_string(&tempData, v31);
         std::string::basic_string((void **)String, "__COMMON__");
         v32 = (unsigned __int8 **)std::map<std::string,std::string>::operator[](&v115, String);
-        std::string::operator=(v32, (int)&configPathParamName);
+        std::string::operator=(v32, (int)&tempData);
         std::string::_M_dispose((void **)String);
-        std::string::_M_dispose((void **)&configPathParamName);
+        std::string::_M_dispose((void **)&tempData);
         std::string::_M_dispose((void **)&v137);
         std::string::_M_dispose(v135);
         std::string::_M_dispose((void **)v136);
       }
       std::string::_M_dispose((void **)&v140);
-      std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::basic_stringstream((int)&configPathParamName);
+      std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::basic_stringstream((int)&tempData);
       std::operator<<<std::char_traits<char>>((std::ostream::sentry *)v145, ";var __WXML_DEP__=__WXML_DEP__||{};");
       for ( j = v123; ; j = (int *)std::_Rb_tree_increment((int)Streami) )
       {
@@ -768,12 +787,12 @@ LABEL_84:
         std::string::_M_dispose((void **)&v137);
         std::string::_M_dispose((void **)v136);
       }
-      std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::~basic_stringstream((int)&configPathParamName);
+      std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::~basic_stringstream((int)&tempData);
       std::_Rb_tree<std::string,std::pair<std::string const,std::vector<std::string>>,std::_Select1st<std::pair<std::string const,std::vector<std::string>>>,std::less<std::string>,std::allocator<std::pair<std::string const,std::vector<std::string>>>>::~_Rb_tree((int)&v121);
     }
     else
     {
-      std::string::basic_string((void **)&configPathParamName, "l_");
+      std::string::basic_string((void **)&tempData, "l_");
       std::string::basic_string((void **)&v140, "f_");
       std::string::basic_string((void **)&v137, "$gdwx");
       std::string::basic_string((void **)v136, "boxofchocolate");
@@ -782,7 +801,7 @@ LABEL_84:
       std::string::basic_string((void **)&v131, "d_");
       std::string::basic_string(v130, "e_");
       std::string::basic_string(v129, "gg");
-      std::string::basic_string(v128, (char *)off_5403C3);
+      std::string::basic_string(v128, (char *)off_5403C3);  // const char off_5403C3[] = { 's', '\0', 'e', '\0' };
       std::string::basic_string(v127, (char *)&off_5403C3[2]);
       std::_Rb_tree<std::string,std::pair<std::string const,std::vector<std::string>>,std::_Select1st<std::pair<std::string const,std::vector<std::string>>>,std::less<std::string>,std::allocator<std::pair<std::string const,std::vector<std::string>>>>::_Rb_tree(
         v126,
@@ -798,16 +817,16 @@ LABEL_84:
                    (int *)gwxMark,
                    mark,
                    10,
-                   (int *)v127,
-                   (int *)v128,
-                   (int *)v129,
-                   (int *)v130,
-                   &v131,
-                   (int *)String,
-                   (int)v135,
-                   (int)v136,
-                   (int)&v137,
-                   (int *)&v140);
+                   (int *)v127,   // off_5403C3[2]
+                   (int *)v128,   // off_5403C3
+                   (int *)v129,    // "gg"
+                   (int *)v130,    // "e_"
+                   &v131,          // "d_"
+                   (int *)String,  // "p_"
+                   (int)v135,   // '\0'
+                   (int)v136,   // "boxofchocolate"
+                   (int)&v137,   // "$gdwx"
+                   (int *)&v140); // "f_"
       std::_Rb_tree<std::string,std::pair<std::string const,std::vector<std::string>>,std::_Select1st<std::pair<std::string const,std::vector<std::string>>>,std::less<std::string>,std::allocator<std::pair<std::string const,std::vector<std::string>>>>::~_Rb_tree((int)v126);
       std::string::_M_dispose(v127);
       std::string::_M_dispose(v128);
@@ -819,7 +838,7 @@ LABEL_84:
       std::string::_M_dispose((void **)v136);
       std::string::_M_dispose((void **)&v137);
       std::string::_M_dispose((void **)&v140);
-      std::string::_M_dispose((void **)&configPathParamName);
+      std::string::_M_dispose((void **)&tempData);
       if ( v68 )
       {
         Streaml = (FILE *)v111[0];
@@ -849,7 +868,7 @@ LABEL_153:
   std::vector<std::string>::~vector(&v92, v39);
   std::vector<std::string>::~vector((void ***)&v89, v40);
   std::string::_M_dispose((void **)&configPathData);
-  std::string::_M_dispose((void **)&v95);
+  std::string::_M_dispose((void **)&xc_Or_completeCode_Param);
   std::vector<std::string>::~vector(&v86, v41);
   return v68;
 }

@@ -44,6 +44,13 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "cstring": "cpp"
+        "cstring": "cpp",
+        "map": "cpp"
+    },
+    "cmake.debugConfig": {
+        "args": [
+            "-llw",
+            "111,222"
+        ]
     }
 }

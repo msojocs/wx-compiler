@@ -2,6 +2,9 @@
 #define __WXML_H_
 
 #include <iostream>
+#include <sstream>
+#include <map>
+#include <vector>
 
 namespace WXML{
     class Compiler
@@ -11,22 +14,41 @@ namespace WXML{
     public:
         Compiler(/* args */);
         ~Compiler();
-        static void CompileLazy();
-        static void DealWxsTag();
-        static void GetFuncId();
-        static void GetVersionInfo(int a1, int *a2);
-        static void ParseSource();
-        static void RenderDefine();
+
+
+        static std::string CompileLazy(
+            std::map<std::string,std::string> const&,
+            std::string&,
+            std::map<std::string,std::string>&,
+            std::map<std::string,std::string>&,
+            std::map<std::string, std::vector<std::string>, std::less<std::string>, std::allocator<std::pair<const std::string, std::vector<std::string>>>>,
+            std::allocator<std::pair<const std::string, std::string>>,
+            std::allocator<std::string> const&,
+            std::map<std::string,std::string> const&,
+            bool,
+            std::string const&,
+            uint,
+            char,
+            std::string const&,
+            std::string const&,
+            std::string const&,
+            std::string const&,
+            std::string const&,
+            std::string const&,
+            std::string const&,
+            std::string const&,
+            std::string const&,
+            std::string const&,
+            std::string const&);
+            
+        // static void DealWxsTag();
+        // static void GetFuncId();
+        static void GetVersionInfo(std::string &a1, std::string a2);
+        // static void ParseSource();
+        // static void RenderDefine();
         static void WXMLHelperCode(std::string &result);
     };
 
-    Compiler::Compiler(/* args */)
-    {
-    }
-
-    Compiler::~Compiler()
-    {
-    }
 
     class DOMLib
     {
@@ -38,13 +60,16 @@ namespace WXML{
         ~DOMLib();
     };
     
-    DOMLib::DOMLib(/* args */)
+    class Rewrite
     {
-    }
+    private:
+        /* data */
+    public:
+        Rewrite(/* args */);
+        ~Rewrite();
+        
+    };
     
-    DOMLib::~DOMLib()
-    {
-    }
     
     namespace EXPRLib
     {
@@ -57,13 +82,6 @@ namespace WXML{
             ~Tokenizer();
         };
         
-        Tokenizer::Tokenizer(/* args */)
-        {
-        }
-        
-        Tokenizer::~Tokenizer()
-        {
-        }
         
     } // namespace EXPRLib
     

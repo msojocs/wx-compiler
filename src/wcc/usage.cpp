@@ -1,7 +1,7 @@
 #include <iostream>
 
 //----- (00401726) --------------------------------------------------------
-int  usage(int argc, const char **argv)
+int usage(int argc, const char **argv)
 {
   printf("Wechat WXML Compiler, version %s\n", "v0.5vv_20200413_syb_scopedata");
   printf(

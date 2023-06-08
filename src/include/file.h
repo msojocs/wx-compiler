@@ -1,7 +1,7 @@
 #ifndef __FILE_H__
 #define __FILE_H__
 
-int readFile (std::string fileName, std::string result);
-void getNextArg(std::string &line, std::string &data, char lineEndMark);
+int readFile (const char*  fileName, std::string &result);
+std::string getNextArg(std::string &data, std::string const & lineEndMark);
 
 #endif
