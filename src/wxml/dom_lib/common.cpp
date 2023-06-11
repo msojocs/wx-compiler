@@ -24,6 +24,7 @@ namespace WXML
             
             return ss.str();
         }
+
         std::vector<std::string> splitString(std::string const& str, char split)
         {
             int pos = 0;
@@ -65,13 +66,38 @@ namespace WXML
                 result = "." + path2;
             }
             if (
-                // v5 <= 4 ||
+                result.size() <= 4 ||
                 result.substr(result.size() - 5) != ".wxml"
             )
             {
                 result.append(".wxml");
             }
             return result;
+        }
+        
+        void recurseDependencies(WXML::DOMLib::WXMLDom const& dom, std::string const& filePath, std::set<std::string> & pathSet)
+        {
+            std::string a1;
+            if (a1 == "import" || a1 == "include")
+            {
+                // TODO: map来源
+                std::map<std::string,WXML::DOMLib::Token> map;
+                if(map.count("src"))
+                {
+                    std::string relativePath = map["src"].ToAttrContent();
+                    std::string depPath = resolvePath(filePath, relativePath);
+                    pathSet.insert(depPath);
+                }
+
+            }
+            for (int i = 0; ; i++)
+            {
+                // if (i >= )
+                // break;
+                // recurseDependencies(, filePath, pathSet)
+            }
+            
+
         }
     }
 

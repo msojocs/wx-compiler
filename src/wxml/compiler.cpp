@@ -1,6 +1,7 @@
 #include "../include/wxml.h"
 #include "../include/define.h"
 #include <iostream>
+#include <memory>
 
 namespace WXML{
     
@@ -14,47 +15,81 @@ namespace WXML{
             std::map<std::string,std::string>& dict,  // 输出
             std::map<std::string, std::vector<std::string>>,
             std::map<std::string, std::vector<std::string>>, // vecFileContentMap
-            std::vector<std::string> const&,       // splitedData
-            std::map<std::string,std::string> const&, // mapData1
-            bool,                // isLLA
+            std::vector<std::string> const& splitedData,       // splitedData
+            std::map<std::string,std::string> const& mapData1, // mapData1
+            bool isLLA,                // isLLA
             std::string const& gwxMark,  // gwxMark
             uint mark,                // mark
             char lineEndMark,                // '\n'
-            std::string const&,  // 'e'
-            std::string const&,  // const char off_5403C3[] = {'s','\0','e','\0'}
-            std::string const&,  // "gg"
-            std::string const&,  // "e_"
-            std::string const&,  // "d_"
-            std::string const&,  // "p_"
+            std::string const& ,  // 'e'
+            std::string const& ,  // const char off_5403C3[] = {'s','\0','e','\0'}
+            std::string const& ggMark,  // "gg"
+            std::string const& eMark,  // "e_"
+            std::string const& dMark,  // "d_"
+            std::string const& pMark,  // "p_"
             std::string const& strEndMark,  // '\0'
             std::string const& boxMark,  // "boxofchocolate"
             std::string const& gdwxMark,  // "$gdwx"
             std::string const& fMark  // "f_"
             ) 
         {
-            for (auto it = fileContentMap.begin(); it != fileContentMap.end(); it++)
+            try
             {
                 /* code */
-                int parseResult = 0;
-                // parseResult = WXML::Compiler::ParseSource(
-                //             it->second,  // 源码？
-                //             it->first,  // 文件名
-                //             "\n",// ？
-                //             lineEndMark,  // '\n'
-                //             gwxMark,  // gwxMark
-                //             fMark,  // "f_"
-                //             fileContentMap,   // fileContentMap
-                //             errorMessage,   // 错误信息
-                //             &v304,  // map<string, ?>
-                //             &v309,  // ???
-                //             &v311,  // ???
-                //             (mark & 4) != 0,  // a11 -> mark
-                //             (mark & 0x20) != 0);
-                if (parseResult) {
-                    return parseResult;
+                std::map<std::string, std::shared_ptr<std::stringstream>> ssDataMap;
+                std::map<std::string,std::vector<std::string>> v307_localVecStrMap1;
+                for (auto it = fileContentMap.begin(); it != fileContentMap.end(); it++)
+                {
+                    /* code */
+                    int parseResult = 0;
+                    // parseResult = WXML::Compiler::ParseSource(
+                    //             it->second,  // 源码？
+                    //             it->first,  // 文件名
+                    //             "\n",// ？
+                    //             lineEndMark,  // '\n'
+                    //             gwxMark,  // gwxMark
+                    //             fMark,  // "f_"
+                    //             fileContentMap,   // fileContentMap
+                    //             errorMessage,   // 错误信息
+                    //             &v304,  // map<string, ?>
+                    //             &v309,  // ???
+                    //             &v311,  // ???
+                    //             (mark & 4) != 0,  // a11 -> mark
+                    //             (mark & 0x20) != 0);
+                    if (parseResult) {
+                        return parseResult;
+                    }
                 }
-            }
+                std::shared_ptr<std::stringstream> v301_localCommonStream1; // v301
+                ssDataMap["__COMMON__"] = v301_localCommonStream1;
+                std::vector<std::string> commonVec;
+                v307_localVecStrMap1["__COMMON__"] = commonVec;
+
+                for (int i = 0; i < splitedData.size(); i++)
+                {
+                    std::shared_ptr<std::stringstream> v328_ss;
+                    auto it = ssDataMap.lower_bound(splitedData[i]);
+                    if (it == ssDataMap.end())
+                    {
+
+                    }
+                    std::string path = "./" + splitedData[i] + ".wxml";
+                    std::vector<std::string> j;
+                    j.push_back(path);
+                    v307_localVecStrMap1[splitedData[i]] = j;
+                }
+                // for (auto it = splitedData.begin(); it != splitedData.end(); it++)
+                // {
+                    
+                // }
                 
+                    
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+            
             return 0;
         }
     
@@ -91,6 +126,7 @@ namespace WXML{
                 data = " " + data;
             }
             // WXML::DOMLib::Parser::Parser(data);
+            // TODO...
             return 0;
         }
 
@@ -110,12 +146,12 @@ namespace WXML{
             result.str(a1);
         }
         
-        int ParseSource(
-            std::string const& content,  // 源码？
+        WXML::DOMLib::Parser ParseSource(
             std::string const& fileName,  // 文件名？
+            std::string const& content,  // 源码？
             char lineEndMark,  // '\n'
             std::string const& gwxMark, // gwxMark
-            std::string& fMark, // "f_"
+            std::string const& fMark, // "f_"
             std::map<std::string,std::string> const&, // fileContentMap
             std::string& errorMessage, // 错误信息
             std::map<std::string,WXML::DOMLib::WXMLDom> result,// map<string, ?>
@@ -124,13 +160,15 @@ namespace WXML{
             bool b1, // mark指定运算结果是否非0
             bool b2)  // mark指定运算结果是否非0
         {
+            WXML::DOMLib::Parser pResult;
             bool isWxml = fileName.substr(fileName.length() - 5) == ".wxml";
             if (isWxml) 
             {
                 // parse
                 int parseResult = 0;
+                // pResult.Parse();
                 if (parseResult)
-                    return parseResult;
+                    throw "";
 
                 if (!parseResult) 
                 {
@@ -155,7 +193,7 @@ namespace WXML{
                         if (dealResult) 
                         {
                             // 非0
-                            return dealResult;
+                            throw dealResult;
                         }
                         ss << fMark;
                         ss <<  "['";
@@ -189,7 +227,7 @@ namespace WXML{
 
                                 // 清空
                                 errs.clear();
-                                return 1;
+                                throw 1;
                             }
                             ss << "f_['";
                             // ss << ToStringCode(v81);
@@ -219,7 +257,7 @@ namespace WXML{
                             int compilerResult = 1;
                             if (compilerResult)
                             {
-                                return compilerResult;
+                                throw compilerResult;
                             }
                             ss << "nv_require(\"";
                             std::string m = "m_" + fileName;
@@ -251,7 +289,7 @@ namespace WXML{
                 int compilerResultCode = 0;
                 if (compilerResultCode) {
                     errorMessage.assign("error...");
-                    return compilerResultCode;
+                    throw compilerResultCode;
                 }
                 else
                 {
@@ -272,7 +310,7 @@ namespace WXML{
 
                 }
             }
-            return 0;
+            return pResult;
         }
         void WXMLHelperCode(std::string &result) 
         {

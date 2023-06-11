@@ -6,8 +6,12 @@ enable_testing()
 
 add_executable(wcc
     src/wcc.cpp
+    src/include/wxml.h
     src/wcc/usage.cpp
     src/wxml/compiler.cpp
+    src/wxml/dom_lib/token.cpp
+    src/wxml/dom_lib/machine.cpp
+    src/wxml/dom_lib/parser.cpp
     src/utils/string_utils.cpp
     src/utils/file.cpp
     )

@@ -51,26 +51,8 @@
     "cmake.debugConfig": {
         "cwd": "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram",
         "args": [
-            "\"-d\"",
-            "\"--split\"",
-            "\">_<109\"",
-            "\"-xc\"",
-            "\"9>_<109./miniprogram_npm/miniprogram-barrage/index.wxml>_<1090>_<109./miniprogram_npm/miniprogram-recycle-view/recycle-item.wxml>_<1090>_<109./miniprogram_npm/miniprogram-recycle-view/recycle-view.wxml>_<1090>_<109./miniprogram_npm/wxml-to-canvas/index.wxml>_<1090>_<109./page/API/index.wxml>_<1091>_<109set-tab-bar>_<109./page/API/components/set-tab-bar/set-tab-bar.wxml>_<1090>_<109./page/cloud/index.wxml>_<1090>_<109./page/component/index.wxml>_<1090>_<109./page/extend/index.wxml>_<1090\"",
-            "\"-lla\"",
-            "\"./miniprogram_npm/miniprogram-barrage/index>_<109./miniprogram_npm/miniprogram-recycle-view/recycle-item>_<109./miniprogram_npm/miniprogram-recycle-view/recycle-view>_<109./miniprogram_npm/wxml-to-canvas/index>_<109./page/API/index>_<109./page/API/components/set-tab-bar/set-tab-bar>_<109./page/cloud/index>_<109./page/component/index>_<109./page/extend/index\"",
-            "\"./miniprogram_npm/miniprogram-barrage/index.wxml\"",
-            "\"./miniprogram_npm/miniprogram-recycle-view/recycle-item.wxml\"",
-            "\"./miniprogram_npm/miniprogram-recycle-view/recycle-view.wxml\"",
-            "\"./miniprogram_npm/wxml-to-canvas/index.wxml\"",
-            "\"./page/API/index.wxml\"",
-            "\"./page/API/components/set-tab-bar/set-tab-bar.wxml\"",
-            "\"./page/cloud/index.wxml\"",
-            "\"./page/common/foot.wxml\"",
-            "\"./page/common/head.wxml\"",
-            "\"./page/component/index.wxml\"",
-            "\"./page/extend/index.wxml\"",
-            "\"-gn\"",
-            "\"\\$gwx1\""
+            "\"--config-path\"",
+            "\"/mnt/d/Work/disassembly/wcc-exec/wcc/cmd1.txt\""
         ]
     }
 }

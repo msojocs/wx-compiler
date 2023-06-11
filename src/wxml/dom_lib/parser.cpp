@@ -20,5 +20,14 @@ namespace WXML
         {
             return tag.compare("wx-") != 0;
         }
+        bool Parser::Parse(
+            char const* fileContent,
+            std::string &,
+            std::string const&,
+            std::vector<WXML::DOMLib::Token> &
+            )
+        {
+            return true;
+        }
     }
 }

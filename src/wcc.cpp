@@ -23,7 +23,7 @@ int main(int argc, const char **argv) {
     for (int i = 1; i < argc; i++)
     {
         
-        if (!string("--cofig-path").compare(argv[i])) {
+        if (!string("--config-path").compare(argv[i])) {
             hasConfigParam = i + 1 < argc;
         }
         if (hasConfigParam) {
@@ -41,8 +41,11 @@ int main(int argc, const char **argv) {
         int ret = readFile(configPathLocation.c_str(), configData);
         string line;
         if (0 == ret) {
-            line = getNextArg(configData, "\n");
-            paramList.emplace_back(line);
+            while ((line = getNextArg(configData, "\n")).size() > 0)
+            {
+                paramList.emplace_back(line);
+            }
+            
         }
     }
     int mark = 0;
@@ -262,7 +265,8 @@ int main(int argc, const char **argv) {
     {
         string data;
         string arg2;
-        vector<string> list;
+        vector<string> list1;
+        vector<string> list2;
         data = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
         unsigned long long count = strtoull(&data[0], 0, 10);
         for (unsigned long long i = 0; i < count; i++)
@@ -270,15 +274,14 @@ int main(int argc, const char **argv) {
             string arg1 = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
             data = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
             unsigned long long jCount = strtoull(&data[0], 0, 10);
-            vector<string> list;
             for (unsigned long long i = 0; i < jCount; i++)
             {
                 arg2 = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
-                list.push_back(arg2);
+                list1.push_back(arg2);
                 auto it = vecFileContentMap.find(arg2);
                 if (it == vecFileContentMap.end()) 
                 {
-                    list.push_back(arg2);
+                    list2.push_back(arg2);
                 }
             }
             // TODO: 还有问题
@@ -288,9 +291,10 @@ int main(int argc, const char **argv) {
                 vector<string> d;
                 vecFileContentMap.emplace(arg1, d);
             }
-            
+            // list1
+            it->second = list1;
         }
-        vecFileContentMap["ALL"] = list;
+        vecFileContentMap["ALL"] = list2;
     }
 
     //
@@ -306,33 +310,36 @@ int main(int argc, const char **argv) {
                 splitedData[i] = path.substr(2);
             }
         }
-        map<string, string> outputMap;
+        map<string, string> outputMap1;
+        map<string, string> outputMap2;
+        map<string, vector<string>> vecFileContentMap2;
         const char off_5403C3[] = {'s','\0','e','\0'};
         int compilerResult = 0;
         string errorMessage;
-        // compilerResult = WXML::Compiler::CompileLazy(
-        //            fileContentMap,
-        //            errorMessage,
-        //            outputMap,
-        //            &v101,
-        //            &v121,
-        //            vecFileContentMap, // vecFileContentMap
-        //            splitedData,
-        //            mapData1,
-        //            isLLA,
-        //            gwxMark,
-        //            mark,
-        //            10,
-        //            &off_5403C3[2],
-        //            off_5403C3,
-        //            "gg",
-        //            "e_",
-        //            "d_",
-        //            "p_",
-        //            "\0",
-        //            "boxofchocolate",
-        //            "$gdwx",
-        //            "f_");
+
+        compilerResult = WXML::Compiler::CompileLazy(
+                   fileContentMap,
+                   errorMessage,
+                   outputMap1,
+                   outputMap2,    // map<string, string>
+                   vecFileContentMap2,   // std::map<std::string,std::vector<std::string>>
+                   vecFileContentMap, // vecFileContentMap
+                   splitedData,
+                   mapData1,
+                   isLLA,
+                   gwxMark,
+                   mark,
+                   10,
+                   &off_5403C3[2],
+                   off_5403C3,
+                   "gg",
+                   "e_",
+                   "d_",
+                   "p_",
+                   "\0",
+                   "boxofchocolate",
+                   "$gdwx",
+                   "f_");
         // while()
 
         // if()
@@ -347,7 +354,7 @@ int main(int argc, const char **argv) {
             "LOBAL__||{};var __globalThis=(typeof __vd_version_info__!=='undefined'&&typeof __vd_version_info__.globalThis!"
             "=='undefined')?__vd_version_info__.globalThis:(typeof window!=='undefined'?window:globalThis);";
             data = data + helperCode;
-            outputMap["__COMMON__"] = data;
+            outputMap1["__COMMON__"] = data;
         }
         else 
         {
@@ -360,9 +367,9 @@ int main(int argc, const char **argv) {
             "LOBAL__||{};var __globalThis=(typeof __vd_version_info__!=='undefined'&&typeof __vd_version_info__.globalThis!"
             "=='undefined')?__vd_version_info__.globalThis:(typeof window!=='undefined'?window:globalThis);";
             commonData += helperCode;
-            commonData = commonData.append(outputMap["__COMMON__"]);
+            commonData = commonData.append(outputMap1["__COMMON__"]);
 
-            outputMap["__COMMON__"] = commonData;
+            outputMap1["__COMMON__"] = commonData;
         }
 
         string dep = ";var __WXML_DEP__=__WXML_DEP__||{};";
@@ -389,7 +396,7 @@ int main(int argc, const char **argv) {
             }
         }
         // ???
-        outputMap["__COMMON__"].append("");
+        outputMap1["__COMMON__"].append("");
         if (compilerResult) {
             // CompileLazy出现异常
             // 标准错误输出

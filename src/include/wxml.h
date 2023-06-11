@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <set>
 #include <vector>
 
 namespace WXML
@@ -16,12 +17,31 @@ namespace WXML
          * 参数值可能不是int
         */
         bool AttrsCompartor(int a1, int a2);
+
         /**
+         * 拼接字符串
+         * 
+         * @param data 要拼接的字符串
+         * @param join 拼接字符
          * 
         */
-        std::string joinString(std::vector<std::string>& str, char split);
+        std::string joinString(std::vector<std::string>& data, char join);
+
+        /**
+         * 分割字符串
+         * 
+         * @param str 要分割的字符串
+         * @param split 分割字符
+        */
         std::vector<std::string> splitString(std::string const& str, char split);
-        std::string resolvePath(std::string const&, std::string const&);
+
+        /**
+         * 路径拼接
+         * 
+         * @param path1 基础路径
+         * @param path2 目标路径
+        */
+        std::string resolvePath(std::string const& path1, std::string const& path2);
 
         class WXMLDom
         {
@@ -33,6 +53,9 @@ namespace WXML
             void Error();
         };
         
+
+        void recurseDependencies(WXML::DOMLib::WXMLDom const&,std::string const&,std::set<std::string> &);
+
         
         class Token
         {
@@ -46,7 +69,12 @@ namespace WXML
             Token(WXML::DOMLib::Token&&);
             Token(WXML::DOMLib::Token const&);
             std::string ToString();
-            int ToAttrContent();
+
+            /**
+             * 
+             * 返回值类型string
+            */
+            std::string ToAttrContent();
             bool IsValidVariableName(std::string const&);
             bool IsMatch(char const&);
             bool GetTemplateContent(std::string const&, std::string&);
@@ -68,7 +96,8 @@ namespace WXML
             */
             bool IsValidTag(std::string &);
             WXML::DOMLib::Token Peek();
-            bool Parse(char const*fileContent, // Str
+            bool Parse(
+                char const*fileContent, // Str
                 std::string &, // a4
                 std::string const&, // a5
                 std::vector<WXML::DOMLib::Token> & // a6
@@ -81,6 +110,32 @@ namespace WXML
             std::vector<std::string> ATTR_LIST();
             std::string ATTR();
             
+        };
+
+        class Machine
+        {
+        private:
+            /* data */
+            static bool bInited; // 初始化标志
+            static int * TT; //类型不确定
+            static int * STT;
+            int offset_0; // offset + 0
+            int offset_1; // offset + 1
+            int lineCount;// 当前处理的行数 offset + 2
+            int lineLength; // 正在处理行的长度 offset + 3
+            int offset_4; // offset + 4
+            int offset_5; // offset + 5
+            int offset_6; // offset + 6
+            std::string filePath;  // 文件路径 offset + 7
+
+        public:
+            Machine(/* args */);
+            Machine(std::string const& filePath);
+            ~Machine();
+            void Reset(void);
+            void InitTransitTable(void);
+            void Feed(char,std::vector<WXML::DOMLib::Token> &,std::string &,std::vector<WXML::DOMLib::Token> &,int);
+        
         };
         
     };
@@ -149,7 +204,7 @@ namespace WXML
 
         // void GetFuncId();
         void GetVersionInfo(std::string &a1, std::string a2);
-        int ParseSource(
+        WXML::DOMLib::Parser ParseSource(
             std::string const& content,  // 源码？
             std::string const& fileName,  // 文件名？
             std::string const& ,  // ？

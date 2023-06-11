@@ -13,6 +13,9 @@ namespace WXML
         Token::Token(WXML::DOMLib::Token&& token)
         {
         }
+        Token::Token(WXML::DOMLib::Token const& token)
+        {
+        }
         
         Token::~Token()
         {
