@@ -13,16 +13,16 @@ std::string& trim(std::string &s)
 }
 
 
-void split(std::vector<std::string> result, std::string source, std::string mark) {
+void split(std::vector<std::string> &result, std::string source, std::string mark) {
     int currentPos = 0;
     for (int i = source.find(mark, 0); ; i = source.find(mark, currentPos))
     {
-        std::string ele = source.substr(currentPos, i);
+        std::string ele = source.substr(currentPos, i - currentPos);
         trim(ele);
         result.emplace_back(ele);
         if (i == -1)
             break;
-        currentPos = i + 1;
+        currentPos = i + mark.length();
     }
     
 }

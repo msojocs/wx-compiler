@@ -42,10 +42,10 @@ int readFile (const char* fileName, std::string &result) {
  * 
  * @param line 存储行数据的容器
  * @param data 配置内容数据
- * @param lineEndMark 行结束标志 \n
+ * @param splitdMark 分割标志
 */
-std::string getNextArg(std::string &data, std::string const & lineEndMark) {
-    int pos = data.find(lineEndMark, 0);
+std::string getNextArg(std::string &data, std::string const & splitMark) {
+    int pos = data.find(splitMark, 0);
     std::string lineData;
     if (pos == -1) {
         lineData.assign(data);
@@ -53,7 +53,7 @@ std::string getNextArg(std::string &data, std::string const & lineEndMark) {
     }
     else {
         lineData = data.substr(0, pos);
-        data = data.substr(pos);
+        data = data.substr(pos + splitMark.length());
     }
     trim(lineData);
     return lineData;

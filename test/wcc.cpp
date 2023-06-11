@@ -410,8 +410,10 @@ LABEL_72:
             v68 = -1;
             goto LABEL_153;
           }
+          // -lla
           v51 = 1;
         }
+        // -lla 或 -llw
         if ( !std::string::compare((int)blankStr, " ") )
           std::string::basic_string((void **)&tempData, ",");
         else
@@ -598,10 +600,12 @@ LABEL_84:
     if ( v43 )
     {
       v70 = v93;
+      // 处理文件路径
       for ( Streamg = (FILE *)v92; Streamg != (FILE *)v70; Streamg = (FILE *)((char *)Streamg + 24) )
       {
-        if ( *Streamg->_ptr == 46 && Streamg->_ptr[1] == 47 )
+        if ( *Streamg->_ptr == 46 /*.*/ && Streamg->_ptr[1] == 47 /*/*/ )
         {
+          // 以"./"开头，去掉前两个字符
           std::string::substr(&tempData, Streamg, 2u, 0xFFFFFFFF);
           std::string::operator=((unsigned __int8 **)Streamg, (int)&tempData);
           std::string::_M_dispose((void **)&tempData);
@@ -627,18 +631,18 @@ LABEL_84:
         v126,
         (int)&v109);
       v68 = (int)WXML::Compiler::CompileLazy(
-                   &v107,
+                   &v107, // fileData std::map<std::string,std::string> (file -> content)
                    (int *)v111,
-                   &v115,
-                   &v101,
+                   &v115, // outputMap std::map<std::string,std::string>
+                   &v101, // dict map<string, string>
                    &v121,
                    v126,
-                   (int *)&v92,
-                   &v105,
-                   v53,
+                   (int *)&v92, // splitedData
+                   &v105,       // mapData1
+                   v53,         // isLLA
                    (int)gwxMark,
                    mark,
-                   10,
+                   10, // asci -> '\n'
                    (int *)v127,   // 'e'
                    (int *)v128,   // const char off_5403C3[] = {'s','\0','e','\0'}
                    (int *)v129,   // "gg"

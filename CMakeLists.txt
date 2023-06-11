@@ -14,6 +14,15 @@ add_executable(wcc
 add_executable(wcsc
     src/wcsc.cpp
     )
+add_executable(
+    resolve_path
+    test/resolve_path.cpp
+    src/wxml/dom_lib/common.cpp
+    )
+add_test(
+    resolve_test
+    resolve_path
+    )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

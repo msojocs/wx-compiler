@@ -4,28 +4,281 @@
 
 namespace WXML{
     
-    Compiler::Compiler(/* args */)
+    namespace Compiler
     {
-    }
+        
+        int CompileLazy(
+            std::map<std::string,std::string> const& fileContentMap,
+            std::string& errorMessage,  // 错误信息
+            std::map<std::string,std::string>& outputMap, // 输出
+            std::map<std::string,std::string>& dict,  // 输出
+            std::map<std::string, std::vector<std::string>>,
+            std::map<std::string, std::vector<std::string>>, // vecFileContentMap
+            std::vector<std::string> const&,       // splitedData
+            std::map<std::string,std::string> const&, // mapData1
+            bool,                // isLLA
+            std::string const& gwxMark,  // gwxMark
+            uint mark,                // mark
+            char lineEndMark,                // '\n'
+            std::string const&,  // 'e'
+            std::string const&,  // const char off_5403C3[] = {'s','\0','e','\0'}
+            std::string const&,  // "gg"
+            std::string const&,  // "e_"
+            std::string const&,  // "d_"
+            std::string const&,  // "p_"
+            std::string const& strEndMark,  // '\0'
+            std::string const& boxMark,  // "boxofchocolate"
+            std::string const& gdwxMark,  // "$gdwx"
+            std::string const& fMark  // "f_"
+            ) 
+        {
+            for (auto it = fileContentMap.begin(); it != fileContentMap.end(); it++)
+            {
+                /* code */
+                int parseResult = 0;
+                // parseResult = WXML::Compiler::ParseSource(
+                //             it->second,  // 源码？
+                //             it->first,  // 文件名
+                //             "\n",// ？
+                //             lineEndMark,  // '\n'
+                //             gwxMark,  // gwxMark
+                //             fMark,  // "f_"
+                //             fileContentMap,   // fileContentMap
+                //             errorMessage,   // 错误信息
+                //             &v304,  // map<string, ?>
+                //             &v309,  // ???
+                //             &v311,  // ???
+                //             (mark & 4) != 0,  // a11 -> mark
+                //             (mark & 0x20) != 0);
+                if (parseResult) {
+                    return parseResult;
+                }
+            }
+                
+            return 0;
+        }
+    
+    
+        int DealWxsTag(
+            std::string const& a1,
+            std::string &a2,
+            std::string& a3,
+            std::string& a4,
+            std::string& a5,
+            int & a6,
+            std::string& a7)
+        {
+            int pos = a2.find('>', a2[4]);
+            std::string sub;
+            if (a2[pos - 1] == '/')
+            {
+                // 这个尖括号附近是这样的：/>
+                sub = a2.substr(a2[4] + 1, pos + 1 - a2[4] - 6);
+            }
+            else
+            {
+                sub = a2.substr(a2[4] + 1, pos + 1 - a2[4] - 5);
+            }
+            std::string data = "<fak";
+            data = data.append(sub);
+            data = data.append("/>");
+            for (int i = 1; i < a2[2]; i++)
+            {
+                data = "\n" + data;
+            }
+            for (int i = 1; i < a2[3]; i++)
+            {
+                data = " " + data;
+            }
+            // WXML::DOMLib::Parser::Parser(data);
+            return 0;
+        }
 
-    Compiler::~Compiler()
-    {
-    }
-    void Compiler::GetVersionInfo(std::string &a1, std::string a2) {
-        std::stringstream result;
-        result << "/*";
-        result << "v0.5vv_20200413_syb_scopedata";
-        result << "*/";
+        void GetVersionInfo(std::string &a1, std::string a2) 
+        {
+            std::stringstream result;
+            result << "/*";
+            result << "v0.5vv_20200413_syb_scopedata";
+            result << "*/";
 
-        result << a2;
-        result << ".__wcc_version__='";
-        result << "v0.5vv_20200413_syb_scopedata";
-        result << "';";
-        result << a2;
-        result << ".__wcc_version_info__={\"customComponents\":true,\"fixZeroRpx\":true,\"propValueDeepCopy\":false};";
-        result.str(a1);
-    }
-    void Compiler::WXMLHelperCode(std::string &result) {
-        result.assign(aIfThisThisGUnd);
-    }
+            result << a2;
+            result << ".__wcc_version__='";
+            result << "v0.5vv_20200413_syb_scopedata";
+            result << "';";
+            result << a2;
+            result << ".__wcc_version_info__={\"customComponents\":true,\"fixZeroRpx\":true,\"propValueDeepCopy\":false};";
+            result.str(a1);
+        }
+        
+        int ParseSource(
+            std::string const& content,  // 源码？
+            std::string const& fileName,  // 文件名？
+            char lineEndMark,  // '\n'
+            std::string const& gwxMark, // gwxMark
+            std::string& fMark, // "f_"
+            std::map<std::string,std::string> const&, // fileContentMap
+            std::string& errorMessage, // 错误信息
+            std::map<std::string,WXML::DOMLib::WXMLDom> result,// map<string, ?>
+            std::map<std::string,std::string>& map1,// ???
+            std::map<std::string,int> map2, // ???
+            bool b1, // mark指定运算结果是否非0
+            bool b2)  // mark指定运算结果是否非0
+        {
+            bool isWxml = fileName.substr(fileName.length() - 5) == ".wxml";
+            if (isWxml) 
+            {
+                // parse
+                int parseResult = 0;
+                if (parseResult)
+                    return parseResult;
+
+                if (!parseResult) 
+                {
+                    // GetParsed
+                    // result[fileName] = ""
+                    int a;
+                    int b;
+                    std::stringstream ss;
+                    if (a != b) 
+                    {
+                        ss << "f_['";
+                        // ss << ToStringCode(fileName);
+                        ss << "']={};";
+                        ss << lineEndMark;
+                    }
+                    for (int i = 0; i < 99; i++)
+                    {
+                        /* code */
+                        int dealResult = 0;
+                        std::string t;
+                        // dealResult = DealWxsTag(fileName, , t);
+                        if (dealResult) 
+                        {
+                            // 非0
+                            return dealResult;
+                        }
+                        ss << fMark;
+                        ss <<  "['";
+                        //ss <<  ToStringCode(fileName);
+                        ss <<  "']['";
+                        //ss <<  ToStringCode(t);
+                        ss <<  "'] =";
+
+                        int r = 1;
+                        if (r)
+                        {
+                            std::string ret;
+                            // PathCombine(fileName, ??, ret);
+                            if (ret[0] == '/')
+                            {
+                                ret = '.' + ret;
+                            }
+                            if (/*??? && */ (gwxMark == "$gwx" || b2))
+                            {
+                                std::stringstream errs;
+                                errs << fileName;
+                                errs << ":";
+                                // errs << v65; // 行号?
+                                errs << ":";
+                                // errs << v66[28 * i + 3];
+                                errs << ":";
+                                // errs << v76; // 文件的某种路径
+                                errs << " not found from ";
+                                errs << fileName;
+                                errorMessage = errs.str();
+
+                                // 清空
+                                errs.clear();
+                                return 1;
+                            }
+                            ss << "f_['";
+                            // ss << ToStringCode(v81);
+                            ss << "'] || ";
+
+                            ss << "nv_require(\"";
+                            // ss << ToStringCode("p_" + v81);
+                            ss << "\");";
+                            ss << lineEndMark;
+
+                            ss << fMark;
+                            ss << "['";
+                            // ss << ToStringCode(fileName);
+                            ss << "']['";
+                            // ss << ToStringCode(v74);
+                            ss << "']();";
+                            ss << lineEndMark;
+
+                        }
+                        else
+                        {
+                            std::string data = "m_" + fileName;
+                            data = data.append(":");
+                            data = data.append(t);
+                            // GetFuncId
+                            // compile_ns
+                            int compilerResult = 1;
+                            if (compilerResult)
+                            {
+                                return compilerResult;
+                            }
+                            ss << "nv_require(\"";
+                            std::string m = "m_" + fileName;
+                            m = m.append(":");
+                            // m = m.append(v74);
+                            // ss << ToStringCode(m);
+                            ss << "\");";
+                            ss << lineEndMark;
+
+                            // ss << v72;
+                            ss << lineEndMark;
+                        }
+
+                    }
+                    std::string code = ss.str();
+
+                    if (1)
+                    {
+                        map1[fileName].assign(code);
+                    }
+                    
+                }
+            }
+            else if(fileName.substr(fileName.length() - 4) == ".wxs") 
+            {
+                std::string p = "p_" + fileName;
+                // GetFuncId(map2)
+                // compile_ns
+                int compilerResultCode = 0;
+                if (compilerResultCode) {
+                    errorMessage.assign("error...");
+                    return compilerResultCode;
+                }
+                else
+                {
+                    std::stringstream code;
+                    code << "f_['";
+                    // code << ToStringCode(fileName);
+                    code << "'] = nv_require(";
+                    code << '"';
+                    // code << ToStringCode("p_" + fileName);
+                    code << "\");";
+                    code << lineEndMark;
+
+                    // code << compileResultData;
+                    code << lineEndMark;
+
+                    std::string strCode = code.str();
+                    map1[fileName] = strCode;
+
+                }
+            }
+            return 0;
+        }
+        void WXMLHelperCode(std::string &result) 
+        {
+            result.assign(aIfThisThisGUnd);
+        }
+    } // namespace Compiler
+    
+    
 }

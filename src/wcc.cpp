@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
+#include <set>
 #include "include/file.h"
 #include "include/usage.h"
 #include "include/string_utils.h"
@@ -11,8 +12,6 @@ using namespace std;
 
 int main(int argc, const char **argv) {
 
-    printf("argc: %d\n", argc);
-
     string gwxMark = "$gwx";
     string splitMarkStr = " ";
     bool hasConfigParam = false;
@@ -20,6 +19,7 @@ int main(int argc, const char **argv) {
     vector<string> paramList;
     string configData;
 
+    // 第一个参数是程序路径，忽略
     for (int i = 1; i < argc; i++)
     {
         
@@ -50,19 +50,21 @@ int main(int argc, const char **argv) {
     bool version = false;
     bool hasXCParam = false;
     bool hasCompleteCodeParam = false;
+    bool isLLA = false;
     bool hasLL = false;
     string xc_Or_completeCode_Param;
     string outputFileName;
-    vector<string> temp;
+    vector<string> fileList;
     vector<string> splitedData;
     map<string, string> mapData1;
-    map<string, string> fileData;
+    map<string, string> fileContentMap;
+    map<string, vector<string>> vecFileContentMap;
     for (int i = 0; i < paramList.size(); i++)
     {
         string param = paramList[i];
         if (param[0] != '-') {
             // 不是参数名，跳过
-            temp.push_back(param);
+            fileList.push_back(param);
             continue;
         }
 
@@ -89,8 +91,9 @@ int main(int argc, const char **argv) {
                 continue;
             }
             if (i + 1 < paramList.size()) {
-                temp.push_back(paramList[i + 1]);
+                fileList.push_back(paramList[i + 1]);
                 isReadFromStdin = true;
+                continue;
             }
             break;
         case 'v':
@@ -100,11 +103,12 @@ int main(int argc, const char **argv) {
                 mark |= 0x10u;
             else
                 version = true;
+            continue;
             break;
         case 'x':
         // -xc output simplified code for custom component
             /* code */
-            if(param[2] == 'c' && i < paramList.size()) {
+            if(param[2] == 'c' && i  + 1 < paramList.size()) {
                 hasXCParam = true;
                 if(paramList[i + 1][0] != '-') {
                     xc_Or_completeCode_Param.assign(paramList[i + 1]);
@@ -132,6 +136,7 @@ int main(int argc, const char **argv) {
             if (i + 1 < paramList.size()) {
                 outputFileName = paramList[i + 1];
                 i++;
+                continue;
             }
             break;
         case 'g':
@@ -140,22 +145,26 @@ int main(int argc, const char **argv) {
             if (param[2] == 'n' && i + 1 < paramList.size()) {
                 gwxMark.assign(paramList[i + 1]);
                 i++;
+                continue;
             }
             break;
         
         case 'p':
             /* code */
             mark |= 0x20u;
+            continue;
             break;
         
         case 't':
             /* code */
             mark |= 1u;
+            continue;
             break;
         
         case 'i':
             /* code */
             mark |= 0x40u;
+            continue;
             break;
         
         default:
@@ -197,6 +206,7 @@ int main(int argc, const char **argv) {
                         printf("Error: expected -llw or -lla, but got %s\n", param.c_str());
                         return -1;
                     }
+                    isLLA = true;
                 }
                 string splitMark;
                 if (!splitMarkStr.compare(" ")) {
@@ -206,7 +216,9 @@ int main(int argc, const char **argv) {
                     // 不是空格
                     splitMark = splitMarkStr;
                 }
+                // 分割 -llw -lla 接下来的一个参数
                 split(splitedData, paramList[i + 1], splitMark);
+                i++;
                 hasLL = true;
             }
         }
@@ -223,7 +235,7 @@ int main(int argc, const char **argv) {
         }
     }
 
-    if (temp.empty()) {
+    if (fileList.empty()) {
         usage(argc, argv);
         return 0;
     }
@@ -231,69 +243,84 @@ int main(int argc, const char **argv) {
     if (isReadFromStdin) {
         string content;
         readFile(0, content);
-        fileData[temp[0]] = content;
+        fileContentMap[fileList[0]] = content;
     }
     else {
 
         // 读取文件内容
-        for (int i = 0; i < temp.size(); i++)
+        for (int i = 0; i < fileList.size(); i++)
         {
             string content;
-            readFile(temp[i].c_str(), content);
-            fileData[temp[i]] = content;
+            readFile(fileList[i].c_str(), content);
+            fileContentMap[fileList[i]] = content;
         }
         
     }
     
-    if (true) {
+    // 此if条件x64dbg得出
+    if (!xc_Or_completeCode_Param.empty())
+    {
         string data;
+        string arg2;
+        vector<string> list;
         data = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
         unsigned long long count = strtoull(&data[0], 0, 10);
         for (unsigned long long i = 0; i < count; i++)
         {
-            string data1 = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
+            string arg1 = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
             data = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
             unsigned long long jCount = strtoull(&data[0], 0, 10);
             vector<string> list;
             for (unsigned long long i = 0; i < jCount; i++)
             {
-                string data2 = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
-                list.push_back(data2);
-                vector<string>::iterator it = find(splitedData.begin(), splitedData.end(), data2);
-                if (it == splitedData.end()) {
-                    splitedData.push_back(data2);
+                arg2 = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
+                list.push_back(arg2);
+                auto it = vecFileContentMap.find(arg2);
+                if (it == vecFileContentMap.end()) 
+                {
+                    list.push_back(arg2);
                 }
             }
-            auto fileContent = fileData.lower_bound(data1);
-            if (fileContent == fileData.end()) {
-                // fileData.ins(data1, 5)
+            // TODO: 还有问题
+            auto it = vecFileContentMap.lower_bound(arg1);
+            if (it == vecFileContentMap.end() || arg1 < it->first) 
+            {
+                vector<string> d;
+                vecFileContentMap.emplace(arg1, d);
             }
-            //TODO...
             
         }
-        
+        vecFileContentMap["ALL"] = list;
     }
 
     //
-    if (hasLL) {
-        for (int i = 0; i < 999; i++)
+    if (hasLL) 
+    {
+        // 处理文件路径
+        for (int i = 0; i < splitedData.size(); i++)
         {
-            /* code */
+            string path = splitedData[i];
+            if (path[0] == '.' && path[1] == '/') 
+            {
+                // 以"./"开头，去掉前两个字符
+                splitedData[i] = path.substr(2);
+            }
         }
         map<string, string> outputMap;
         const char off_5403C3[] = {'s','\0','e','\0'};
         int compilerResult = 0;
+        string errorMessage;
         // compilerResult = WXML::Compiler::CompileLazy(
-        //            &v107,
-        //            (int *)v111,
+        //            fileContentMap,
+        //            errorMessage,
         //            outputMap,
         //            &v101,
         //            &v121,
-        //            v126,
-        //            (int *)&v92,
-        //            &v105,
-        //            v53,
-        //            (int)gwxMark,
+        //            vecFileContentMap, // vecFileContentMap
+        //            splitedData,
+        //            mapData1,
+        //            isLLA,
+        //            gwxMark,
         //            mark,
         //            10,
         //            &off_5403C3[2],
@@ -309,7 +336,8 @@ int main(int argc, const char **argv) {
         // while()
 
         // if()
-        if (1) {
+        if (1) 
+        {
             string helperCode;
             WXML::Compiler::WXMLHelperCode(helperCode);
             string data = "var __wxAppData=__wxAppData||{};var __wxAppCode__=__wxAppCode__||{};var global=global||{};var __WXML_GLOBAL__="
@@ -321,7 +349,8 @@ int main(int argc, const char **argv) {
             data = data + helperCode;
             outputMap["__COMMON__"] = data;
         }
-        else {
+        else 
+        {
             string helperCode;
             WXML::Compiler::WXMLHelperCode(helperCode);
             string commonData = "var __wxAppData=__wxAppData||{};var __wxAppCode__=__wxAppCode__||{};var global=global||{};var __WXML_GLOBAL__="
@@ -343,7 +372,8 @@ int main(int argc, const char **argv) {
             /* code */
             if (j == "") break;
 
-            if (j[11] != j[10]) {
+            if (j[11] != j[10]) 
+            {
                 stringstream dep;
                 dep << "__WXML_DEP__[\"";
                 dep << "\"]=[";
@@ -389,7 +419,7 @@ int main(int argc, const char **argv) {
         //            v53,
         //            (int *)gwxMark,
         //            mark,
-        //            10,
+        //            '\n',
         //            off_5403C3[2],   // off_5403C3[2]
         //            off_5403C3,   // off_5403C3
         //            "gg",    // "gg"
