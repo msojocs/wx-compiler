@@ -14,5 +14,9 @@ namespace WXML {
         WXMLDom::~WXMLDom()
         {
         }
+        bool WXMLDom::operator==(std::string tag)
+        {
+            return this->tag.compare(tag) == 0;
+        }
     }
 }

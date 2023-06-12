@@ -312,6 +312,100 @@ namespace WXML{
             }
             return pResult;
         }
+        int RenderDefine(
+            WXML::DOMLib::WXMLDom & a1,
+            std::string const& a2,
+            std::map<std::string,std::string> &a3,
+            std::string& a4,
+            std::stringstream & a5,
+            std::map<std::string,std::string> const& a6,
+            bool a7,
+            uint a8,
+            char a9,
+            std::string const& a10,
+            std::string const& a11,
+            std::string const& a12,
+            std::string const& a13,
+            std::string const& a14,
+            std::string const& a15,
+            std::string const& a16,
+            std::string const& a17,
+            std::string const& a18,
+            std::string const& a19,
+            std::string const& a20
+            )
+        {
+            try
+            {
+                if (a1 == "template")
+                {
+                    auto it = a1.offset_12.find("name");
+                    if (it != a1.offset_12.end())
+                    {
+                        a1.tag.replace(0, a1.tag.size(), "wx-define", 9u);
+                    }
+                }
+                if (a1 == "wx-define")
+                {
+                    auto token = a1.offset_12["name"];
+                    auto attr = token.ToAttrContent();
+                    a3[attr].assign(a2);
+                    // WXML::DOMLib::WXMLDom::RenderMeAsFunction(
+                    //                          a1,
+                    //                          (int *)a2,
+                    //                          a14,
+                    //                          a4,
+                    //                          (int *)v31,
+                    //                          a5,
+                    //                          (int *)v33,
+                    //                          a10,
+                    //                          a11,
+                    //                          a12,
+                    //                          (int *)v32, // "r"
+                    //                          a15,
+                    //                          a9,
+                    //                          a16,
+                    //                          1,
+                    //                          a7,
+                    //                          a8,
+                    //                          a20);
+
+                }
+                for (int i = 0; i < 6; i++)
+                {
+                    /* code */
+                    // WXML::Compiler::RenderDefine(
+                    //         v23 + 8 * i,
+                    //         a2,
+                    //         a3,
+                    //         a4,
+                    //         a5,
+                    //         a6,
+                    //         a7,
+                    //         a8,
+                    //         a9,
+                    //         a10,
+                    //         a11,
+                    //         a12,
+                    //         a13,
+                    //         a14,
+                    //         a15,
+                    //         a16,
+                    //         a17,
+                    //         a18,
+                    //         a19,
+                    //         a20);
+                }
+                
+                
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+            return 0;
+            
+        }
         void WXMLHelperCode(std::string &result) 
         {
             result.assign(aIfThisThisGUnd);

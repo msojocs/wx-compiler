@@ -6,9 +6,24 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <cstring>
 
 namespace WXML
 {
+    class NameAllocator
+    {
+    private:
+        /* data */
+        std::string offset_1; // v5
+        std::string offset_7; // v4
+    public:
+        std::string ALPAHBET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        static int ALPAHBETLEN;
+        NameAllocator(std::string const&,std::string const&);
+        ~NameAllocator();
+        void GetNextName(std::string &);
+    };
+    
     
 
     namespace DOMLib
@@ -43,19 +58,6 @@ namespace WXML
         */
         std::string resolvePath(std::string const& path1, std::string const& path2);
 
-        class WXMLDom
-        {
-        private:
-            /* data */
-        public:
-            WXMLDom(/* args */);
-            ~WXMLDom();
-            void Error();
-        };
-        
-
-        void recurseDependencies(WXML::DOMLib::WXMLDom const&,std::string const&,std::set<std::string> &);
-
         
         class Token
         {
@@ -81,6 +83,41 @@ namespace WXML
             ~Token();
         };
         
+
+        class WXMLDom
+        {
+        private:
+            /* data */
+        public:
+            std::string tag;
+            std::map<std::string, WXML::DOMLib::Token> offset_12;
+            WXMLDom(/* args */);
+            ~WXMLDom();
+            void Error();
+            // void RenderMeAsFunction(
+            //     std::string const&,
+            //     std::string const&,
+            //     std::string&,
+            //     std::string const&,
+            //     std::stringstream &,
+            //     // WXML::NameAllocator *,
+            //     std::string const&,
+            //     std::string const&,
+            //     std::string const&,
+            //     std::string const&,
+            //     std::string const&,
+            //     char,
+            //     std::string const&,
+            //     bool,
+            //     bool,
+            //     uint,
+            //     std::string const&
+            //     );
+            bool operator==(std::string tag);
+        };
+        
+
+        void recurseDependencies(WXML::DOMLib::WXMLDom const&,std::string const&,std::set<std::string> &);
 
         class Parser
         {

@@ -20,8 +20,12 @@ namespace WXML
         Token::~Token()
         {
         }
-        
-        bool IsMatch(char const&)
+        std::string Token::ToAttrContent()
+        {
+            return "";
+        }
+    
+        bool Token::IsMatch(char const&)
         {
             return true;
         }
