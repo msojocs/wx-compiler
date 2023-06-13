@@ -347,28 +347,28 @@ namespace WXML{
                 }
                 if (a1 == "wx-define")
                 {
+                    WXML::NameAllocator na(a17, a18);
                     auto token = a1.offset_12["name"];
                     auto attr = token.ToAttrContent();
                     a3[attr].assign(a2);
-                    // WXML::DOMLib::WXMLDom::RenderMeAsFunction(
-                    //                          a1,
-                    //                          (int *)a2,
-                    //                          a14,
-                    //                          a4,
-                    //                          (int *)v31,
-                    //                          a5,
-                    //                          (int *)v33,
-                    //                          a10,
-                    //                          a11,
-                    //                          a12,
-                    //                          (int *)v32, // "r"
-                    //                          a15,
-                    //                          a9,
-                    //                          a16,
-                    //                          1,
-                    //                          a7,
-                    //                          a8,
-                    //                          a20);
+                    a1.RenderMeAsFunction(
+                                             a2,
+                                             a14,
+                                             a4,
+                                             attr,
+                                             a5,
+                                             &na,
+                                             a10,
+                                             a11,
+                                             a12,
+                                             "r", // "r"
+                                             a15,
+                                             a9,
+                                             a16,
+                                             1,
+                                             a7,
+                                             a8,
+                                             a20);
 
                 }
                 for (int i = 0; i < 6; i++)

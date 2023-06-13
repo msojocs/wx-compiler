@@ -10,6 +10,18 @@
 
 namespace WXML
 {
+    namespace Rewrite
+    {
+        void ToStringCode(char const*, int, std::stringstream &ss);
+        void ToStringCode(std::string const&, std::stringstream &);
+        void ToStringCode(std::string const&, std::string&);
+        std::string ToStringCode(std::string const&);
+        std::string ToStringCode2(char const*, int);
+        std::string ToStringCode2(std::string const&);
+        std::string ToStringCode3(char const*, int);
+        std::string ToStringCode3(std::string const&);
+    }
+
     class NameAllocator
     {
     private:
@@ -28,10 +40,6 @@ namespace WXML
 
     namespace DOMLib
     {
-        /**
-         * 参数值可能不是int
-        */
-        bool AttrsCompartor(int a1, int a2);
 
         /**
          * 拼接字符串
@@ -83,36 +91,93 @@ namespace WXML
             ~Token();
         };
         
+        /**
+         * 
+        */
+        bool AttrsCompartor(
+            std::pair<std::string,WXML::DOMLib::Token> const& a1,
+            std::pair<std::string,WXML::DOMLib::Token> const& a2);
 
+        class StrCache
+        {
+        private:
+            /* data */
+            std::map<std::string, int> d;
+            std::vector<std::string> offset_6;
+        public:
+            StrCache(/* args */);
+            ~StrCache();
+            void RenderPathDefine(std::stringstream ss);
+            void Insert(std::string);
+            int GetStrID(std::string);
+        };
+        
         class WXMLDom
         {
         private:
             /* data */
+            std::string type;
+            bool offset_28;
+            int offset_92;
+            int offset_96;
+            StrCache offset_62;
         public:
             std::string tag;
             std::map<std::string, WXML::DOMLib::Token> offset_12;
             WXMLDom(/* args */);
             ~WXMLDom();
             void Error();
-            // void RenderMeAsFunction(
-            //     std::string const&,
-            //     std::string const&,
-            //     std::string&,
-            //     std::string const&,
-            //     std::stringstream &,
-            //     // WXML::NameAllocator *,
-            //     std::string const&,
-            //     std::string const&,
-            //     std::string const&,
-            //     std::string const&,
-            //     std::string const&,
-            //     char,
-            //     std::string const&,
-            //     bool,
-            //     bool,
-            //     uint,
-            //     std::string const&
-            //     );
+            void RenderMeAsFunction(
+                std::string const&,
+                std::string const&,
+                std::string&,
+                std::string const&,
+                std::stringstream &,
+                WXML::NameAllocator *,
+                std::string const&,
+                std::string const&,
+                std::string const&,
+                std::string const&,
+                std::string const&,
+                char,
+                std::string const&,
+                bool,
+                bool,
+                uint,
+                std::string const&
+                );
+            void RenderChildren(
+                std::string const& a2,
+                std::string const& a3,
+                std::string& a4,
+                std::string const& a5,
+                std::stringstream & a6,
+                WXML::NameAllocator * a7,
+                std::string const& a8,
+                std::string const& a9,
+                std::string const& a10,
+                std::string const& a11,
+                char a12,
+                bool a13,
+                uint a14,
+                std::map<std::string,std::string> * a15
+                );
+            void RenderNonDefine(
+                std::string const& a2,
+                std::string const& a3,
+                std::string& a4,
+                std::string const& a5,
+                std::stringstream &a6,
+                WXML::NameAllocator *a7,
+                std::string const& a8,
+                std::string const& a9,
+                std::string const& a10,
+                std::string const& a11,
+                char a12,
+                bool a13,
+                uint a14,
+                std::map<std::string,std::string> * a15
+                );
             bool operator==(std::string tag);
         };
         
@@ -174,6 +239,8 @@ namespace WXML
             void Feed(char,std::vector<WXML::DOMLib::Token> &,std::string &,std::vector<WXML::DOMLib::Token> &,int);
         
         };
+
+        
         
     };
 
@@ -281,15 +348,6 @@ namespace WXML
     };
 
     
-    class Rewrite
-    {
-    private:
-        /* data */
-    public:
-        Rewrite(/* args */);
-        ~Rewrite();
-
-    };
     
     
     namespace EXPRLib

@@ -10,6 +10,14 @@ namespace WXML {
         this->offset_1.assign(a2);
         this->offset_7.assign(a3);
     }
+
+    /**
+     * TODO:
+    */
+    void NameAllocator::GetNextName(std::string & a2)
+    {
+
+    }
     
     NameAllocator::~NameAllocator()
     {
