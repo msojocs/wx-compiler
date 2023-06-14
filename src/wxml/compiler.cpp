@@ -41,24 +41,22 @@ namespace WXML{
                 for (auto it = fileContentMap.begin(); it != fileContentMap.end(); it++)
                 {
                     /* code */
-                    int parseResult = 0;
-                    // parseResult = WXML::Compiler::ParseSource(
-                    //             it->second,  // 源码？
-                    //             it->first,  // 文件名
-                    //             "\n",// ？
-                    //             lineEndMark,  // '\n'
-                    //             gwxMark,  // gwxMark
-                    //             fMark,  // "f_"
-                    //             fileContentMap,   // fileContentMap
-                    //             errorMessage,   // 错误信息
-                    //             &v304,  // map<string, ?>
-                    //             &v309,  // ???
-                    //             &v311,  // ???
-                    //             (mark & 4) != 0,  // a11 -> mark
-                    //             (mark & 0x20) != 0);
-                    if (parseResult) {
-                        return parseResult;
-                    }
+                    // WXML::DOMLib::Parser parseResult = ParseSource(
+                    //             it->second,  // 源码？a2
+                    //             it->first,  // 文件名 a3
+                    //             lineEndMark,  // '\n' a4
+                    //             gwxMark,  // gwxMark a5
+                    //             fMark,  // "f_" a6
+                    //             fileContentMap,   // fileContentMap a7
+                    //             errorMessage,   // 错误信息 a8
+                    //             &v304,  // map<string, WXML::DOMLib::WXMLDom> a9
+                    //             &v309,  // ??? a10
+                    //             &v311,  // ??? a11 
+                    //             (mark & 4) != 0,  // a11 -> mark a12
+                    //             (mark & 0x20) != 0); // a13
+                    // if (parseResult) {
+                    //     return parseResult;
+                    // }
                 }
                 std::shared_ptr<std::stringstream> v301_localCommonStream1; // v301
                 ssDataMap["__COMMON__"] = v301_localCommonStream1;
@@ -147,33 +145,34 @@ namespace WXML{
         }
         
         WXML::DOMLib::Parser ParseSource(
-            std::string const& fileName,  // 文件名？
-            std::string const& content,  // 源码？
-            char lineEndMark,  // '\n'
-            std::string const& gwxMark, // gwxMark
-            std::string const& fMark, // "f_"
-            std::map<std::string,std::string> const&, // fileContentMap
-            std::string& errorMessage, // 错误信息
-            std::map<std::string,WXML::DOMLib::WXMLDom> result,// map<string, ?>
-            std::map<std::string,std::string>& map1,// ???
-            std::map<std::string,int> map2, // ???
-            bool b1, // mark指定运算结果是否非0
-            bool b2)  // mark指定运算结果是否非0
+            std::string const& fileName,  // 文件名？a2
+            std::string const& content,  // 源码？a3
+            char lineEndMark,  // '\n' a4
+            std::string const& gwxMark, // gwxMark a5
+            std::string const& fMark, // "f_" a6
+            std::map<std::string,std::string> const&, // fileContentMap a7
+            std::string& errorMessage, // 错误信息 a8
+            std::map<std::string, WXML::DOMLib::WXMLDom> result,// map<string, ?> a9
+            std::map<std::string,std::string>& map1,// ??? a10
+            std::map<std::string,int> map2, // ??? a11
+            bool b1, // mark指定运算结果是否非0 a12
+            bool b2)  // mark指定运算结果是否非0 a13
         {
             WXML::DOMLib::Parser pResult;
             bool isWxml = fileName.substr(fileName.length() - 5) == ".wxml";
             if (isWxml) 
             {
                 // parse
-                int parseResult = 0;
-                // pResult.Parse();
-                if (parseResult)
-                    throw "";
+                bool parseResult = false;
+                WXML::DOMLib::Parser v50;
+                std::vector<WXML::DOMLib::Token> tokenList; // v102
+                parseResult = v50.Parse(content.c_str(), errorMessage, fileName, tokenList);
 
-                if (!parseResult) 
+                if (parseResult) 
                 {
                     // GetParsed
-                    // result[fileName] = ""
+                    // WXML::DOMLib::WXMLDom parseDom = v50.GetParsed();
+                    // result[fileName] = parseDom;
                     int a;
                     int b;
                     std::stringstream ss;

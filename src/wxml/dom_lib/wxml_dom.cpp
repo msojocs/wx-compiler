@@ -158,30 +158,30 @@ namespace WXML {
                 std::string sc = WXML::Rewrite::ToStringCode(a2);
                 a6 << sc << ":" << this->tag << ":" << this->offset_92 << ":" << this->offset_96 << "\")";
             }
-            if (this->type == "TEXTNODE")
+            if (this->tag == "TEXTNODE")
             {
 
             }
-            if (this->type == "wx-define"
-                ||this->type == "wx-import"
-                ||this->type == "import"
-                ||this->type == "template")
+            if (this->tag == "wx-define"
+                ||this->tag == "wx-import"
+                ||this->tag == "import"
+                ||this->tag == "template")
             {
 
             }
-            if (this->type == "wx-repeat")
+            if (this->tag == "wx-repeat")
             {
 
             }
-            if (this->type == "block")
+            if (this->tag == "block")
             {
                 
             }
-            if (this->type == "include")
+            if (this->tag == "include")
             {
                 
             }
-            if (this->type == "wx-template")
+            if (this->tag == "wx-template")
             {
                 
             }
@@ -199,6 +199,101 @@ namespace WXML {
             //     ".rawAttr="
             // }
             
+        }
+        void WXMLDom::RecordAllPath(void)
+        {
+            if(this->tag == "import" || this->tag == "include")
+            {
+                std::string v13 = "src";
+                int v8 = this->offset_12.count(v13);
+                if (v8)
+                {
+                    std::string attr = this->offset_12[v13].ToAttrContent();
+                    
+                }
+            }
+        }
+        void WXMLDom::Print(int,char const*,std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>> *)
+        {
+
+        }
+        void WXMLDom::PrintMe(
+            int a2,
+            char const* a3,
+            std::stringstream* a4)
+        {
+            std::stringstream v34;
+            std::stringstream *v4 = &v34;
+            if (a4)
+            {
+                v4 = a4;
+            }
+            if (v4->tellp() != 0)
+            {
+                printf("%s", a3);
+            }
+            else
+            {
+                *v4 << a3;
+            }
+            for (int i = 0; ; i++)
+            {
+                /* code */
+                if ( i >= a2)
+                    break;
+                if (v4->tellp())
+                {
+                    printf("  ");
+                }
+                else
+                {
+                    *v4 << "  ";
+                }
+            }
+            if (v4->tellp())
+            {
+                printf("pos: %d, %d, tag: %s, ", this->offset_92, this->offset_96, this->tag.c_str());
+            }
+            else
+            {
+                *v4 << "pos: " << this->offset_92 << ", " << this->offset_96 << " tag: " << this->tag << ", ";
+            }
+            
+            if (this->tag == "TEXTNODE")
+            {
+                if (v4->tellp() != 0)
+                {
+                    printf("attr: ");
+                }
+                else
+                {
+                    *v4 << "attr: ";
+                }
+                // TODO: this + 60是什么？
+                // for (size_t i = 0; i < count; i++)
+                // {
+                //     /* code */
+                // }
+                
+            }
+            else if(v4->tellp() != 0)
+            {
+                //TODO: this+84是什么？
+                printf(
+                    "pos: %d, %d, len: %d, %s",
+                    this->offset_92,
+                    this->offset_96,
+                    this->offset_104,
+                    "TODO..."
+                );
+            }
+            else
+            {
+                *v4 << "pos: " << this->offset_92
+                << ", " << this->offset_96 << ", len: " << this->offset_104
+                << ", ";
+                // *v4 << this->offset_84;
+            }
         }
         bool WXMLDom::operator==(std::string tag)
         {

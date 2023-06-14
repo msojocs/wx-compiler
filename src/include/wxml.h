@@ -7,6 +7,8 @@
 #include <set>
 #include <vector>
 #include <cstring>
+#include <memory>
+#include <deque>
 
 namespace WXML
 {
@@ -71,7 +73,10 @@ namespace WXML
         {
         private:
             /* data */
-            std::string str1;
+            int offset_16;
+            int offset_20;
+            bool offset_28;
+            std::string offset_32;
             std::string str2;
             std::string str3;
         public:
@@ -89,6 +94,21 @@ namespace WXML
             bool IsMatch(char const&);
             bool GetTemplateContent(std::string const&, std::string&);
             ~Token();
+        };
+
+        class Tokenizer
+        {
+        private:
+            /* data */
+        public:
+            Tokenizer(char const*,std::string const&);
+            Tokenizer(/* args */);
+            ~Tokenizer();
+            int GetTokens(
+                std::vector<WXML::DOMLib::Token> &,
+                std::string &,
+                std::vector<WXML::DOMLib::Token> &
+                );
         };
         
         /**
@@ -116,10 +136,11 @@ namespace WXML
         {
         private:
             /* data */
-            std::string type;
             bool offset_28;
-            int offset_92;
-            int offset_96;
+            int offset_92; // pos1
+            WXML::DOMLib::Token offset_84; // token
+            int offset_96; // pos2
+            int offset_104; // len
             StrCache offset_62;
         public:
             std::string tag;
@@ -178,6 +199,9 @@ namespace WXML
                 uint a14,
                 std::map<std::string,std::string> * a15
                 );
+            void RecordAllPath(void);
+            void Print(int,char const*,std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>> *);
+            void PrintMe(int,char const*,std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>> *);
             bool operator==(std::string tag);
         };
         
@@ -188,6 +212,12 @@ namespace WXML
         {
         private:
             /* data */
+            WXML::DOMLib::WXMLDom dom;
+            std::deque<std::string> dequeStr;
+            std::vector<WXML::DOMLib::Token> offset_88;
+            int offset_128;
+            std::string offset_328;
+            std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom;
         public:
             Parser(/* args */);
             ~Parser();
@@ -206,7 +236,7 @@ namespace WXML
                 );
             
             int Error(char const*, WXML::DOMLib::Token &);
-            std::string GetParsed();
+            WXML::DOMLib::WXMLDom GetParsed();
             std::string DOM();
             std::string DOMS();
             std::vector<std::string> ATTR_LIST();
@@ -308,20 +338,20 @@ namespace WXML
 
         // void GetFuncId();
         void GetVersionInfo(std::string &a1, std::string a2);
+
         WXML::DOMLib::Parser ParseSource(
-            std::string const& content,  // 源码？
-            std::string const& fileName,  // 文件名？
-            std::string const& ,  // ？
-            char lineEndMark,                  // '\n'
-            std::string const& gwxMark, // gwxMark
-            std::string & fMark, // "f_"
-            std::map<std::string,std::string> const&, // fileData
-            std::string&, // 错误信息
-            std::map<std::string, WXML::DOMLib::WXMLDom>,// map<string, ?>
-            std::map<std::string,std::string>&,// ???
-            std::map<std::string,int>, // ???
-            bool, // mark指定运算结果是否非0
-            bool);  // mark指定运算结果是否非0
+            std::string const& content,  // 源码？a2
+            std::string const& fileName,  // 文件名？ a3
+            char lineEndMark,                  // '\n' a4
+            std::string const& gwxMark, // gwxMark a5
+            std::string const& fMark, // "f_" a6
+            std::map<std::string,std::string> const&, // fileData a7
+            std::string&, // 错误信息 a8
+            std::map<std::string, WXML::DOMLib::WXMLDom &>,// map<string, ?> a9
+            std::map<std::string,std::string>&,// ??? a10
+            std::map<std::string,int>, // ??? a11
+            bool, // mark指定运算结果是否非0 a12
+            bool);  // mark指定运算结果是否非0 a13
         int RenderDefine(
             WXML::DOMLib::WXMLDom &,
             std::string const&,
