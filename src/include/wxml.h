@@ -38,7 +38,25 @@ namespace WXML
         void GetNextName(std::string &);
     };
     
-    
+    namespace StringTemplating
+    {
+        class Token
+        {
+        private:
+            /* data */
+        public:
+            Token(/* args */);
+            ~Token();
+        };
+        
+        
+        void Deal(
+            char const*,
+            std::string &,
+            std::vector<WXML::StringTemplating::Token> &,
+            bool &
+            );
+    }
 
     namespace DOMLib
     {
@@ -198,6 +216,10 @@ namespace WXML
                 bool a13,
                 uint a14,
                 std::map<std::string,std::string> * a15
+                );
+            bool IfHasItsElse(
+                int a2,
+                std::vector<std::string> const& a3
                 );
             void RecordAllPath(void);
             void Print(int,char const*,std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>> *);

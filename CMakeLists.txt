@@ -10,6 +10,7 @@ add_executable(wcc
     src/wcc/usage.cpp
     src/wxml/rewrite.cpp
     src/wxml/name_allocator.cpp
+    src/wxml/string_templating/token.cpp
     src/wxml/dom_lib/token.cpp
     src/wxml/dom_lib/tokenizer.cpp
     src/wxml/dom_lib/parser.cpp

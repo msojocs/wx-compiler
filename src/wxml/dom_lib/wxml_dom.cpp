@@ -295,6 +295,47 @@ namespace WXML {
                 // *v4 << this->offset_84;
             }
         }
+        bool WXMLDom::IfHasItsElse(
+            int a2,
+            std::vector<std::string> const& a3
+            )
+        {
+            bool hasElIf = true;
+            if (this->offset_12.count("wx:else") != 0)
+            {
+                hasElIf = this->offset_12.count("wx:elif");
+            }
+            if (hasElIf) return true;
+
+            bool hasIf = false;
+            if (this->offset_12.count("wx:if") != 0)
+            {
+                hasIf = this->offset_12.count("wx-if") == 0;
+            }
+            if (!hasIf)
+            {
+                int v7 = a2 - 1;
+                if(this->offset_12.begin() == this->offset_12.end())
+                {
+                    for (int i = a2 + 1; i < this->offset_12.size(); i++)
+                    {
+                        bool hasElIf = true;
+                        if(!this->offset_12.count("wx:else"))
+                        {
+                            hasElIf = this->offset_12.count("wx:elif");
+                        }
+                        if (!hasElIf)
+                        {
+                            break;
+                        }
+                        // a3[1].find()
+                        // TODO...
+                    }
+                    
+                }
+            }
+            return true;
+        }
         bool WXMLDom::operator==(std::string tag)
         {
             return this->tag.compare(tag) == 0;
