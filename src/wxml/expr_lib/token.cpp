@@ -12,15 +12,13 @@ namespace WXML
         Token::~Token()
         {
         }
-        const char * Token::GetTokenName(const char **a1)
+        const char * Token::GetTokenName()
         {
-            const char *result; // eax
-
-            result = *a1;
-            switch ( (unsigned int)*a1 )
+            const char *result;
+            switch ( this->type )
             {
                 case 0u:
-                result = (const char *)(a1 + 1);
+                result = this->tokenName.c_str();
                 break;
                 case 1u:
                 result = "$DECIMAL";

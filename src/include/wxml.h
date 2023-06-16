@@ -424,12 +424,19 @@ namespace WXML
 
         class Token
         {
+            /**
+             * 内存结构：
+             * 00 00 00 00 标识type
+             * 00 00 00 00... 当标识为0时后面为需要的动态字符串tokenName
+            */
         private:
             /* data */
+            int type;
+            std::string tokenName;
         public:
             Token(/* args */);
             ~Token();
-            static const char * GetTokenName(const char **a1);
+            const char * GetTokenName();
         };
         
         
