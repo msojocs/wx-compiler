@@ -11,13 +11,14 @@ add_executable(wcc
     src/wxml/rewrite.cpp
     src/wxml/name_allocator.cpp
     src/wxml/string_templating/token.cpp
+    src/wxml/dom_lib/parse_exception.cpp
     src/wxml/dom_lib/token.cpp
+    src/wxml/dom_lib/machine.cpp
     src/wxml/dom_lib/tokenizer.cpp
     src/wxml/dom_lib/parser.cpp
     src/wxml/compiler.cpp
     src/wxml/dom_lib/str_cache.cpp
     src/wxml/dom_lib/wxml_dom.cpp
-    src/wxml/dom_lib/machine.cpp
     src/utils/string_utils.cpp
     src/utils/file.cpp
     )

@@ -32,7 +32,7 @@ namespace WXML
         Machine::Machine(std::string const& filePath)
         {
             InitTransitTable();
-            this->filePath. assign(filePath);
+            this->filePath.assign(filePath);
         }
         
         Machine::~Machine()
@@ -183,7 +183,10 @@ namespace WXML
             }
             
         }
-        
+        void Machine::Reset()
+        {
+            
+        }
         
     }
 }

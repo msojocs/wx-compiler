@@ -9,7 +9,7 @@ namespace WXML{
     {
         
         WXML::DOMLib::Parser ParseSource(
-            std::string const& fileName,  // 文件名a2
+            std::string const& filePath,  // 文件名a2
             std::string const& content,  // 源码a3
             char lineEndMark,  // '\n' a4
             std::string const& gwxMark, // gwxMark a5
@@ -17,26 +17,26 @@ namespace WXML{
             std::map<std::string,std::string> const& fileContentMap, // fileContentMap a7
             std::string& errorMessage, // 错误信息 a8
             std::map<std::string, std::shared_ptr<WXML::DOMLib::WXMLDom>>& result,// map<string, ?> a9
-            std::map<std::string,std::string>& map1,// ??? a10
+            std::map<std::string, std::string>& map1,// ??? a10
             std::map<std::string,int>& map2, // ??? a11
             bool b1, // mark指定运算结果是否非0 a12
             bool b2)  // mark指定运算结果是否非0 a13
         {
             WXML::DOMLib::Parser pResult;
-            bool isWxml = fileName.substr(fileName.length() - 5) == ".wxml";
+            bool isWxml = filePath.substr(filePath.length() - 5) == ".wxml";
             if (isWxml)
             {
                 // parse
                 bool parseResult = false;
                 WXML::DOMLib::Parser v50;
                 std::vector<WXML::DOMLib::Token> tokenList; // v102
-                parseResult = v50.Parse(content.c_str(), errorMessage, fileName, tokenList);
+                parseResult = v50.Parse(content.c_str(), errorMessage, filePath, tokenList);
 
                 if (parseResult) 
                 {
                     // GetParsed
-                    WXML::DOMLib::WXMLDom parseDom = v50.GetParsed();
-                    // result[fileName] = parseDom;
+                    std::shared_ptr<WXML::DOMLib::WXMLDom> parseDom = v50.GetParsed();
+                    result[filePath] = parseDom;
                     int a;
                     int b;
                     std::stringstream ss;
@@ -77,7 +77,7 @@ namespace WXML{
                             if (/*??? && */ (gwxMark == "$gwx" || b2))
                             {
                                 std::stringstream errs;
-                                errs << fileName;
+                                errs << filePath;
                                 errs << ":";
                                 // errs << v65; // 行号?
                                 errs << ":";
@@ -85,7 +85,7 @@ namespace WXML{
                                 errs << ":";
                                 // errs << v76; // 文件的某种路径
                                 errs << " not found from ";
-                                errs << fileName;
+                                errs << filePath;
                                 errorMessage = errs.str();
 
                                 // 清空
@@ -112,7 +112,7 @@ namespace WXML{
                         }
                         else
                         {
-                            std::string data = "m_" + fileName;
+                            std::string data = "m_" + filePath;
                             data = data.append(":");
                             data = data.append(t);
                             // GetFuncId
@@ -123,7 +123,7 @@ namespace WXML{
                                 throw compilerResult;
                             }
                             ss << "nv_require(\"";
-                            std::string m = "m_" + fileName;
+                            std::string m = "m_" + filePath;
                             m = m.append(":");
                             // m = m.append(v74);
                             // ss << ToStringCode(m);
@@ -139,14 +139,14 @@ namespace WXML{
 
                     if (1)
                     {
-                        map1[fileName].assign(code);
+                        map1[filePath].assign(code);
                     }
                     
                 }
             }
-            else if(fileName.substr(fileName.length() - 4) == ".wxs") 
+            else if(filePath.substr(filePath.length() - 4) == ".wxs") 
             {
-                std::string p = "p_" + fileName;
+                std::string p = "p_" + filePath;
                 // GetFuncId(map2)
                 // compile_ns
                 int compilerResultCode = 0;
@@ -169,7 +169,7 @@ namespace WXML{
                     code << lineEndMark;
 
                     std::string strCode = code.str();
-                    map1[fileName] = strCode;
+                    map1[filePath] = strCode;
 
                 }
             }
@@ -213,8 +213,8 @@ namespace WXML{
                 {
                     /* code */
                     WXML::DOMLib::Parser parseResult = WXML::Compiler::ParseSource(
-                                it->second,  // 源码？a2
-                                it->first,  // 文件名 a3
+                                it->first,  // 文件路径a2
+                                it->second,  // 源码 a3
                                 lineEndMark,  // '\n' a4
                                 gwxMark,  // gwxMark a5
                                 fMark,  // "f_" a6

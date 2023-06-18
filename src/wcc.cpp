@@ -313,7 +313,6 @@ int main(int argc, const char **argv)
                 {
                     string componentName = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
                     componentList.push_back(componentName);
-                    // TODO: 确认逻辑是否正确
                     auto it = std::find(allComponentList.begin(), allComponentList.end(), componentName);
                     if (it == allComponentList.end())
                     {
@@ -342,9 +341,9 @@ int main(int argc, const char **argv)
                     splitedData[i] = path.substr(2);
                 }
             }
-            map<string, string> outputMap1;
-            map<string, string> outputMap2;
-            map<string, vector<string>> vecFileContentMap2;
+            map<string, string> outputContentMap;
+            map<string, string> outputFuncMap;
+            map<string, vector<string>> dependencyListMap;
             const char off_5403C3[] = {'s', '\0', 'e', '\0'};
             int compilerResult = 0;
             string errorMessage;
@@ -352,9 +351,9 @@ int main(int argc, const char **argv)
             compilerResult = WXML::Compiler::CompileLazy(
                 fileContentMap,
                 errorMessage,
-                outputMap1,
-                outputMap2,         // map<string, string>
-                vecFileContentMap2, // std::map<std::string,std::vector<std::string>>
+                outputContentMap,
+                outputFuncMap,         // map<string, string>
+                dependencyListMap, // std::map<std::string,std::vector<std::string>>
                 componentListMap,  // componentListMap
                 splitedData,
                 mapData1,
@@ -395,7 +394,7 @@ int main(int argc, const char **argv)
                               "LOBAL__||{};var __globalThis=(typeof __vd_version_info__!=='undefined'&&typeof __vd_version_info__.globalThis!"
                               "=='undefined')?__vd_version_info__.globalThis:(typeof window!=='undefined'?window:globalThis);";
                 data = data + helperCode;
-                outputMap1["__COMMON__"] = data;
+                outputContentMap["__COMMON__"] = data;
             }
             else
             {
@@ -408,9 +407,9 @@ int main(int argc, const char **argv)
                                     "LOBAL__||{};var __globalThis=(typeof __vd_version_info__!=='undefined'&&typeof __vd_version_info__.globalThis!"
                                     "=='undefined')?__vd_version_info__.globalThis:(typeof window!=='undefined'?window:globalThis);";
                 commonData += helperCode;
-                commonData = commonData.append(outputMap1["__COMMON__"]);
+                commonData = commonData.append(outputContentMap["__COMMON__"]);
 
-                outputMap1["__COMMON__"] = commonData;
+                outputContentMap["__COMMON__"] = commonData;
             }
 
             string dep = ";var __WXML_DEP__=__WXML_DEP__||{};";
@@ -438,7 +437,7 @@ int main(int argc, const char **argv)
                 }
             }
             // ???
-            outputMap1["__COMMON__"].append("");
+            outputContentMap["__COMMON__"].append("");
             if (compilerResult)
             {
                 // CompileLazy出现异常

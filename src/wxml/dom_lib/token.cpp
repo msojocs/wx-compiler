@@ -35,7 +35,7 @@ namespace WXML
             return v4;
         }
     
-        bool Token::IsMatch(char const&)
+        bool Token::IsMatch(char const*)
         {
             return true;
         }

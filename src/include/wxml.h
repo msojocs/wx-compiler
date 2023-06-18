@@ -109,17 +109,56 @@ namespace WXML
             */
             std::string ToAttrContent();
             bool IsValidVariableName(std::string const&);
-            bool IsMatch(char const&);
+            bool IsMatch(char const*);
             bool GetTemplateContent(std::string const&, std::string&);
             ~Token();
+        };
+
+        class ParseException
+        {
+        private:
+            /* data */
+        public:
+            ParseException(/* args */);
+            ~ParseException();
+        };
+
+        class Machine
+        {
+        private:
+            /* data */
+            static bool bInited; // 初始化标志
+            static int * TT; //类型不确定
+            static int * STT;
+            int offset_0; // offset + 0
+            int offset_1; // offset + 1
+            int lineCount;// 当前处理的行数 offset + 2
+            int lineLength; // 正在处理行的长度 offset + 3
+            int offset_4; // offset + 4
+            int offset_5; // offset + 5
+            int offset_6; // offset + 6
+            std::string filePath;  // 文件路径 offset + 7 this+28
+
+        public:
+            Machine(/* args */);
+            Machine(std::string const& filePath);
+            ~Machine();
+            void Reset(void);
+            void InitTransitTable(void);
+            void Feed(char,std::vector<WXML::DOMLib::Token> &,std::string &,std::vector<WXML::DOMLib::Token> &,int);
+        
         };
 
         class Tokenizer
         {
         private:
             /* data */
+            const char* fileContent;
+            int contentLength;
+            std::string fileName;
+            WXML::DOMLib::Machine machine; // this + 2
         public:
-            Tokenizer(char const*,std::string const&);
+            Tokenizer(char const* fileContent, std::string const& filePath);
             Tokenizer(/* args */);
             ~Tokenizer();
             int GetTokens(
@@ -234,12 +273,16 @@ namespace WXML
         {
         private:
             /* data */
-            WXML::DOMLib::WXMLDom dom;
+            std::shared_ptr<WXML::DOMLib::WXMLDom> dom;
             std::deque<std::string> dequeStr;
-            std::vector<WXML::DOMLib::Token> offset_88;
+            std::vector<WXML::DOMLib::Token> tokenList;
+            int peekIndex = 0;
+            int offset_4;
+            int offset_8;
             int offset_128;
-            std::string offset_328;
+            std::string filePath;
             std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom;
+            int v8;
         public:
             Parser(/* args */);
             ~Parser();
@@ -248,48 +291,22 @@ namespace WXML
              * wxml tag
              * view | 
             */
-            bool IsValidTag(std::string &);
+            static bool IsValidTag(std::string &);
             WXML::DOMLib::Token Peek();
             bool Parse(
                 char const*fileContent, // Str
-                std::string &, // a4
-                std::string const&, // a5
+                std::string & errorMessage, // a4
+                std::string const& filePath, // a5
                 std::vector<WXML::DOMLib::Token> & // a6
                 );
             
-            int Error(char const*, WXML::DOMLib::Token &);
-            WXML::DOMLib::WXMLDom GetParsed();
-            std::string DOM();
-            std::string DOMS();
+            WXML::DOMLib::ParseException Error(char const*, WXML::DOMLib::Token *);
+            std::shared_ptr<DOMLib::WXMLDom> GetParsed();
+            void DOM();
+            void DOMS();
             std::vector<std::string> ATTR_LIST();
             std::string ATTR();
             
-        };
-
-        class Machine
-        {
-        private:
-            /* data */
-            static bool bInited; // 初始化标志
-            static int * TT; //类型不确定
-            static int * STT;
-            int offset_0; // offset + 0
-            int offset_1; // offset + 1
-            int lineCount;// 当前处理的行数 offset + 2
-            int lineLength; // 正在处理行的长度 offset + 3
-            int offset_4; // offset + 4
-            int offset_5; // offset + 5
-            int offset_6; // offset + 6
-            std::string filePath;  // 文件路径 offset + 7
-
-        public:
-            Machine(/* args */);
-            Machine(std::string const& filePath);
-            ~Machine();
-            void Reset(void);
-            void InitTransitTable(void);
-            void Feed(char,std::vector<WXML::DOMLib::Token> &,std::string &,std::vector<WXML::DOMLib::Token> &,int);
-        
         };
 
         
@@ -301,7 +318,7 @@ namespace WXML
 
         WXML::DOMLib::Parser ParseSource(
             std::string const& content,  // 源码？a2
-            std::string const& fileName,  // 文件名？ a3
+            std::string const& filePath,  // 文件名？ a3
             char lineEndMark,                  // '\n' a4
             std::string const& gwxMark, // gwxMark a5
             std::string const& fMark, // "f_" a6
@@ -317,9 +334,9 @@ namespace WXML
             std::string& errorMessage,  // 错误信息
             std::map<std::string,std::string>& outputContentMap, // 输出1 编译后的代码映射
             std::map<std::string,std::string>& outputFuncMap,  // 输出2 编译后的函数名
-            std::map<std::string, std::vector<std::string>>&,
+            std::map<std::string, std::vector<std::string>>& dependencyListMap,
             std::map<std::string, std::vector<std::string>>& componentListMap,  // vecFileContentMap componentList 页面使用的组件列表
-            std::vector<std::string> const&,       // splitedData
+            std::vector<std::string> const& splitedData,       // splitedData
             std::map<std::string,std::string> const&, // mapData1
             bool,                // isLLA
             std::string const&,  // gwxMark
