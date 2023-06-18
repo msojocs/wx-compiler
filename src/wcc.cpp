@@ -69,7 +69,7 @@ int main(int argc, const char **argv)
         vector<string> splitedData;
         map<string, string> mapData1;
         map<string, string> fileContentMap;
-        map<string, vector<string>> vecFileContentMap;
+        map<string, vector<string>> componentListMap;
         for (int i = 0; i < paramList.size(); i++)
         {
             string param = paramList[i];
@@ -300,37 +300,33 @@ int main(int argc, const char **argv)
         if (!xc_Or_completeCode_Param.empty())
         {
             string data;
-            string arg2;
-            vector<string> list1;
-            vector<string> list2;
+            vector<string> allComponentList;
             data = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
             unsigned long long count = strtoull(&data[0], 0, 10);
             for (unsigned long long i = 0; i < count; i++)
             {
+                vector<string> componentList;
                 string arg1 = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
                 data = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
                 unsigned long long jCount = strtoull(&data[0], 0, 10);
                 for (unsigned long long i = 0; i < jCount; i++)
                 {
-                    arg2 = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
-                    list1.push_back(arg2);
-                    auto it = vecFileContentMap.find(arg2);
-                    if (it == vecFileContentMap.end())
+                    string componentName = getNextArg(xc_Or_completeCode_Param, splitMarkStr);
+                    componentList.push_back(componentName);
+                    // TODO: 确认逻辑是否正确
+                    auto it = std::find(allComponentList.begin(), allComponentList.end(), componentName);
+                    if (it == allComponentList.end())
                     {
-                        list2.push_back(arg2);
+                        allComponentList.push_back(componentName);
                     }
                 }
-                // TODO: 还有问题
-                auto it = vecFileContentMap.lower_bound(arg1);
-                if (it == vecFileContentMap.end() || arg1 < it->first)
+                auto it = componentListMap.lower_bound(arg1);
+                if (it == componentListMap.end() || arg1 < it->first)
                 {
-                    vector<string> d;
-                    vecFileContentMap.emplace(arg1, d);
+                    componentListMap.emplace(arg1, componentList);
                 }
-                // list1
-                it->second = list1;
             }
-            vecFileContentMap["ALL"] = list2;
+            componentListMap["ALL"] = allComponentList;
         }
 
         //
@@ -359,7 +355,7 @@ int main(int argc, const char **argv)
                 outputMap1,
                 outputMap2,         // map<string, string>
                 vecFileContentMap2, // std::map<std::string,std::vector<std::string>>
-                vecFileContentMap,  // vecFileContentMap
+                componentListMap,  // componentListMap
                 splitedData,
                 mapData1,
                 isLLA,

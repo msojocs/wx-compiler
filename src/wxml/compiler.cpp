@@ -8,159 +8,23 @@ namespace WXML{
     namespace Compiler
     {
         
-        int CompileLazy(
-            std::map<std::string,std::string> const& fileContentMap,
-            std::string& errorMessage,  // 错误信息
-            std::map<std::string,std::string>& outputMap, // 输出
-            std::map<std::string,std::string>& dict,  // 输出
-            std::map<std::string, std::vector<std::string>>,
-            std::map<std::string, std::vector<std::string>>, // vecFileContentMap
-            std::vector<std::string> const& splitedData,       // splitedData
-            std::map<std::string,std::string> const& mapData1, // mapData1
-            bool isLLA,                // isLLA
-            std::string const& gwxMark,  // gwxMark
-            uint mark,                // mark
-            char lineEndMark,                // '\n'
-            std::string const& ,  // 'e'
-            std::string const& ,  // const char off_5403C3[] = {'s','\0','e','\0'}
-            std::string const& ggMark,  // "gg"
-            std::string const& eMark,  // "e_"
-            std::string const& dMark,  // "d_"
-            std::string const& pMark,  // "p_"
-            std::string const& strEndMark,  // '\0'
-            std::string const& boxMark,  // "boxofchocolate"
-            std::string const& gdwxMark,  // "$gdwx"
-            std::string const& fMark  // "f_"
-            ) 
-        {
-            try
-            {
-                /* code */
-                std::map<std::string, std::shared_ptr<std::stringstream>> ssDataMap;
-                std::map<std::string,std::vector<std::string>> v307_localVecStrMap1;
-                for (auto it = fileContentMap.begin(); it != fileContentMap.end(); it++)
-                {
-                    /* code */
-                    // WXML::DOMLib::Parser parseResult = ParseSource(
-                    //             it->second,  // 源码？a2
-                    //             it->first,  // 文件名 a3
-                    //             lineEndMark,  // '\n' a4
-                    //             gwxMark,  // gwxMark a5
-                    //             fMark,  // "f_" a6
-                    //             fileContentMap,   // fileContentMap a7
-                    //             errorMessage,   // 错误信息 a8
-                    //             &v304,  // map<string, WXML::DOMLib::WXMLDom> a9
-                    //             &v309,  // ??? a10
-                    //             &v311,  // ??? a11 
-                    //             (mark & 4) != 0,  // a11 -> mark a12
-                    //             (mark & 0x20) != 0); // a13
-                    // if (parseResult) {
-                    //     return parseResult;
-                    // }
-                }
-                std::shared_ptr<std::stringstream> v301_localCommonStream1; // v301
-                ssDataMap["__COMMON__"] = v301_localCommonStream1;
-                std::vector<std::string> commonVec;
-                v307_localVecStrMap1["__COMMON__"] = commonVec;
-
-                for (int i = 0; i < splitedData.size(); i++)
-                {
-                    std::shared_ptr<std::stringstream> v328_ss;
-                    auto it = ssDataMap.lower_bound(splitedData[i]);
-                    if (it == ssDataMap.end())
-                    {
-
-                    }
-                    std::string path = "./" + splitedData[i] + ".wxml";
-                    std::vector<std::string> j;
-                    j.push_back(path);
-                    v307_localVecStrMap1[splitedData[i]] = j;
-                }
-                // for (auto it = splitedData.begin(); it != splitedData.end(); it++)
-                // {
-                    
-                // }
-                
-                    
-            }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
-            }
-            
-            return 0;
-        }
-    
-    
-        int DealWxsTag(
-            std::string const& a1,
-            std::string &a2,
-            std::string& a3,
-            std::string& a4,
-            std::string& a5,
-            int & a6,
-            std::string& a7)
-        {
-            int pos = a2.find('>', a2[4]);
-            std::string sub;
-            if (a2[pos - 1] == '/')
-            {
-                // 这个尖括号附近是这样的：/>
-                sub = a2.substr(a2[4] + 1, pos + 1 - a2[4] - 6);
-            }
-            else
-            {
-                sub = a2.substr(a2[4] + 1, pos + 1 - a2[4] - 5);
-            }
-            std::string data = "<fak";
-            data = data.append(sub);
-            data = data.append("/>");
-            for (int i = 1; i < a2[2]; i++)
-            {
-                data = "\n" + data;
-            }
-            for (int i = 1; i < a2[3]; i++)
-            {
-                data = " " + data;
-            }
-            // WXML::DOMLib::Parser::Parser(data);
-            // TODO...
-            return 0;
-        }
-
-        void GetVersionInfo(std::string &a1, std::string a2) 
-        {
-            std::stringstream result;
-            result << "/*";
-            result << "v0.5vv_20200413_syb_scopedata";
-            result << "*/";
-
-            result << a2;
-            result << ".__wcc_version__='";
-            result << "v0.5vv_20200413_syb_scopedata";
-            result << "';";
-            result << a2;
-            result << ".__wcc_version_info__={\"customComponents\":true,\"fixZeroRpx\":true,\"propValueDeepCopy\":false};";
-            result.str(a1);
-        }
-        
         WXML::DOMLib::Parser ParseSource(
-            std::string const& fileName,  // 文件名？a2
-            std::string const& content,  // 源码？a3
+            std::string const& fileName,  // 文件名a2
+            std::string const& content,  // 源码a3
             char lineEndMark,  // '\n' a4
             std::string const& gwxMark, // gwxMark a5
             std::string const& fMark, // "f_" a6
-            std::map<std::string,std::string> const&, // fileContentMap a7
+            std::map<std::string,std::string> const& fileContentMap, // fileContentMap a7
             std::string& errorMessage, // 错误信息 a8
-            std::map<std::string, WXML::DOMLib::WXMLDom> result,// map<string, ?> a9
+            std::map<std::string, std::shared_ptr<WXML::DOMLib::WXMLDom>>& result,// map<string, ?> a9
             std::map<std::string,std::string>& map1,// ??? a10
-            std::map<std::string,int> map2, // ??? a11
+            std::map<std::string,int>& map2, // ??? a11
             bool b1, // mark指定运算结果是否非0 a12
             bool b2)  // mark指定运算结果是否非0 a13
         {
             WXML::DOMLib::Parser pResult;
             bool isWxml = fileName.substr(fileName.length() - 5) == ".wxml";
-            if (isWxml) 
+            if (isWxml)
             {
                 // parse
                 bool parseResult = false;
@@ -171,7 +35,7 @@ namespace WXML{
                 if (parseResult) 
                 {
                     // GetParsed
-                    // WXML::DOMLib::WXMLDom parseDom = v50.GetParsed();
+                    WXML::DOMLib::WXMLDom parseDom = v50.GetParsed();
                     // result[fileName] = parseDom;
                     int a;
                     int b;
@@ -311,6 +175,143 @@ namespace WXML{
             }
             return pResult;
         }
+        
+        int CompileLazy(
+            std::map<std::string,std::string> const& fileContentMap, // a2
+            std::string& errorMessage,  // 错误信息 a3
+            std::map<std::string,std::string>& outputContentMap, // 输出 a4
+            std::map<std::string,std::string>& outputFuncMap,  // 输出 a5
+            std::map<std::string, std::vector<std::string>>& dependencyListMap, // a6
+            std::map<std::string, std::vector<std::string>>& componentListMap, // componentListMap a7
+            std::vector<std::string> const& splitedData,       // splitedData a8
+            std::map<std::string,std::string> const& mapData1, // mapData1 a9
+            bool isLLA,                // isLLA a10
+            std::string const& gwxMark,  // gwxMark a11
+            uint mark,                // mark
+            char lineEndMark,                // '\n'
+            std::string const& eMark1,  // 'e'
+            std::string const& charArr,  // const char off_5403C3[] = {'s','\0','e','\0'}
+            std::string const& ggMark,  // "gg"
+            std::string const& eMark,  // "e_"
+            std::string const& dMark,  // "d_"
+            std::string const& pMark,  // "p_"
+            std::string const& strEndMark,  // '\0'
+            std::string const& boxMark,  // "boxofchocolate"
+            std::string const& gdwxMark,  // "$gdwx"
+            std::string const& fMark  // "f_"
+            ) 
+        {
+            try
+            {
+                /* code */
+                std::map<std::string, std::shared_ptr<std::stringstream>> ssDataMap;
+                std::map<std::string, std::vector<std::string>> v307_localVecStrMap1;
+                std::map<std::string, std::shared_ptr<DOMLib::WXMLDom>> v304;
+                std::map<std::string, std::string> v309;
+                std::map<std::string, int> v311;
+                for (auto it = fileContentMap.begin(); it != fileContentMap.end(); it++)
+                {
+                    /* code */
+                    WXML::DOMLib::Parser parseResult = WXML::Compiler::ParseSource(
+                                it->second,  // 源码？a2
+                                it->first,  // 文件名 a3
+                                lineEndMark,  // '\n' a4
+                                gwxMark,  // gwxMark a5
+                                fMark,  // "f_" a6
+                                fileContentMap,   // fileContentMap a7
+                                errorMessage,   // 错误信息 a8
+                                v304,  // map<string, WXML::DOMLib::WXMLDom> a9
+                                v309,  // ??? a10
+                                v311,  // ??? a11 
+                                (mark & 4) != 0,  // a11 -> mark a12
+                                (mark & 0x20) != 0); // a13
+                }
+                std::shared_ptr<std::stringstream> v301_localCommonStream1; // v301
+                ssDataMap["__COMMON__"] = v301_localCommonStream1;
+                std::vector<std::string> commonVec;
+                v307_localVecStrMap1["__COMMON__"] = commonVec;
+
+                for (int i = 0; i < splitedData.size(); i++)
+                {
+                    std::shared_ptr<std::stringstream> v328_ss;
+                    auto it = ssDataMap.lower_bound(splitedData[i]);
+                    if (it == ssDataMap.end())
+                    {
+
+                    }
+                    std::string path = "./" + splitedData[i] + ".wxml";
+                    std::vector<std::string> j;
+                    j.push_back(path);
+                    v307_localVecStrMap1[splitedData[i]] = j;
+                }
+                // for (auto it = splitedData.begin(); it != splitedData.end(); it++)
+                // {
+                    
+                // }
+                
+                    
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+            
+            return 0;
+        }
+    
+    
+        int DealWxsTag(
+            std::string const& a1,
+            std::string &a2,
+            std::string& a3,
+            std::string& a4,
+            std::string& a5,
+            int & a6,
+            std::string& a7)
+        {
+            int pos = a2.find('>', a2[4]);
+            std::string sub;
+            if (a2[pos - 1] == '/')
+            {
+                // 这个尖括号附近是这样的：/>
+                sub = a2.substr(a2[4] + 1, pos + 1 - a2[4] - 6);
+            }
+            else
+            {
+                sub = a2.substr(a2[4] + 1, pos + 1 - a2[4] - 5);
+            }
+            std::string data = "<fak";
+            data = data.append(sub);
+            data = data.append("/>");
+            for (int i = 1; i < a2[2]; i++)
+            {
+                data = "\n" + data;
+            }
+            for (int i = 1; i < a2[3]; i++)
+            {
+                data = " " + data;
+            }
+            // WXML::DOMLib::Parser::Parser(data);
+            // TODO...
+            return 0;
+        }
+
+        void GetVersionInfo(std::string &a1, std::string a2) 
+        {
+            std::stringstream result;
+            result << "/*";
+            result << "v0.5vv_20200413_syb_scopedata";
+            result << "*/";
+
+            result << a2;
+            result << ".__wcc_version__='";
+            result << "v0.5vv_20200413_syb_scopedata";
+            result << "';";
+            result << a2;
+            result << ".__wcc_version_info__={\"customComponents\":true,\"fixZeroRpx\":true,\"propValueDeepCopy\":false};";
+            result.str(a1);
+        }
+        
         int RenderDefine(
             WXML::DOMLib::WXMLDom & a1,
             std::string const& a2,

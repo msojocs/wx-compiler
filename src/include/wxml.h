@@ -299,13 +299,26 @@ namespace WXML
     namespace Compiler
     {
 
+        WXML::DOMLib::Parser ParseSource(
+            std::string const& content,  // 源码？a2
+            std::string const& fileName,  // 文件名？ a3
+            char lineEndMark,                  // '\n' a4
+            std::string const& gwxMark, // gwxMark a5
+            std::string const& fMark, // "f_" a6
+            std::map<std::string,std::string> const&, // fileData a7
+            std::string&, // 错误信息 a8
+            std::map<std::string, std::shared_ptr<DOMLib::WXMLDom>>&,// map<string, ?> a9
+            std::map<std::string,std::string>&,// ??? a10
+            std::map<std::string,int>&, // ??? a11
+            bool, // mark指定运算结果是否非0 a12
+            bool);  // mark指定运算结果是否非0 a13
         int CompileLazy(
             std::map<std::string,std::string> const& fileContent,
             std::string& errorMessage,  // 错误信息
-            std::map<std::string,std::string>& outputMap, // 输出1
-            std::map<std::string,std::string>& dict,  // 输出2 
-            std::map<std::string, std::vector<std::string>>,
-            std::map<std::string, std::vector<std::string>>,  // vecFileContentMap
+            std::map<std::string,std::string>& outputContentMap, // 输出1 编译后的代码映射
+            std::map<std::string,std::string>& outputFuncMap,  // 输出2 编译后的函数名
+            std::map<std::string, std::vector<std::string>>&,
+            std::map<std::string, std::vector<std::string>>& componentListMap,  // vecFileContentMap componentList 页面使用的组件列表
             std::vector<std::string> const&,       // splitedData
             std::map<std::string,std::string> const&, // mapData1
             bool,                // isLLA
@@ -360,20 +373,6 @@ namespace WXML
 
         // void GetFuncId();
         void GetVersionInfo(std::string &a1, std::string a2);
-
-        WXML::DOMLib::Parser ParseSource(
-            std::string const& content,  // 源码？a2
-            std::string const& fileName,  // 文件名？ a3
-            char lineEndMark,                  // '\n' a4
-            std::string const& gwxMark, // gwxMark a5
-            std::string const& fMark, // "f_" a6
-            std::map<std::string,std::string> const&, // fileData a7
-            std::string&, // 错误信息 a8
-            std::map<std::string, WXML::DOMLib::WXMLDom &>,// map<string, ?> a9
-            std::map<std::string,std::string>&,// ??? a10
-            std::map<std::string,int>, // ??? a11
-            bool, // mark指定运算结果是否非0 a12
-            bool);  // mark指定运算结果是否非0 a13
         int RenderDefine(
             WXML::DOMLib::WXMLDom &,
             std::string const&,
