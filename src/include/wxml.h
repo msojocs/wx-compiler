@@ -91,11 +91,13 @@ namespace WXML
         {
         private:
             /* data */
-            std::string offset_0;
-            int offset_16;
-            int offset_20;
+            std::string offset_0; // content
+            int offset_16; // pos
+            int offset_20; // size
             bool offset_28;
             std::string offset_32;
+            bool offset_84;
+            std::string offset_88;
         public:
             Token(/* args */);
             Token(WXML::DOMLib::Token&&);
