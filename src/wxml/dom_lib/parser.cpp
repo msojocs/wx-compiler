@@ -16,6 +16,63 @@ namespace WXML
         {
         }
         
+        void Parser::ATTR()
+        {
+            auto token = this->Peek();
+            if (!token.IsMatch(">")
+                && !token.IsMatch("/>"))
+            {
+                // if(!token)
+                // throw "unexpected attribute name"
+                int v20;
+                for (int i = 0; i < v20; i++)
+                {
+                    char v3;
+                    if ((v3 & 0xDF) - 'A' > 25
+                    && (v3 - '0') > 10
+                    && v3 != '_'
+                    && v3 != '-')
+                    {
+                        throw "unexpected attribute name";
+                    }
+                }
+                if (v20 - 1 > 0xFFFE)
+                {
+                    throw "unexpected attribute name";
+                }
+                auto v4 = token.ToString();
+                this->peekIndex++;
+                auto v19 = this->Peek();
+                if (v19.IsMatch("="))
+                {
+                    this->peekIndex++;
+                    auto v6 = this->Peek();
+                    int v22;
+                    if (v22 == 2)
+                    {
+                        this->peekIndex++;
+                        auto v7 = this->dequeDom.back();
+                    }
+                }
+                else
+                {
+                    auto v9 = this->dequeDom.back();
+
+                }
+            }
+        }
+        
+        void Parser::ATTR_LIST()
+        {
+            this->ATTR();
+            auto token = this->Peek();
+            if (!token.IsMatch(">")
+            && !token.IsMatch("/>"))
+            {
+                this->ATTR_LIST();
+            }
+        }
+        
         bool Parser::IsValidTag(std::string & tag)
         {
             return tag.compare("wx-") != 0;
@@ -36,8 +93,8 @@ namespace WXML
             if (!ret)
             {
                 std::shared_ptr<WXML::DOMLib::WXMLDom> domPtr;
-                this->dom->tag = "root";
-                domPtr.get()->tag = "root";
+                domPtr->tag = "root";
+                this->dom = domPtr;
                 dequeDom.push_back(domPtr);
                 // DOMS
                 this->DOMS();
@@ -62,7 +119,7 @@ namespace WXML
             }
             else
             {
-                if (token.IsMatch(""))
+                if (token.IsMatch("<"))
                 {
                     this->peekIndex++;
                     auto token = this->Peek();
@@ -72,7 +129,14 @@ namespace WXML
                         throw this->Error("unexpected tag", 0);
                     }
                     this->peekIndex++;
-                    
+                    // if (this->offset_8 == )
+                    std::shared_ptr<WXML::DOMLib::WXMLDom> domPtr;
+                    auto v8 = this->dequeDom.back();
+                    // push_back
+                    // push_back
+                    this->ATTR_LIST();
+                    auto v9 = this->Peek();
+
                 }
             }
         }

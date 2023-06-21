@@ -1,6 +1,7 @@
 #include "../include/wxml.h"
 #include "../include/define.h"
 #include <iostream>
+#include <set>
 #include <memory>
 
 namespace WXML{
@@ -237,17 +238,32 @@ namespace WXML{
                     auto it = ssDataMap.lower_bound(splitedData[i]);
                     if (it == ssDataMap.end())
                     {
-
+                        ssDataMap.insert({splitedData[i], v328_ss});
                     }
                     std::string path = "./" + splitedData[i] + ".wxml";
                     std::vector<std::string> j;
                     j.push_back(path);
                     v307_localVecStrMap1[splitedData[i]] = j;
                 }
-                // for (auto it = splitedData.begin(); it != splitedData.end(); it++)
+                std::set<std::string> temp;
+                for (int i = 0 ; i < splitedData.size(); i++)
+                {
+                    temp.insert(splitedData[i]);
+                }
+                for (auto it = splitedData.begin(); it != splitedData.end(); it++)
+                {
+                    auto str = it->substr(2, it->size() - 7);
+                }
+                std::stringstream info;
+                info << "WXML::Compiler::CompileLazy: file name to paths:\n";
+                info << "  all files: [ ";
+                // for (size_t i = 0; i < count; i++)
                 // {
-                    
+                //     /* code */
                 // }
+                info << "];\n";
+                
+                
                 
                     
             }

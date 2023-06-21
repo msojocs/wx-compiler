@@ -91,6 +91,7 @@ namespace WXML
         {
         private:
             /* data */
+            int offset_0;
             int offset_16;
             int offset_20;
             bool offset_28;
@@ -101,6 +102,7 @@ namespace WXML
             Token(/* args */);
             Token(WXML::DOMLib::Token&&);
             Token(WXML::DOMLib::Token const&);
+            ~Token();
             std::string ToString();
 
             /**
@@ -111,7 +113,6 @@ namespace WXML
             bool IsValidVariableName(std::string const&);
             bool IsMatch(char const*);
             bool GetTemplateContent(std::string const&, std::string&);
-            ~Token();
         };
 
         class ParseException
@@ -128,15 +129,15 @@ namespace WXML
         private:
             /* data */
             static bool bInited; // 初始化标志
-            static int * TT; //类型不确定
-            static int * STT;
-            int offset_0; // offset + 0
-            int offset_1; // offset + 1
-            int lineCount;// 当前处理的行数 offset + 2
-            int lineLength; // 正在处理行的长度 offset + 3
-            int offset_4; // offset + 4
-            int offset_5; // offset + 5
-            int offset_6; // offset + 6
+            static int TT[0x101000u]; //类型不确定
+            static int STT[0x80];
+            int fileLength = 0; // offset + 0
+            int offset_1 = 0; // offset + 1
+            int lineCount = 0;// 当前处理的行数 offset + 2
+            int lineLength = 0; // 正在处理行的长度 offset + 3
+            int offset_4 = 0; // offset + 4
+            int offset_5 = 0; // offset + 5
+            int offset_6 = 0; // offset + 6
             std::string filePath;  // 文件路径 offset + 7 this+28
 
         public:
@@ -204,7 +205,12 @@ namespace WXML
             std::map<std::string, WXML::DOMLib::Token> offset_12;
             WXMLDom(/* args */);
             ~WXMLDom();
-            void Error();
+            std::string Error(
+                std::string const& a2,
+                WXML::DOMLib::Token const& a3,
+                std::string const& a4,
+                std::string const& a5
+                );
             void RenderMeAsFunction(
                 std::string const&,
                 std::string const&,
@@ -276,12 +282,12 @@ namespace WXML
             std::shared_ptr<WXML::DOMLib::WXMLDom> dom;
             std::deque<std::string> dequeStr;
             std::vector<WXML::DOMLib::Token> tokenList;
-            int peekIndex = 0;
+            int peekIndex = 0; // _DWORD * a1[25], *((_DWORD *)a1 + 25)
             int offset_4;
-            int offset_8;
+            int offset_8; // _DWORD *  a1[8]
             int offset_128;
             std::string filePath;
-            std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom;
+            std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom; // int a1 + 48, _DWORD * a1 + 12
             int v8;
         public:
             Parser(/* args */);
@@ -304,8 +310,8 @@ namespace WXML
             std::shared_ptr<DOMLib::WXMLDom> GetParsed();
             void DOM();
             void DOMS();
-            std::vector<std::string> ATTR_LIST();
-            std::string ATTR();
+            void ATTR_LIST();
+            void ATTR();
             
         };
 

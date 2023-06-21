@@ -340,5 +340,27 @@ namespace WXML {
         {
             return this->tag.compare(tag) == 0;
         }
+        std::string WXMLDom::Error(
+                std::string const& a2,
+                WXML::DOMLib::Token const& a3,
+                std::string const& a4,
+                std::string const& a5
+                )
+        {
+            std::stringstream v15;
+            v15 << a2 << ":";
+            // v15 << a3.???1 << ":";
+            // v15 << a3.???2 << ":";
+            if (a4.length() > 0)
+            {
+                v15 << " Bad attr `" << a4 << "`";
+            }
+            else
+            {
+                v15 << " Bad value";
+            }
+            v15 << " with message: " << a5 << ".";
+            return v15.str();
+        }
     }
 }
