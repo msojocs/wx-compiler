@@ -94,15 +94,16 @@ namespace WXML
             std::string offset_0; // content
             int offset_16; // pos
             int offset_20; // size
-            bool offset_28;
-            std::string offset_32;
-            bool offset_84;
-            std::string offset_88;
+            bool offset_28; // hasCache toString
+            std::string offset_32;  // chcheData toString
+            bool offset_84; // hasCache attrContent
+            std::string offset_88; // chcheData attrContent
         public:
             Token(/* args */);
             Token(WXML::DOMLib::Token&&);
             Token(WXML::DOMLib::Token const&);
             ~Token();
+            
             std::string ToString();
 
             /**

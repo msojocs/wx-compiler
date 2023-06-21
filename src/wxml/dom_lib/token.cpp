@@ -199,7 +199,8 @@ namespace WXML
             std::string v4 = this->offset_32;
             if (this->offset_0.size() > 0 && !this->offset_28)
             {
-                v4 = this->offset_32.substr(this->offset_16, this->offset_20);
+                v4 = this->offset_0.substr(this->offset_16, this->offset_20);
+                this->offset_32 = v4;
                 this->offset_28 = true;
             }
             return v4;
