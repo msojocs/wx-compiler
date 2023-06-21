@@ -78,6 +78,47 @@ namespace WXML
         {
             return "";
         }
+        bool Token::IsValidVariableName(std::string const& a1)
+        {
+            char v1 = a1[0];
+            int v2;
+
+            if ( v1 == '_'/*95*/ || v1 == '$'/*36*/ || (v2 = (v1 & 0xDF) - 'A'/*65*/, v2 <= 0x19u) ) // 0x19u 25
+            {
+                for (int i = 0; ; i++)
+                {
+                    if (a1.length() <= i)
+                        return true;
+                    char v5 = a1[i];
+                    int v6;
+                    if ( v5 <= '`'/*96*/ )
+                    {
+                        if ( v5 > '@'/*64*/ )
+                        {
+                            if ( v5 <= 'Z'/*90*/ )
+                                continue;
+                            if ( v5 != '_' )
+                                return 0;
+                        }
+                        if ( v5 <= '/'/*47*/ )
+                        {
+                            if ( v5 != '$' )
+                                return 0;
+                            continue;
+                        }
+                        v6 = v5 <= '9'/*57*/;
+                    }
+                    else
+                    {
+                        v6 = v5 <= 'z'/*122*/;
+                    }
+                    if ( !v6 )
+                        return false;
+                }
+                
+            }
+            return false;
+        }
         std::string Token::ToString()
         {
             std::string v4 = this->offset_32;

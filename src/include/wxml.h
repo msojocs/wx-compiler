@@ -108,6 +108,10 @@ namespace WXML
              * 返回值类型string
             */
             std::string ToAttrContent();
+
+            /**
+             * 变量名是否有效
+            */
             bool IsValidVariableName(std::string const&);
             bool IsMatch(char const*);
             /**
