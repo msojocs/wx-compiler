@@ -91,13 +91,11 @@ namespace WXML
         {
         private:
             /* data */
-            int offset_0;
+            std::string offset_0;
             int offset_16;
             int offset_20;
             bool offset_28;
             std::string offset_32;
-            std::string str2;
-            std::string str3;
         public:
             Token(/* args */);
             Token(WXML::DOMLib::Token&&);
@@ -112,7 +110,11 @@ namespace WXML
             std::string ToAttrContent();
             bool IsValidVariableName(std::string const&);
             bool IsMatch(char const*);
-            bool GetTemplateContent(std::string const&, std::string&);
+            /**
+             * 获取模板内容
+             * {{ exp }}
+            */
+            int GetTemplateContent(std::string const&, std::string&);
         };
 
         class ParseException

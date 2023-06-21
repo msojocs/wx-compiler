@@ -7,7 +7,7 @@ namespace WXML
     {
         /*
         Token
-        00（起点） B6 BF 00（文件内容） 80 CC BF 00  01 00 00 00 01 00 00 00
+        00（起点） B6 BF 00（文件内容） 80 CC BF 00  01 00 00 00(行数?) 01 00 00 00(行长度?)
         01 00 00 00(pos) 04 00 00 00(size)  00 00 00 00 00（布尔值） F6 97 00
         38 F0 97 00 00 00 00 00  00 CC FA 00 CC F0 97 00
         00 00 BF 00 00 00 00 00  FF FF FF FF 54 F0 97 00
@@ -30,6 +30,50 @@ namespace WXML
         Token::~Token()
         {
         }
+        int Token::GetTemplateContent(std::string const& templateStr, std::string& result)
+        {
+            int v2 = 0;
+            int v10 = templateStr.length();
+            int v3 = v10 - 1;
+            while (v2 < v10 && templateStr[v2] == ' ')
+            {
+                ++v2;
+            }
+            while (v3 > 0 && templateStr[v3] == ' ')
+            {
+                --v3;
+            }
+            int v4 = v2 + 2;
+            if (v2 + 2 >= v10)
+                return -1;
+            if (templateStr[v2] != '{')
+                return -1;
+            if (templateStr[v2 + 1] != '{' || v3 <= 1)
+                return -1;
+            // {{ exp }}
+            if (templateStr[v3] == '}' && templateStr[v3 - 1] == '}')
+            {
+                int v7 = v3 - 2;
+                do
+                {
+                    if (templateStr[v4] != ' ')
+                        break;
+                    ++v4;
+                } while (v10 != v4);
+                do
+                {
+                    if (templateStr[v7] != ' ')
+                        break;
+                } while (v7-- != 0);
+                if (v4 < v7)
+                {
+                    result = templateStr.substr(v4, v7 - v4 + 1);
+                    return 0;
+                }
+            }
+            return -1;
+            
+        }
         std::string Token::ToAttrContent()
         {
             return "";
@@ -37,7 +81,7 @@ namespace WXML
         std::string Token::ToString()
         {
             std::string v4 = this->offset_32;
-            if (!this->offset_28)
+            if (this->offset_0.size() > 0 && !this->offset_28)
             {
                 v4 = this->offset_32.substr(this->offset_16, this->offset_20);
                 this->offset_28 = true;
@@ -48,7 +92,16 @@ namespace WXML
         bool Token::IsMatch(char const* str)
         {
             bool result = false;
-            // this->offset_20
+            if (this->offset_0.size() > 0)
+            {
+                auto v4 = this->offset_20;
+                for (int i = 0; ; i++)
+                {
+                    // if (v4 <= i)
+                    //     return 
+                }
+                
+            }
             return result;
         }
     }
