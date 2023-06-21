@@ -208,18 +208,22 @@ namespace WXML
     
         bool Token::IsMatch(char const* str)
         {
-            bool result = false;
             if (this->offset_0.size() > 0)
             {
                 auto v4 = this->offset_20;
                 for (int i = 0; ; i++)
                 {
-                    // if (v4 <= i)
-                    //     return 
+                    if (v4 <= i)
+                        return str[v4] == 0;
+                    if (this->offset_0[this->offset_16 + i] != str[i])
+                    {
+                        break;
+                    }
                 }
+                return false;
                 
             }
-            return result;
+            return false;
         }
     }
 }
