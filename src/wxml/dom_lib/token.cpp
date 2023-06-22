@@ -15,9 +15,13 @@ namespace WXML
         00 00 00 00 00(?) F2 97 00  70 F0 97 00 00 00 00 00
         00 00 00 00 62 00 00 40  F8 F1 97 00 7A 15 46 00
         */
-        Token::Token(/* args */)
+        Token::Token()
         {
-            
+        }
+        
+        Token::Token(std::string &content)
+        {
+            this->offset_0 = content;
         }
         
         Token::Token(WXML::DOMLib::Token&& token)
@@ -29,6 +33,10 @@ namespace WXML
         
         Token::~Token()
         {
+        }
+        void Token::SetContent(std::string &content)
+        {
+            this->offset_0 = content;
         }
         
         int Token::GetTemplateContent(std::string const& templateStr, std::string& result)

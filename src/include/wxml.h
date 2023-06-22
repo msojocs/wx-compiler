@@ -99,11 +99,12 @@ namespace WXML
             bool offset_84; // hasCache attrContent
             std::string offset_88; // chcheData attrContent
         public:
-            Token(/* args */);
+            Token();
+            Token(std::string &);
             Token(WXML::DOMLib::Token&&);
             Token(WXML::DOMLib::Token const&);
             ~Token();
-            
+            void SetContent(std::string &content);
             std::string ToString();
 
             /**
@@ -141,13 +142,13 @@ namespace WXML
             static int TT[0x101000u]; //类型不确定
             static int STT[0x80];
             int fileLength = 0; // offset + 0
-            int offset_1 = 0; // offset + 1
-            int lineCount = 0;// 当前处理的行数 offset + 2
-            int lineLength = 0; // 正在处理行的长度 offset + 3
             int offset_4 = 0; // offset + 4
-            int offset_5 = 0; // offset + 5
-            int offset_6 = 0; // offset + 6
-            std::string filePath;  // 文件路径 offset + 7 this+28
+            int lineCount = 0;// 当前处理的行数 offset + 8
+            int lineLength = 0; // 正在处理行的长度 offset + 12
+            int offset_16 = 0; // offset + 16
+            int offset_20 = 0; // offset + 20
+            int offset_24 = 0; // offset + 24
+            std::string filePath;  // 文件路径 offset + 28
 
         public:
             Machine(/* args */);
@@ -163,8 +164,7 @@ namespace WXML
         {
         private:
             /* data */
-            const char* fileContent;
-            int contentLength;
+            std::string fileContent;
             std::string fileName;
             WXML::DOMLib::Machine machine; // this + 2
         public:

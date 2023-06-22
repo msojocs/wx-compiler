@@ -7,8 +7,7 @@ namespace WXML
         
         Tokenizer::Tokenizer(char const* fileContent, std::string const& filePath)
         {
-            this->fileContent = fileContent;
-            this->contentLength = strlen(fileContent);
+            this->fileContent = std::string(fileContent);
             this->fileName = filePath;
             WXML::DOMLib::Machine m(filePath);
             this->machine = m;
@@ -20,24 +19,36 @@ namespace WXML
 
         int Tokenizer::GetTokens(
             std::vector<WXML::DOMLib::Token> &a2,
-            std::string &a3,
+            std::string &errorMessage,
             std::vector<WXML::DOMLib::Token> &a4
             )
         {
             this->machine.Reset();
-            if (this->fileContent)
+            if (this->fileContent.length() > 0)
             {
-                for (int i = 0; i < this->contentLength; i++)
+                for (int i = 0; i < this->fileContent.length(); i++)
                 {
-                    this->machine.Feed(this->fileContent[i], a2, a3, a4, 0);
+                    this->machine.Feed(this->fileContent[i], a2, errorMessage, a4, 0);
                 }
-                this->machine.Feed(0, a2, a3, a4, 0);
+                this->machine.Feed(0, a2, errorMessage, a4, 0);
                 
                 // TODO: 少了
+                // 猜测：将fileContent地址赋值给a2,a4中所有的元素
+                for (int i = 0; i < a2.size(); i++)
+                {
+                    /* code */
+                    a2[i].SetContent(this->fileContent);
+                }
+                for (int i = 0; i < a4.size(); i++)
+                {
+                    /* code */
+                    a4[i].SetContent(this->fileContent);
+                }
+                
             }
             else
             {
-                a3.replace(a3.begin(), a3.end(), "FATAL: no source was set or failed to allocate space for input source");
+                errorMessage.replace(errorMessage.begin(), errorMessage.end(), "FATAL: no source was set or failed to allocate space for input source");
                 return -1;
             }
             return 0;

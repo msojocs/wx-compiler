@@ -293,6 +293,7 @@ namespace WXML
             }
         }
         int dword_567960[1000] = {0};
+
         void Machine::Feed(
             char inputChar,
             std::vector<WXML::DOMLib::Token> & a3,
@@ -313,8 +314,8 @@ namespace WXML
                 int v46;
                 int v45;
                 do{
-                    v46 = this->TT[257 * this->offset_6 + inputChar];
-                    v45 = this->offset_6;
+                    v46 = this->TT[257 * this->offset_24 + inputChar];
+                    v45 = this->offset_24;
                     if (!v46)
                     {
                         v46 = dword_567960[257 * v45];
@@ -322,7 +323,7 @@ namespace WXML
                         {
                             std::stringstream ss;
                             ss << "BAD STATE MACHINE! AT INPUT ";
-                            ss << this->offset_6 << " " << inputChar;
+                            ss << this->offset_24 << " " << inputChar;
                             errorMessage = ss.str();
                             return;
                         }
@@ -344,14 +345,14 @@ namespace WXML
                         errorMessage = ss.str();
                         return;
                     }
-                    this->offset_6 = v46;
+                    this->offset_24 = v46;
                     if (bittest(&v46, 0x15u))
                     {
                         // TODO: 
-                        if (this->fileLength > this->offset_1)
+                        if (this->fileLength > this->offset_4)
                         {
-                            this->offset_1++;
-                            this->offset_5++;
+                            this->offset_4++;
+                            this->offset_20++;
 
                             WXML::DOMLib::Token token;
                             a3.push_back(token);
@@ -372,11 +373,11 @@ namespace WXML
 
                 if (bittest(&v46, 0x11u))
                 {
-                    if (this->offset_1 < this->fileLength)
+                    if (this->offset_4 < this->fileLength)
                     {
-                        this->offset_1 = this->fileLength;
-                        this->offset_5 = this->lineLength;
-                        this->offset_4 = this->lineCount;
+                        this->offset_4 = this->fileLength;
+                        this->offset_20 = this->lineLength;
+                        this->offset_16 = this->lineCount;
 
                         if(WXML::DOMLib::Machine::STT[v45] == 3)
                         {
@@ -396,9 +397,9 @@ namespace WXML
                 this->lineLength++;
                 if (bittest(&v46, 0x12u))
                 {
-                    this->offset_1 = this->fileLength;
-                    this->offset_5 = this->lineLength;
-                    this->offset_4 = this->lineCount;
+                    this->offset_4 = this->fileLength;
+                    this->offset_20 = this->lineLength;
+                    this->offset_16 = this->lineCount;
                     if (WXML::DOMLib::Machine::STT[v45] == 3)
                     {
                         WXML::DOMLib::Token v49;
@@ -413,8 +414,8 @@ namespace WXML
                 v46 &= 0x80000u;
                 if (v46)
                 {
-                    offset_1 = fileLength;
-                    offset_5 = lineLength;
+                    offset_4 = fileLength;
+                    offset_20 = lineLength;
                 }
                 return;
             }
@@ -427,12 +428,12 @@ namespace WXML
         void Machine::Reset()
         {
             this->fileLength = 0;
-            this->offset_1 = 0;
+            this->offset_4 = 0;
             this->lineCount = 1;
             this->lineLength = 1;
-            this->offset_4 = 1;
-            this->offset_5 = 1;
-            this->offset_6 = 1;
+            this->offset_16 = 1;
+            this->offset_20 = 1;
+            this->offset_24 = 1;
         }
         
     }
