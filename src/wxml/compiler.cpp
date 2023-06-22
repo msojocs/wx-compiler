@@ -44,7 +44,7 @@ namespace WXML{
                     if (a != b) 
                     {
                         ss << "f_['";
-                        // ss << ToStringCode(fileName);
+                        ss << WXML::Rewrite::ToStringCode(filePath);
                         ss << "']={};";
                         ss << lineEndMark;
                     }
@@ -53,7 +53,7 @@ namespace WXML{
                         /* code */
                         int dealResult = 0;
                         std::string t;
-                        // dealResult = DealWxsTag(fileName, , t);
+                        // dealResult = WXML::Compiler::DealWxsTag(filePath, , t);
                         if (dealResult) 
                         {
                             // 非0
@@ -277,38 +277,73 @@ namespace WXML{
     
     
         int DealWxsTag(
-            std::string const& a1,
-            std::string &a2,
+            std::string const& filePath,
+            WXML::DOMLib::Token & a2,
             std::string& a3,
             std::string& a4,
             std::string& a5,
-            int & a6,
-            std::string& a7)
+            int * a6,
+            std::string& errorMessage)
         {
-            int pos = a2.find('>', a2[4]);
+            std::string content = a2.GetContent();
+            int pos = content.find('>', content[4]);
+            int tokenPos = a2.GetPos();
+            int tokenSize = a2.GetSize();
             std::string sub;
-            if (a2[pos - 1] == '/')
+            if (content[pos - 1] == '/')
             {
                 // 这个尖括号附近是这样的：/>
-                sub = a2.substr(a2[4] + 1, pos + 1 - a2[4] - 6);
+                sub = content.substr(tokenPos + 1, pos + 1 - tokenPos - 6);
             }
             else
             {
-                sub = a2.substr(a2[4] + 1, pos + 1 - a2[4] - 5);
+                sub = content.substr(tokenPos + 1, pos + 1 - tokenPos - 5);
             }
             std::string data = "<fak";
             data = data.append(sub);
             data = data.append("/>");
-            for (int i = 1; i < a2[2]; i++)
+            for (int i = 1; i < a2.offset_8; i++)
             {
                 data = "\n" + data;
             }
-            for (int i = 1; i < a2[3]; i++)
+            for (int i = 1; i < a2.offset_12; i++)
             {
                 data = " " + data;
             }
-            // WXML::DOMLib::Parser::Parser(data);
-            // TODO...
+            WXML::DOMLib::Parser p;
+            std::vector<WXML::DOMLib::Token> v50;
+            bool parseResult = p.Parse(&content[0], errorMessage, filePath, v50);
+            if (!parseResult)
+            {
+                auto dom = p.GetParsed();
+                *a6 = a2.offset_8;
+                if (tokenSize + tokenPos - (pos + 1)<= 0)
+                {
+                    a5 = "";
+                }
+                else{
+                    a5 = content.substr(pos + 1, tokenSize + tokenPos - (pos + 1));
+                }
+                int v41 = 1;
+                for (int i = 0; i < a5.length(); i++)
+                {
+                    /* code */
+                    int v14 = a5[i] - 9;
+                    if (v14 > 0x17u)
+                    {
+                        v41 = 0;
+                    }
+                    else
+                    {
+                        bool v7 = ((0x800013u >> v14) & 1) == 0;
+                        if (v7)
+                            v41 = 0;
+                    }
+                }
+                
+                // TODO....
+
+            }
             return 0;
         }
 
@@ -358,7 +393,7 @@ namespace WXML{
                     auto it = a1.offset_12.find("name");
                     if (it != a1.offset_12.end())
                     {
-                        a1.tag.replace(0, a1.tag.size(), "wx-define", 9u);
+                        a1.offset_0.replace(0, a1.offset_0.size(), "wx-define", 9u);
                     }
                 }
                 if (a1 == "wx-define")

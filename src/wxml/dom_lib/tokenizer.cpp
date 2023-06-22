@@ -32,7 +32,6 @@ namespace WXML
                 }
                 this->machine.Feed(0, a2, errorMessage, a4, 0);
                 
-                // TODO: 少了
                 // 猜测：将fileContent地址赋值给a2,a4中所有的元素
                 for (int i = 0; i < a2.size(); i++)
                 {

@@ -93,7 +93,7 @@ namespace WXML
             if (!ret)
             {
                 std::shared_ptr<WXML::DOMLib::WXMLDom> domPtr;
-                domPtr->tag = "root";
+                domPtr->offset_0 = "root";
                 this->dom = domPtr;
                 dequeDom.push_back(domPtr);
                 // DOMS

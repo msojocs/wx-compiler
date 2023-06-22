@@ -346,7 +346,7 @@ namespace WXML
                         return;
                     }
                     this->offset_24 = v46;
-                    if (bittest(&v46, 0x15u))
+                    if (bittest(&v46, 0x15u)) // 0x15 -> 21
                     {
                         // TODO: 
                         if (this->fileLength > this->offset_4)
@@ -358,20 +358,20 @@ namespace WXML
                             a3.push_back(token);
                         }
                     }
-                    if (bittest(&v46, 0x16u))
+                    if (bittest(&v46, 0x16u)) // 0x16 -> 22
                     {
                         // TODO:
-                        WXML::DOMLib::Token token(a5[0]);
-                        // this->offset_4 = this->offset_4 - 112;
+                        // WXML::DOMLib::Token token(*(a5.end() - 1));
+                        a5.pop_back();
                         
                         // ----
                         // this->offset_4 = 
                         // this->offset_5 = 
 
                     }
-                }while(bittest(&v46, 0x14u));
+                }while(bittest(&v46, 0x14u)); // 0x14 -> 20
 
-                if (bittest(&v46, 0x11u))
+                if (bittest(&v46, 0x11u)) // 0x11 -> 17
                 {
                     if (this->offset_4 < this->fileLength)
                     {
@@ -395,7 +395,7 @@ namespace WXML
 
                 this->fileLength++;
                 this->lineLength++;
-                if (bittest(&v46, 0x12u))
+                if (bittest(&v46, 0x12u)) // 0x12 -> 18
                 {
                     this->offset_4 = this->fileLength;
                     this->offset_20 = this->lineLength;

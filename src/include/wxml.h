@@ -99,12 +99,19 @@ namespace WXML
             bool offset_84; // hasCache attrContent
             std::string offset_88; // chcheData attrContent
         public:
+            int offset_8; // ???
+            int offset_12; // ???
+            int offset_56; // ???
+            std::string offset_60; // ???
             Token();
             Token(std::string &);
             Token(WXML::DOMLib::Token&&);
             Token(WXML::DOMLib::Token const&);
             ~Token();
             void SetContent(std::string &content);
+            std::string& GetContent();
+            int GetPos();
+            int GetSize();
             std::string ToString();
 
             /**
@@ -204,14 +211,18 @@ namespace WXML
         private:
             /* data */
             bool offset_28;
-            int offset_92; // pos1
+            std::map<std::string, WXML::DOMLib::Token> offset_48;
+            // std::string offset_52;
             WXML::DOMLib::Token offset_84; // token
+            int offset_92; // pos1
             int offset_96; // pos2
             int offset_104; // len
-            StrCache offset_62;
+            int offset_140;
+            std::string offset_144;
+            StrCache offset_248;
         public:
-            std::string tag;
             std::map<std::string, WXML::DOMLib::Token> offset_12;
+            std::string offset_0; // type
             WXMLDom(/* args */);
             ~WXMLDom();
             std::string Error(
@@ -392,17 +403,17 @@ namespace WXML
             std::string const& boxMark,
             std::string const& gdwxMark,
             std::string const& fMark);
-            
+        
         int DealWxsTag(
-            std::string const&,
-            std::string &,
-            std::string&,
-            std::string&,
-            std::string&,
-            int &,
-            std::string&
-        );
-
+            std::string const& a1,
+            WXML::DOMLib::Token & a2,
+            std::string& a3,
+            std::string& a4,
+            std::string& a5,
+            int & a6,
+            std::string& a7
+            );
+        
         // void GetFuncId();
         void GetVersionInfo(std::string &a1, std::string a2);
         int RenderDefine(

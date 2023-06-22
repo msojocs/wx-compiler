@@ -38,6 +38,18 @@ namespace WXML
         {
             this->offset_0 = content;
         }
+        std::string & Token::GetContent()
+        {
+            return this->offset_0;
+        }
+        int Token::GetPos()
+        {
+            return this->offset_16;
+        }
+        int Token::GetSize()
+        {
+            return this->offset_20;
+        }
         
         int Token::GetTemplateContent(std::string const& templateStr, std::string& result)
         {
