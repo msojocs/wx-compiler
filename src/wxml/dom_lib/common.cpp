@@ -7,10 +7,6 @@ namespace WXML
 
     namespace DOMLib
     {
-        bool AttrsCompartor(int a1, int a2)
-        {
-            return a1 < a2;
-        }
         
         std::string joinString(std::vector<std::string>& data, char split)
         {
@@ -98,6 +94,11 @@ namespace WXML
             }
             
 
+        }
+
+        bool AttrsCompartor(std::pair<std::string,WXML::DOMLib::Token> const& a1,std::pair<std::string,WXML::DOMLib::Token> const& a2)
+        {
+            return a1.second.offset_40 < a2.second.offset_40;
         }
     }
 

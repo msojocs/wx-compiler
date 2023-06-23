@@ -60,6 +60,59 @@ namespace WXML
 
     namespace DOMLib
     {
+        class Token
+        {
+        private:
+            /* data */
+            std::string offset_0; // content
+            int offset_16; // pos
+            int offset_20; // size
+            bool offset_28; // hasCache toString
+            std::string offset_32;  // chcheData toString
+            bool offset_84; // hasCache attrContent
+            std::string offset_88; // chcheData attrContent
+        public:
+            int offset_8; // ???
+            int offset_12; // ???
+            int offset_40; // AttrsCompartor用到，怎么来不知道
+            int offset_56; // ??? -3, -1
+            std::string offset_60; // ???
+            Token();
+            /**
+             * 非空构造会导致std::sort位置编译失败，原因未知
+            */
+            // Token(std::string &);
+            // Token(WXML::DOMLib::Token&&);
+            // Token(WXML::DOMLib::Token const&);
+            ~Token();
+            void SetContent(std::string &content);
+            std::string& GetContent();
+            int GetPos();
+
+            /**
+             * size: offset_20
+            */
+            int GetSize();
+            std::string ToString();
+
+            /**
+             * 
+             * 返回值类型string
+            */
+            std::string ToAttrContent();
+
+            /**
+             * 变量名是否有效
+            */
+            static bool IsValidVariableName(std::string const&);
+            bool IsMatch(char const*);
+            /**
+             * 获取模板内容
+             * {{ exp }}
+            */
+            static int GetTemplateContent(std::string const&, std::string&);
+        };
+
 
         /**
          * 拼接字符串
@@ -87,50 +140,12 @@ namespace WXML
         std::string resolvePath(std::string const& path1, std::string const& path2);
 
         
-        class Token
-        {
-        private:
-            /* data */
-            std::string offset_0; // content
-            int offset_16; // pos
-            int offset_20; // size
-            bool offset_28; // hasCache toString
-            std::string offset_32;  // chcheData toString
-            bool offset_84; // hasCache attrContent
-            std::string offset_88; // chcheData attrContent
-        public:
-            int offset_8; // ???
-            int offset_12; // ???
-            int offset_56; // ???
-            std::string offset_60; // ???
-            Token();
-            Token(std::string &);
-            Token(WXML::DOMLib::Token&&);
-            Token(WXML::DOMLib::Token const&);
-            ~Token();
-            void SetContent(std::string &content);
-            std::string& GetContent();
-            int GetPos();
-            int GetSize();
-            std::string ToString();
-
-            /**
-             * 
-             * 返回值类型string
-            */
-            std::string ToAttrContent();
-
-            /**
-             * 变量名是否有效
-            */
-            bool IsValidVariableName(std::string const&);
-            bool IsMatch(char const*);
-            /**
-             * 获取模板内容
-             * {{ exp }}
-            */
-            int GetTemplateContent(std::string const&, std::string&);
-        };
+        /**
+         * 
+        */
+        bool AttrsCompartor(
+            std::pair<std::string,WXML::DOMLib::Token> const& a1,
+            std::pair<std::string,WXML::DOMLib::Token> const& a2);
 
         class ParseException
         {
@@ -185,13 +200,6 @@ namespace WXML
                 );
         };
         
-        /**
-         * 
-        */
-        bool AttrsCompartor(
-            std::pair<std::string,WXML::DOMLib::Token> const& a1,
-            std::pair<std::string,WXML::DOMLib::Token> const& a2);
-
         class StrCache
         {
         private:
@@ -220,9 +228,12 @@ namespace WXML
             int offset_140;
             std::string offset_144;
             StrCache offset_248;
+            int componentCnt = 0;
         public:
-            std::map<std::string, WXML::DOMLib::Token> offset_12;
             std::string offset_0; // type
+            std::map<std::string, WXML::DOMLib::Token> offset_12;
+            int offset_24; // ???
+            int offset_256; // ???
             WXMLDom(/* args */);
             ~WXMLDom();
             std::string Error(
@@ -287,9 +298,11 @@ namespace WXML
                 std::vector<std::string> const& a3
                 );
             void RecordAllPath(void);
-            void Print(int,char const*,std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>> *);
-            void PrintMe(int,char const*,std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>> *);
+            void Print(int,char const*, std::stringstream *);
+            void PrintMe(int,char const*, std::stringstream *);
             bool operator==(std::string tag);
+            std::string ToCamelStyle(std::string const&);
+            void AddTestAttr(std::string const&, std::stringstream &, char);
         };
         
 

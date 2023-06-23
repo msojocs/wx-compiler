@@ -13,6 +13,7 @@ add_executable(wcc
     src/wxml/string_templating/token.cpp
     src/wxml/dom_lib/parse_exception.cpp
     src/wxml/dom_lib/token.cpp
+    src/wxml/dom_lib/common.cpp
     src/wxml/dom_lib/machine.cpp
     src/wxml/dom_lib/tokenizer.cpp
     src/wxml/dom_lib/parser.cpp

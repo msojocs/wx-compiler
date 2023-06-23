@@ -19,17 +19,17 @@ namespace WXML
         {
         }
         
-        Token::Token(std::string &content)
-        {
-            this->offset_0 = content;
-        }
+        // Token::Token(std::string &content)
+        // {
+        //     this->offset_0 = content;
+        // }
         
-        Token::Token(WXML::DOMLib::Token&& token)
-        {
-        }
-        Token::Token(WXML::DOMLib::Token const& token)
-        {
-        }
+        // Token::Token(WXML::DOMLib::Token&& token)
+        // {
+        // }
+        // Token::Token(WXML::DOMLib::Token const& token)
+        // {
+        // }
         
         Token::~Token()
         {

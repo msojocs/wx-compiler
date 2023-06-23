@@ -1,12 +1,13 @@
 
 #include "../../include/wxml.h"
+#include <algorithm>
 
 namespace WXML {
     
     
     namespace DOMLib
     {
-        
+
         WXMLDom::WXMLDom(/* args */)
         {
         }
@@ -173,16 +174,17 @@ namespace WXML {
                 }
                 a6 << "var " << a5 << "=_oz(z," << this->offset_140;
                 a6 << "," << a8 << "," << a9 << "," << a10 << ")";
+                LABEL_69:
                 a6 << a12;
 
-                // LABEL_169
+                // goto LABEL_169;
                 if (a13 && this->offset_28)
                 {
                     a6 << "cs.pop()" << a12;
                 }
                 return;
 
-            }
+            } // TEXTNODE end
             if (this->offset_0 == "wx-define"
                 ||this->offset_0 == "wx-import"
                 ||this->offset_0 == "import"
@@ -195,6 +197,16 @@ namespace WXML {
                 }
                 return;
             }
+            bool v269 = true;
+            bool v270 = false;
+            std::map<std::string, WXML::DOMLib::Token>::iterator v281;
+            std::stringstream ss;
+            std::vector<std::pair<std::string,WXML::DOMLib::Token>> v324;
+            std::string v327;
+            std::set<std::string> v330;
+            std::string v333;
+            std::string v336;
+            std::string v339;
             if (this->offset_0 == "wx-repeat")
             {
                 std::string target1 = "items";
@@ -285,33 +297,350 @@ namespace WXML {
                     a13,
                     a14,
                     v347);
+
+                if (this->offset_48[target1].offset_56 == -3)
+                {
+                    std::string err = this->Error(a2, this->offset_48[target1], target1, this->offset_48[target1].offset_60);
+                    throw "RenderException:" + err;
+                }
+
+                if (this->offset_48[target1].offset_56 == -1)
+                {
+                    std::string err = this->Error(a2, this->offset_84, target1, "value not set");
+                    throw "RenderException:" + err;
+                }
+                std::map<std::string, WXML::DOMLib::Token>::iterator t;
+                std::string v336;
+                int v47;
+                std::string v339 = "";
+                bool Str1 = false;
+                int v277 = -1;
+                if (!a13)
+                    goto LABEL_57;
+                if (this->offset_48.end() == this->offset_48.find(wxKey))
+                {
+                    a6 << "_wp('" << WXML::Rewrite::ToStringCode(a2) << ":";
+                    a6 << this->offset_24 << ":";
+                    a6 << this->offset_92 << ":";
+                    a6 << this->offset_96;
+                    a6 << ": Now you can provide attr `wx:key` for a `wx:for` to improve performance.')";
+                    a6 << a12;
+                }
+                t = this->offset_48.find(wxKey);
+                if (this->offset_48.end() == t)
+                {
+                    goto LABEL_57;
+                }
+                v336 = t->second.ToAttrContent();
+                v47 = v336.find('.', 0);
                 
+                
+                if (v47 != -1)
+                {
+                    auto Str = v336.substr(0, v47);
+                    Str1 = WXML::DOMLib::Token::IsValidVariableName(Str);
+                    if (Str1)
+                    {
+                        auto v347 = v336.substr(v47 + 1);
+                        Str1 = WXML::DOMLib::Token::IsValidVariableName(v347);
+                    }
+                    if (Str1)
+                    {
+                        Str = v336.substr(v47 + 1);
+                        v339 = Str;
+                    }
+                }
+                
+                bool Str1f;
+                if (WXML::DOMLib::Token::GetTemplateContent(v336, v339))
+                {
+                    if (Str1)
+                    {
+                        goto LABEL_181;
+                    }
+                }
+                else
+                {
+                    if ( Str1 == 1 || WXML::DOMLib::Token::IsValidVariableName(v339) )
+                        goto LABEL_181;
+                    v277 = v339.find('.');
+                    if (v277 != -1)
+                    {
+                        Str = v339.substr(0, v277);
+                        Str1f = WXML::DOMLib::Token::IsValidVariableName(Str);
+                        if (Str1f)
+                        {
+                            auto v347 = v339.substr(v277 + 1);
+                            Str1f = WXML::DOMLib::Token::IsValidVariableName(v347);
+                        }
+                        if (Str1f)
+                        {
+                            v339 = v339.substr(v277 + 1);
+                            LABEL_181:
+                            a6 << "_wp('" << WXML::Rewrite::ToStringCode(a2) << ":";
+                            a6 << this->offset_24 << ":";
+                            a6 << this->offset_92 << ":";
+                            a6 << this->offset_96 << ": wx:key=\"";
+                            a6 << WXML::Rewrite::ToStringCode(v336) << "\" does not look like a valid key name (did you mean wx:key=\"";
+                            a6 << WXML::Rewrite::ToStringCode(v339) << "\" ?)')";
+                            a6 << a12;
+                            goto LABEL_56;
+                        }
+                    }
+                }
+                // if (WXML::DOMLib::Token::IsValidVariableNam(v336))
+                LABEL_56: //...
+                LABEL_57: //...
+                if (this->offset_256)
+                {
+                    a6 << a5 << ".wxXCkey=4";
+                }
+                else
+                {
+                    a6 << a5 << ".wxXCkey=2";
+                }
+                a6 << a12;
+                a6 << "_2z(z,";
+                a6 << this->offset_48[target1].offset_56 << ",";
+                a6 << name1 << "," << a8 << "," << a9 << "," << a10 << "," << a5 << ",";
+                a6 << target3_1 << "," << target2_1 << ",";
+                a6 << this->offset_48[wxKey].ToAttrContent() << ")" << a12;
+                goto LABEL_84;
             }
             if (this->offset_0 == "block")
             {
                 
+                WXML::DOMLib::WXMLDom::RenderChildren(a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15);
+                goto LABEL_169;
             }
+            
             if (this->offset_0 == "include")
             {
+                std::string v347 = "src";
+                auto v279 = this->offset_48.find(v347);
+                if (v279 == this->offset_48.end())
+                {
+                    goto LABEL_169;
+                }
+                auto v280 = this->offset_48[v347].offset_56;
+                if (v280 == -3)
+                {
+                    auto srcToken = this->offset_48["src"];
+                    auto err = this->Error(a2, srcToken, "src", srcToken.offset_60);
+                    throw "RenderException" + err;
+                }
+                a6 << "_ic(x[";
+                auto srcToken = this->offset_48["src"];
+                v347 = srcToken.ToAttrContent();
+                auto strId = this->offset_248.GetStrID(v347);
+                a6 << strId << "],";
+                a6 << a3 << ",x[";
+                a6 << this->offset_248.GetStrID(a2);
+                a6 << "]," << a8 << "," << a9 << "," << a5 << "," << a10 << ");" << a12;
+                // goto LABEL_68;
+                if (a13 && this->offset_28)
+                {
+                    a6 << "cs.pop()" << a12;
+                }
+                return;
+            }
+            if (this->offset_0 == "ex-template")
+            {
+                v281 = this->offset_48.find("is");
+                if (v281 == this->offset_48.end())
+                    goto LABEL_169;
+                if (v281->second.offset_56 != -3)
+                {
+                    v269 = v281->second.offset_56 == -1;
+                }
+                if (v269)
+                {
+                    a6 << "_wp(\"" << WXML::Rewrite::ToStringCode(a2) << ":template:";
+                    a6 << this->offset_92 << ":" << this->offset_96 << ": `";
+                    auto v92 = v281->second.ToAttrContent();
+                    WXML::Rewrite::ToStringCode(v92, a6);
+                    a6 << "` is not a valid expression for a template.\")";
+                    // goto LABEL_69;
+                    a6 << a12;
+
+                    // goto LABEL_169;
+                    if (a13 && this->offset_28)
+                    {
+                        a6 << "cs.pop()" << a12;
+                    }
+                    return;
+                }
+                a7->GetNextName(v333);
+                a6 << "var " << v333 << "=_oz(z," << v281->second.offset_56 << ",";
+                a6 << a8 << "," << a9 << "," << a10 << ")" << a12;
+
+                a7->GetNextName(v336);
+                a6 << "var " << v336;
+                a6 << "=_gd(x[" << this->offset_248.GetStrID(a2);
+                a6 << "]," << v333 << "," << a3 << "," << a11 << ")" << a12;
+                a6 << "if(" << v336 << "){" << a12;
+
+                a7->GetNextName(v339);
+                if (this->offset_48.end() != this->offset_48.find("data"))
+                {
+                    v270 = this->offset_48["data"].ToAttrContent().length() == 0;
+                }
+                if (v270)
+                {
+                    a6 << "var " << v339 << "={}" << a12;
+                }
+                else
+                {
+                    auto data = this->offset_48["data"];
+                    if (data.offset_56 == -3)
+                    {
+                        // 抛异常
+                        auto err = this->Error(a2, this->offset_48["data"], "data", data.offset_60);
+                        throw "RenderException" + err;
+                    }
+                    a6 << "var " << v339 << "=_1z(z,";
+                    a6 << data.offset_56 << ",";
+                    a6 << a8 << "," << a9 << "," << a10 << ") || {}" << a12;
+                }
+                a6 << "var cur_globalf=" << a10 << ".f" << a12;
+                a6 << a5 << ".wxXCkey=3" << a12;
+                a6 << v336 << "(" << v339 << "," << v339 << "," << a5 << "," << a10 << ")" << a12;
+                a6 << a10 << ".f=cur_globalf" << a12;
+                a6 << "}" << a12;
+                a6 << "else _w(" << v333 << ",x[";
+                a6 << this->offset_248.GetStrID(a2) << "],";
+                a6 << this->offset_48["is"].offset_8 << ",";
+                a6 << this->offset_48["is"].offset_12 << ",";
+                a6 << ")" << a12;
+            LABEL_84:
+                goto LABEL_169;
+            }
+
+            // l:25109
+            for (auto j = this->offset_48.begin(); j != this->offset_48.end(); j++)
+            {
+                /* code */
+                if (j->second.offset_56 == -3)
+                {
+                    if (a14 & 1 == 0)
+                    {
+                        auto err = this->Error(a2, j->second, j->first, j->second.offset_60);
+                        throw "RenderException" + err;
+                    }
+                }
+                else if(j->second.offset_56 == -1 && j->second.GetSize() > 0)
+                {
+                    auto err = this->Error(a2, j->second, j->first, "interal error(1010)");
+                    throw "RenderException" + err;
+                }
+                std::string v161 = j->first;
+                if ( v161[0] != 'w'
+                    || v161[1] != 'x'
+                    || v161[2] != ':' && v161[2] != '-'
+                    || v161 != "wx:scope-data")
+                {
+                    // pos: 搜索 -> !__stricmp((const char *)v161, "wx:scope-data")
+                    
+                    WXML::DOMLib::Token token;
+                    v324.emplace_back(j->first, j->second);
+                }
+            }
+            std::sort(v324.begin(), v324.end(), WXML::DOMLib::AttrsCompartor);
+
+            for (auto k = v324.begin(); k != v324.end(); k++)
+            {
+                /* code */
+                v330.insert(k->first);
+            }
+            for (auto m = 0; m < v324.size(); m++)
+            {
+                std::string v333 = v324[m].first.substr(0, 6u);
+                if (v333 == "model:")
+                {
+                    ss << "\"model:";
+                    ss << v324[m].first.substr(6u) << "\"" << ":\"";
+                    ss << WXML::Rewrite::ToStringCode(v324[m].second.ToAttrContent());
+                    ss << "\",";
+                    std::string v336 = v324[m].first.substr(6u);
+                    // while (/* condition */)
+                    // {
+                    //     /* code */
+                    // }
+                    // TODO...
+                    
+                }
+            }
+            v327 = ss.str();
+            // if (v328)
+            // {
+
+            // }
+            if (v324.end() - v324.begin() <= 0x88)
+            {
+                a6 << "var " << a5 << "=_n('";
+                a6 << this->offset_0 << "')" << a12;
+                for (auto i = v324.begin(); ; i++)
+                {
+                    std::string str;
+                    if (i == v324.end())
+                    {
+                        goto LABEL_164;
+                    }
+                    if (!strncmp(&i->first[0], "data-", 5u) || i->first.find(':') != -1)
+                    {
+                        if (!strncmp(&i->first[0], "generic:", 8u))
+                        {
+                            a6 << "var $tmp=";
+                            // if (i->second.)
+                            // TODO...
+                        }
+                    }
+                    else
+                    {
+                        str = WXML::DOMLib::WXMLDom::ToCamelStyle(i->first);
+                    }
+                    if(1)
+                    {
+                        // if ()
+                        // {
+
+                        // }
+                        a6 << "_rz(z," << a5 << ",'" << str << "',";
+                        // a6 << ;
+                        a6 << "," << a8 << "," << a9 << "," << a10 << ")";
+                    }
+                    else
+                    {
+                        a6 << a5 << ".attr['" << str << "']=true";
+                    }
+                    LABEL_158:
+                    a6 << a12;
+                }
                 
             }
-            if (this->offset_0 == "wx-template")
+            a6 << "var " << a5 << "=_mz(z,'" << this->offset_0 << "',[";
+            for (auto jj = v324.begin(); jj < v324.end(); jj++)
             {
                 
             }
-            // for (size_t i = 0; i < count; i++)
+            a6 << "],[";
+            // while (/* condition */)
             // {
             //     /* code */
             // }
-            // sort
-            // for (size_t i = 0; i < count; i++)
-            // {
-            //     /* code */
-            // }
-            // if ()
-            // {
-            //     ".rawAttr="
-            // }
+            a6 << "]," << a8 << "," << a9 << "," << a10 << ")" << a12;
+            LABEL_164:
+            // if (v328)
+            //     a6 << v327;
+            this->RenderChildren(a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15);
+            // if ((a14 & 1) != 0)
+            //     this->AddTestAttr(a5, a6, '\n'/*10*/);
+            LABEL_169:
+            if (a13 && this->offset_28)
+            {
+                a6 << "cs.pop()" << a12;
+            }
+
             
         }
         void WXMLDom::RecordAllPath(void)
@@ -327,9 +656,90 @@ namespace WXML {
                 }
             }
         }
-        void WXMLDom::Print(int,char const*,std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>> *)
+        void WXMLDom::Print(int, char const*, std::stringstream *)
         {
 
+        }
+
+        /**
+         * 未完善
+        */
+        void WXMLDom::AddTestAttr(std::string const& a2, std::stringstream & a3, char a4)
+        {
+            bool mark = true;
+            if (this->offset_0 != "button")
+            {
+                mark = this->offset_0 == "navigator";
+            }
+            std::string v24 = "tap";
+            std::string v27 = "bind";
+            for (int i = 0; i <= 5 && mark; i++)
+            {
+                bool v17;
+                int flag = false;
+                do
+                {
+                    auto v23 = v27.substr(3 * i);
+                    v23 = v23.append(v24.substr(3 * flag));
+                    v17 = this->offset_48.count(v23);
+                    flag++;
+                } while (flag <= 2 && !v17);
+                mark = v17;
+            }
+            if (mark)
+            {
+                this->componentCnt++;
+                a3 << "_af(" << a2 << "," << 1 << ",";
+                // a6 << this->
+            }
+            else
+            {
+                a3 << "_af(" << a2 << "," << 0;
+            }
+            a3 << ",";
+            // a3 insert
+            a3 << ");" << a4;
+            // do
+            // {
+            //     /* code */
+            // } while (/* condition */);
+            
+
+            
+        }
+        std::string WXMLDom::ToCamelStyle(std::string const& a2)
+        {
+            bool mark = false;
+            std::string result;
+            result.reserve(a2.length());
+            for (auto i = 0; i < a2.length(); i++)
+            {
+                char v2 = a2[i];
+                if (v2 > '.')
+                {
+                    if (v2 == ':')
+                    {
+                    LABEL_11:
+                        mark = true;
+                        continue;
+                    }
+                }
+                else if (v2 > ',')
+                {
+                    goto LABEL_11;
+                }
+                if (v2 - 'a' <= 0x19u && mark)
+                {
+                    result.push_back(v2 - ' ');
+                    mark = 0;
+                }
+                else
+                {
+                    result.push_back(v2);
+                }
+            }
+            
+            return result;
         }
         void WXMLDom::PrintMe(
             int a2,
