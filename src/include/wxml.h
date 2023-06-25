@@ -65,8 +65,6 @@ namespace WXML
         private:
             /* data */
             std::string offset_0; // content
-            int offset_16 = 0; // pos
-            int offset_20 = 0; // size
             bool offset_28; // hasCache toString
             std::string offset_32;  // chcheData toString
             bool offset_84; // hasCache attrContent
@@ -74,6 +72,9 @@ namespace WXML
         public:
             int offset_8 = 0; // ???
             int offset_12 = 0; // ???
+            int offset_16 = 0; // pos
+            int offset_20 = 0; // size
+            int offset_24 = 0; // ???
             int offset_40 = 0; // AttrsCompartor用到，怎么来不知道
             int offset_56 = 0; // ??? -3, -1
             std::string offset_60; // ???
@@ -220,7 +221,6 @@ namespace WXML
             bool offset_28;
             std::map<std::string, WXML::DOMLib::Token> offset_48;
             // std::string offset_52;
-            WXML::DOMLib::Token offset_84; // token
             int offset_92; // pos1
             int offset_96; // pos2
             int offset_104; // len
@@ -231,8 +231,10 @@ namespace WXML
         public:
             std::string offset_0; // type
             std::map<std::string, WXML::DOMLib::Token> offset_12;
-            int offset_24; // ???
+            std::string offset_24; // ???
+            std::vector<std::shared_ptr<WXML::DOMLib::WXMLDom>> offset_72; // 
             int offset_256; // ???
+            WXML::DOMLib::Token offset_84; // token
             WXMLDom(/* args */);
             ~WXMLDom();
             std::string Error(
@@ -312,15 +314,18 @@ namespace WXML
         private:
             /* data */
             std::shared_ptr<WXML::DOMLib::WXMLDom> dom;
-            std::deque<std::string> dequeStr;
             std::vector<WXML::DOMLib::Token> tokenList;
-            int peekIndex = 0; // _DWORD * a1[25], *((_DWORD *)a1 + 25)
             int offset_4;
-            int offset_8; // _DWORD *  a1[8]
+            std::deque<std::string> dequeStr;// offset_8
+            int offset_16;
+            int offset_32; // _DWORD *  a1[8]
+            int offset_36; //
+            int offset_40;
+            int offset_44;
+            std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom; // offset_48 int a1 + 48, _DWORD * a1 + 12
+            int peekIndex = 0; // offset_100
             int offset_128;
             std::string filePath;
-            std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom; // int a1 + 48, _DWORD * a1 + 12
-            int v8;
         public:
             Parser(/* args */);
             ~Parser();

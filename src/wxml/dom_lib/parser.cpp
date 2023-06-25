@@ -110,10 +110,9 @@ namespace WXML
         void Parser::DOM()
         {
             auto token = this->Peek();
-            int v44;
-            if (v44)
+            if (token.offset_24)
             {
-                if (v44 == 4)
+                if (token.offset_24 == 4)
                 {
                     return;
                 }
@@ -130,14 +129,108 @@ namespace WXML
                         throw this->Error("unexpected tag", 0);
                     }
                     this->peekIndex++;
-                    // if (this->offset_8 == )
+                    if (this->offset_32 == this->offset_40 - 24)
+                    {
+                        this->dequeStr.push_back(tag);
+                    }
+                    else
+                    {
+                        this->offset_32 += 24;
+                    }
                     std::shared_ptr<WXML::DOMLib::WXMLDom> domPtr;
+                    domPtr->offset_0.assign(tag);
+                    domPtr->offset_24.assign(domPtr->offset_0);
+                    domPtr->offset_84 = token;
                     auto v8 = this->dequeDom.back();
                     // push_back
+                    v8->offset_72.push_back(domPtr);
                     // push_back
+                    this->dequeDom.push_back(domPtr);
                     this->ATTR_LIST();
-                    auto v9 = this->Peek();
+                    auto v43 = this->Peek();
+                    if(!token.offset_24)
+                    {
+                        if (v43.IsMatch(">"))
+                        {
+                            this->peekIndex++;
+                            this->DOMS();
+                            auto v11 = this->Peek();
+                            if (/*v48[5] || */!v11.IsMatch("</"))
+                            {
+                                auto err = this->Error("unexpected token", &token);
+                                throw "ParseException";
+                            }
+                            this->peekIndex++;
+                            auto v47 = this->Peek();
+                            auto v13 = this->offset_32;
+                            std::string v40 = "";
+                            if (this->offset_16 == v13)
+                            {
 
+                            }
+                            else
+                            {
+                                // if (v13 == this->offset_36)
+                                //     v13 = this->offset_44
+                                v40 = "";
+                            }
+                            if (!v47.IsMatch(&v40[0]))
+                            {
+                                std::string msg = "expect end-tag `" + v40;
+                                msg += v40 + "`.";
+                                auto err = this->Error(&msg[0], 0);
+                                throw err;
+                            }
+                            this->peekIndex++;
+                            this->dequeStr.pop_back();
+                            this->dequeDom.pop_back();
+                            auto v47 = this->Peek();
+                            if (!v47.IsMatch(">"))
+                            {
+                                throw this->Error("unexpected token", 0);
+                            }
+                            this->peekIndex++;
+                            return;
+                        }
+                        if (v43.IsMatch("/>"))
+                        {
+                            this->peekIndex++;
+                            this->dequeDom.pop_back();
+                            this->dequeStr.pop_back();
+                            return;
+                        }
+                    }
+                    throw this->Error("unexpected token", 0);
+                }
+                if (token.IsMatch("</"))
+                {
+                    if (this->offset_32 == this->offset_16)
+                    {
+                        throw this->Error("get tag end without start", 0);
+                    }
+                    return;
+                }
+                auto v16 = token.GetContent();
+                this->peekIndex++;
+                if (v16.length() > 0)
+                {
+                    int v17 = 0;
+                    // TODO v18 = *v16 + v43[4];
+                    char* v18 = &v16[0] + token.offset_16;
+                    while(token.offset_20 > v17)
+                    {
+                        int v19 = *(uint8_t *)(v18 + v17) - 9;
+                        if (v19 > 0x17u || ((0x800013u >> v19) & 1) == 0)
+                        {
+                            auto v45 = this->dequeDom.back();
+                            std::shared_ptr<WXML::DOMLib::WXMLDom> dom;
+                            dom->offset_0 = "TEXTNODE";
+                            dom->offset_84 = token;
+                            v45->offset_72.push_back(dom);
+                            break;
+                        }
+                        ++v17;
+                    }
                 }
             }
         }
@@ -157,11 +250,11 @@ namespace WXML
             {
                 this->DOM();
                 WXML::DOMLib::Token token = this->Peek();
-                if (this->v8 == 4)
+                if (token.offset_24 == 4)
                     break;
                 if (token.IsMatch("</"))
                 {
-                    if (this->offset_4 == this->offset_8)
+                    if (this->offset_4 == this->offset_32)
                     {
                         throw WXML::DOMLib::Parser::Error("get tag end without start", nullptr);
                     }
