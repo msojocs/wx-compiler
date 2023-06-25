@@ -64,7 +64,8 @@ namespace WXML
             if (!this->bInited)
             {
                 this->bInited = true;
-                char * v0 = " \n\t\r";
+                char _v0[] = " \n\t\r";
+                char * v0 = _v0;
                 memset(&this->TT, 0, 0x101000u);
                
                 // dword_5806EC = 99;
@@ -105,18 +106,19 @@ namespace WXML
                     char v1 = *v0;
                     if (!v1)
                         break;
-                    this->TT[ (0x567D68 - 0x00567560 + v1)/4] = 655363;
+                    this->TT[ (0x567D68 - 0x00567560)/4 + v1] = 655363;
                     v0++;
                 }
-                for (char * i = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:"; ; ++i )
+                char _i[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:";
+                for (char *i = _i; ; ++i )
                 {
                     char v3 = *i;
                     if ( !v3 )
                         break;
-                    this->TT[ (0x567D68 - 0x00567560 + v3)/4] = 131076;
+                    this->TT[ (0x567D68 - 0x00567560)/4 + v3] = 0x00020004; // 131076
                 }
                 this->TT[ (0x567E24 - 0x00567560)/4] = 262147;
-                char *v4 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:";
+                char *v4 = _i;
                 this->TT[ (0x567DEC - 0x00567560)/4] = 33;
                 this->TT[ (0x567F44 - 0x00567560)/4] = 22;
                 this->TT[ (0x568168 - 0x00567560)/4] = -1;
@@ -136,25 +138,26 @@ namespace WXML
                     char v5 = *v4;
                     if ( !v5 )
                         break;
-                    this->TT[ (0x567D68 - 0x00567560 + v5)/4] = 4;
+                    this->TT[ (0x568570 - 0x00567560)/4 + v5] = 4;
                     ++v4;
                 }
-                for (char * j = "0123456789"; ; ++j )
+                char _j[] = "0123456789";
+                for (char * j = _j; ; ++j )
                 {
                     char v7 = *j;
                     if ( !v7 )
                         break;
-                    this->TT[ (0x567D68 - 0x00567560 + v7)/4] = 4;
+                    this->TT[ (0x568570 - 0x00567560)/4 + v7] = 4;
                 }
-                for (char* k = " \n\t\r"; ; ++k )
+                for (char* k = _v0; ; ++k )
                 {
                     char v9 = *k;
                     if ( !v9 )
                         break;
-                    this->TT[ (0x567D68 - 0x00567560 + v9)/4] = 655363;
+                    this->TT[ (0x568570 - 0x00567560)/4 + v9] = 655363;
                 }
                 this->TT[ (0x568664 - 0x00567560)/4] = 131078;
-                char *v10 = " \n\t\r";
+                char *v10 = _v0;
                 this->TT[ (0x5685F8 - 0x00567560)/4] = -1;
                 this->TT[ (0x568668 - 0x00567560)/4] = 393217;
                 this->TT[ (0x56862C - 0x00567560)/4] = 131090;
@@ -165,18 +168,18 @@ namespace WXML
                     char v11 = *v10;
                     if ( !v11 )
                         break;
-                    this->TT[ (0x568D78 - 0x00567560 + v11)/4] = 655363;
+                    this->TT[ (0x568D78 - 0x00567560)/4 + v11] = 655363;
                     ++v10;
                 }
-                for ( char *m = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:"; ; ++m )
+                for ( char *m = _i; ; ++m )
                 {
                     char v13 = *m;
                     if ( !v13 )
                         break;
-                    this->TT[ (0x568D78 - 0x00567560 + v13)/4] = 131077;
+                    this->TT[ (0x568D78 - 0x00567560)/4 + v13] = 131077;
                 }
                 this->TT[ (0x568E00 - 0x00567560)/4] = 131077;
-                char *v14 = " \n\t\r";
+                char *v14 = _v0;
                 this->TT[ (0x568E14 - 0x00567560)/4] = 131081;
                 this->TT[ (0x568D78 - 0x00567560)/4] = -1;
                 this->TT[ (0x569178 - 0x00567560)/4] = -1;
@@ -185,25 +188,25 @@ namespace WXML
                     char v15 = *v14;
                     if ( !v15 )
                         break;
-                    this->TT[ (0x56816C - 0x00567560 + v15)/4] = 524291;
+                    this->TT[ (0x56816C - 0x00567560)/4 + v15] = 524291;
                     ++v14;
                 }
-                for ( char* n = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:"; ; ++n )
+                for ( char* n = _i; ; ++n )
                 {
                     char v17 = *n;
                     if ( !v17 )
                         break;
-                    this->TT[ (0x56816C - 0x00567560 + v17)/4] = 4;
+                    this->TT[ (0x56816C - 0x00567560)/4 + v17] = 4;
                 }
-                for ( char* ii = "0123456789"; ; ++ii )
+                for ( char* ii = _j; ; ++ii )
                 {
                     char v19 = *ii;
                     if ( !v19 )
                         break;
-                    this->TT[ (0x56816C - 0x00567560 + v19)/4] = -1;
+                    this->TT[ (0x56816C - 0x00567560)/4 + v19] = -1;
                 }
                 this->TT[ (0x56825C - 0x00567560)/4] = -1;
-                char *v20 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:";
+                char *v20 = _i;
                 this->TT[ (0x5681F4 - 0x00567560)/4] = 5;
                 this->TT[ (0x568208 - 0x00567560)/4] = 9;
                 this->TT[ (0x568228 - 0x00567560)/4] = 18;
@@ -216,11 +219,11 @@ namespace WXML
                     char v21 = *v20;
                     if ( !v21 )
                         break;
-                    this->TT[ (0x56BDA8 - 0x00567560 + v21)/4] = 131076;
+                    this->TT[ (0x56BDA8 - 0x00567560)/4 + v21] = 131076;
                     ++v20;
                 }
                 this->TT[ (0x56BEA0 - 0x00567560)/4] = 262145;
-                char *v22 = " \n\t\r";
+                char *v22 = _v0;
                 this->TT[ (0x56C1A8 - 0x00567560)/4] = -1;
                 this->TT[ (0x568AE4 - 0x00567560)/4] = 7;
                 this->TT[ (0x56899C - 0x00567560)/4] = -1;
@@ -245,11 +248,11 @@ namespace WXML
                     char v23 = *v22;
                     if ( !v23 )
                         break;
-                    this->TT[ (0x56D5C0 - 0x00567560 + v23)/4] = 25;
+                    this->TT[ (0x56D5C0 - 0x00567560)/4 + v23] = 25;
                     ++v22;
                 }
                 this->TT[ (0x56D6B8 - 0x00567560)/4] = 31;
-                char *v24 = " \n\t\r";
+                char *v24 = _v0;
                 this->TT[ (0x56D9C0 - 0x00567560)/4] = 3145732;
                 this->TT[ (0x56DABC - 0x00567560)/4] = 31;
                 this->TT[ (0x56DA80 - 0x00567560)/4] = 32;
@@ -271,7 +274,7 @@ namespace WXML
                     char v25 = *v24;
                     if ( !v25 )
                         break;
-                    this->TT[ (0x56EDD8 - 0x00567560 + v25)/4] = 30;
+                    this->TT[ (0x56EDD8 - 0x00567560)/4 + v25] = 30;
                     ++v24;
                 }
                 this->TT[ (0x56EED0 - 0x00567560)/4] = 524289;

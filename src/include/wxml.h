@@ -78,9 +78,6 @@ namespace WXML
             int offset_56 = 0; // ??? -3, -1
             std::string offset_60; // ???
             Token();
-            /**
-             * 非空构造会导致std::sort位置编译失败，原因未知
-            */
             Token(std::string &);
             Token(WXML::DOMLib::Token&&);
             Token(WXML::DOMLib::Token const&);
