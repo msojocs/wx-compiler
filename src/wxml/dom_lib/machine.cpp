@@ -68,44 +68,44 @@ namespace WXML
                 memset(&this->TT, 0, 0x101000u);
                
                 // dword_5806EC = 99;
-                this->TT[ 0x5806EC - 0x00567560] = 99;
+                this->TT[ (0x5806EC - 0x00567560)/4] = 99;
                 // dword_567A54 = 131074;
-                this->TT[ 0x567A54 - 0x00567560] = 131074;
+                this->TT[ (0x567A54 - 0x00567560)/4] = 131074;
                 // dword_567B50 = 15;
-                this->TT[ 0x567B50 - 0x00567560] = 15;
+                this->TT[ (0x567B50 - 0x00567560)/4] = 15;
                 // dword_567D64 = 1;
-                this->TT[ 0x567D64 - 0x00567560] = 1;
+                this->TT[ (0x567D64 - 0x00567560)/4] = 1;
                 // dword_567964 = 131171;
-                this->TT[ 0x567964 - 0x00567560] = 131171;
+                this->TT[ (0x567964 - 0x00567560)/4] = 131171;
                 // dword_56B388 = 16;
-                this->TT[ 0x56B388 - 0x00567560] = 16;
+                this->TT[ (0x56B388 - 0x00567560)/4] = 16;
                 // dword_56B59C = 1;
-                this->TT[ 0x56B59C - 0x00567560] = 1;
+                this->TT[ (0x56B59C - 0x00567560)/4] = 1;
                 // dword_56B794 = 17;
-                this->TT[ 0x56B794 - 0x00567560] = 17;
-                this->TT[ 0x56B5A0 - 0x00567560] = -1;
-                this->TT[ 0x56B9A0 - 0x00567560] = 16;
-                this->TT[ 0x56BB98 - 0x00567560] = 1;
-                this->TT[ 0x56BDA4 - 0x00567560] = 1048592;
-                this->TT[ 0x56B628 - 0x00567560] = 11;
-                this->TT[ 0x56B63C - 0x00567560] = 13;
-                this->TT[ 0x56A2FC - 0x00567560] = 12;
-                this->TT[ 0x56A990 - 0x00567560] = 11;
-                this->TT[ 0x56A214 - 0x00567560] = 16;
-                this->TT[ 0x56A18C - 0x00567560] = -1;
-                this->TT[ 0x56A58C - 0x00567560] = 11;
-                this->TT[ 0x56AB04 - 0x00567560] = 14;
-                this->TT[ 0x56B198 - 0x00567560] = 13;
-                this->TT[ 0x56AA30 - 0x00567560] = 16;
-                this->TT[ 0x56A994 - 0x00567560] = -1;
-                this->TT[ 0x56AD94 - 0x00567560] = 13;
+                this->TT[ (0x56B794 - 0x00567560)/4] = 17;
+                this->TT[ (0x56B5A0 - 0x00567560)/4] = -1;
+                this->TT[ (0x56B9A0 - 0x00567560)/4] = 16;
+                this->TT[ (0x56BB98 - 0x00567560)/4] = 1;
+                this->TT[ (0x56BDA4 - 0x00567560)/4] = 1048592;
+                this->TT[ (0x56B628 - 0x00567560)/4] = 11;
+                this->TT[ (0x56B63C - 0x00567560)/4] = 13;
+                this->TT[ (0x56A2FC - 0x00567560)/4] = 12;
+                this->TT[ (0x56A990 - 0x00567560)/4] = 11;
+                this->TT[ (0x56A214 - 0x00567560)/4] = 16;
+                this->TT[ (0x56A18C - 0x00567560)/4] = -1;
+                this->TT[ (0x56A58C - 0x00567560)/4] = 11;
+                this->TT[ (0x56AB04 - 0x00567560)/4] = 14;
+                this->TT[ (0x56B198 - 0x00567560)/4] = 13;
+                this->TT[ (0x56AA30 - 0x00567560)/4] = 16;
+                this->TT[ (0x56A994 - 0x00567560)/4] = -1;
+                this->TT[ (0x56AD94 - 0x00567560)/4] = 13;
                 
                 while (1)
                 {
                     char v1 = *v0;
                     if (!v1)
                         break;
-                    this->TT[ 0x567D68 - 0x00567560 + v1] = 655363;
+                    this->TT[ (0x567D68 - 0x00567560 + v1)/4] = 655363;
                     v0++;
                 }
                 for (char * i = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:"; ; ++i )
@@ -113,30 +113,30 @@ namespace WXML
                     char v3 = *i;
                     if ( !v3 )
                         break;
-                    this->TT[ 0x567D68 - 0x00567560 + v3] = 131076;
+                    this->TT[ (0x567D68 - 0x00567560 + v3)/4] = 131076;
                 }
-                this->TT[ 0x567E24 - 0x00567560] = 262147;
+                this->TT[ (0x567E24 - 0x00567560)/4] = 262147;
                 char *v4 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:";
-                this->TT[ 0x567DEC - 0x00567560] = 33;
-                this->TT[ 0x567F44 - 0x00567560] = 22;
-                this->TT[ 0x568168 - 0x00567560] = -1;
-                this->TT[ 0x56FA98 - 0x00567560] = 34;
-                this->TT[ 0x56FDE4 - 0x00567560] = -1;
-                this->TT[ 0x56FE9C - 0x00567560] = 19;
-                this->TT[ 0x5701E8 - 0x00567560] = -1;
-                this->TT[ 0x56C260 - 0x00567560] = 20;
-                this->TT[ 0x56C5AC - 0x00567560] = 19;
-                this->TT[ 0x56C664 - 0x00567560] = 21;
-                this->TT[ 0x56C9B0 - 0x00567560] = 19;
-                this->TT[ 0x56CAAC - 0x00567560] = 524289;
-                this->TT[ 0x56CA68 - 0x00567560] = 21;
-                this->TT[ 0x56CDB4 - 0x00567560] = 19;
+                this->TT[ (0x567DEC - 0x00567560)/4] = 33;
+                this->TT[ (0x567F44 - 0x00567560)/4] = 22;
+                this->TT[ (0x568168 - 0x00567560)/4] = -1;
+                this->TT[ (0x56FA98 - 0x00567560)/4] = 34;
+                this->TT[ (0x56FDE4 - 0x00567560)/4] = -1;
+                this->TT[ (0x56FE9C - 0x00567560)/4] = 19;
+                this->TT[ (0x5701E8 - 0x00567560)/4] = -1;
+                this->TT[ (0x56C260 - 0x00567560)/4] = 20;
+                this->TT[ (0x56C5AC - 0x00567560)/4] = 19;
+                this->TT[ (0x56C664 - 0x00567560)/4] = 21;
+                this->TT[ (0x56C9B0 - 0x00567560)/4] = 19;
+                this->TT[ (0x56CAAC - 0x00567560)/4] = 524289;
+                this->TT[ (0x56CA68 - 0x00567560)/4] = 21;
+                this->TT[ (0x56CDB4 - 0x00567560)/4] = 19;
                 while ( 1 )
                 {
                     char v5 = *v4;
                     if ( !v5 )
                         break;
-                    this->TT[ 0x567D68 - 0x00567560 + v5] = 4;
+                    this->TT[ (0x567D68 - 0x00567560 + v5)/4] = 4;
                     ++v4;
                 }
                 for (char * j = "0123456789"; ; ++j )
@@ -144,28 +144,28 @@ namespace WXML
                     char v7 = *j;
                     if ( !v7 )
                         break;
-                    this->TT[ 0x567D68 - 0x00567560 + v7] = 4;
+                    this->TT[ (0x567D68 - 0x00567560 + v7)/4] = 4;
                 }
                 for (char* k = " \n\t\r"; ; ++k )
                 {
                     char v9 = *k;
                     if ( !v9 )
                         break;
-                    this->TT[ 0x567D68 - 0x00567560 + v9] = 655363;
+                    this->TT[ (0x567D68 - 0x00567560 + v9)/4] = 655363;
                 }
-                this->TT[ 0x568664 - 0x00567560] = 131078;
+                this->TT[ (0x568664 - 0x00567560)/4] = 131078;
                 char *v10 = " \n\t\r";
-                this->TT[ 0x5685F8 - 0x00567560] = -1;
-                this->TT[ 0x568668 - 0x00567560] = 393217;
-                this->TT[ 0x56862C - 0x00567560] = 131090;
-                this->TT[ 0x568970 - 0x00567560] = 131075;
-                this->TT[ 0x568570 - 0x00567560] = -1;
+                this->TT[ (0x5685F8 - 0x00567560)/4] = -1;
+                this->TT[ (0x568668 - 0x00567560)/4] = 393217;
+                this->TT[ (0x56862C - 0x00567560)/4] = 131090;
+                this->TT[ (0x568970 - 0x00567560)/4] = 131075;
+                this->TT[ (0x568570 - 0x00567560)/4] = -1;
                 while ( 1 )
                 {
                     char v11 = *v10;
                     if ( !v11 )
                         break;
-                    this->TT[ 0x568D78 - 0x00567560 + v11] = 655363;
+                    this->TT[ (0x568D78 - 0x00567560 + v11)/4] = 655363;
                     ++v10;
                 }
                 for ( char *m = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:"; ; ++m )
@@ -173,19 +173,19 @@ namespace WXML
                     char v13 = *m;
                     if ( !v13 )
                         break;
-                    this->TT[ 0x568D78 - 0x00567560 + v13] = 131077;
+                    this->TT[ (0x568D78 - 0x00567560 + v13)/4] = 131077;
                 }
-                this->TT[ 0x568E00 - 0x00567560] = 131077;
+                this->TT[ (0x568E00 - 0x00567560)/4] = 131077;
                 char *v14 = " \n\t\r";
-                this->TT[ 0x568E14 - 0x00567560] = 131081;
-                this->TT[ 0x568D78 - 0x00567560] = -1;
-                this->TT[ 0x569178 - 0x00567560] = -1;
+                this->TT[ (0x568E14 - 0x00567560)/4] = 131081;
+                this->TT[ (0x568D78 - 0x00567560)/4] = -1;
+                this->TT[ (0x569178 - 0x00567560)/4] = -1;
                 while ( 1 )
                 {
                     char v15 = *v14;
                     if ( !v15 )
                         break;
-                    this->TT[ 0x56816C - 0x00567560 + v15] = 524291;
+                    this->TT[ (0x56816C - 0x00567560 + v15)/4] = 524291;
                     ++v14;
                 }
                 for ( char* n = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:"; ; ++n )
@@ -193,89 +193,89 @@ namespace WXML
                     char v17 = *n;
                     if ( !v17 )
                         break;
-                    this->TT[ 0x56816C - 0x00567560 + v17] = 4;
+                    this->TT[ (0x56816C - 0x00567560 + v17)/4] = 4;
                 }
                 for ( char* ii = "0123456789"; ; ++ii )
                 {
                     char v19 = *ii;
                     if ( !v19 )
                         break;
-                    this->TT[ 0x56816C - 0x00567560 + v19] = -1;
+                    this->TT[ (0x56816C - 0x00567560 + v19)/4] = -1;
                 }
-                this->TT[ 0x56825C - 0x00567560] = -1;
+                this->TT[ (0x56825C - 0x00567560)/4] = -1;
                 char *v20 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-:";
-                this->TT[ 0x5681F4 - 0x00567560] = 5;
-                this->TT[ 0x568208 - 0x00567560] = 9;
-                this->TT[ 0x568228 - 0x00567560] = 18;
-                this->TT[ 0x568264 - 0x00567560] = 262145;
-                this->TT[ 0x568260 - 0x00567560] = 6;
-                this->TT[ 0x56816C - 0x00567560] = -1;
-                this->TT[ 0x56856C - 0x00567560] = -1;
+                this->TT[ (0x5681F4 - 0x00567560)/4] = 5;
+                this->TT[ (0x568208 - 0x00567560)/4] = 9;
+                this->TT[ (0x568228 - 0x00567560)/4] = 18;
+                this->TT[ (0x568264 - 0x00567560)/4] = 262145;
+                this->TT[ (0x568260 - 0x00567560)/4] = 6;
+                this->TT[ (0x56816C - 0x00567560)/4] = -1;
+                this->TT[ (0x56856C - 0x00567560)/4] = -1;
                 while ( 1 )
                 {
                     char v21 = *v20;
                     if ( !v21 )
                         break;
-                    this->TT[ 0x56BDA8 - 0x00567560 + v21] = 131076;
+                    this->TT[ (0x56BDA8 - 0x00567560 + v21)/4] = 131076;
                     ++v20;
                 }
-                this->TT[ 0x56BEA0 - 0x00567560] = 262145;
+                this->TT[ (0x56BEA0 - 0x00567560)/4] = 262145;
                 char *v22 = " \n\t\r";
-                this->TT[ 0x56C1A8 - 0x00567560] = -1;
-                this->TT[ 0x568AE4 - 0x00567560] = 7;
-                this->TT[ 0x56899C - 0x00567560] = -1;
-                this->TT[ 0x56957C - 0x00567560] = 5;
-                this->TT[ 0x5691A4 - 0x00567560] = 655363;
-                this->TT[ 0x5689FC - 0x00567560] = 262147;
-                this->TT[ 0x568974 - 0x00567560] = -1;
-                this->TT[ 0x568D74 - 0x00567560] = 5;
-                this->TT[ 0x569AF4 - 0x00567560] = 10;
-                this->TT[ 0x5699AC - 0x00567560] = -1;
-                this->TT[ 0x56A188 - 0x00567560] = 9;
-                this->TT[ 0x569DB0 - 0x00567560] = 655363;
-                this->TT[ 0x569A20 - 0x00567560] = 262147;
-                this->TT[ 0x569984 - 0x00567560] = -1;
-                this->TT[ 0x569D84 - 0x00567560] = 9;
-                this->TT[ 0x56CF98 - 0x00567560] = 23;
-                this->TT[ 0x56D1B8 - 0x00567560] = 3145732;
-                this->TT[ 0x56D388 - 0x00567560] = 24;
-                this->TT[ 0x56D5BC - 0x00567560] = 3145732;
+                this->TT[ (0x56C1A8 - 0x00567560)/4] = -1;
+                this->TT[ (0x568AE4 - 0x00567560)/4] = 7;
+                this->TT[ (0x56899C - 0x00567560)/4] = -1;
+                this->TT[ (0x56957C - 0x00567560)/4] = 5;
+                this->TT[ (0x5691A4 - 0x00567560)/4] = 655363;
+                this->TT[ (0x5689FC - 0x00567560)/4] = 262147;
+                this->TT[ (0x568974 - 0x00567560)/4] = -1;
+                this->TT[ (0x568D74 - 0x00567560)/4] = 5;
+                this->TT[ (0x569AF4 - 0x00567560)/4] = 10;
+                this->TT[ (0x5699AC - 0x00567560)/4] = -1;
+                this->TT[ (0x56A188 - 0x00567560)/4] = 9;
+                this->TT[ (0x569DB0 - 0x00567560)/4] = 655363;
+                this->TT[ (0x569A20 - 0x00567560)/4] = 262147;
+                this->TT[ (0x569984 - 0x00567560)/4] = -1;
+                this->TT[ (0x569D84 - 0x00567560)/4] = 9;
+                this->TT[ (0x56CF98 - 0x00567560)/4] = 23;
+                this->TT[ (0x56D1B8 - 0x00567560)/4] = 3145732;
+                this->TT[ (0x56D388 - 0x00567560)/4] = 24;
+                this->TT[ (0x56D5BC - 0x00567560)/4] = 3145732;
                 while ( 1 )
                 {
                     char v23 = *v22;
                     if ( !v23 )
                         break;
-                    this->TT[ 0x56D5C0 - 0x00567560 + v23] = 25;
+                    this->TT[ (0x56D5C0 - 0x00567560 + v23)/4] = 25;
                     ++v22;
                 }
-                this->TT[ 0x56D6B8 - 0x00567560] = 31;
+                this->TT[ (0x56D6B8 - 0x00567560)/4] = 31;
                 char *v24 = " \n\t\r";
-                this->TT[ 0x56D9C0 - 0x00567560] = 3145732;
-                this->TT[ 0x56DABC - 0x00567560] = 31;
-                this->TT[ 0x56DA80 - 0x00567560] = 32;
-                this->TT[ 0x56DDC4 - 0x00567560] = 25;
-                this->TT[ 0x56F6D8 - 0x00567560] = 262145;
-                this->TT[ 0x56F9E0 - 0x00567560] = 1048601;
-                this->TT[ 0x56F2CC - 0x00567560] = 131098;
-                this->TT[ 0x56F5DC - 0x00567560] = 31;
-                this->TT[ 0x56DE84 - 0x00567560] = 27;
-                this->TT[ 0x56E1C8 - 0x00567560] = 0x50001E + 1;
-                this->TT[ 0x56E3A8 - 0x00567560] = 28;
-                this->TT[ 0x56E5CC - 0x00567560] = 0x50001E + 1;
-                this->TT[ 0x56E7B0 - 0x00567560] = 29;
-                this->TT[ 0x56E9D0 - 0x00567560] = 0x50001E + 1;
-                this->TT[ 0x56EBA0 - 0x00567560] = 30;
-                this->TT[ 0x56EDD4 - 0x00567560] = 0x50001E + 1;
+                this->TT[ (0x56D9C0 - 0x00567560)/4] = 3145732;
+                this->TT[ (0x56DABC - 0x00567560)/4] = 31;
+                this->TT[ (0x56DA80 - 0x00567560)/4] = 32;
+                this->TT[ (0x56DDC4 - 0x00567560)/4] = 25;
+                this->TT[ (0x56F6D8 - 0x00567560)/4] = 262145;
+                this->TT[ (0x56F9E0 - 0x00567560)/4] = 1048601;
+                this->TT[ (0x56F2CC - 0x00567560)/4] = 131098;
+                this->TT[ (0x56F5DC - 0x00567560)/4] = 31;
+                this->TT[ (0x56DE84 - 0x00567560)/4] = 27;
+                this->TT[ (0x56E1C8 - 0x00567560)/4] = 0x50001E + 1;
+                this->TT[ (0x56E3A8 - 0x00567560)/4] = 28;
+                this->TT[ (0x56E5CC - 0x00567560)/4] = 0x50001E + 1;
+                this->TT[ (0x56E7B0 - 0x00567560)/4] = 29;
+                this->TT[ (0x56E9D0 - 0x00567560)/4] = 0x50001E + 1;
+                this->TT[ (0x56EBA0 - 0x00567560)/4] = 30;
+                this->TT[ (0x56EDD4 - 0x00567560)/4] = 0x50001E + 1;
                 while ( 1 )
                 {
                     char v25 = *v24;
                     if ( !v25 )
                         break;
-                    this->TT[ 0x56EDD8 - 0x00567560 + v25] = 30;
+                    this->TT[ (0x56EDD8 - 0x00567560 + v25)/4] = 30;
                     ++v24;
                 }
-                this->TT[ 0x56EED0 - 0x00567560] = 524289;
-                this->TT[ 0x56F1D8 - 0x00567560] = -1;
+                this->TT[ (0x56EED0 - 0x00567560)/4] = 524289;
+                this->TT[ (0x56F1D8 - 0x00567560)/4] = -1;
                 /*
                 0x00566560
                 1 - 1
@@ -285,11 +285,11 @@ namespace WXML
                 5 - 2
                 6 - 0
                 */
-                this->STT[0x566564 - 0x00566560] = 1;
-                this->STT[0x566574 - 0x00566560] = 2;
-                this->STT[0x566584 - 0x00566560] = 2;
-                this->STT[0x5665DC - 0x00566560] = 3;
-                this->STT[0x5665E0 - 0x00566560] = 3;
+                this->STT[ (0x566564 - 0x00566560)/4] = 1;
+                this->STT[ (0x566574 - 0x00566560)/4] = 2;
+                this->STT[ (0x566584 - 0x00566560)/4] = 2;
+                this->STT[ (0x5665DC - 0x00566560)/4] = 3;
+                this->STT[ (0x5665E0 - 0x00566560)/4] = 3;
             }
         }
         int dword_567960[1000] = {0};
@@ -314,8 +314,8 @@ namespace WXML
                 int v46;
                 int v45;
                 do{
-                    v46 = this->TT[257 * this->offset_24 + inputChar];
                     v45 = this->offset_24;
+                    v46 = this->TT[257 * v45 + inputChar];
                     if (!v46)
                     {
                         v46 = dword_567960[257 * v45];
@@ -345,7 +345,7 @@ namespace WXML
                         errorMessage = ss.str();
                         return;
                     }
-                    this->offset_24 = v46;
+                    this->offset_24 = (uint16_t)v46;
                     if (bittest(&v46, 0x15u)) // 0x15 -> 21
                     {
                         // TODO: 

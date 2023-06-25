@@ -92,7 +92,8 @@ namespace WXML
             int ret = v15.GetTokens(this->tokenList, errorMessage, a6);
             if (!ret)
             {
-                std::shared_ptr<WXML::DOMLib::WXMLDom> domPtr;
+                std::shared_ptr<WXML::DOMLib::WXMLDom> domPtr(new WXML::DOMLib::WXMLDom());
+                
                 domPtr->offset_0 = "root";
                 this->dom = domPtr;
                 dequeDom.push_back(domPtr);
@@ -143,7 +144,6 @@ namespace WXML
         
         WXML::DOMLib::Token Parser::Peek()
         {
-            
             return tokenList[this->peekIndex];
         }
 

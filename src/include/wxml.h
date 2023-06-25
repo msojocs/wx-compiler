@@ -65,26 +65,28 @@ namespace WXML
         private:
             /* data */
             std::string offset_0; // content
-            int offset_16; // pos
-            int offset_20; // size
+            int offset_16 = 0; // pos
+            int offset_20 = 0; // size
             bool offset_28; // hasCache toString
             std::string offset_32;  // chcheData toString
             bool offset_84; // hasCache attrContent
             std::string offset_88; // chcheData attrContent
         public:
-            int offset_8; // ???
-            int offset_12; // ???
-            int offset_40; // AttrsCompartor用到，怎么来不知道
-            int offset_56; // ??? -3, -1
+            int offset_8 = 0; // ???
+            int offset_12 = 0; // ???
+            int offset_40 = 0; // AttrsCompartor用到，怎么来不知道
+            int offset_56 = 0; // ??? -3, -1
             std::string offset_60; // ???
             Token();
             /**
              * 非空构造会导致std::sort位置编译失败，原因未知
             */
-            // Token(std::string &);
-            // Token(WXML::DOMLib::Token&&);
-            // Token(WXML::DOMLib::Token const&);
+            Token(std::string &);
+            Token(WXML::DOMLib::Token&&);
+            Token(WXML::DOMLib::Token const&);
             ~Token();
+            WXML::DOMLib::Token& operator=(WXML::DOMLib::Token const&);
+            WXML::DOMLib::Token& operator=(WXML::DOMLib::Token &&);
             void SetContent(std::string &content);
             std::string& GetContent();
             int GetPos();
@@ -454,8 +456,6 @@ namespace WXML
         void WXMLHelperCode(std::string &result);
     };
 
-    
-    
     
     namespace EXPRLib
     {

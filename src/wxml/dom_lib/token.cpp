@@ -19,17 +19,70 @@ namespace WXML
         {
         }
         
-        // Token::Token(std::string &content)
-        // {
-        //     this->offset_0 = content;
-        // }
+        Token::Token(std::string &content)
+        {
+            this->offset_0 = content;
+        }
         
-        // Token::Token(WXML::DOMLib::Token&& token)
-        // {
-        // }
-        // Token::Token(WXML::DOMLib::Token const& token)
-        // {
-        // }
+        Token::Token(WXML::DOMLib::Token&& token):
+        offset_0(token.offset_0),
+        offset_8(token.offset_8),
+        offset_12(token.offset_12),
+        offset_16(token.offset_16),
+        offset_20(token.offset_20),
+        offset_28(token.offset_28),
+        offset_32(token.offset_32),
+        offset_40(token.offset_40),
+        offset_56(token.offset_56),
+        offset_60(token.offset_60),
+        offset_84(token.offset_84),
+        offset_88(token.offset_88)
+        {
+        }
+        Token::Token(WXML::DOMLib::Token const& token)
+        {
+            this->offset_0 = token.offset_0;
+            this->offset_8 = token.offset_8;
+            this->offset_12 = token.offset_12;
+            this->offset_16 = token.offset_16;
+            this->offset_20 = token.offset_20;
+            this->offset_28 = token.offset_28;
+            this->offset_32 = token.offset_32;
+            this->offset_56 = token.offset_56;
+            this->offset_60 = token.offset_60;
+            this->offset_84 = token.offset_84;
+            this->offset_88 = token.offset_88;
+        }
+        WXML::DOMLib::Token& Token::operator=(WXML::DOMLib::Token const& token)
+        {
+            this->offset_0 = token.offset_0;
+            this->offset_8 = token.offset_8;
+            this->offset_12 = token.offset_12;
+            this->offset_16 = token.offset_16;
+            this->offset_20 = token.offset_20;
+            this->offset_28 = token.offset_28;
+            this->offset_32 = token.offset_32;
+            this->offset_56 = token.offset_56;
+            this->offset_60 = token.offset_60;
+            this->offset_84 = token.offset_84;
+            this->offset_88 = token.offset_88;
+            return *this;
+        }
+        WXML::DOMLib::Token& Token::operator=(WXML::DOMLib::Token && token)
+        {
+            this->offset_0 = token.offset_0;
+            this->offset_8 = token.offset_8;
+            this->offset_12 = token.offset_12;
+            this->offset_16 = token.offset_16;
+            this->offset_20 = token.offset_20;
+            this->offset_28 = token.offset_28;
+            this->offset_32 = token.offset_32;
+            this->offset_56 = token.offset_56;
+            this->offset_60 = token.offset_60;
+            this->offset_84 = token.offset_84;
+            this->offset_88 = token.offset_88;
+            return *this;
+        }
         
         Token::~Token()
         {

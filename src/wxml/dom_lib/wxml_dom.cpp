@@ -541,7 +541,7 @@ namespace WXML {
                 {
                     // pos: 搜索 -> !__stricmp((const char *)v161, "wx:scope-data")
                     
-                    WXML::DOMLib::Token token;
+                    // WXML::DOMLib::Token token = this.;
                     v324.emplace_back(j->first, j->second);
                 }
             }
@@ -557,11 +557,12 @@ namespace WXML {
                 std::string v333 = v324[m].first.substr(0, 6u);
                 if (v333 == "model:")
                 {
+                    std::string subStr = v324[m].first.substr(6u);
                     ss << "\"model:";
-                    ss << v324[m].first.substr(6u) << "\"" << ":\"";
+                    ss << subStr << "\"" << ":\"";
                     ss << WXML::Rewrite::ToStringCode(v324[m].second.ToAttrContent());
                     ss << "\",";
-                    std::string v336 = v324[m].first.substr(6u);
+                    std::string v336 = subStr;
                     // while (/* condition */)
                     // {
                     //     /* code */
