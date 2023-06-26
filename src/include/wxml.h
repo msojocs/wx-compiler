@@ -62,11 +62,22 @@ namespace WXML
     {
         class Token
         {
+            
+        /*
+        Token
+        00（起点） B6 BF 00（文件内容） 80 CC BF 00  01 00 00 00(行数?) 01 00 00 00(行长度?) // 15
+        01 00 00 00(pos) 04 00 00 00(size)  00 00 00 00 00（布尔值） F6 97 00 // 31
+        38 F0 97 00 00 00 00 00  00 CC FA 00 CC F0 97 00 // 47(40是32字符串的 缓冲区起点)
+        00 00 BF 00 00 00 00 00  FF FF FF FF 54 F0 97 00 // 63
+        00 00 00 00 00 3A 53 00  00 00 00 00 78 F0 97 00 // 79
+        00 00 00 00 00(?) F2 97 00  70 F0 97 00 00 00 00 00
+        00 00 00 00 62 00 00 40  F8 F1 97 00 7A 15 46 00
+        */
         private:
             /* data */
-            std::string offset_0; // content
-            bool offset_28; // hasCache toString
-            std::string offset_32;  // chcheData toString
+            std::string offset_0 = ""; // content
+            bool offset_28 = false; // hasCache toString
+            std::string offset_32 = "";  // chcheData toString
             bool offset_84; // hasCache attrContent
             std::string offset_88; // chcheData attrContent
         public:
@@ -324,6 +335,7 @@ namespace WXML
             int offset_44;
             std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom; // offset_48 int a1 + 48, _DWORD * a1 + 12
             int peekIndex = 0; // offset_100
+            WXML::DOMLib::Token offset_104;
             int offset_128;
             std::string filePath;
         public:

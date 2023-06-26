@@ -378,18 +378,23 @@ namespace WXML
                 {
                     if (this->offset_4 < this->fileLength)
                     {
+
+                        WXML::DOMLib::Token token;
+                        token.offset_8 = this->offset_16;
+                        token.offset_12 = this->offset_20;
+                        token.offset_16 = this->offset_4;
+                        token.offset_20 = this->fileLength - this->offset_4;
+
                         this->offset_4 = this->fileLength;
                         this->offset_20 = this->lineLength;
                         this->offset_16 = this->lineCount;
-
-                        if(WXML::DOMLib::Machine::STT[v45] == 3)
+                        token.offset_24 = WXML::DOMLib::Machine::STT[v45];
+                        if(token.offset_24 == 3)
                         {
-                            WXML::DOMLib::Token token;
                             a5.push_back(token);
                         }
                         else
                         {
-                            WXML::DOMLib::Token token;
                             a3.push_back(token);
                         }
                     }
@@ -433,7 +438,7 @@ namespace WXML
             this->fileLength = 0;
             this->offset_4 = 0;
             this->lineCount = 1;
-            this->lineLength = 1;
+            this->lineLength = 0;
             this->offset_16 = 1;
             this->offset_20 = 1;
             this->offset_24 = 1;

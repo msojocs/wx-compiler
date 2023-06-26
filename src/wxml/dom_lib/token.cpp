@@ -5,16 +5,6 @@ namespace WXML
 {
     namespace DOMLib 
     {
-        /*
-        Token
-        00（起点） B6 BF 00（文件内容） 80 CC BF 00  01 00 00 00(行数?) 01 00 00 00(行长度?) // 15
-        01 00 00 00(pos) 04 00 00 00(size)  00 00 00 00 00（布尔值） F6 97 00 // 31
-        38 F0 97 00 00 00 00 00  00 CC FA 00 CC F0 97 00 // 47
-        00 00 BF 00 00 00 00 00  FF FF FF FF 54 F0 97 00 // 63
-        00 00 00 00 00 3A 53 00  00 00 00 00 78 F0 97 00 // 79
-        00 00 00 00 00(?) F2 97 00  70 F0 97 00 00 00 00 00
-        00 00 00 00 62 00 00 40  F8 F1 97 00 7A 15 46 00
-        */
         Token::Token()
         {
         }
@@ -25,18 +15,18 @@ namespace WXML
         }
         
         Token::Token(WXML::DOMLib::Token&& token):
-        offset_0(token.offset_0),
-        offset_8(token.offset_8),
-        offset_12(token.offset_12),
-        offset_16(token.offset_16),
-        offset_20(token.offset_20),
-        offset_28(token.offset_28),
-        offset_32(token.offset_32),
-        offset_40(token.offset_40),
-        offset_56(token.offset_56),
-        offset_60(token.offset_60),
-        offset_84(token.offset_84),
-        offset_88(token.offset_88)
+            offset_0(token.offset_0),
+            offset_8(token.offset_8),
+            offset_12(token.offset_12),
+            offset_16(token.offset_16),
+            offset_20(token.offset_20),
+            offset_28(token.offset_28),
+            offset_32(token.offset_32),
+            offset_40(token.offset_40),
+            offset_56(token.offset_56),
+            offset_60(token.offset_60),
+            offset_84(token.offset_84),
+            offset_88(token.offset_88)
         {
         }
         Token::Token(WXML::DOMLib::Token const& token)

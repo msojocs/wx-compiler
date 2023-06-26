@@ -184,7 +184,7 @@ namespace WXML
                             this->peekIndex++;
                             this->dequeStr.pop_back();
                             this->dequeDom.pop_back();
-                            auto v47 = this->Peek();
+                            v47 = this->Peek();
                             if (!v47.IsMatch(">"))
                             {
                                 throw this->Error("unexpected token", 0);
@@ -237,7 +237,9 @@ namespace WXML
         
         WXML::DOMLib::Token Parser::Peek()
         {
-            return tokenList[this->peekIndex];
+            if (this->peekIndex < tokenList.size())
+                return tokenList[this->peekIndex];
+            return this->offset_104;
         }
 
         WXML::DOMLib::ParseException Parser::Error(char const*, WXML::DOMLib::Token *)
