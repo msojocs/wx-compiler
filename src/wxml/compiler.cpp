@@ -61,9 +61,9 @@ namespace WXML{
                         }
                         ss << fMark;
                         ss <<  "['";
-                        //ss <<  ToStringCode(fileName);
+                        ss <<  WXML::Rewrite::ToStringCode(filePath);
                         ss <<  "']['";
-                        //ss <<  ToStringCode(t);
+                        ss <<  WXML::Rewrite::ToStringCode(t);
                         ss <<  "'] =";
 
                         int r = 1;
@@ -94,19 +94,19 @@ namespace WXML{
                                 throw 1;
                             }
                             ss << "f_['";
-                            // ss << ToStringCode(v81);
+                            // ss << WXML::Rewrite::ToStringCode(v81);
                             ss << "'] || ";
 
                             ss << "nv_require(\"";
-                            // ss << ToStringCode("p_" + v81);
+                            // ss << WXML::Rewrite::ToStringCode("p_" + v81);
                             ss << "\");";
                             ss << lineEndMark;
 
                             ss << fMark;
                             ss << "['";
-                            // ss << ToStringCode(fileName);
+                            ss << WXML::Rewrite::ToStringCode(filePath);
                             ss << "']['";
-                            // ss << ToStringCode(v74);
+                            // ss << WXML::Rewrite::ToStringCode(v74);
                             ss << "']();";
                             ss << lineEndMark;
 
@@ -257,10 +257,11 @@ namespace WXML{
                 std::stringstream info;
                 info << "WXML::Compiler::CompileLazy: file name to paths:\n";
                 info << "  all files: [ ";
-                // for (size_t i = 0; i < count; i++)
-                // {
-                //     /* code */
-                // }
+                for (size_t i = 0; i < 6; i++)
+                {
+                    /* code */
+                    info << " ";
+                }
                 info << "];\n";
                 
                 
@@ -460,6 +461,17 @@ namespace WXML{
         void WXMLHelperCode(std::string &result) 
         {
             result.assign(aIfThisThisGUnd);
+        }
+        std::string GetFuncId(std::map<std::string,int> & a2, std::string const& a3)
+        {
+            std::string result = "";
+            if(!a2.count(a3))
+            {
+                // a2.insert({})
+            }
+            auto v5 = a2[a3];
+            sprintf(&result[0], "np_%d", v5);
+            return result;
         }
     } // namespace Compiler
     

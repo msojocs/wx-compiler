@@ -157,7 +157,7 @@ namespace WXML {
             {
                 a6 << "cs.push(\"";
                 std::string sc = WXML::Rewrite::ToStringCode(a2);
-                a6 << sc << ":" << this->offset_0 << ":" << this->offset_92 << ":" << this->offset_96 << "\")";
+                a6 << sc << ":" << this->offset_24 << ":" << this->offset_92 << ":" << this->offset_96 << "\")";
             }
             if (this->offset_0 == "TEXTNODE")
             {

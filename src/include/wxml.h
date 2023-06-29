@@ -75,12 +75,12 @@ namespace WXML
         */
         private:
             /* data */
-            std::string offset_0 = ""; // content
             bool offset_28 = false; // hasCache toString
             std::string offset_32 = "";  // chcheData toString
-            bool offset_84; // hasCache attrContent
+            bool offset_84 = false; // hasCache attrContent
             std::string offset_88; // chcheData attrContent
         public:
+            std::string offset_0 = ""; // content
             int offset_8 = 0; // ???
             int offset_12 = 0; // ???
             int offset_16 = 0; // pos
@@ -88,7 +88,7 @@ namespace WXML
             int offset_24 = 0; // ???
             int offset_40 = 0; // AttrsCompartor用到，怎么来不知道
             int offset_56 = 0; // ??? -3, -1
-            std::string offset_60; // ???
+            std::string offset_60 = ""; // ???
             Token();
             Token(std::string &);
             Token(WXML::DOMLib::Token&&);
@@ -228,9 +228,10 @@ namespace WXML
         class WXMLDom
         {
         private:
-            /* data */
+            /*
+            偏移应该不超过0x128u, 296
+             */
             bool offset_28;
-            std::map<std::string, WXML::DOMLib::Token> offset_48;
             // std::string offset_52;
             int offset_92; // pos1
             int offset_96; // pos2
@@ -243,6 +244,7 @@ namespace WXML
             std::string offset_0; // type
             std::map<std::string, WXML::DOMLib::Token> offset_12;
             std::string offset_24; // ???
+            std::map<std::string, WXML::DOMLib::Token> offset_48;
             std::vector<std::shared_ptr<WXML::DOMLib::WXMLDom>> offset_72; // 
             int offset_256; // ???
             WXML::DOMLib::Token offset_84; // token
@@ -324,19 +326,20 @@ namespace WXML
         {
         private:
             /* data */
-            std::shared_ptr<WXML::DOMLib::WXMLDom> dom;
-            std::vector<WXML::DOMLib::Token> tokenList;
-            int offset_4;
+            std::shared_ptr<WXML::DOMLib::WXMLDom> dom; // offset_4 ?
+            int offset_4 = 0;
             std::deque<std::string> dequeStr;// offset_8
-            int offset_16;
-            int offset_32; // _DWORD *  a1[8]
-            int offset_36; //
-            int offset_40;
-            int offset_44;
+            int offset_16 = 0;
+            int offset_32 = 0; // _DWORD *  a1[8]
+            int offset_36 = 0; //
+            int offset_40 = 0;
+            int offset_44 = 0;
             std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom; // offset_48 int a1 + 48, _DWORD * a1 + 12
+            std::vector<WXML::DOMLib::Token> tokenList; // offset_88
             int peekIndex = 0; // offset_100
             WXML::DOMLib::Token offset_104;
-            int offset_128;
+            int offset_128 = 0;
+            WXML::DOMLib::Token offset_216;
             std::string filePath;
         public:
             Parser(/* args */);
@@ -443,7 +446,7 @@ namespace WXML
             std::string& a7
             );
         
-        // void GetFuncId();
+        std::string GetFuncId(std::map<std::string,int> &, std::string const&);
         void GetVersionInfo(std::string &a1, std::string a2);
         int RenderDefine(
             WXML::DOMLib::WXMLDom &,

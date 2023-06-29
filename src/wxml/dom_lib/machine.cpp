@@ -405,17 +405,22 @@ namespace WXML
                 this->lineLength++;
                 if (bittest(&v46, 0x12u)) // 0x12 -> 18
                 {
+                    WXML::DOMLib::Token v49;
+                    v49.offset_8 = this->offset_16;
+                    v49.offset_12 = this->offset_20;
                     this->offset_4 = this->fileLength;
                     this->offset_20 = this->lineLength;
                     this->offset_16 = this->lineCount;
-                    if (WXML::DOMLib::Machine::STT[v45] == 3)
+                    v49.offset_16 = this->offset_4;
+                    v49.offset_20 = this->lineLength + 1 - this->offset_4;
+                    int stt = WXML::DOMLib::Machine::STT[v45];
+                    v49.offset_24 = stt;
+                    if (stt == 3)
                     {
-                        WXML::DOMLib::Token v49;
                         a5.push_back(v49);
                     }
                     else
                     {
-                        WXML::DOMLib::Token v49;
                         a3.push_back(v49);
                     }
                 }

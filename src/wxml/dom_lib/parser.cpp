@@ -24,10 +24,10 @@ namespace WXML
             {
                 // if(!token)
                 // throw "unexpected attribute name"
-                int v20;
+                int v20 = token.offset_24;
                 for (int i = 0; i < v20; i++)
                 {
-                    char v3;
+                    char v3 = token.offset_16 + token.offset_0[i];
                     if ((v3 & 0xDF) - 'A' > 25
                     && (v3 - '0') > 10
                     && v3 != '_'
@@ -52,11 +52,13 @@ namespace WXML
                     {
                         this->peekIndex++;
                         auto v7 = this->dequeDom.back();
+                        v7->offset_48[v4] = v6;
                     }
                 }
                 else
                 {
                     auto v9 = this->dequeDom.back();
+                    v9->offset_48[v4] = this->offset_216;
 
                 }
             }
@@ -135,9 +137,9 @@ namespace WXML
                     }
                     else
                     {
-                        this->offset_32 += 24;
+                        this->offset_32 += 24; // 0x18h
                     }
-                    std::shared_ptr<WXML::DOMLib::WXMLDom> domPtr;
+                    std::shared_ptr<WXML::DOMLib::WXMLDom> domPtr(new WXML::DOMLib::WXMLDom());
                     domPtr->offset_0.assign(tag);
                     domPtr->offset_24.assign(domPtr->offset_0);
                     domPtr->offset_84 = token;
