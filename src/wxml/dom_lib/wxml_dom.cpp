@@ -649,10 +649,10 @@ namespace WXML {
             if(this->offset_0 == "import" || this->offset_0 == "include")
             {
                 std::string v13 = "src";
-                int v8 = this->offset_12.count(v13);
+                int v8 = this->offset_48.count(v13);
                 if (v8)
                 {
-                    std::string attr = this->offset_12[v13].ToAttrContent();
+                    std::string attr = this->offset_48[v13].ToAttrContent();
                     
                 }
             }
@@ -820,34 +820,38 @@ namespace WXML {
                 // *v4 << this->offset_84;
             }
         }
+
+        /**
+         * TODO
+        */
         bool WXMLDom::IfHasItsElse(
             int a2,
             std::vector<std::string> const& a3
             )
         {
             bool hasElIf = true;
-            if (this->offset_12.count("wx:else") != 0)
+            if (this->offset_72[a2]->offset_48.count("wx:else") != 0)
             {
-                hasElIf = this->offset_12.count("wx:elif");
+                hasElIf = this->offset_72[a2]->offset_48.count("wx:elif");
             }
             if (hasElIf) return true;
 
             bool hasIf = false;
-            if (this->offset_12.count("wx:if") != 0)
+            if (this->offset_72[a2]->offset_48.count("wx:if") != 0)
             {
-                hasIf = this->offset_12.count("wx-if") == 0;
+                hasIf = this->offset_72[a2]->offset_48.count("wx-if") == 0;
             }
             if (!hasIf)
             {
                 int v7 = a2 - 1;
-                if(this->offset_12.begin() == this->offset_12.end())
+                if(this->offset_48.begin() == this->offset_48.end())
                 {
-                    for (int i = a2 + 1; i < this->offset_12.size(); i++)
+                    for (int i = a2 + 1; i < this->offset_48.size(); i++)
                     {
                         bool hasElIf = true;
-                        if(!this->offset_12.count("wx:else"))
+                        if(!this->offset_48.count("wx:else"))
                         {
-                            hasElIf = this->offset_12.count("wx:elif");
+                            hasElIf = this->offset_48.count("wx:elif");
                         }
                         if (!hasElIf)
                         {

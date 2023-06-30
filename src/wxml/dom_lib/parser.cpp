@@ -131,14 +131,7 @@ namespace WXML
                         throw this->Error("unexpected tag", 0);
                     }
                     this->peekIndex++;
-                    if (this->offset_32 == this->offset_40 - 24)
-                    {
-                        this->dequeStr.push_back(tag);
-                    }
-                    else
-                    {
-                        this->offset_32 += 24; // 0x18h
-                    }
+                    this->dequeStr.push_back(tag);
                     std::shared_ptr<WXML::DOMLib::WXMLDom> domPtr(new WXML::DOMLib::WXMLDom());
                     domPtr->offset_0.assign(tag);
                     domPtr->offset_24.assign(domPtr->offset_0);
@@ -160,22 +153,20 @@ namespace WXML
                             if (/*v48[5] || */!v11.IsMatch("</"))
                             {
                                 auto err = this->Error("unexpected token", &token);
-                                throw "ParseException";
+                                throw err;
                             }
                             this->peekIndex++;
                             auto v47 = this->Peek();
-                            auto v13 = this->offset_32;
                             std::string v40 = "";
-                            if (this->offset_16 == v13)
+                            if (this->dequeStr.begin() == this->dequeStr.end())
                             {
-
+                                v40 = "";
                             }
                             else
                             {
-                                // if (v13 == this->offset_36)
-                                //     v13 = this->offset_44
-                                v40 = "";
+                                v40 = *this->dequeStr.end();
                             }
+
                             if (!v47.IsMatch(&v40[0]))
                             {
                                 std::string msg = "expect end-tag `" + v40;
@@ -206,7 +197,7 @@ namespace WXML
                 }
                 if (token.IsMatch("</"))
                 {
-                    if (this->offset_32 == this->offset_16)
+                    if (this->dequeStr.begin() == this->dequeStr.end())
                     {
                         throw this->Error("get tag end without start", 0);
                     }
@@ -225,7 +216,7 @@ namespace WXML
                         if (v19 > 0x17u || ((0x800013u >> v19) & 1) == 0)
                         {
                             auto v45 = this->dequeDom.back();
-                            std::shared_ptr<WXML::DOMLib::WXMLDom> dom;
+                            std::shared_ptr<WXML::DOMLib::WXMLDom> dom(new WXML::DOMLib::WXMLDom());
                             dom->offset_0 = "TEXTNODE";
                             dom->offset_84 = token;
                             v45->offset_72.push_back(dom);
@@ -258,7 +249,7 @@ namespace WXML
                     break;
                 if (token.IsMatch("</"))
                 {
-                    if (this->offset_4 == this->offset_32)
+                    if (this->dequeStr.begin() == this->dequeStr.end())
                     {
                         throw WXML::DOMLib::Parser::Error("get tag end without start", nullptr);
                     }

@@ -242,7 +242,7 @@ namespace WXML
             int componentCnt = 0;
         public:
             std::string offset_0; // type
-            std::map<std::string, WXML::DOMLib::Token> offset_12;
+            // std::map<std::string, WXML::DOMLib::Token> offset_12;
             std::string offset_24; // ???
             std::map<std::string, WXML::DOMLib::Token> offset_48;
             std::vector<std::shared_ptr<WXML::DOMLib::WXMLDom>> offset_72; // 
@@ -329,11 +329,6 @@ namespace WXML
             std::shared_ptr<WXML::DOMLib::WXMLDom> dom; // offset_4 ?
             int offset_4 = 0;
             std::deque<std::string> dequeStr;// offset_8
-            int offset_16 = 0;
-            int offset_32 = 0; // _DWORD *  a1[8]
-            int offset_36 = 0; //
-            int offset_40 = 0;
-            int offset_44 = 0;
             std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom; // offset_48 int a1 + 48, _DWORD * a1 + 12
             std::vector<WXML::DOMLib::Token> tokenList; // offset_88
             int peekIndex = 0; // offset_100

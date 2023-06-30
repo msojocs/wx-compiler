@@ -391,8 +391,8 @@ namespace WXML{
             {
                 if (a1 == "template")
                 {
-                    auto it = a1.offset_12.find("name");
-                    if (it != a1.offset_12.end())
+                    auto it = a1.offset_48.find("name");
+                    if (it != a1.offset_48.end())
                     {
                         a1.offset_0.replace(0, a1.offset_0.size(), "wx-define", 9u);
                     }
@@ -400,7 +400,7 @@ namespace WXML{
                 if (a1 == "wx-define")
                 {
                     WXML::NameAllocator na(a17, a18);
-                    auto token = a1.offset_12["name"];
+                    auto token = a1.offset_48["name"];
                     auto attr = token.ToAttrContent();
                     a3[attr].assign(a2);
                     a1.RenderMeAsFunction(
