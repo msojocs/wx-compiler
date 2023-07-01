@@ -295,9 +295,8 @@ namespace WXML
                 this->STT[ (0x5665E0 - 0x00566560)/4] = 3;
             }
         }
-        int dword_567960[1000] = {0};
 
-        void Machine::Feed(
+        int Machine::Feed(
             char inputChar,
             std::vector<WXML::DOMLib::Token> & a3,
             std::string &errorMessage,
@@ -321,14 +320,15 @@ namespace WXML
                     v46 = this->TT[257 * v45 + inputChar];
                     if (!v46)
                     {
-                        v46 = dword_567960[257 * v45];
+                        v46 = this->TT[ (0x567960 - 0x00567560)/4 + 257 * v45];
                         if(!v46)
                         {
                             std::stringstream ss;
                             ss << "BAD STATE MACHINE! AT INPUT ";
                             ss << this->offset_24 << " " << inputChar;
                             errorMessage = ss.str();
-                            return;
+                            throw errorMessage;
+                            // return;
                         }
                     }
                     if (v46 < 0)
@@ -346,7 +346,7 @@ namespace WXML
                             ss << "unexpected end";
                         }
                         errorMessage = ss.str();
-                        return;
+                        throw errorMessage;
                     }
                     this->offset_24 = (uint16_t)v46;
                     if (bittest(&v46, 0x15u)) // 0x15 -> 21
@@ -408,11 +408,12 @@ namespace WXML
                     WXML::DOMLib::Token v49;
                     v49.offset_8 = this->offset_16;
                     v49.offset_12 = this->offset_20;
+                    auto t4 = this->offset_4;
                     this->offset_4 = this->fileLength;
                     this->offset_20 = this->lineLength;
                     this->offset_16 = this->lineCount;
-                    v49.offset_16 = this->offset_4;
-                    v49.offset_20 = this->lineLength + 1 - this->offset_4;
+                    v49.offset_16 = t4;
+                    v49.offset_20 = this->fileLength - t4;
                     int stt = WXML::DOMLib::Machine::STT[v45];
                     v49.offset_24 = stt;
                     if (stt == 3)
@@ -430,12 +431,14 @@ namespace WXML
                     offset_4 = fileLength;
                     offset_20 = lineLength;
                 }
-                return;
+                return 0;
             }
             catch(const std::exception& e)
             {
                 std::cerr << e.what() << '\n';
+                return -1;
             }
+            return 0;
             
         }
         void Machine::Reset()

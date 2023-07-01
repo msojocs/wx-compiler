@@ -843,7 +843,7 @@ namespace WXML {
             }
             if (!hasIf)
             {
-                int v7 = a2 - 1;
+                int v11 = a2 - 1;
                 if(this->offset_48.begin() == this->offset_48.end())
                 {
                     for (int i = a2 + 1; i < this->offset_48.size(); i++)
@@ -857,13 +857,21 @@ namespace WXML {
                         {
                             break;
                         }
-                        // a3[1].find()
-                        // TODO...
+                        if(
+                            a3.end() != std::find(a3.begin(), a3.end(), this->offset_72[i]->offset_0)
+                            || this->offset_72[i]->offset_72.begin() != this->offset_72[i]->offset_72.end()
+                        )
+                        {
+                            return hasElIf;
+                        }
+                        v11 = i;
                     }
                     
                 }
+                while (v11 >= a2)
+                    this->offset_72.erase(this->offset_72.begin() + v11--);
+                return true;
             }
-            return true;
         }
         bool WXMLDom::operator==(std::string tag)
         {
@@ -890,6 +898,38 @@ namespace WXML {
             }
             v15 << " with message: " << a5 << ".";
             return v15.str();
+        }
+        
+        bool WXMLDom::HasSpAttrPrefix()
+        {
+            for (auto i = this->offset_48.begin(); i != this->offset_48.end(); i++)
+            {
+                auto v3 = i->first.data();
+                if (strncmp(v3, "bind", 4u))
+                {
+
+                    if ( strncmp(v3, "catch", 5u) )
+                    {
+                        if ( strncmp(v3, "capture-bind", 0xCu) )
+                        {
+                        if ( strncmp(v3, "capture-catch", 0xDu) )
+                        {
+                            if ( i->first != "slot" )
+                            {
+                                if ( strncmp(v3, "wx:", 3u) )
+                                {
+                                    if ( strncmp(v3, "mark:", 5u) )
+                                        continue;
+                                }
+                            }
+                        }
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
+            
         }
     }
 }

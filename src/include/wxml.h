@@ -189,7 +189,7 @@ namespace WXML
             ~Machine();
             void Reset(void);
             void InitTransitTable(void);
-            void Feed(char,std::vector<WXML::DOMLib::Token> &,std::string &,std::vector<WXML::DOMLib::Token> &,int);
+            int Feed(char,std::vector<WXML::DOMLib::Token> &,std::string &,std::vector<WXML::DOMLib::Token> &,int);
         
         };
 
@@ -317,6 +317,7 @@ namespace WXML
             bool operator==(std::string tag);
             std::string ToCamelStyle(std::string const&);
             void AddTestAttr(std::string const&, std::stringstream &, char);
+            bool HasSpAttrPrefix(void);
         };
         
 
