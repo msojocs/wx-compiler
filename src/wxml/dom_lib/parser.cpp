@@ -10,6 +10,7 @@ namespace WXML
 
         Parser::Parser(/* args */)
         {
+            this->offset_104.offset_24 = 4;
         }
         
         Parser::~Parser()
@@ -24,10 +25,10 @@ namespace WXML
             {
                 // if(!token)
                 // throw "unexpected attribute name"
-                int v20 = token.offset_24;
+                int v20 = token.offset_20;
                 for (int i = 0; i < v20; i++)
                 {
-                    char v3 = token.offset_16 + token.offset_0[i];
+                    char v3 = token.offset_0[token.offset_16 + i];
                     if ((v3 & 0xDF) - 'A' > 25
                     && (v3 - '0') > 10
                     && v3 != '_'
@@ -47,7 +48,7 @@ namespace WXML
                 {
                     this->peekIndex++;
                     auto v6 = this->Peek();
-                    int v22;
+                    int v22 = v6.offset_24;
                     if (v22 == 2)
                     {
                         this->peekIndex++;
@@ -164,7 +165,7 @@ namespace WXML
                             }
                             else
                             {
-                                v40 = *this->dequeStr.end();
+                                v40 = this->dequeStr.back();
                             }
 
                             if (!v47.IsMatch(&v40[0]))
@@ -203,28 +204,28 @@ namespace WXML
                     }
                     return;
                 }
-                auto v16 = token.GetContent();
-                this->peekIndex++;
-                if (v16.length() > 0)
+            }
+            auto v16 = token.GetContent();
+            this->peekIndex++;
+            if (v16.length() > 0)
+            {
+                int v17 = 0;
+                // TODO v18 = *v16 + v43[4];
+                char* v18 = &v16[0] + token.offset_16;
+                // offset_20第一次是3
+                while(token.offset_20 > v17)
                 {
-                    int v17 = 0;
-                    // TODO v18 = *v16 + v43[4];
-                    char* v18 = &v16[0] + token.offset_16;
-                    // offset_20第一次是3
-                    while(token.offset_20 > v17)
+                    int v19 = *(uint8_t *)(v18 + v17) - 9;
+                    if (v19 > 0x17u || ((0x800013u >> v19) & 1) == 0)
                     {
-                        int v19 = *(uint8_t *)(v18 + v17) - 9;
-                        if (v19 > 0x17u || ((0x800013u >> v19) & 1) == 0)
-                        {
-                            auto v45 = this->dequeDom.back();
-                            std::shared_ptr<WXML::DOMLib::WXMLDom> dom(new WXML::DOMLib::WXMLDom());
-                            dom->offset_0 = "TEXTNODE";
-                            dom->offset_84 = token;
-                            v45->offset_72.push_back(dom);
-                            break;
-                        }
-                        ++v17;
+                        auto v45 = this->dequeDom.back();
+                        std::shared_ptr<WXML::DOMLib::WXMLDom> dom(new WXML::DOMLib::WXMLDom());
+                        dom->offset_0 = "TEXTNODE";
+                        dom->offset_84 = token;
+                        v45->offset_72.push_back(dom);
+                        break;
                     }
+                    ++v17;
                 }
             }
         }

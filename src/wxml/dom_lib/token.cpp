@@ -20,9 +20,11 @@ namespace WXML
             offset_12(token.offset_12),
             offset_16(token.offset_16),
             offset_20(token.offset_20),
+            offset_24(token.offset_24),
             offset_28(token.offset_28),
             offset_32(token.offset_32),
-            offset_40(token.offset_40),
+            // offset_40(token.offset_40),
+            // offset_48(token.offset_48),
             offset_56(token.offset_56),
             offset_60(token.offset_60),
             offset_84(token.offset_84),
@@ -36,8 +38,11 @@ namespace WXML
             this->offset_12 = token.offset_12;
             this->offset_16 = token.offset_16;
             this->offset_20 = token.offset_20;
+            this->offset_24 = token.offset_24;
             this->offset_28 = token.offset_28;
             this->offset_32 = token.offset_32;
+            // this->offset_40 = token.offset_40;
+            // this->offset_48 = token.offset_48;
             this->offset_56 = token.offset_56;
             this->offset_60 = token.offset_60;
             this->offset_84 = token.offset_84;
@@ -50,8 +55,11 @@ namespace WXML
             this->offset_12 = token.offset_12;
             this->offset_16 = token.offset_16;
             this->offset_20 = token.offset_20;
+            this->offset_24 = token.offset_24;
             this->offset_28 = token.offset_28;
             this->offset_32 = token.offset_32;
+            // this->offset_40 = token.offset_40;
+            // this->offset_48 = token.offset_48;
             this->offset_56 = token.offset_56;
             this->offset_60 = token.offset_60;
             this->offset_84 = token.offset_84;
@@ -65,8 +73,11 @@ namespace WXML
             this->offset_12 = token.offset_12;
             this->offset_16 = token.offset_16;
             this->offset_20 = token.offset_20;
+            this->offset_24 = token.offset_24;
             this->offset_28 = token.offset_28;
             this->offset_32 = token.offset_32;
+            // this->offset_40 = token.offset_40;
+            // this->offset_48 = token.offset_48;
             this->offset_56 = token.offset_56;
             this->offset_60 = token.offset_60;
             this->offset_84 = token.offset_84;

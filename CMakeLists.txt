@@ -8,6 +8,7 @@ add_executable(wcc
     src/wcc.cpp
     src/include/wxml.h
     src/wcc/usage.cpp
+    src/wxa/wxa.cpp
     src/wxml/rewrite.cpp
     src/wxml/name_allocator.cpp
     src/wxml/string_templating/token.cpp

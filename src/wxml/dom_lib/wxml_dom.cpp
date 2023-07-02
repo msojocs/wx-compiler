@@ -872,6 +872,7 @@ namespace WXML {
                     this->offset_72.erase(this->offset_72.begin() + v11--);
                 return true;
             }
+            return hasElIf;
         }
         bool WXMLDom::operator==(std::string tag)
         {
@@ -929,6 +930,63 @@ namespace WXML {
                 return true;
             }
             return false;
+            
+        }
+        void WXMLDom::MarkIfHasDescendant(std::vector<std::string> const& a2)
+        {
+            if (a2.size() > 0)
+            {
+                auto v4 = this->offset_72.size();
+                while (--v4 >= 0)
+                {
+                    this->MarkIfHasDescendant(a2);
+                    auto v6 = this->offset_72[v4]->offset_0;
+                    auto ret = std::find(a2.begin(), a2.end(), v6);
+                    if (ret != a2.end())
+                    {
+                        this->offset_256 = 1;
+                    }
+                }
+                
+            }
+
+        }
+        void WXMLDom::CutDomsForCustomComponent(std::vector<std::string> const& a2)
+        {
+            int v3 = this->offset_72.size();
+            while (--v3 >= 0)
+            {
+                this->CutDomsForCustomComponent(a2);
+                if (
+                    this->offset_72[v3]->offset_0 != "include"
+                    && this->offset_72[v3]->offset_0 != "import"
+                    && this->offset_72[v3]->offset_0 != "wx-template"
+                    && this->offset_72[v3]->offset_0 != "wx-define"
+                    && this->offset_72[v3]->offset_0 != "template"
+                    && this->offset_72[v3]->offset_0 != "slot"
+                    && this->offset_72[v3]->offset_0 != "wx-import"
+                )
+                {
+                    if (
+                        a2.end() == std::find(a2.begin(), a2.end(), this->offset_72[v3]->offset_0)
+                        && !this->IfHasItsElse(v3, a2)
+                        )
+                    {
+                        auto v5 = this->offset_72[v3];
+                        if (v5->offset_72.begin() == v5->offset_72.end())
+                        {
+                            this->offset_72.erase(this->offset_72.begin() + v3);
+                        }
+                        else if(v5->offset_72.size() == 8
+                            && !v5->HasSpAttrPrefix())
+                        {
+                            auto v6 = this->offset_72[v3];
+                            auto v7 = v6->offset_72[0];
+                            this->offset_72[v3] = v7;
+                        }
+                    }
+                }
+            }
             
         }
     }

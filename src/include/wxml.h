@@ -87,6 +87,7 @@ namespace WXML
             int offset_20 = 0; // size
             int offset_24 = 0; // ???
             int offset_40 = 0; // AttrsCompartor用到，怎么来不知道
+            // int offset_48 = 0;
             int offset_56 = 0; // ??? -3, -1
             std::string offset_60 = ""; // ???
             Token();
@@ -318,6 +319,8 @@ namespace WXML
             std::string ToCamelStyle(std::string const&);
             void AddTestAttr(std::string const&, std::stringstream &, char);
             bool HasSpAttrPrefix(void);
+            void MarkIfHasDescendant(std::vector<std::string> const&);
+            void CutDomsForCustomComponent(std::vector<std::string> const&);
         };
         
 
@@ -370,7 +373,7 @@ namespace WXML
     namespace Compiler
     {
 
-        WXML::DOMLib::Parser ParseSource(
+        int ParseSource(
             std::string const& content,  // 源码？a2
             std::string const& filePath,  // 文件名？ a3
             char lineEndMark,                  // '\n' a4
@@ -438,7 +441,7 @@ namespace WXML
             std::string& a3,
             std::string& a4,
             std::string& a5,
-            int & a6,
+            int * a6,
             std::string& a7
             );
         
