@@ -1,12 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <iomanip>
 #include <map>
 #include <set>
 #include "include/file.h"
 #include "include/usage.h"
 #include "include/string_utils.h"
 #include "include/wxml.h"
+#include "include/wcc.h"
 
 using namespace std;
 
@@ -15,7 +17,7 @@ int main(int argc, const char **argv)
 
     try
     {
-
+        // main - 0
         string gwxMark = "$gwx";
         string splitMarkStr = " ";
         bool hasConfigParam = false;
@@ -23,6 +25,7 @@ int main(int argc, const char **argv)
         vector<string> paramList;
         string configData;
 
+        // main - 5
         // 第一个参数是程序路径，忽略
         for (int i = 1; i < argc; i++)
         {
@@ -43,6 +46,7 @@ int main(int argc, const char **argv)
             }
         }
 
+        // main - 10
         // 有配置文件，从配置文件解析
         if (hasConfigParam)
         {
@@ -56,6 +60,7 @@ int main(int argc, const char **argv)
                 }
             }
         }
+        // main - 15
         int mark = 0;
         bool isReadFromStdin = false;
         bool version = false;
@@ -70,6 +75,7 @@ int main(int argc, const char **argv)
         map<string, string> mapData1;
         map<string, string> fileContentMap;
         map<string, vector<string>> componentListMap;
+        // main - 20
         for (int i = 0; i < paramList.size(); i++)
         {
             string param = paramList[i];
@@ -259,6 +265,7 @@ int main(int argc, const char **argv)
             }
         }
 
+        // main - 25
         if (version)
         {
             std::string versionInfo;
@@ -272,12 +279,14 @@ int main(int argc, const char **argv)
             }
         }
 
+        // main - 30
         if (fileList.empty())
         {
             usage(argc, argv);
             return 0;
         }
 
+        // main - 35
         if (isReadFromStdin)
         {
             string content;
@@ -296,6 +305,7 @@ int main(int argc, const char **argv)
             }
         }
 
+        // main - 40
         // 此if条件x64dbg得出
         if (!xc_Or_completeCode_Param.empty())
         {
@@ -327,6 +337,7 @@ int main(int argc, const char **argv)
             }
             componentListMap["ALL"] = allComponentList;
         }
+        // main - 45
 
         //
         if (hasLL)
@@ -371,19 +382,7 @@ int main(int argc, const char **argv)
                 "boxofchocolate",
                 "$gdwx",
                 "f_");
-            // while(!outputMap1.empty())
-            // {
-            //     /**
-            //      * v60可能值： 0xF30D70:0xF30DB8:"miniprogram_npm/miniprogram-recycle-view/recycle-view"
-            //     */
-            //     // if(v60 == "__COMMON__")
-            //     // {
-
-            //     // }
-            // }
-
-            // if()
-            if (1)
+            if (outputContentMap.count("__COMMON__") == 0)
             {
                 string helperCode;
                 WXML::Compiler::WXMLHelperCode(helperCode);
@@ -406,63 +405,64 @@ int main(int argc, const char **argv)
                                     "var Behavior=Behavior||function(){};var __vd_version_info__=__vd_version_info__||{};var __GWX_GLOBAL__=__GWX_G"
                                     "LOBAL__||{};var __globalThis=(typeof __vd_version_info__!=='undefined'&&typeof __vd_version_info__.globalThis!"
                                     "=='undefined')?__vd_version_info__.globalThis:(typeof window!=='undefined'?window:globalThis);";
-                commonData += helperCode;
+                commonData = commonData + helperCode;
                 commonData = commonData.append(outputContentMap["__COMMON__"]);
 
                 outputContentMap["__COMMON__"] = commonData;
             }
 
-            string dep = ";var __WXML_DEP__=__WXML_DEP__||{};";
-            // TODO: 起始并不是0
-            for (string j = "";;)
+            stringstream dep;
+            dep << ";var __WXML_DEP__=__WXML_DEP__||{};";
+            // dependencyListMap v121
+            for (auto j = dependencyListMap.begin(); j != dependencyListMap.end(); j++)
             {
-                /* code */
-                if (j == "")
-                    break;
 
-                if (j[11] != j[10])
+                if (j->second.begin() != j->second.end())
                 {
-                    stringstream dep;
                     dep << "__WXML_DEP__[\"";
+                    dep << j->first;
                     dep << "\"]=[";
+                    auto list = j->second;
 
-                    for (int k = 0; k < 10; k++)
+                    for (auto k = list.begin(); k != list.end(); k++)
                     {
-                        /* code */
                         dep << "\"";
+                        dep << WXML::Rewrite::ToStringCode(*k);
                         dep << "\",";
                     }
 
                     dep << "];";
                 }
             }
-            // ???
-            outputContentMap["__COMMON__"].append("");
+            std::string v140 = dep.str();
+            outputContentMap["__COMMON__"].append(v140);
             if (compilerResult)
             {
                 // CompileLazy出现异常
                 // 标准错误输出
-                fprintf(stderr, "Error %d: %s\n", 1, "123");
+                fprintf(stderr, "Error %d: %s\n", 1, errorMessage.data());
             }
             else
             {
                 FILE *f = stdout;
                 if (!outputFileName.empty())
                     f = fopen(outputFileName.c_str(), "w");
-                // DictToJsonString
-                // DictToJsonString
-                fprintf(f, " {\"generateFunctionContent\":%s,\"generateFunctionName\":%s} ", "", "");
+                auto v136 = DictToJsonString(outputContentMap);
+                auto v137 = DictToJsonString(outputFuncMap);
+                fprintf(f, " {\"generateFunctionContent\":%s,\"generateFunctionName\":%s} ", v136.data(), v137.data());
                 fclose(f);
             }
         }
+        // main - 50
         else
         {
+            std::string errorMessage;
             const char off_5403C3[] = {'s', '\0', 'e', '\0'};
             int compilerResult = 0;
             // compilerResult = WXML::Compiler::Compile(
             //            v3,
             //            &v107,
-            //            (int *)v111,
+            //            errorMessage
             //            (unsigned __int8 **)v113,
             //            v126,
             //            &v105,
@@ -484,19 +484,20 @@ int main(int argc, const char **argv)
             if (compilerResult)
             {
                 f = stderr;
-                fprintf(f, "%s\n", "error...");
+                fprintf(f, "%s\n", errorMessage.data());
             }
             else
             {
                 f = stdout;
                 if (!outputFileName.empty())
                 {
-                    f = fopen(outputFileName.c_str(), "w");
+                    f = fopen(outputFileName.data(), "w");
                 }
                 fprintf(f, "%s\n", "result...");
                 fclose(f);
             }
         }
+        // main - 55
     }
     catch (const std::exception &e)
     {
@@ -504,4 +505,51 @@ int main(int argc, const char **argv)
     }
 
     return 0;
+}
+
+
+std::string DictToJsonString(std::map<std::string, std::string> const& a2)
+{
+    std::stringstream ret;
+    ret << "{";
+    bool isFirst = true;
+    for(auto kv: a2)
+    {
+        if (!isFirst)
+        {
+            ret << ",";
+        }
+        ret << "\"";
+        // key
+        ret << EscapeToJsonString(kv.first);
+        ret << "\":";
+
+        ret << "\"";
+        // value
+        ret << EscapeToJsonString(kv.second);
+        ret << "\"";
+        isFirst = false;
+    }
+    ret << "}";
+    return ret.str();
+}
+
+std::string EscapeToJsonString(std::string const& a2)
+{
+    stringstream ret;
+    for (int i = 0; i < a2.length(); i++)
+    {
+        char cur = a2[i];
+        if (cur == '\\' || cur == '"' || cur <= 0x1Fu)
+        {
+            ret << "\\u";
+            ret << std::hex << std::setw(4) << std::setfill('0')<< cur;
+        }
+        else
+        {
+            ret << cur;
+        }
+    }
+    
+    return ret.str();
 }

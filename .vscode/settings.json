@@ -46,7 +46,9 @@
         "typeinfo": "cpp",
         "cstring": "cpp",
         "map": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "ctime": "cpp",
+        "iomanip": "cpp"
     },
     "cmake.debugConfig": {
         "cwd": "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram",

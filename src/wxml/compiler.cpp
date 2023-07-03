@@ -236,7 +236,7 @@ namespace WXML{
                                 (mark & 0x20) != 0); // a13
                 }
                 // mark - 5
-                std::shared_ptr<std::stringstream> v301_localCommonStream1; // v301
+                std::shared_ptr<std::stringstream> v301_localCommonStream1(new std::stringstream()); // v301
                 ssDataMap["__COMMON__"] = v301_localCommonStream1;
                 std::vector<std::string> commonVec;
                 v307_localVecStrMap1["__COMMON__"] = commonVec;
@@ -244,7 +244,7 @@ namespace WXML{
                 // mark - 10
                 for (int i = 0; i < splitedData.size(); i++)
                 {
-                    std::shared_ptr<std::stringstream> v328_ss;
+                    std::shared_ptr<std::stringstream> v328_ss(new std::stringstream());
                     auto it = ssDataMap.lower_bound(splitedData[i]);
                     if (it == ssDataMap.end())
                     {
@@ -307,7 +307,7 @@ namespace WXML{
                 for (auto i = v304.begin(); i != v304.end(); i++)
                 {
                     std::set<std::string> v328;
-                    WXML::DOMLib::recurseDependencies(*i->second, i->first, v328);
+                    WXML::DOMLib::recurseDependencies(i->second, i->first, v328);
                     // TODO: ...
                 }
                 // mark - 45
@@ -357,23 +357,376 @@ namespace WXML{
                 {
                     jj = "__globalThis";
                 }
-                std::string v328;
-                WXML::Compiler::GetVersionInfo(v328, jj);
-                *v301_localCommonStream1 << v328 << std::endl;
-                // WXML::NameAllocator::NameAllocator();
+                std::string verInfo;
+                WXML::Compiler::GetVersionInfo(verInfo, jj);
+                *v301_localCommonStream1 << verInfo << std::endl;
+                WXML::NameAllocator v328(strEndMark, boxMark);
                 *v301_localCommonStream1 << "var $gwxc" << lineEndMark << "var $gaic={}" << lineEndMark;
                 if (!isLLA)
                     *v301_localCommonStream1 << "var outerGlobal=typeof __globalThis==='undefined'?window:__globalThis;";
                 // mark - 55
-                // for (size_t i = 0; i < count; i++)
-                // {
-                //     /* code */
-                // }
+                int v224 = 0;
+                for (auto i = ssDataMap.begin(); i != ssDataMap.end(); i++)
+                {
+                    std::string v318;
+                    bool v225 = i->first == "__COMMON__";
+                    if (v225)
+                    {
+                        v318 = gwxMark;
+                    }
+                    else
+                    {
+                        v318 = gwxMark + "_XC_" + std::to_string(v224);
+                        v224++;
+                    }
+                    outputFuncMap[i->first].assign(v318);
+                    auto ss = i->second;
+                    if ((mark & 2) != 0)
+                    {
+                        *ss << "var cs = cs || [];" << lineEndMark;
+                    }
+                    *ss << v318;
+                    *ss << "=function(_,_v,_n,_p,_s,_wp,_wl,$gwn,$gwl,$gwh,wh,$gstack,$gwrt,gra,grb,TestTest,wfor,_ca,_da,_r,_rz,_o,_oz,";
+                    *ss << "_1,_1z,_2,_2z,_m,_mz,nv_getDate,nv_getRegExp,nv_console,nv_parseInt,nv_parseFloat,nv_isNaN,nv_isFinite,nv_de";
+                    *ss << "codeURI,nv_decodeURIComponent,nv_encodeURI,nv_encodeURIComponent,$gdc,nv_JSON,_af,_gv,_ai,_grp,_gd,_gapi,$ix";
+                    *ss << "c,_ic,_w,_ev,_tsd){";
+                    *ss << "return function(path,global){" << lineEndMark;
+                    *ss << "if(typeof global==='undefined'){if (typeof __GWX_GLOBAL__==='undefined')global={};else global=__GWX_GLOBAL__;}" << lineEndMark;
+                    *ss << "if(typeof __WXML_GLOBAL__ === 'undefined') {";
+                    *ss << "__WXML_GLOBAL__={};" << lineEndMark;
+                    if ((mark & 0x80) != 0)
+                    {
+                        // TODO
+                    }
+                    *ss << "}";
+                    *ss << "__WXML_GLOBAL__.modules = __WXML_GLOBAL__.modules || {};" << lineEndMark;
+                    if (v225 && gwxMark == "$gwx" && (mark & 0x60) == 0)
+                    {
+                        *ss << "$gwx('init', global);" << lineEndMark;
+                    }
+                    *ss << "var " << eMark << "=global.entrys;" << lineEndMark;
+                    *ss << "var " << dMark << "={}" << lineEndMark;
+                    *ss << "if(typeof(global.defines)==='undefined')global.defines={};" << dMark << "=global.defines;" << lineEndMark;
+                    *ss << "var " << fMark << "={}" << lineEndMark;
+                    *ss << "if(typeof(global.modules)==='undefined')global.modules={};" << fMark << "=global.modules || {};" << lineEndMark;
+                    *ss << "var " << pMark << "={}" << lineEndMark;
+                    if ((mark & 2) != 0)
+                    {
+                        *ss << "var cs = cs || [];" << lineEndMark;
+                    }
+                    *ss << "__WXML_GLOBAL__.ops_cached = __WXML_GLOBAL__.ops_cached || {}" << lineEndMark;
+                    *ss << "__WXML_GLOBAL__.ops_set = __WXML_GLOBAL__.ops_set || {};" << lineEndMark;
+                    *ss << "__WXML_GLOBAL__.ops_init = __WXML_GLOBAL__.ops_init || {};" << lineEndMark;
+                    *ss << "var z=__WXML_GLOBAL__.ops_set." << v318 << " || [];" << lineEndMark;
+                    if ((mark & 4) != 0)
+                    {
+                        *ss << "__WXML_GLOBAL__.debuginfo_set = __WXML_GLOBAL__.debuginfo_set || {};" << lineEndMark;
+                        *ss << "var debugInfo=__WXML_GLOBAL__.debuginfo_set." << v318 << " || [];" << lineEndMark;
+                    }
+                    // i->first v248
+                    auto v97 = v307_localVecStrMap1[i->first];
+                    int cnt = 0;
+                    for (auto i = v97.begin(); i != v97.end(); i++)
+                    {
+                        std::shared_ptr<WXML::DOMLib::WXMLDom> v244 = v304[*i];
+                        cnt++;
+                        std::string v98 = std::to_string(cnt);
+                        std::string v321 = v318 + "_" + v98;
+                        std::string j = "gz" + v321; // 可能有点问题
+
+                        *ss << "function " << j << "(){" << lineEndMark;
+                        *ss << "if( __WXML_GLOBAL__.ops_cached." << v321 << ")";
+                        *ss << "return __WXML_GLOBAL__.ops_cached." << v321 << lineEndMark;
+                        *ss << "__WXML_GLOBAL__.ops_cached." << v321 << "=[];" << lineEndMark;
+                        *ss << "(function(z){var a=11;";
+                        if ((mark & 4) != 0)
+                        {
+                            *ss << "function Z(ops,debugLine){z.push(['11182016',ops,debugLine])}";
+                        }
+                        else
+                        {
+                            *ss << "function Z(ops){z.push(ops)}";
+                        }
+                        *ss << lineEndMark;
+                        // TODO: RenderAllOpsAndRecord
+                        *ss << "})(__WXML_GLOBAL__.ops_cached." << v321 << ");";
+                        *ss << "return __WXML_GLOBAL__.ops_cached." << v321 << lineEndMark;
+                        *ss << "}" << lineEndMark;
+                        v244->offset_272["get_page_z_name"].assign(j);
+                    }
+                    *ss << "__WXML_GLOBAL__.ops_set." << v318 << "=z;" << lineEndMark;
+                    *ss <<"__WXML_GLOBAL__.ops_init." << v318 << "=true;" << lineEndMark;
+                    if ((mark & 4) != 0)
+                    {
+                        *ss << "__WXML_GLOBAL__.debuginfo_set." << v318 << "=debugInfo;" << lineEndMark;
+                    }
+                    if (v225)
+                    {
+                        *ss << "var nv_require=function(){var nnm={";
+                        for (auto i = v311.begin(); i != v311.end(); i++)
+                        {
+                            *ss << '"';
+                            *ss << WXML::Rewrite::ToStringCode(i->first);
+                            *ss << '"';
+                            *ss << ":np_" << i->second << ",";
+                        }
+                        *ss << "};var nom={};return function(n){";
+                        *ss << "if(n[0]==='p'&&n[1]==='_'&&f_[n.slice(2)])return f_[n.slice(2)];";
+                        *ss << "return function(){if(!nnm[n]) return undefined;";
+                        *ss << "try{if(!nom[n])nom[n]=nnm[n]();return nom[n];}";
+                        *ss << "catch(e){";
+                        *ss << "e.message=e.message.replace(/nv_/g,'');";
+                        *ss << "var tmp = e.stack.substring(0,e.stack.lastIndexOf(n));";
+                        *ss << "e.stack = tmp.substring(0,tmp.lastIndexOf('\\n'));";
+                        *ss << "e.stack = e.stack.replace(/\\snv_/g,' ');";
+                        *ss << "e.stack = $gstack(e.stack);";
+                        *ss << "e.stack += '\\n    at ' + n.substring(2);console.error(e);}";
+                        *ss << lineEndMark;
+                        *ss << "}}}()" << lineEndMark;
+                        for (auto i = v309.begin(); i != v309.end(); i++)
+                        {
+                            *ss << i->second << lineEndMark;
+                        }
+                        
+                    }
+                    // test/wcc.disassembly.cpp line 14346
+                    auto v133 = v307_localVecStrMap1[i->first];
+                    WXML::DOMLib::StrCache v319;
+                    for (auto i1 = v133.begin(); i1 != v133.end(); i1++)
+                    {
+                        v319.Insert(*i1);
+                        auto v134 = v304[*i1];
+                        v134->offset_248 = v319;
+                        v134->RecordAllPath();
+                    }
+                    v319.RenderPathDefine(*ss);
+                    auto v136 = v307_localVecStrMap1[i->first];
+                    int v228 = 0;
+                    for (auto i2 = v136.begin(); i2 != v136.end(); i2++)
+                    {
+                        auto v256 = v304[*i2];
+                        *ss << dMark << "[x[";
+                        auto StrID = v319.GetStrID(*i2);
+                        *ss << StrID << "]]={}" << lineEndMark;
+                        std::string v140 = v256->offset_272["get_page_z_name"];
+                        std::map<std::string, std::string> v316;
+                        int ret = WXML::Compiler::RenderDefine(
+                            *v256,
+                            *i2,
+                            v316,
+                            errorMessage, // a2
+                            *ss,
+                            mapData1,
+                            (mark & 2) != 0, // v209
+                            mark, // a11
+                            lineEndMark,
+                            eMark1,
+                            charArr,
+                            ggMark,
+                            gwxMark,
+                            eMark,
+                            dMark,
+                            pMark,
+                            strEndMark,
+                            boxMark,
+                            gdwxMark,
+                            v140
+                            );
+                        if (ret)
+                        {
+                            throw "error";
+                        }
+                        std::string jj = std::to_string(v228);
+                        std::string v321 = jj.insert(0, "m");
+                        std::string v271 = v256->offset_272["get_page_z_name"];
+                        v256->RenderMeAsFunction(
+                            *i2,
+                            eMark,
+                            errorMessage,
+                            v321,
+                            *ss,
+                            &v328,
+                            eMark1, // a13
+                            charArr, // a14
+                            ggMark, // a15
+                            "r",  // jj
+                            dMark, // a17
+                            lineEndMark, // a12
+                            pMark, // a18
+                            0,
+                            (mark & 2) != 0,
+                            mark,
+                            v271
+                        );
+                        *ss << eMark << "[x[";
+                        *ss << v319.GetStrID(*i2);
+                        *ss << "]]={f:" << v321 << ",j:[],i:[],ti:[";
+                        std::vector<std::shared_ptr<WXML::DOMLib::WXMLDom>> v146 = v256->offset_72;
+                        bool isNeedComma = false;
+                        for (int i = 0; i < v146.size(); i++)
+                        {
+                            std::shared_ptr<WXML::DOMLib::WXMLDom> item = v146[i];
+                            if (item->offset_0 == "import")
+                            {
+                                auto v211 = item->offset_48.find("src");
+                                if (v211 != item->offset_48.end())
+                                {
+                                    if (isNeedComma)
+                                    {
+                                        *ss << ",";
+                                    }
+                                    *ss << "x[";
+                                    auto v148 = v211->second.ToAttrContent();
+                                    *ss << v319.GetStrID(v148);
+                                    *ss << "]";
+                                    isNeedComma = true;
+                                }
+                            }
+                        }
+                        *ss << "],ic:[";
+                        // line 14507
+                        isNeedComma = false;
+                        for (int i = 0; i < v146.size(); i++)
+                        {
+                            std::shared_ptr<WXML::DOMLib::WXMLDom> item = v146[i];
+                            if (item->offset_0 == "include")
+                            {
+                                auto v217 = item->offset_48.find("src");
+                                if (v217 != item->offset_48.end())
+                                {
+                                    if (isNeedComma)
+                                    {
+                                        *ss << ",";
+                                    }
+                                    *ss << "x[";
+                                    std::string v152 = v217->second.ToAttrContent();
+                                    *ss << v319.GetStrID(v152);
+                                    *ss << "]";
+                                    isNeedComma = true;
+                                }
+                            }
+                        }
+                        *ss << "}}" << lineEndMark;
+
+                    }
+                    *ss << "if(path&&" << eMark << "[path]){" << lineEndMark;
+                    if (!isLLA)
+                    {
+                        *ss << "outerGlobal.__wxml_comp_version__=0.02" << lineEndMark;
+                    }
+                    *ss << "return function(env,dd,global){$gwxc=0;var root={\"tag\":\"wx-page\"};root.children=[]" << lineEndMark;
+                    *ss << ";g=\"" << v318 << "\";" << "var main=" << eMark << "[path].f" << lineEndMark;
+                    if ( (mark & 2) != 0)
+                    {
+                        *ss << "cs=[]" << lineEndMark;
+                    }
+                    if ((mark & 0x10) != 0)
+                    {
+                        *ss << "console.log(path+': benv:\\n'+JSON.stringify(env))" << lineEndMark;
+                    }
+                    *ss << "if (typeof global===\"undefined\")global={};";
+                    *ss << "global.f=$gdc(" << fMark << "[path],\"\",1);" << lineEndMark;
+                    if (!isLLA)
+                    {
+                        *ss << "if(typeof(outerGlobal.__webview_engine_version__)!='undefined'&&outerGlobal.__webview_engine_version__+1e";
+                        *ss << "-6>=0.02+1e-6&&outerGlobal.__mergeData__)" << lineEndMark;
+                        *ss << "{" << lineEndMark;
+                        *ss << "env=outerGlobal.__mergeData__(env,dd);" << lineEndMark;
+                        *ss << "}" << lineEndMark;
+                    }
+                    *ss << "try{" << lineEndMark;
+                    if ((mark & 0x10) != 0)
+                    {
+                        *ss << "console.log(path+': aenv:\\n'+JSON.stringify(env)+', '+JSON.stringify(dd))" << lineEndMark;
+                    }
+                    if ( (mark & 0x80) != 0 )
+                    {
+                        *ss << "if(__WXML_GLOBAL__.before_calculate)" << "__WXML_GLOBAL__.before_calculate(path, env)" << lineEndMark;
+                    }
+                    *ss << "main(env,{},root,global);" << lineEndMark;
+                    if ((mark & 0x80) != 0)
+                    {
+                        *ss << "if(__WXML_GLOBAL__.after_calculate)";
+                        *ss << "__WXML_GLOBAL__.after_calculate(path, root)" << lineEndMark;
+                    }
+                    *ss << "_tsd(root)" << lineEndMark;
+                    if (!isLLA)
+                    {
+                        *ss << "if(typeof(outerGlobal.__webview_engine_version__)=='undefined'|| outerGlobal.__webview_engine_version__+1";
+                        *ss << "e-6<0.01+1e-6){return _ev(root);}" << lineEndMark;
+                    }
+                    *ss << "}catch(err){" << lineEndMark;
+                    if ((mark & 2) != 0)
+                    {
+                        *ss << "console.log(cs, env);" << lineEndMark;
+                    }
+                    *ss << "console.log(err)" << lineEndMark;
+                    if ((mark & 2) != 0)
+                    {
+                        *ss << "throw err" << lineEndMark;
+                    }
+                    *ss << "}" << lineEndMark;
+                    if ((mark & 0x10) != 0)
+                    {
+                        *ss << "console.log(path+': resp:\\n'+JSON.stringify(root))" << lineEndMark;
+                    }
+                    *ss << ";g=\"\";" << lineEndMark;
+                    *ss << "return root;" << lineEndMark;
+                    *ss << "}" << lineEndMark;
+                    *ss << "}" << lineEndMark;
+                    *ss << "}" << lineEndMark;
+                    *ss << "}(__g.a,__g.b,__g.c,__g.d,__g.e,__g.f,__g.g,__g.h,__g.i,__g.j,__g.k,__g.l,__g.m,__g.n,__g.o,__g.p,__g.q,__g.r,__g.";
+                    *ss << "s,__g.t,__g.u,__g.v,__g.w,__g.x,__g.y,__g.z,__g.A,__g.B,__g.C,__g.D,__g.E,__g.F,__g.G,__g.H,__g.I,__g.J,__g.K,__g.";
+                    *ss << "L,__g.M,__g.N,__g.O,__g.P,__g.Q,__g.R,__g.S,__g.T,__g.U,__g.V,__g.W,__g.X,__g.Y,__g.Z,__g.aa);";
+                    if ( (mark & 8) != 0 )
+                    {
+                        std::vector<std::string> v192 = v307_localVecStrMap1[i->first];
+                        for (auto i4 = v192.begin(); i4 != v192.end(); i4++)
+                        {
+                            *ss << "//" << *i4 << ":" << lineEndMark;
+                            v304[*i4]->Print(0, "//", ss.get());
+                        }
+                    }
+                    auto v197 = v307_localVecStrMap1[i->first];
+                    *ss << "if(__vd_version_info__.delayedGwx||";
+                    std::string v198 = "true";
+                    if (!( v225 || v197.size() > 0))
+                    {
+                        v198 = "false";
+                    }
+                    *ss << v198 << ")" << v318 << "();";
+                }
+                /*
+                
+                std::map<std::string,std::string> const& fileContentMap, // a1
+                std::string& errorMessage,  // 错误信息 a2
+                std::map<std::string,std::string>& outputContentMap, // 输出 a3
+                std::map<std::string,std::string>& outputFuncMap,  // 输出 a4
+                std::map<std::string, std::vector<std::string>>& dependencyListMap, // a5
+                std::map<std::string, std::vector<std::string>>& componentListMap, // componentListMap a6
+                std::vector<std::string> const& splitedData,       // splitedData a7
+                std::map<std::string,std::string> const& mapData1, // mapData1 a8
+                bool isLLA,                // isLLA a9
+                std::string const& gwxMark,  // gwxMark a10
+                uint mark,                // mark a11
+                char lineEndMark,                // '\n' a12
+                std::string const& eMark1,  // 'e' a13
+                std::string const& charArr,  // const char off_5403C3[] = {'s','\0','e','\0'} a14
+                std::string const& ggMark,  // "gg" a15
+                std::string const& eMark,  // "e_" a16
+                std::string const& dMark,  // "d_" a17
+                std::string const& pMark,  // "p_" a18
+                std::string const& strEndMark,  // '\0' a19
+                std::string const& boxMark,  // "boxofchocolate" a20
+                std::string const& gdwxMark,  // "$gdwx" a21
+                std::string const& fMark  // "f_" a22
+                */
                 // mark - 60
-                // for (size_t i = 0; i < count; i++)
-                // {
-                //     /* code */
-                // }
+                for (auto i = ssDataMap.begin(); i != ssDataMap.end(); i++)
+                {
+                    auto jj = i->second->str();
+                    outputContentMap[i->first] = jj;
+                }
                 // mark - 65
                 
             // }
@@ -385,6 +738,30 @@ namespace WXML{
             return 0;
         }
     
+        int Compile(
+            std::map<std::string,std::string> const&,// a1
+            std::string&, // a2
+            std::string&, // a3
+            std::map<std::string, std::vector<std::string>>,// a4
+            std::map<std::string,std::string> const&,// a5
+            bool,// a6
+            std::string const& gwxMark,// a7
+            uint mark, // a8
+            char lineEndMark, // a9
+            std::string const&, // a10
+            std::string const&, // a11
+            std::string const& , // a12
+            std::string const& ggMark, // a13
+            std::string const& eMark, // a14
+            std::string const& dMark, // a15
+            std::string const& pMark, // a16
+            std::string const& endMark, // a17
+            std::string const& boxMark, // a18
+            std::string const& gdwxMark, // a19
+            std::string const& fMark) // a20
+        {
+            return 0;
+        }
         int DealWxsTag(
             std::string const& filePath,
             WXML::DOMLib::Token & a2,

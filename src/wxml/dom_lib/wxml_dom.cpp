@@ -657,9 +657,14 @@ namespace WXML {
                 }
             }
         }
-        void WXMLDom::Print(int, char const*, std::stringstream *)
+        void WXMLDom::Print(int a2, char const* a3, std::stringstream * a4)
         {
-
+            this->PrintMe(a2, a3, a4);
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                this->Print(a2 + 1, a3, a4);
+            }
+            
         }
 
         /**
@@ -745,7 +750,7 @@ namespace WXML {
         void WXMLDom::PrintMe(
             int a2,
             char const* a3,
-            std::stringstream* a4)
+            std::stringstream * a4)
         {
             std::stringstream v34;
             std::stringstream *v4 = &v34;
@@ -794,22 +799,33 @@ namespace WXML {
                 {
                     *v4 << "attr: ";
                 }
-                // TODO: this + 60是什么？
-                // for (size_t i = 0; i < count; i++)
-                // {
-                //     /* code */
-                // }
+                for (auto j = this->offset_48.begin(); j != this->offset_48.end(); j++)
+                {
+                    if (v4->tellp()  != 0)
+                    {
+                        std::string v13 = j->second.ToString();
+                        printf("%s->%s,", j->first.data(), v13.data());
+                    }
+                    else
+                    {
+                        *v4 << j->first << "->";
+                        *v4 << j->second.ToString();
+                        *v4 << " ";
+                        *v4 << j->second.offset_0; // 待确认
+                        *v4 << " ";
+                    }
+                }
+                
                 
             }
             else if(v4->tellp() != 0)
             {
-                //TODO: this+84是什么？
                 printf(
                     "pos: %d, %d, len: %d, %s",
                     this->offset_92,
                     this->offset_96,
                     this->offset_104,
-                    "TODO..."
+                    this->offset_84.ToString().data()
                 );
             }
             else
@@ -817,7 +833,37 @@ namespace WXML {
                 *v4 << "pos: " << this->offset_92
                 << ", " << this->offset_96 << ", len: " << this->offset_104
                 << ", ";
-                // *v4 << this->offset_84;
+                *v4 << this->offset_84.ToString();
+            }
+            if (v4->tellp() != 0)
+            {
+                
+                printf(
+                "icn: %s, icc: %u, ivwn: %s",
+                this->offset_196.data(),
+                this->offset_244,
+                this->offset_220.data());
+            }
+            else
+            {
+                *v4 << "icn:" << this->offset_196 << ", icc: " << this->offset_244;
+                *v4 << ", ivwn: " << this->offset_220;
+            }
+            if (v4->tellp() != 0)
+            {
+                printf(", hasXComponentDescendant %d", this->offset_256);
+            }
+            else
+            {
+                *v4 << ", hasXComponentDescendant " << this->offset_256;
+            }
+            if (v4->tellp() != 0)
+            {
+                printf("\n");
+            }
+            else
+            {
+                *v4 << "\n";
             }
         }
 
@@ -936,14 +982,17 @@ namespace WXML {
         {
             if (a2.size() > 0)
             {
-                auto v4 = this->offset_72.size();
+                int v4 = this->offset_72.size();
                 while (--v4 >= 0)
                 {
-                    this->MarkIfHasDescendant(a2);
-                    auto v6 = this->offset_72[v4]->offset_0;
-                    auto ret = std::find(a2.begin(), a2.end(), v6);
+                    // 0x48 -> 72
+                    this->offset_72[v4]->MarkIfHasDescendant(a2);
+                    auto v6 = this->offset_72[v4];
+                    this->offset_256 = v6->offset_256;
+                    auto ret = std::find(a2.begin(), a2.end(), v6->offset_0);
                     if (ret != a2.end())
                     {
+                        // HasDescendant
                         this->offset_256 = 1;
                     }
                 }
@@ -956,7 +1005,7 @@ namespace WXML {
             int v3 = this->offset_72.size();
             while (--v3 >= 0)
             {
-                this->CutDomsForCustomComponent(a2);
+                this->offset_72[v3]->CutDomsForCustomComponent(a2);
                 if (
                     this->offset_72[v3]->offset_0 != "include"
                     && this->offset_72[v3]->offset_0 != "import"
@@ -977,7 +1026,7 @@ namespace WXML {
                         {
                             this->offset_72.erase(this->offset_72.begin() + v3);
                         }
-                        else if(v5->offset_72.size() == 8
+                        else if(v5->offset_72.size() == 1
                             && !v5->HasSpAttrPrefix())
                         {
                             auto v6 = this->offset_72[v3];

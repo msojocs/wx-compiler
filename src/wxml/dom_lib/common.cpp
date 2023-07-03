@@ -71,29 +71,24 @@ namespace WXML
             return result;
         }
         
-        void recurseDependencies(WXML::DOMLib::WXMLDom const& dom, std::string const& filePath, std::set<std::string> & pathSet)
+        void recurseDependencies(std::shared_ptr<WXML::DOMLib::WXMLDom> const& dom, std::string const& filePath, std::set<std::string> & pathSet)
         {
-            std::string a1;
+            std::string a1 = dom->offset_0;
             if (a1 == "import" || a1 == "include")
             {
-                // TODO: map来源
-                std::map<std::string,WXML::DOMLib::Token> map;
-                if(map.count("src"))
+                if(dom->offset_48.count("src"))
                 {
-                    std::string relativePath = map["src"].ToAttrContent();
+                    std::string relativePath = dom->offset_48["src"].ToAttrContent();
                     std::string depPath = resolvePath(filePath, relativePath);
                     pathSet.insert(depPath);
                 }
 
             }
-            for (int i = 0; ; i++)
+            for (int i = 0; i < dom->offset_72.size(); i++)
             {
-                // if (i >= )
-                // break;
-                // recurseDependencies(, filePath, pathSet)
+                recurseDependencies(dom->offset_72[i], filePath, pathSet);
             }
             
-
         }
 
         bool AttrsCompartor(std::pair<std::string,WXML::DOMLib::Token> const& a1,std::pair<std::string,WXML::DOMLib::Token> const& a2)

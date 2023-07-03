@@ -221,10 +221,28 @@ namespace WXML
         public:
             StrCache(/* args */);
             ~StrCache();
-            void RenderPathDefine(std::stringstream ss);
+            void RenderPathDefine(std::stringstream &ss);
             void Insert(std::string);
             int GetStrID(std::string);
         };
+        
+        class RVMOpCodePosition
+        {
+        private:
+            /* data */
+        public:
+            RVMOpCodePosition(/* args */);
+            ~RVMOpCodePosition();
+        };
+        class RVMOpCodePositionRecorder
+        {
+        private:
+            /* data */
+        public:
+            RVMOpCodePositionRecorder(/* args */);
+            ~RVMOpCodePositionRecorder();
+        };
+        
         
         class WXMLDom
         {
@@ -239,7 +257,9 @@ namespace WXML
             int offset_104; // len
             int offset_140;
             std::string offset_144;
-            StrCache offset_248;
+            std::string offset_196;
+            std::string offset_220;
+            int offset_244;
             int componentCnt = 0;
         public:
             std::string offset_0; // type
@@ -247,8 +267,10 @@ namespace WXML
             std::string offset_24; // ???
             std::map<std::string, WXML::DOMLib::Token> offset_48;
             std::vector<std::shared_ptr<WXML::DOMLib::WXMLDom>> offset_72; // 
-            int offset_256; // ???
             WXML::DOMLib::Token offset_84; // token
+            StrCache offset_248;
+            int offset_256; // ???
+            std::map<std::string, std::string> offset_272;
             WXMLDom(/* args */);
             ~WXMLDom();
             std::string Error(
@@ -321,10 +343,18 @@ namespace WXML
             bool HasSpAttrPrefix(void);
             void MarkIfHasDescendant(std::vector<std::string> const&);
             void CutDomsForCustomComponent(std::vector<std::string> const&);
+            void RenderAllOpsAndRecord(
+                std::string const&,
+                std::string&,
+                std::stringstream &,
+                std::map<std::string,WXML::DOMLib::RVMOpCodePosition> &,
+                WXML::DOMLib::RVMOpCodePositionRecorder *,
+                bool,
+                const std::map<std::string,std::string> &);
         };
         
 
-        void recurseDependencies(WXML::DOMLib::WXMLDom const&,std::string const&,std::set<std::string> &);
+        void recurseDependencies(std::shared_ptr<WXML::DOMLib::WXMLDom> const&,std::string const&,std::set<std::string> &);
 
         class Parser
         {
@@ -410,30 +440,27 @@ namespace WXML
             std::string const&,  // "$gdwx"
             std::string const&   // "f_"
             );
-
-        std::string Compile(
-            std::map<std::string,std::string> const&,
-            std::string&,
-            std::map<std::string,std::string>&,
-            std::map<std::string,std::string>&,
-            std::map<std::string, std::vector<std::string>>,
-            std::allocator<std::pair<const std::string, std::string>>,
-            std::string const&,
-            std::map<std::string,std::string> const&,
-            bool,
-            std::string const& gwxMark,
-            uint mark,
-            char lineEndMark,
-            std::string const&,
-            std::string const& ,
-            std::string const& ggMark,
-            std::string const& eMark,
-            std::string const& dMark,
-            std::string const& pMark,
-            std::string const& endMark,
-            std::string const& boxMark,
-            std::string const& gdwxMark,
-            std::string const& fMark);
+        int Compile(
+            std::map<std::string,std::string> const&,// a1
+            std::string&, // a2
+            std::string&, // a3
+            std::map<std::string, std::vector<std::string>>,// a4
+            std::map<std::string,std::string> const&,// a5
+            bool,// a6
+            std::string const& gwxMark,// a7
+            uint mark, // a8
+            char lineEndMark, // a9
+            std::string const&, // a10
+            std::string const&, // a11
+            std::string const& , // a12
+            std::string const& ggMark, // a13
+            std::string const& eMark, // a14
+            std::string const& dMark, // a15
+            std::string const& pMark, // a16
+            std::string const& endMark, // a17
+            std::string const& boxMark, // a18
+            std::string const& gdwxMark, // a19
+            std::string const& fMark); // a20
         
         int DealWxsTag(
             std::string const& a1,

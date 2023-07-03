@@ -14,7 +14,7 @@ namespace WXML {
         StrCache::~StrCache()
         {
         }
-        void StrCache::RenderPathDefine(std::stringstream ss)
+        void StrCache::RenderPathDefine(std::stringstream &ss)
         {
             ss << "var x=[";
             // TODO...
