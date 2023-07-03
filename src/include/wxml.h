@@ -28,8 +28,9 @@ namespace WXML
     {
     private:
         /* data */
-        std::string offset_1; // v5
-        std::string offset_7; // v4
+        int offset_0 = 0;
+        std::string offset_4;
+        std::string offset_28;
     public:
         std::string ALPAHBET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         static int ALPAHBETLEN;
@@ -395,8 +396,6 @@ namespace WXML
             void ATTR();
             
         };
-
-        
         
     };
 
