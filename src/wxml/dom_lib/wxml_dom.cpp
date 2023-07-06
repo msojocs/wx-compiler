@@ -7,7 +7,7 @@ namespace WXML {
     
     namespace DOMLib
     {
-
+        static const char *szWXIFControlAttrs[4] = { "wx-if", "wx:if", "wx:elif", "wx:else" };
         WXMLDom::WXMLDom(/* args */)
         {
         }
@@ -15,7 +15,243 @@ namespace WXML {
         WXMLDom::~WXMLDom()
         {
         }
-        const char off_553FDC[] = {'[','x','[','\0'};
+
+        int WXMLDom::DealSingleTokenToOps(
+            std::string const& a1,
+            std::string& a2,
+            std::stringstream & a3,
+            std::map<std::string,WXML::DOMLib::RVMOpCodePosition> & a4,
+            WXML::DOMLib::Token * a5,
+            bool a6,
+            int a7,
+            bool a8,
+            WXML::DOMLib::RVMOpCodePositionRecorder * a9,
+            bool a10,
+            const std::map<std::string,std::string> & a11
+            )
+        {
+            // DealSingleTokenToOps - 0
+            std::string v11;
+            if (a8)
+            {
+                v11 = a5->ToString();
+            }
+            else
+            {
+                v11 = a5->ToAttrContent();
+            }
+            std::vector<WXML::StringTemplating::Token> v77;
+            bool v77_b;
+            int d = WXML::StringTemplating::Deal(&v11[0], a2, v77, v77_b);
+            if (d)
+            {
+                throw this->Error(a1, *a5, "", "did you forget }}, ' or \"");
+            }
+            // DealSingleTokenToOps - 10
+            if ( a8) 
+            {
+                auto ptm = a11.find("plain_text_marker");
+                if (ptm != a11.end())
+                {
+                    
+                    WXML::StringTemplating::Token v85;
+                    v85.offset_0 = false;
+                    v85.offset_4 = ptm->second;
+                    v77.push_back(v85);
+                }
+            }
+            // DealSingleTokenToOps - 15
+            if (a7)
+            {
+                int v26;
+                if (v26 != a7)
+                {
+                    a5->offset_56 = -3;
+                    a5->offset_60 = "the very attr must be an expression (surrouned by `{{..}}`)";
+                    return -1;
+                }
+
+            }
+            // DealSingleTokenToOps - 20
+            if (v77.begin() == v77.end())
+            {
+                WXML::StringTemplating::Token token;
+                token.offset_0 = false;
+                token.offset_4 = "";
+                v77.push_back(token);
+            }
+            // DealSingleTokenToOps - 25
+            int v52 = 1;
+            if (v77.size() < 0x1C)
+            {
+                v52 = 0;
+                // TODO..
+            }
+            a3 << "Z(";
+            if (v52)
+            {
+                a3 << "[a,";
+                a9->offset_4++;
+            }
+            std::vector<std::pair<std::string,WXML::DOMLib::RVMOpCodePosition>> v80;
+            // DealSingleTokenToOps - 30
+            std::string v27 = "nt_";
+            if (a8)
+                v27 = "t_";
+            std::string v28 = "";
+            if (a6)
+            {
+                v28 = "_d";
+            }
+            for (int i = 0; i < v77.size(); i++)
+            {
+                if (i)
+                    a3 << ",";
+                auto v62 = v77[i];
+                std::string v29 = "s_";
+                if (v62.offset_0)
+                    v29 = "e_";
+                v29.append(v27);
+                v29.append(v62.offset_4);
+                v29.append(v28);
+                auto v63 = a4.find(v29);
+                if (v63 == a4.end())
+                {
+
+                    if (v77[i].offset_0)
+                    {
+                        WXML::EXPRLib::Parser vp;
+                        std::string v85 = "";
+                        int ret = vp.Parse(v77[i].offset_4, v85, 1, 1, a2, a6);
+                        if (ret)
+                        {
+                            a5->offset_56 = -3;
+                            a5->offset_60.assign(a2);
+                            a3 << "undefined";
+                            break;
+                        }
+                        WXML::EXPRLib::ExprSyntaxTree v70;
+                        v70.RenderAsOps(a3, v85, v77_b);
+                    }
+                    else
+                    {
+                        a3 << "[3,'";
+                        std::string r = WXML::DOMLib::removern(v77[i].offset_4);
+                        WXML::Rewrite::ToStringCode(r, a3);
+                        a3 << "']";
+                    }
+                    int v43 = -1;
+                    if (v52)
+                    {
+                        v43 = a9->offset_4;
+                    }
+                    WXML::DOMLib::RVMOpCodePosition pos;
+                    v80.push_back({"", pos});
+                }
+                else
+                {
+                    if (v63->second.offset_4 == -1 )
+                    {
+                        if (a10)
+                        {
+
+                            a3 << "z[";
+                            a3 << v63->second.offset_0;
+                            a3 << "][1]";
+                            a9->offset_4++;
+                            continue;
+                        }
+
+                        a3 << "z[";
+                        a3 << v63->second.offset_0;
+                    }
+                    else
+                    {
+                        
+                        a3 << "z[";
+                        a3 << v63->second.offset_0;
+                        if (a10)
+                        {
+                            a3 << "][1][";
+                        }
+                        else
+                        {
+                            a3 << "][";
+                        }
+                        a3 << v63->second.offset_4;
+                    }
+                    a3 << "]";
+                }
+                a9->offset_4++;
+            }
+            // DealSingleTokenToOps - 35
+            if (v52)
+                a3 << "]";
+            if (a5->offset_56 == -1)
+                a5->offset_56 = a9->offset_0;
+            a9->offset_0++;
+            for (auto i = v80.begin(); i != v80.end(); i++)
+            {
+                a4.emplace(i->first, i->second);
+            }
+            
+            if (a10)
+            {
+                a3 << ",['" << WXML::Rewrite::ToStringCode(a1);
+                a3 << "'," << a5->offset_8;
+                a3 << "," << a5->offset_12;
+                a3 << "])\n";
+            }
+            else
+            {
+                a3 << ")\n";
+            }
+            return 0;
+        }
+        void WXMLDom::RenderAllOpsAndRecord(
+            std::string const& a2,
+            std::string& a3,
+            std::stringstream & a4,
+            std::map<std::string,WXML::DOMLib::RVMOpCodePosition> &a5,
+            WXML::DOMLib::RVMOpCodePositionRecorder *a6,
+            bool a7,
+            const std::map<std::string,std::string> & a8
+            )
+        {
+            if (this->offset_0 == "TEXTNODE")
+            {
+                this->DealSingleTokenToOps(a2, a3, a4, a5, &this->offset_84, 0, 0, 1, a6, a7, a8);
+            }
+            else
+            {
+                for (auto i = this->offset_48.begin(); i != this->offset_48.end(); i++)
+                {
+                    if (
+                        i->second.offset_20
+                        && this->offset_0 != "import"
+                        && this->offset_0 != "include"
+                    )
+                    {
+                        if (
+                            this->offset_0 == "wx-template" && i->first == "data"
+                            || this->offset_0 == "wx-scope" && i->first == "wx:scope-data"
+                        )
+                        {
+                            this->DealSingleTokenToOps(a2, a3, a4, a5, &i->second, 1, 1, 0, a6, a7, a8);
+                        }
+                        else
+                        {
+                            this->DealSingleTokenToOps(a2, a3, a4, a5, &i->second, 0, 0, 0, a6, a7, a8);
+                        }
+                    }
+                }
+                for (int i = 0; i < this->offset_72.size(); i++)
+                {
+                    this->RenderAllOpsAndRecord(a2, a3, a4, a5, a6, a7, a8);
+                }
+                
+            }
+        }
         void WXMLDom::RenderMeAsFunction(
             std::string const& a2,
             std::string const& a3,
@@ -42,7 +278,7 @@ namespace WXML {
                 a7->GetNextName(name);
                 if (a15)
                 {
-                    a6 << a12 << off_553FDC;
+                    a6 << a12 << "[x[";
                     int id = offset_248.GetStrID(a2);
                     a6 << id;
                     a6 << "]][\"";
@@ -59,7 +295,7 @@ namespace WXML {
                 a6 << a11 << ",";
                 a6 << a10 << "){";
                 a6 << a13;
-                // if (a18)
+                if (a18.size())
                 {
                     a6 << "var z=" << a18 << "()" << a13;
                 }
@@ -76,7 +312,7 @@ namespace WXML {
                     a6 << WXML::Rewrite::ToStringCode(a2);
                     a6 << "\"],\"\",1)";
                     a6 << a13;
-                    a6 << "if(" << a14 << "[" << name << "]{_wl(";
+                    a6 << "if(" << a14 << "[" << name << "]){_wl(";
                     a6 << name << ",x[";
                     id = this->offset_248.GetStrID(a2);
                     a6 << id << "]);return}" << a13;
@@ -84,7 +320,8 @@ namespace WXML {
                     a6 << a14 << "[" << name << "]=true";
                     a6 << a13 << "try{" << a13;
                 }
-                // RenderChildren
+                std::map<std::string,std::string> v79;
+                // this->RenderChildren(a2, a3, a4, a11, a6, a7, a8, a9, a10, a12, a13, a16, a17, &v79);
                 if (a15)
                 {
                     a6 << "}catch(err){" << a13;
@@ -118,20 +355,278 @@ namespace WXML {
             std::map<std::string,std::string> * a15
             )
         {
+            // RenderChildren - 0
             auto size = a6.tellp();
             if (size > 52428800)
             {
-                throw "Interal error: generated code (>10M) will be too heavy to fly in a narrow wind.";
+                throw "RenderException Interal error: generated code (>10M) will be too heavy to fly in a narrow wind.";
             }
-            // while (/* condition */)
-            // {
-            //     /* code */
-            // }
-            int Stra;
-            // for (int i = 0; ; i = Stra)
-            // {
-                
-            // }
+            int v109 = 0;
+            int v110 = 0;
+            std::string v145;
+            std::string v147;
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                std::shared_ptr<WXML::DOMLib::WXMLDom> cur = this->offset_72[i];
+                auto srcToken = cur->offset_48.find("src");
+                if (
+                    (cur->offset_0 == "import"
+                    || cur->offset_0 == "wx-import")
+                    && ( srcToken != cur->offset_48.end())
+                )
+                {
+                    if (!v110)
+                    {
+                        a7->GetNextName(v145);
+                        a6 << "var " << v145 << "=" << a3 << "[x[";
+                        int StrID = this->offset_248.GetStrID(a2);
+                        a6 << StrID << "]].i" << a12;
+                    }
+                    v110++;
+                }
+                else if (cur->offset_0 == "include")
+                {
+                    if (srcToken != cur->offset_48.end())
+                    {
+                        if (!v109)
+                        {
+                            a7->GetNextName(v147);
+                            a6 << "var " << v147 << "=" << a3;
+                            a6 << "[x[" << this->offset_248.GetStrID(a2) << "]].j" << a12;
+                        }
+                    }
+                }
+            }
+            // RenderChildren - 5
+            std::string v149;
+            int Stra = 0;
+            for (int v127 = 0; v127 < this->offset_72.size(); v127++)
+            {
+                auto cur = this->offset_72[v127];
+                int Str = 1;
+                if (cur->offset_48.find("wx-if") == cur->offset_48.end())
+                {
+                    Str = cur->offset_48.end() != cur->offset_48.find("wx:if");
+                }
+                if (Str)
+                {
+                    a7->GetNextName(v149);
+                    cur->offset_220.assign(v149);
+                    Stra = 2;
+                    cur->offset_244 = 1;
+                }
+                else
+                {
+                    if (cur->offset_48.find("wx:elif") == cur->offset_48.end())
+                    {
+                        if (cur->offset_48.find("wx:else") != cur->offset_48.end())
+                        {
+                            if (Stra == 0)
+                            {
+                                throw this->Error(a2, cur->offset_84, "wx:else", "`wx:if not found, then something must be wrong`");
+                            }
+                            cur->offset_244 = v127;
+                            cur->offset_220.assign(v149);
+                        }
+                        Stra = 0;
+                    }
+                    else
+                    {
+                        if (Stra == 0)
+                        {
+                            throw this->Error(a2, cur->offset_84, "wx:elif", "`wx:if not found, then something must be wrong`");
+                        }
+                        Stra++;
+                        cur->offset_244 = v127;
+                        cur->offset_220.assign(v149);
+                    }
+                }
+
+            }
+            // RenderChildren - 10
+            std::string v151;
+            v151.assign(a5);
+            std::vector<std::pair<std::string,int>> v142;
+            for (int j = 0; j < this->offset_72.size(); j++)
+            {
+                std::shared_ptr<WXML::DOMLib::WXMLDom> cur = this->offset_72[j];
+                std::string v153;
+                const char **v98 = szWXIFControlAttrs;
+                if (cur->offset_244 <= 0)
+                {
+                    goto LABEL_56;
+                }
+                while (true)
+                {
+                    if (!*v98)
+                        break;
+                    auto v97 = cur->offset_48.find(*v98);
+                    if (v97 != cur->offset_48.end())
+                    {
+                        v153 = *v98;
+                        break;
+                    }
+                    ++v98;
+                }
+                if(cur->offset_48[v153].offset_56 == -3)
+                {
+                    throw this->Error(a2, cur->offset_48[v153], v153, cur->offset_48[v153].offset_60);
+                }
+                if(cur->offset_48[v153].offset_56 == -1 && v153 != "wx:else")
+                {
+                    throw this->Error(a2, cur->offset_84, v153, "value not set");
+                }
+                if (v153 == "wx-if" || v153 == "wx:if")
+                {
+                    a6 << "var " << cur->offset_220 << "=_v()" << a12;
+                    a6 << "_(" << a5 << "," << "," << cur->offset_220 << ")" << a12;
+                    a6 << "if(_oz(z," << cur->offset_48[v153].offset_56 << "," << a8 << ",";
+                    a6 << a9 << "," << a10 << ")){" << cur->offset_220 << ".wxVkey=";
+                    a6 << cur->offset_244 << a12;
+                    v142.emplace_back(cur->offset_220, 1);
+                    if (cur->offset_256)
+                        goto LABEL_54;
+                }
+                else
+                {
+                    if (v153 != "wx:elif")
+                    {
+                        a6 << "else{" << cur->offset_220 << ".wxVkey=" << cur->offset_244 << a12;
+                        if (!cur->offset_256)
+                            goto LABEL_55;
+                        LABEL_54:
+                        v142.emplace_back(cur->offset_220, 3);
+                        goto LABEL_55;
+                    }
+                    a6 << "else if(_oz(z," << cur->offset_48[v153].offset_56 << "," << a8 << "," << a9 << "," << a10 << ")){";
+                    a6 << cur->offset_220 << ".wxVkey=" << cur->offset_244 << a12;
+
+                    if (cur->offset_256)
+                        goto LABEL_54;
+                }
+                LABEL_55:
+                v151.assign(cur->offset_220);
+                LABEL_56:
+                if (
+                    cur->offset_0 == "import"
+                    || cur->offset_0 == "wx-import"
+                )
+                {
+                    auto srcToken = cur->offset_48.find("src");
+                    if (srcToken != cur->offset_48.end())
+                    {
+                        a6 << "_ai(" << v145 << ",x[";
+                        std::string v66 = srcToken->second.ToAttrContent();
+                        int v67 = this->offset_248.GetStrID(v66);
+                        a6 << v67 << "]," << a3 << ",x[" << this->offset_248.GetStrID(a2) << "],";
+                        a6 << cur->offset_92 << "," << cur->offset_96 << ")" << a12;
+                        goto LABEL_74;
+                    }
+                }
+                if (
+                    cur->offset_0 != "import"
+                    && cur->offset_0 != "wx-import"
+                )
+                {
+                    if (
+                        cur->offset_0 != "wx-repeat"
+                        && cur->offset_0 != "wx-template"
+                    )
+                    {
+                        std::string v155;
+                        a7->GetNextName(v155);
+                        a6 << "var " << v155 << "=_v()" << a12;
+                        a6 << "_(" << v151 << "," << v155 << ")" << a12;
+                        cur->RenderNonDefine(
+                            a2,
+                            a3,
+                            a4,
+                            v155,
+                            a6,
+                            a7,
+                            a8,
+                            a9,
+                            a10,
+                            a11,
+                            a12,
+                            a13,
+                            a14,
+                            a15);
+                        goto LABEL_74;
+                    }
+                    if (
+                        cur->offset_0 == "block"
+                        || cur->offset_0 == "include"
+                    )
+                    {
+                        cur->RenderNonDefine(
+                            a2,
+                            a3,
+                            a4,
+                            v151,
+                            a6,
+                            a7,
+                            a8,
+                            a9,
+                            a10,
+                            a11,
+                            a12,
+                            a13,
+                            a14,
+                            a15);
+                        goto LABEL_74;
+                    }
+                    if (cur->offset_0 == "wx-import")
+                    {
+                        if (cur->offset_0 == "wx-define")
+                        {
+                            std::string v155;
+                            a7->GetNextName(v155);
+                            cur->RenderNonDefine(
+                                a2,
+                                a3,
+                                a4,
+                                v155,
+                                a6,
+                                a7,
+                                a8,
+                                a9,
+                                a10,
+                                a11,
+                                a12,
+                                a13,
+                                a14,
+                                a15);
+                            a6 << "_(" << v151 << "," << v155 << ")" << a12;
+                            goto LABEL_74;
+                        }
+                    }
+                }
+                LABEL_74:
+                if (cur->offset_244 > 0)
+                {
+                    a6 << "}" << a12;
+                }
+            }
+            // RenderChildren - 15
+            for (int i = 0; i < v142.size(); i++)
+            {
+                a6 << v142[i].first << ".wxXCkey=" << v142[i].second << a12;
+            }
+            
+            // RenderChildren - 20
+            for (int i = 0; i < v110; i++)
+            {
+                a6 << v145 << ".pop()" << a12;
+            }
+            
+            // RenderChildren - 25
+            for (int i = 0; i < v109; i++)
+            {
+                a6 << v147 << ".pop()" << a12;
+            }
+            
+            // RenderChildren - 30
             
             
         }
@@ -410,7 +905,7 @@ namespace WXML {
             if (this->offset_0 == "block")
             {
                 
-                WXML::DOMLib::WXMLDom::RenderChildren(a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15);
+                this->RenderChildren(a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15);
                 goto LABEL_169;
             }
             

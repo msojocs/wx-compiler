@@ -7,6 +7,10 @@ namespace WXML
          * 感觉不太对，可能不是一个类
         */
         
+        RVMOpCodePosition::RVMOpCodePosition(std::string a)
+        {
+            this->offset_0 = a;
+        }
         RVMOpCodePosition::RVMOpCodePosition(/* args */)
         {
         }

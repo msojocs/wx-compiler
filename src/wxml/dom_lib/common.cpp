@@ -95,6 +95,18 @@ namespace WXML
         {
             return a1.second.offset_40 < a2.second.offset_40;
         }
+        
+        std::string removern(std::string const& a2)
+        {
+            std::string a1;
+            for (int i = 0; i < a2.length() - 1; i++)
+            {
+                char v3 = a2[i];
+                if (v3 != 13 || a2[i + 1] != '\n')
+                    a1.push_back(v3);
+            }
+            return a1;
+        }
     }
 
 }

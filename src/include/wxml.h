@@ -46,12 +46,14 @@ namespace WXML
         private:
             /* data */
         public:
+            bool offset_0;
+            std::string offset_4;
             Token(/* args */);
             ~Token();
         };
         
         
-        void Deal(
+        int Deal(
             char const*,
             std::string &,
             std::vector<WXML::StringTemplating::Token> &,
@@ -89,7 +91,8 @@ namespace WXML
             int offset_24 = 0; // ???
             int offset_40 = 0; // AttrsCompartor用到，怎么来不知道
             // int offset_48 = 0;
-            int offset_56 = 0; // ??? -3, -1
+            // ??? -3, -1
+            int offset_56 = 0;
             std::string offset_60 = ""; // ???
             Token();
             Token(std::string &);
@@ -152,6 +155,7 @@ namespace WXML
         */
         std::string resolvePath(std::string const& path1, std::string const& path2);
 
+        std::string  removern(std::string const&);
         
         /**
          * 
@@ -217,8 +221,9 @@ namespace WXML
         {
         private:
             /* data */
-            std::map<std::string, int> d;
-            std::vector<std::string> offset_6;
+            std::map<std::string, int> offset_0;
+            int offset_20 = 0;
+            std::vector<std::string> offset_24;
         public:
             StrCache(/* args */);
             ~StrCache();
@@ -232,6 +237,9 @@ namespace WXML
         private:
             /* data */
         public:
+            std::string offset_0;
+            int offset_4;
+            RVMOpCodePosition(std::string);
             RVMOpCodePosition(/* args */);
             ~RVMOpCodePosition();
         };
@@ -240,6 +248,8 @@ namespace WXML
         private:
             /* data */
         public:
+            int offset_0 = 0;
+            int offset_4 = 0;
             RVMOpCodePositionRecorder(/* args */);
             ~RVMOpCodePositionRecorder();
         };
@@ -352,6 +362,18 @@ namespace WXML
                 WXML::DOMLib::RVMOpCodePositionRecorder *,
                 bool,
                 const std::map<std::string,std::string> &);
+            int DealSingleTokenToOps(
+                std::string const&,
+                std::string&,
+                std::stringstream &,
+                std::map<std::string,WXML::DOMLib::RVMOpCodePosition> &,
+                WXML::DOMLib::Token *,
+                bool,
+                int,
+                bool,
+                WXML::DOMLib::RVMOpCodePositionRecorder *,
+                bool,
+                const std::map <std::string,std::string> &);
         };
         
 
@@ -501,6 +523,23 @@ namespace WXML
     
     namespace EXPRLib
     {
+        class Parser
+        {
+        private:
+            /* data */
+        public:
+            Parser(/* args */);
+            ~Parser();
+            int Parse(
+                std::string const& a2,
+                std::string const& a3,
+                int a4,
+                int a5,
+                std::string& a6,
+                bool a7);
+        };
+        
+        
         class Tokenizer
         {
         private:
@@ -517,6 +556,11 @@ namespace WXML
         public:
             ExprSyntaxTree(/* args */);
             ~ExprSyntaxTree();
+            void RenderAsOps(
+                std::stringstream & a2,
+                std::string const& a3,
+                bool & a4
+                );
         };
 
         class Token

@@ -17,24 +17,32 @@ namespace WXML {
         void StrCache::RenderPathDefine(std::stringstream &ss)
         {
             ss << "var x=[";
-            // TODO...
-            // return ss;
+            for (int i = 0; i < this->offset_24.size(); i++)
+            {
+                if (i)
+                    ss << ",";
+                ss << "'";
+                WXML::Rewrite::ToStringCode(this->offset_24[i], ss);
+                ss << "'";
+            }
+            ss << "];";
+            
         }
         void StrCache::Insert(std::string s)
         {
-            if (!this->d.count(s))
+            if (!this->offset_0.count(s))
             {
-                // this->d[s] = this[5]; // ???
-                this->offset_6.push_back(s);
+                this->offset_0[s] = this->offset_20;
+                this->offset_24.push_back(s);
             }
         }
     
         int StrCache::GetStrID(std::string s)
         {
             int result = -1;
-            if(this->d.count(s))
+            if(this->offset_0.count(s))
             {
-                return this->d[s];
+                return this->offset_0[s];
             }
             return result;
         }

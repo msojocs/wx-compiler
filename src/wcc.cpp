@@ -543,7 +543,7 @@ std::string EscapeToJsonString(std::string const& a2)
         if (cur == '\\' || cur == '"' || cur <= 0x1Fu)
         {
             ret << "\\u";
-            ret << std::hex << std::setw(4) << std::setfill('0')<< cur;
+            ret << std::hex << std::setw(4) << std::setfill('0') << static_cast<int>(cur);
         }
         else
         {

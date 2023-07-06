@@ -5,6 +5,7 @@
 #include <set>
 #include <memory>
 #include <algorithm>
+#include "../include/night.h"
 
 namespace WXML{
     
@@ -123,7 +124,7 @@ namespace WXML{
                             data = data.append(v74);
                             auto v83 = WXML::Compiler::GetFuncId(a11, data);
                             std::string v72;
-                            // TODO: compile_ns
+                            night::compile_ns(filePath, v83, v79, v65, v72, 0);
                             int compilerResult = 1;
                             if (compilerResult)
                             {
@@ -242,18 +243,18 @@ namespace WXML{
                 v307_localVecStrMap1["__COMMON__"] = commonVec;
 
                 // mark - 10
-                for (int i = 0; i < splitedData.size(); i++)
+                for (auto i = splitedData.begin(); i != splitedData.end(); i++)
                 {
                     std::shared_ptr<std::stringstream> v328_ss(new std::stringstream());
-                    auto it = ssDataMap.lower_bound(splitedData[i]);
-                    if (it == ssDataMap.end())
+                    auto it = ssDataMap.lower_bound(*i);
+                    if (it == ssDataMap.end() || *i < it->first)
                     {
-                        ssDataMap.insert({splitedData[i], v328_ss});
+                        ssDataMap.insert({*i, v328_ss});
                     }
-                    std::string path = "./" + splitedData[i] + ".wxml";
+                    std::string path = "./" + *i + ".wxml";
                     std::vector<std::string> j;
                     j.push_back(path);
-                    v307_localVecStrMap1[splitedData[i]] = j;
+                    v307_localVecStrMap1[*i] = j;
                 }
                 // mark - 15
 
@@ -308,7 +309,18 @@ namespace WXML{
                 {
                     std::set<std::string> v328;
                     WXML::DOMLib::recurseDependencies(i->second, i->first, v328);
-                    // TODO: ...
+                    // std::vector<std::string> v278;
+                    // for (auto j = v328.begin(); j != v328.end(); j++)
+                    // {
+                    //     v278.push_back(*j);
+                    // }
+                    
+                    auto depList = dependencyListMap[i->first];
+                    for (auto j = v328.begin(); j != v328.end(); j++)
+                    {
+                        depList.push_back(*j);
+                    }
+                    dependencyListMap[i->first] = depList;
                 }
                 // mark - 45
                 for (auto i = v304.begin(); i != v304.end(); i++)
@@ -349,7 +361,7 @@ namespace WXML{
                 std::string const& fMark  // "f_" a22
                 */
                 std::string jj;
-                if (!isLLA)
+                if (isLLA)
                 {
                     jj = "global";
                 }
@@ -391,20 +403,52 @@ namespace WXML{
                     *ss << "codeURI,nv_decodeURIComponent,nv_encodeURI,nv_encodeURIComponent,$gdc,nv_JSON,_af,_gv,_ai,_grp,_gd,_gapi,$ix";
                     *ss << "c,_ic,_w,_ev,_tsd){";
                     *ss << "return function(path,global){" << lineEndMark;
-                    *ss << "if(typeof global==='undefined'){if (typeof __GWX_GLOBAL__==='undefined')global={};else global=__GWX_GLOBAL__;}" << lineEndMark;
+                    *ss << "if(typeof global==='undefined'){if (typeof __GWX_GLOBAL__==='undefined')global={};else global=__GWX_GLOBAL__;}";
                     *ss << "if(typeof __WXML_GLOBAL__ === 'undefined') {";
                     *ss << "__WXML_GLOBAL__={};" << lineEndMark;
+                    
+                /*
+                
+                std::map<std::string,std::string> const& fileContentMap, // a1
+                std::string& errorMessage,  // 错误信息 a2
+                std::map<std::string,std::string>& outputContentMap, // 输出 a3
+                std::map<std::string,std::string>& outputFuncMap,  // 输出 a4
+                std::map<std::string, std::vector<std::string>>& dependencyListMap, // a5
+                std::map<std::string, std::vector<std::string>>& componentListMap, // componentListMap a6
+                std::vector<std::string> const& splitedData,       // splitedData a7
+                std::map<std::string,std::string> const& mapData1, // mapData1 a8
+                bool isLLA,                // isLLA a9
+                std::string const& gwxMark,  // gwxMark a10
+                uint mark,                // mark a11
+                char lineEndMark,                // '\n' a12
+                std::string const& eMark1,  // 'e' a13
+                std::string const& charArr,  // const char off_5403C3[] = {'s','\0','e','\0'} a14
+                std::string const& ggMark,  // "gg" a15
+                std::string const& eMark,  // "e_" a16
+                std::string const& dMark,  // "d_" a17
+                std::string const& pMark,  // "p_" a18
+                std::string const& strEndMark,  // '\0' a19
+                std::string const& boxMark,  // "boxofchocolate" a20
+                std::string const& gdwxMark,  // "$gdwx" a21
+                std::string const& fMark  // "f_" a22
+                */
                     if ((mark & 0x80) != 0)
                     {
                         // TODO
+                        auto v252 = mapData1.find("life_cycle_callback_content");
+                        if (mapData1.end() != v252)
+                        {
+                            *ss << v252->second;
+                        }
                     }
                     *ss << "}";
                     *ss << "__WXML_GLOBAL__.modules = __WXML_GLOBAL__.modules || {};" << lineEndMark;
-                    if (v225 && gwxMark == "$gwx" && (mark & 0x60) == 0)
+                    if (v225 && gwxMark != "$gwx" && (mark & 0x60) == 0)
                     {
                         *ss << "$gwx('init', global);" << lineEndMark;
                     }
-                    *ss << "var " << eMark << "=global.entrys;" << lineEndMark;
+                    *ss << "var " << eMark << "={}" << lineEndMark;
+                    *ss << "if(typeof(global.entrys)==='undefined')global.entrys={};" << eMark << "=global.entrys;" << lineEndMark;
                     *ss << "var " << dMark << "={}" << lineEndMark;
                     *ss << "if(typeof(global.defines)==='undefined')global.defines={};" << dMark << "=global.defines;" << lineEndMark;
                     *ss << "var " << fMark << "={}" << lineEndMark;
@@ -426,9 +470,9 @@ namespace WXML{
                     // i->first v248
                     auto v97 = v307_localVecStrMap1[i->first];
                     int cnt = 0;
-                    for (auto i = v97.begin(); i != v97.end(); i++)
+                    for (auto i0 = v97.begin(); i0 != v97.end(); i0++)
                     {
-                        std::shared_ptr<WXML::DOMLib::WXMLDom> v244 = v304[*i];
+                        std::shared_ptr<WXML::DOMLib::WXMLDom> v244 = v304[*i0];
                         cnt++;
                         std::string v98 = std::to_string(cnt);
                         std::string v321 = v318 + "_" + v98;
@@ -448,7 +492,10 @@ namespace WXML{
                             *ss << "function Z(ops){z.push(ops)}";
                         }
                         *ss << lineEndMark;
-                        // TODO: RenderAllOpsAndRecord
+                        std::map<std::string,WXML::DOMLib::RVMOpCodePosition> v319;
+                        WXML::DOMLib::RVMOpCodePositionRecorder v300;
+                        // TODO: 待处理，死循环
+                        // v244->RenderAllOpsAndRecord(*i0, errorMessage, *ss, v319, &v300, (mark & 4) != 0, mapData1);
                         *ss << "})(__WXML_GLOBAL__.ops_cached." << v321 << ");";
                         *ss << "return __WXML_GLOBAL__.ops_cached." << v321 << lineEndMark;
                         *ss << "}" << lineEndMark;
@@ -483,9 +530,9 @@ namespace WXML{
                         *ss << "e.stack += '\\n    at ' + n.substring(2);console.error(e);}";
                         *ss << lineEndMark;
                         *ss << "}}}()" << lineEndMark;
-                        for (auto i = v309.begin(); i != v309.end(); i++)
+                        for (auto j = v309.begin(); j != v309.end(); j++)
                         {
-                            *ss << i->second << lineEndMark;
+                            *ss << j->second << lineEndMark;
                         }
                         
                     }
@@ -606,7 +653,8 @@ namespace WXML{
                                 }
                             }
                         }
-                        *ss << "}}" << lineEndMark;
+                        *ss << "]}" << lineEndMark;
+                        v228++;
 
                     }
                     *ss << "if(path&&" << eMark << "[path]){" << lineEndMark;
@@ -690,7 +738,7 @@ namespace WXML{
                     auto v197 = v307_localVecStrMap1[i->first];
                     *ss << "if(__vd_version_info__.delayedGwx||";
                     std::string v198 = "true";
-                    if (!( v225 || v197.size() > 0))
+                    if (!( v225 || v197.size() != 1))
                     {
                         v198 = "false";
                     }
@@ -846,7 +894,7 @@ namespace WXML{
             result << "';";
             result << a2;
             result << ".__wcc_version_info__={\"customComponents\":true,\"fixZeroRpx\":true,\"propValueDeepCopy\":false};";
-            result.str(a1);
+            a1 = result.str();
         }
         
         int RenderDefine(
@@ -908,30 +956,30 @@ namespace WXML{
                                              a20);
 
                 }
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < a1.offset_72.size(); i++)
                 {
-                    /* code */
-                    // WXML::Compiler::RenderDefine(
-                    //         v23 + 8 * i,
-                    //         a2,
-                    //         a3,
-                    //         a4,
-                    //         a5,
-                    //         a6,
-                    //         a7,
-                    //         a8,
-                    //         a9,
-                    //         a10,
-                    //         a11,
-                    //         a12,
-                    //         a13,
-                    //         a14,
-                    //         a15,
-                    //         a16,
-                    //         a17,
-                    //         a18,
-                    //         a19,
-                    //         a20);
+                    auto cur = a1.offset_72[i];
+                    WXML::Compiler::RenderDefine(
+                            *cur,
+                            a2,
+                            a3,
+                            a4,
+                            a5,
+                            a6,
+                            a7,
+                            a8,
+                            a9,
+                            a10,
+                            a11,
+                            a12,
+                            a13,
+                            a14,
+                            a15,
+                            a16,
+                            a17,
+                            a18,
+                            a19,
+                            a20);
                 }
                 
                 
