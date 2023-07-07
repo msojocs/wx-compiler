@@ -59,6 +59,23 @@ namespace WXML {
                     v85.offset_4 = ptm->second;
                     v77.push_back(v85);
                 }
+                std::string v80 = ptm->second;
+                for (int i = 1; i < v77.size(); i++)
+                {
+                    WXML::StringTemplating::Token curToken = v77[i];
+                    if (curToken.offset_0)
+                    {
+                        if (!v77[i - 1].offset_0)
+                        {
+                            v77[i - 1].offset_4.append(v80);
+                        }
+                    }
+                    else if (!curToken.offset_0 && v77[i - 1].offset_0)
+                    {
+                        curToken.offset_4 = v80 + curToken.offset_4;
+                    }
+                }
+                
             }
             // DealSingleTokenToOps - 15
             if (a7)
@@ -82,10 +99,13 @@ namespace WXML {
             }
             // DealSingleTokenToOps - 25
             int v52 = 1;
-            if (v77.size() < 0x1C)
+            if (v77.size() <= 1)
             {
                 v52 = 0;
-                // TODO..
+                if (v77.size() == 1)
+                {
+                    v52 = a8 & v77[0].offset_0 == true;
+                }
             }
             a3 << "Z(";
             if (v52)
@@ -146,7 +166,8 @@ namespace WXML {
                         v43 = a9->offset_4;
                     }
                     WXML::DOMLib::RVMOpCodePosition pos;
-                    v80.push_back({"", pos});
+                    pos.offset_4 = -1;
+                    v80.push_back({v29, pos});
                 }
                 else
                 {
@@ -247,7 +268,7 @@ namespace WXML {
                 }
                 for (int i = 0; i < this->offset_72.size(); i++)
                 {
-                    this->RenderAllOpsAndRecord(a2, a3, a4, a5, a6, a7, a8);
+                    this->offset_72[i]->RenderAllOpsAndRecord(a2, a3, a4, a5, a6, a7, a8);
                 }
                 
             }
@@ -321,7 +342,7 @@ namespace WXML {
                     a6 << a13 << "try{" << a13;
                 }
                 std::map<std::string,std::string> v79;
-                // this->RenderChildren(a2, a3, a4, a11, a6, a7, a8, a9, a10, a12, a13, a16, a17, &v79);
+                this->RenderChildren(a2, a3, a4, a11, a6, a7, a8, a9, a10, a12, a13, a16, a17, &v79);
                 if (a15)
                 {
                     a6 << "}catch(err){" << a13;
@@ -338,6 +359,9 @@ namespace WXML {
             
 
         }
+        /**
+         * 有点问题
+        */
         void WXMLDom::RenderChildren(
             std::string const& a2,
             std::string const& a3,
@@ -479,7 +503,7 @@ namespace WXML {
                 if (v153 == "wx-if" || v153 == "wx:if")
                 {
                     a6 << "var " << cur->offset_220 << "=_v()" << a12;
-                    a6 << "_(" << a5 << "," << "," << cur->offset_220 << ")" << a12;
+                    a6 << "_(" << a5 << "," << cur->offset_220 << ")" << a12;
                     a6 << "if(_oz(z," << cur->offset_48[v153].offset_56 << "," << a8 << ",";
                     a6 << a9 << "," << a10 << ")){" << cur->offset_220 << ".wxVkey=";
                     a6 << cur->offset_244 << a12;
@@ -529,8 +553,8 @@ namespace WXML {
                 )
                 {
                     if (
-                        cur->offset_0 != "wx-repeat"
-                        && cur->offset_0 != "wx-template"
+                        cur->offset_0 == "wx-repeat"
+                        && cur->offset_0 == "wx-template"
                     )
                     {
                         std::string v155;
@@ -1148,9 +1172,19 @@ namespace WXML {
                 if (v8)
                 {
                     std::string attr = this->offset_48[v13].ToAttrContent();
-                    
+                    if(!this->offset_248.offset_0.count(attr))
+                    {
+                        this->offset_248.offset_0[attr] = this->offset_248.offset_0.size();
+                        this->offset_248.offset_24.push_back(attr);
+                    }
                 }
             }
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                this->offset_72[i]->offset_248 = this->offset_248;
+                this->offset_72[i]->RecordAllPath();
+            }
+            
         }
         void WXMLDom::Print(int a2, char const* a3, std::stringstream * a4)
         {
@@ -1371,28 +1405,29 @@ namespace WXML {
             )
         {
             bool hasElIf = true;
-            if (this->offset_72[a2]->offset_48.count("wx:else") != 0)
+            if (this->offset_72[a2]->offset_48.count("wx:else") == 0)
             {
                 hasElIf = this->offset_72[a2]->offset_48.count("wx:elif");
             }
             if (hasElIf) return true;
 
             bool hasIf = false;
-            if (this->offset_72[a2]->offset_48.count("wx:if") != 0)
+            if (this->offset_72[a2]->offset_48.count("wx:if") == 0)
             {
-                hasIf = this->offset_72[a2]->offset_48.count("wx-if") == 0;
+                hasIf = !this->offset_72[a2]->offset_48.count("wx-if");
             }
             if (!hasIf)
             {
                 int v11 = a2 - 1;
-                if(this->offset_48.begin() == this->offset_48.end())
+                auto v5 = this->offset_72[a2];
+                if(v5->offset_48.begin() == v5->offset_48.end())
                 {
-                    for (int i = a2 + 1; i < this->offset_48.size(); i++)
+                    for (int i = a2 + 1; i < this->offset_72.size(); i++)
                     {
                         bool hasElIf = true;
-                        if(!this->offset_48.count("wx:else"))
+                        if(!this->offset_72[i]->offset_48.count("wx:else"))
                         {
-                            hasElIf = this->offset_48.count("wx:elif");
+                            hasElIf = this->offset_72[i]->offset_48.count("wx:elif");
                         }
                         if (!hasElIf)
                         {
@@ -1454,17 +1489,17 @@ namespace WXML {
                     {
                         if ( strncmp(v3, "capture-bind", 0xCu) )
                         {
-                        if ( strncmp(v3, "capture-catch", 0xDu) )
-                        {
-                            if ( i->first != "slot" )
+                            if ( strncmp(v3, "capture-catch", 0xDu) )
                             {
-                                if ( strncmp(v3, "wx:", 3u) )
+                                if ( i->first != "slot" )
                                 {
-                                    if ( strncmp(v3, "mark:", 5u) )
-                                        continue;
+                                    if ( strncmp(v3, "wx:", 3u) )
+                                    {
+                                        if ( strncmp(v3, "mark:", 5u) )
+                                            continue;
+                                    }
                                 }
                             }
-                        }
                         }
                     }
                 }

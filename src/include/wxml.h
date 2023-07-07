@@ -90,9 +90,8 @@ namespace WXML
             int offset_20 = 0; // size
             int offset_24 = 0; // ???
             int offset_40 = 0; // AttrsCompartor用到，怎么来不知道
-            // int offset_48 = 0;
             // ??? -3, -1
-            int offset_56 = 0;
+            int offset_56 = 1;
             std::string offset_60 = ""; // ???
             Token();
             Token(std::string &);
@@ -221,10 +220,9 @@ namespace WXML
         {
         private:
             /* data */
-            std::map<std::string, int> offset_0;
-            int offset_20 = 0;
-            std::vector<std::string> offset_24;
         public:
+            std::map<std::string, int> offset_0;
+            std::vector<std::string> offset_24;
             StrCache(/* args */);
             ~StrCache();
             void RenderPathDefine(std::stringstream &ss);
@@ -261,16 +259,16 @@ namespace WXML
             /*
             偏移应该不超过0x128u, 296
              */
-            bool offset_28;
+            bool offset_28 = 0;
             // std::string offset_52;
-            int offset_92; // pos1
-            int offset_96; // pos2
-            int offset_104; // len
-            int offset_140;
+            int offset_92 = 0; // pos1
+            int offset_96 = 0; // pos2
+            int offset_104 = 0; // len
+            int offset_140 = 0;
             std::string offset_144;
             std::string offset_196;
             std::string offset_220;
-            int offset_244;
+            int offset_244 = 0;
             int componentCnt = 0;
         public:
             std::string offset_0; // type
@@ -384,7 +382,6 @@ namespace WXML
         private:
             /* data */
             std::shared_ptr<WXML::DOMLib::WXMLDom> dom; // offset_4 ?
-            int offset_4 = 0;
             std::deque<std::string> dequeStr;// offset_8
             std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom; // offset_48 int a1 + 48, _DWORD * a1 + 12
             std::vector<WXML::DOMLib::Token> tokenList; // offset_88

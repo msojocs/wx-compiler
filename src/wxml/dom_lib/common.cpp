@@ -99,8 +99,9 @@ namespace WXML
         std::string removern(std::string const& a2)
         {
             std::string a1;
-            for (int i = 0; i < a2.length() - 1; i++)
+            for (int i = 0; i < a2.length(); i++)
             {
+                if (i >= a2.length()) break;
                 char v3 = a2[i];
                 if (v3 != 13 || a2[i + 1] != '\n')
                     a1.push_back(v3);

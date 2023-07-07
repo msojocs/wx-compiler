@@ -32,7 +32,7 @@ namespace WXML {
         {
             if (!this->offset_0.count(s))
             {
-                this->offset_0[s] = this->offset_20;
+                this->offset_0[s] = this->offset_0.size();
                 this->offset_24.push_back(s);
             }
         }

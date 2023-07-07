@@ -494,8 +494,7 @@ namespace WXML{
                         *ss << lineEndMark;
                         std::map<std::string,WXML::DOMLib::RVMOpCodePosition> v319;
                         WXML::DOMLib::RVMOpCodePositionRecorder v300;
-                        // TODO: 待处理，死循环
-                        // v244->RenderAllOpsAndRecord(*i0, errorMessage, *ss, v319, &v300, (mark & 4) != 0, mapData1);
+                        v244->RenderAllOpsAndRecord(*i0, errorMessage, *ss, v319, &v300, (mark & 4) != 0, mapData1);
                         *ss << "})(__WXML_GLOBAL__.ops_cached." << v321 << ");";
                         *ss << "return __WXML_GLOBAL__.ops_cached." << v321 << lineEndMark;
                         *ss << "}" << lineEndMark;
