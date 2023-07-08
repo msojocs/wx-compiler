@@ -245,7 +245,7 @@ namespace WXML {
             }
             else
             {
-                for (auto i = this->offset_48.begin(); i != this->offset_48.end(); i++)
+                for (auto i = this->offset_48.rbegin(); i != this->offset_48.rend(); i++)
                 {
                     if (
                         i->second.offset_20
@@ -254,8 +254,8 @@ namespace WXML {
                     )
                     {
                         if (
-                            this->offset_0 == "wx-template" && i->first == "data"
-                            || this->offset_0 == "wx-scope" && i->first == "wx:scope-data"
+                            (this->offset_0 == "wx-template" && i->first == "data")
+                            || (this->offset_0 == "wx-scope" && i->first == "wx:scope-data")
                         )
                         {
                             this->DealSingleTokenToOps(a2, a3, a4, a5, &i->second, 1, 1, 0, a6, a7, a8);
@@ -272,6 +272,7 @@ namespace WXML {
                 }
                 
             }
+            return;
         }
         void WXMLDom::RenderMeAsFunction(
             std::string const& a2,
@@ -358,6 +359,174 @@ namespace WXML {
             }
             
 
+        }
+        void WXMLDom::RewriteTree(void)
+        {
+            // RewriteTree - 0
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                auto cur = this->offset_72[i];
+                auto forItem = cur->offset_48.find("wx:for");
+                if (forItem != cur->offset_48.end())
+                {
+                    WXML::DOMLib::Token v4 = forItem->second;
+                    // token.offset_0 = "wx:for-items";
+                    cur->offset_48.emplace("wx:for-items", v4);
+                    cur->offset_48.erase("wx:for");
+                }
+            }
+
+            // RewriteTree - 5
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                auto cur = this->offset_72[i];
+                auto forItems = cur->offset_48.find("wx:for-items");
+                if (forItems == cur->offset_48.end() && cur->offset_0 != "block")
+                {
+                    const char **v38 = WXML::DOMLib::szWXIFControlAttrs;
+                    while (*v38)
+                    {
+                        std::string v101 = *v38;
+                        auto v9 = cur->offset_48.find(v101);
+                        ++v38;
+                        if (v9 != cur->offset_48.end())
+                        {
+                            std::shared_ptr<WXML::DOMLib::WXMLDom> v98(new WXML::DOMLib::WXMLDom());
+                            auto v11 = v9->second;
+                            v98->offset_48.emplace(v101, v9->second);
+                            v98->offset_0 = "block";
+                            v98->offset_24.assign(cur->offset_24);
+                            v98->offset_84 = cur->offset_84;
+                            cur->offset_48.erase(v101);
+                            v98->offset_72.push_back(cur);
+                            this->offset_72[i] = v98;
+                            break;
+                        }
+                    }
+                    
+                }
+            }
+            
+            // RewriteTree - 10
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                std::string v35;
+                bool v52 = false;
+                auto cur = this->offset_72[i];
+                if (cur->offset_0 != "template")
+                {
+                    continue;
+                }
+                if (cur->offset_48.end() == cur->offset_48.find("is"))
+                {
+                    v52 = false;
+                }
+                else
+                {
+                    v52 = cur->offset_48.end() == cur->offset_48.find("name");
+                }
+                if (v52)
+                {
+                    v35 = "wx-template";
+                }
+                else
+                {
+                    v35 = "wx-define";
+                }
+                this->offset_72[i]->offset_0 = v35;
+            }
+            
+            // RewriteTree - 15
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                auto cur = this->offset_72[i];
+                if (cur->offset_0 == "block")
+                {
+                    // TODO...
+                }
+            }
+
+            // RewriteTree - 20
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                auto cur = this->offset_72[i];
+                if (cur->offset_0 != "wx-repeat")
+                {
+                    if (cur->offset_0 != "wx-define")
+                    {
+                        if (cur->offset_0 != "wx-import")
+                        {
+                            if (cur->offset_0 != "import")
+                            {
+                                auto v19 = cur->offset_48.find("wx:for-items");
+                                if (v19 != cur->offset_48.end())
+                                {
+                                    std::shared_ptr<WXML::DOMLib::WXMLDom> v91(new WXML::DOMLib::WXMLDom());
+                                    v91->offset_0 = "wx-repeat";
+                                    v91->offset_24.assign(cur->offset_24);
+                                    v91->offset_84 = cur->offset_84;
+                                    v91->offset_72.push_back(cur);
+                                    WXML::DOMLib::Token v21 = cur->offset_48["wx:for-items"];
+                                    v91->offset_48.emplace("wx:for-items", v21);
+                                    cur->offset_48.erase("wx:for-items");
+                                    auto v59 = cur->offset_48.find("wx:for-item");
+                                    if (cur->offset_48.end() != v59)
+                                    {
+                                        WXML::DOMLib::Token v22 = v59->second;
+                                        v91->offset_48.emplace("wx:for-item", v22);
+                                        cur->offset_48.erase("wx:for-item");
+                                    }
+
+                                    //////////////////////////////"wx:for-index"
+                                    auto v63 = cur->offset_48.find("wx:for-index");
+                                    if (v63 != cur->offset_48.end())
+                                    {
+                                        WXML::DOMLib::Token v102 = v63->second;
+                                        v91->offset_48.emplace("wx:for-index", v102);
+                                        cur->offset_48.erase("wx:for-index");
+                                    }
+
+                                    ///////////////////////////////"wx:key"
+                                    auto v67 = cur->offset_48.find("wx:key");
+                                    if (cur->offset_48.end() != v67)
+                                    {
+                                        WXML::DOMLib::Token v24 = v67->second;
+                                        v91->offset_48.emplace("wx:key", v24);
+                                        cur->offset_48.erase("wx:key");
+                                    }
+                                    this->offset_72[i] = v91;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // RewriteTree - 25
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                auto cur = this->offset_72[i];
+                auto v28 = cur->offset_48.find("wx:scope-data");
+                if (v28 != cur->offset_48.end())
+                {
+                    std::shared_ptr<WXML::DOMLib::WXMLDom> v71(new WXML::DOMLib::WXMLDom());
+                    v71->offset_0 = "wx-scope";
+                    v71->offset_24.assign(cur->offset_24);
+                    v71->offset_84 = cur->offset_84;
+                    v71->offset_72.push_back(cur);
+                    WXML::DOMLib::Token v30 = cur->offset_48["wx:scope-data"];
+                    v71->offset_48.emplace("wx:scope-data", v30);
+                    cur->offset_48.erase("wx:scope-data");
+                    this->offset_72[i] = v71;
+                }
+            }
+
+            // RewriteTree - 30
+            for (int i = 0; i < this->offset_72.size(); i++)
+            {
+                this->offset_72[i]->RewriteTree();
+            }
+            
         }
         /**
          * 有点问题
@@ -672,7 +841,7 @@ namespace WXML {
             std::map<std::string,std::string> * a15
             )
         {
-            if (a13 && this->offset_28)
+            if (a13 && this->offset_24.size())
             {
                 a6 << "cs.push(\"";
                 std::string sc = WXML::Rewrite::ToStringCode(a2);
@@ -697,7 +866,7 @@ namespace WXML {
                 a6 << a12;
 
                 // goto LABEL_169;
-                if (a13 && this->offset_28)
+                if (a13 && this->offset_24.size())
                 {
                     a6 << "cs.pop()" << a12;
                 }
@@ -705,12 +874,12 @@ namespace WXML {
 
             } // TEXTNODE end
             if (this->offset_0 == "wx-define"
-                ||this->offset_0 == "wx-import"
-                ||this->offset_0 == "import"
-                ||this->offset_0 == "template")
+                || this->offset_0 == "wx-import"
+                || this->offset_0 == "import"
+                || this->offset_0 == "template")
             {
 
-                if (a13 && this->offset_28)
+                if (a13 && this->offset_24.size())
                 {
                     a6 << "cs.pop()" << a12;
                 }
@@ -784,6 +953,15 @@ namespace WXML {
                     throw "RenderException" + err;
                 }
 
+                if (target2_1.size() == 0)
+                {
+                    target2_1 = "index";
+                }
+                if (target3_1.size() == 0)
+                {
+                    target3_1 = "item";
+                }
+
                 std::string name1;
                 a7->GetNextName(name1);
                 
@@ -850,10 +1028,9 @@ namespace WXML {
                 {
                     goto LABEL_57;
                 }
+
                 v336 = t->second.ToAttrContent();
                 v47 = v336.find('.', 0);
-                
-                
                 if (v47 != -1)
                 {
                     auto Str = v336.substr(0, v47);
@@ -907,7 +1084,36 @@ namespace WXML {
                         }
                     }
                 }
-                // if (WXML::DOMLib::Token::IsValidVariableNam(v336))
+                if (!WXML::DOMLib::Token::IsValidVariableName(v336))
+                {
+                    if (v336.length())
+                    {
+                        if (v336 == "0")
+                            goto LABEL_56;
+                        if (v336[0] != '0')
+                        {
+                            for (int i_0 = 0; i_0 < v336.length(); i_0++)
+                            {
+                                if (v336[i_0] - '0' > 9u)
+                                {
+                                    goto LABEL_189;
+                                }
+                            }
+                            
+                            goto LABEL_56;
+                        }
+                    }
+                    LABEL_189:
+                    if (v336 != "*this")
+                    {
+                        a6 << "_wp('" << WXML::Rewrite::ToStringCode(a2) << ":";
+                        a6 << this->offset_24 << ":" << this->offset_92 << ":" << this->offset_96;
+                        a6 << ": wx:key=\"" << WXML::Rewrite::ToStringCode(v336);
+                        a6 << "\" does not look like a valid key name.')" << a12;
+                        
+                        goto LABEL_56;
+                    }
+                }
                 LABEL_56: //...
                 LABEL_57: //...
                 if (this->offset_256)
@@ -925,7 +1131,7 @@ namespace WXML {
                 a6 << target3_1 << "," << target2_1 << ",";
                 a6 << this->offset_48[wxKey].ToAttrContent() << ")" << a12;
                 goto LABEL_84;
-            }
+            } // wx-repeat end
             if (this->offset_0 == "block")
             {
                 
@@ -957,13 +1163,13 @@ namespace WXML {
                 a6 << this->offset_248.GetStrID(a2);
                 a6 << "]," << a8 << "," << a9 << "," << a5 << "," << a10 << ");" << a12;
                 // goto LABEL_68;
-                if (a13 && this->offset_28)
+                if (a13 && this->offset_24.size())
                 {
                     a6 << "cs.pop()" << a12;
                 }
                 return;
             }
-            if (this->offset_0 == "ex-template")
+            if (this->offset_0 == "wx-template")
             {
                 v281 = this->offset_48.find("is");
                 if (v281 == this->offset_48.end())
@@ -983,7 +1189,7 @@ namespace WXML {
                     a6 << a12;
 
                     // goto LABEL_169;
-                    if (a13 && this->offset_28)
+                    if (a13 && this->offset_24.size())
                     {
                         a6 << "cs.pop()" << a12;
                     }
@@ -1156,7 +1362,7 @@ namespace WXML {
             // if ((a14 & 1) != 0)
             //     this->AddTestAttr(a5, a6, '\n'/*10*/);
             LABEL_169:
-            if (a13 && this->offset_28)
+            if (a13 && this->offset_24.size())
             {
                 a6 << "cs.pop()" << a12;
             }
@@ -1452,7 +1658,7 @@ namespace WXML {
         }
         bool WXMLDom::operator==(std::string tag)
         {
-            return this->offset_0.compare(tag) == 0;
+            return this->offset_0 == tag;
         }
         std::string WXMLDom::Error(
                 std::string const& a2,

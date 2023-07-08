@@ -125,7 +125,7 @@ namespace WXML
                 if (token.IsMatch("<"))
                 {
                     this->peekIndex++;
-                    auto token = this->Peek();
+                    token = this->Peek();
                     auto tag = token.ToString();
                     if (!WXML::DOMLib::Parser::IsValidTag(tag))
                     {

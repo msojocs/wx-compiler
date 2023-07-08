@@ -17,7 +17,7 @@ int readFile (const char* fileName, std::string &result) {
     char buf[1024];
     unsigned int len;
 
-    result = "\0";
+    result = "";
     if (fileName)
         f = fopen(fileName, "r");
     if (!f) {
@@ -29,7 +29,12 @@ int readFile (const char* fileName, std::string &result) {
     while (fgets(buf, 1024, f))
     {
         len = strlen(buf);
-        result.append(buf, len);
+        for (int i = 0; i < len; i++)
+        {
+            if (buf[i] != '\r')
+                result.push_back(buf[i]);
+        }
+        
     }
     if (f) {
         fclose(f);

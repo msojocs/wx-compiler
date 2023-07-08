@@ -15,10 +15,10 @@ namespace WXML
         const char * Token::GetTokenName()
         {
             const char *result;
-            switch ( this->type )
+            switch ( this->offset_0 )
             {
                 case 0u:
-                result = this->tokenName.c_str();
+                result = this->offset_4.data();
                 break;
                 case 1u:
                 result = "$DECIMAL";
@@ -37,7 +37,24 @@ namespace WXML
             }
             return result;
         }
-    
+
+        
+        std::string Token::GetLiteral(void)
+        {
+            std::string result = this->offset_4;
+            if (this->offset_0)
+            {
+                result = "$";
+                if (this->offset_0 != 5)
+                {
+                    if (this->offset_4.size())
+                    {
+                        // return 
+                    }
+                }
+            }
+            return "";
+        }
     }
 }
         

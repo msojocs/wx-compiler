@@ -259,7 +259,6 @@ namespace WXML
             /*
             偏移应该不超过0x128u, 296
              */
-            bool offset_28 = 0;
             // std::string offset_52;
             int offset_92 = 0; // pos1
             int offset_96 = 0; // pos2
@@ -344,6 +343,7 @@ namespace WXML
                 std::vector<std::string> const& a3
                 );
             void RecordAllPath(void);
+            void RewriteTree(void);
             void Print(int,char const*, std::stringstream *);
             void PrintMe(int,char const*, std::stringstream *);
             bool operator==(std::string tag);
@@ -520,6 +520,8 @@ namespace WXML
     
     namespace EXPRLib
     {
+        void OutputAsStringOrKeyWord(std::stringstream &,std::string const&,std::string const&, bool &);
+
         class Parser
         {
         private:
@@ -546,19 +548,6 @@ namespace WXML
             ~Tokenizer();
         };
 
-        class ExprSyntaxTree 
-        {
-        private:
-            /* data */
-        public:
-            ExprSyntaxTree(/* args */);
-            ~ExprSyntaxTree();
-            void RenderAsOps(
-                std::stringstream & a2,
-                std::string const& a3,
-                bool & a4
-                );
-        };
 
         class Token
         {
@@ -569,15 +558,46 @@ namespace WXML
             */
         private:
             /* data */
-            int type;
-            std::string tokenName;
         public:
+            int offset_0;
+            std::string offset_4;
             Token(/* args */);
             ~Token();
+            std::string GetLiteral(void);
             const char * GetTokenName();
         };
         
-        
+        class ExprSyntaxTree 
+        {
+        private:
+            /* data */
+        public:
+            std::string offset_0;
+            WXML::EXPRLib::Token offset_24;
+            // offset_52
+            ExprSyntaxTree(/* args */);
+            ~ExprSyntaxTree();
+            void RenderAsOps(
+                std::stringstream & a2,
+                std::string const& a3,
+                bool & a4
+                );
+        };
+        enum OPShort
+        {
+            AOP = 2,
+            CONST = 1,
+            CON_LIST = 5,
+            CS_GLOBAL = 11,
+            DO_FUNC = 12,
+            EX_DICT = 10,
+            GET_FROM_ENV = 7,
+            GET_NAME = 6,
+            MAKE_KV = 8,
+            MAKE_LIST = 4,
+            NAME = 3,
+            UNION_KV = 9
+        };
         
     } // namespace EXPRLib
     

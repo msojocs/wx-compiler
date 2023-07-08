@@ -30,8 +30,10 @@ add_executable(wcc
     src/night/ns_stream.cpp
     src/night/ns_token.cpp
     src/night/ns_god/ns_god.cpp
-    src/wxml/expr_lib/parser.cpp
+    src/wxml/expr_lib/common.cpp
     src/wxml/expr_lib/expr_syntax_tree.cpp
+    src/wxml/expr_lib/parser.cpp
+    src/wxml/expr_lib/token.cpp
     src/wxml/compiler.cpp
     src/wxml/dom_lib/str_cache.cpp
     src/wxml/dom_lib/wxml_dom.cpp

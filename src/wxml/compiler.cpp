@@ -235,6 +235,7 @@ namespace WXML{
                                 v311,  // ??? a11 
                                 (mark & 4) != 0,  // a11 -> mark a12
                                 (mark & 0x20) != 0); // a13
+                    // printf("parse result: %d", parseResult);
                 }
                 // mark - 5
                 std::shared_ptr<std::stringstream> v301_localCommonStream1(new std::stringstream()); // v301
@@ -325,6 +326,7 @@ namespace WXML{
                 // mark - 45
                 for (auto i = v304.begin(); i != v304.end(); i++)
                 {
+                    i->second->RewriteTree();
                     std::string v328 = "ALL";
                     auto v51 = componentListMap[v328];
                     auto v282 = i->second;
