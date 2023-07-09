@@ -522,11 +522,87 @@ namespace WXML
     {
         void OutputAsStringOrKeyWord(std::stringstream &,std::string const&,std::string const&, bool &);
 
+
+        class TransitTable
+        {
+        private:
+            /* data */
+        public:
+            TransitTable(/* args */);
+            ~TransitTable();
+            static int GetExprNTType(void);
+            static int GetAttrListNTType(void);
+            static void Init(void);
+        };
+
+        class Token
+        {
+            /**
+             * 内存结构：
+             * 00 00 00 00 标识type
+             * 00 00 00 00... 当标识为0时后面为需要的动态字符串tokenName
+             * /////
+             * 03 00 00 00 00 00 00 00  00 00 00 00 70 87 E8 00(std::string地址)
+            */
+        private:
+            /* data */
+        public:
+            int offset_0;
+            std::string offset_4;
+            std::string offset_12;
+            Token(/* args */);
+            ~Token();
+            std::string GetLiteral(void);
+            const char * GetTokenName();
+        };
+        
+        using Offset0Type = int();
+        class Base
+        {
+        private:
+            /* data */
+        public:
+            Offset0Type *offset_0;
+            std::string offset_4;
+            std::vector<WXML::EXPRLib::Token> offset_8;
+            // int offset_12 = 0;
+            WXML::EXPRLib::Token offset_28;
+            int offset_32 = 0;
+            Base(/* args */);
+            ~Base();
+        };
+        
+        class ExprSyntaxTree 
+        {
+        private:
+            /* data */
+        public:
+            std::string offset_0;
+            WXML::EXPRLib::Token offset_24;
+            std::vector<std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree>> offset_52;
+            ExprSyntaxTree(/* args */);
+            ~ExprSyntaxTree();
+            void RenderAsOps(
+                std::stringstream & a2,
+                std::string const& a3,
+                bool & a4
+                );
+        };
+        
         class Parser
         {
         private:
             /* data */
         public:
+            /*
+            deque 会占用40个字节
+            E9 3A 55 00 00 00 00 00  38(offset_0) F8 DE 00 08 00 00 00
+            70 F8 DE 00 70 F8 DE 00  70 FA DE 00 44 F8 DE 00
+            70 F8 DE 00 70 F8 DE 00  70 FA DE 00 44 F8 DE 00
+            */
+            std::deque<std::shared_ptr<WXML::EXPRLib::Base>> offset_0;
+            std::deque<std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree>> offset_40;
+            std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree> offset_80;
             Parser(/* args */);
             ~Parser();
             int Parse(
@@ -538,51 +614,22 @@ namespace WXML
                 bool a7);
         };
         
-        
         class Tokenizer
         {
         private:
             /* data */
         public:
-            Tokenizer(/* args */);
-            ~Tokenizer();
-        };
-
-
-        class Token
-        {
-            /**
-             * 内存结构：
-             * 00 00 00 00 标识type
-             * 00 00 00 00... 当标识为0时后面为需要的动态字符串tokenName
-            */
-        private:
-            /* data */
-        public:
-            int offset_0;
-            std::string offset_4;
-            Token(/* args */);
-            ~Token();
-            std::string GetLiteral(void);
-            const char * GetTokenName();
-        };
-        
-        class ExprSyntaxTree 
-        {
-        private:
-            /* data */
-        public:
+            // 006685A0
+            static int TT[0x605C];
+            static bool bInited;
             std::string offset_0;
-            WXML::EXPRLib::Token offset_24;
-            // offset_52
-            ExprSyntaxTree(/* args */);
-            ~ExprSyntaxTree();
-            void RenderAsOps(
-                std::stringstream & a2,
-                std::string const& a3,
-                bool & a4
-                );
+            Tokenizer(/* args */);
+            Tokenizer(char const*,std::string const&,int,int);
+            ~Tokenizer();
+            void InitTransitTable(void);
+            int GetTokens(std::vector<WXML::EXPRLib::Token> &,std::string &);
         };
+
         enum OPShort
         {
             AOP = 2,

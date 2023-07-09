@@ -47,13 +47,14 @@ namespace WXML
                 result = "$";
                 if (this->offset_0 != 5)
                 {
-                    if (this->offset_4.size())
+                    result = "";
+                    if (this->offset_12.size())
                     {
-                        // return 
+                        return this->offset_12;
                     }
                 }
             }
-            return "";
+            return result;
         }
     }
 }

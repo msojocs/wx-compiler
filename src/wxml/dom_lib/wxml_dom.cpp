@@ -151,6 +151,8 @@ namespace WXML {
                             break;
                         }
                         WXML::EXPRLib::ExprSyntaxTree v70;
+                        v70.offset_0 = v85;
+                        // v70.offset_0 = v77[i].offset_4;
                         v70.RenderAsOps(a3, v85, v77_b);
                     }
                     else
