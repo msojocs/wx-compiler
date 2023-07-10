@@ -182,8 +182,9 @@ namespace WXML {
             int v21 = 18899;
             WXML::EXPRLib::Tokenizer::InitTransitTable();
             int v24 = 1;
-            int v29;
-            for (int v28 = 0; v28 < this->offset_0.size();)
+            int v29 = 0;
+            int v28 = 0;
+            while (v28 <= this->offset_0.size())
             {
                 if (!--v21)
                 {
@@ -199,7 +200,7 @@ namespace WXML {
                 int t = WXML::EXPRLib::Tokenizer::TT[257 * v24 + v3];
                 if (!t)
                 {
-                    t = WXML::EXPRLib::Tokenizer::TT[257 * v24];
+                    t = WXML::EXPRLib::Tokenizer::TT[(0x6689A0 - 0x006685A0) / 4 + 257 * v24];
                     if (!t)
                     {
                         std::stringstream v39;
@@ -214,6 +215,7 @@ namespace WXML {
                     v39 << "unexpected `" << v3 << "` at pos" << v28;
                     a3 = v39.str();
                 }
+                v24 = (uint16_t)t;
                 if ((t & 0x30000) != 0)
                 {
                     int v8 = 1;
@@ -229,14 +231,16 @@ namespace WXML {
                     if (v29 <= v27)
                     {
                         WXML::EXPRLib::Token v39;
-                        char* KEYWORDS[] = {};
+                        v39.offset_0 = v8;
+                        const char* KEYWORDS[4] = { "true", "false", "undefined", "null"};
                         if (v8)
                         {
-                            char **v31 = KEYWORDS;
+                            const char **v31 = KEYWORDS;
                             std::string v26 = this->offset_0.substr(v29, v27 + 1);
-                            while (*v31)
+
+                            for (int i = 0; i < 4; i++)
                             {
-                                if (!strcmp(v26.data(), *v31++))
+                                if (!strcmp(v26.data(), v31[i]))
                                 {
                                     v39.offset_0 = 4;
                                     break;
@@ -246,13 +250,14 @@ namespace WXML {
                         }
                         else
                         {
-                            a2.push_back(v39);
+                            v39.offset_4 = this->offset_0.substr(v29, v27 + 1 - v29);
                         }
+                        a2.push_back(v39);
                         v29 = v27 + 1;
                     }
                 }
                 v28 += (t & 0x400000) == 0;
-                if (t &0x800000 != 0)
+                if (((uint)t & 0x800000) != 0)
                     v29 = v28;
             }
             return 0;

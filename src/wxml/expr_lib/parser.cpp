@@ -5,6 +5,19 @@ namespace WXML
     
     namespace EXPRLib
     {
+        int off_55F220()
+        {
+            return 1;
+        }
+        int off_55F20C()
+        {
+            return 3;
+        }
+        int off_55F1E4()
+        {
+            return 2;
+        }
+
         Parser::Parser(/* args */)
         {
         }
@@ -48,9 +61,11 @@ namespace WXML
 
             // WXML::EXPRLib::Parser::Parse - 15
             std::shared_ptr<WXML::EXPRLib::Base> v68(new WXML::EXPRLib::Base());
+            v68->offset_0 = off_55F220;
             v68->offset_4 = "$";
             this->offset_0.push_back(v68);
             std::shared_ptr<WXML::EXPRLib::Base> v70(new WXML::EXPRLib::Base());
+            v70->offset_0 = off_55F1E4;
             if (a7)
             {
                 v70->offset_4 = WXML::EXPRLib::TransitTable::GetAttrListNTType();
@@ -66,14 +81,13 @@ namespace WXML
             {
 
                 auto v72 = *cur;
-                WXML::EXPRLib::Token v84 = v72->offset_8[v49]; // ???
+                WXML::EXPRLib::Token v84 = v74[v49]; // ???
                 int v15 = v72->offset_0();
                 // WXML::EXPRLib::Parser::Parse - 20-1
                 if (v15 == 1)
                 {
-
                     std::string tokenName = v84.GetTokenName();
-                    if (v72->offset_4 != tokenName || v49 >= 5)
+                    if (v72->offset_4 != tokenName || v49 >= v74.size())
                     {
                         a6 = "error at token `";
                         a6 += v84.GetLiteral();

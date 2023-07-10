@@ -5,9 +5,6 @@ namespace WXML
 {
     namespace DOMLib 
     {
-        
-        const char *szWXIFControlAttrs[4] = { "wx-if", "wx:if", "wx:elif", "wx:else" }; // weak
-
         Parser::Parser(/* args */)
         {
             this->offset_104.offset_24 = 4;

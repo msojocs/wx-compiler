@@ -386,11 +386,10 @@ namespace WXML {
                 if (forItems == cur->offset_48.end() && cur->offset_0 != "block")
                 {
                     const char **v38 = WXML::DOMLib::szWXIFControlAttrs;
-                    while (*v38)
+                    for (size_t j = 0; j < 4; j++)
                     {
-                        std::string v101 = *v38;
+                        std::string v101 = v38[j];
                         auto v9 = cur->offset_48.find(v101);
-                        ++v38;
                         if (v9 != cur->offset_48.end())
                         {
                             std::shared_ptr<WXML::DOMLib::WXMLDom> v98(new WXML::DOMLib::WXMLDom());
@@ -651,17 +650,14 @@ namespace WXML {
                 {
                     goto LABEL_56;
                 }
-                while (true)
+                for (size_t i = 0; i < 4; i++)
                 {
-                    if (!*v98)
-                        break;
-                    auto v97 = cur->offset_48.find(*v98);
+                    auto v97 = cur->offset_48.find(v98[i]);
                     if (v97 != cur->offset_48.end())
                     {
-                        v153 = *v98;
+                        v153 = v98[i];
                         break;
                     }
-                    ++v98;
                 }
                 if(cur->offset_48[v153].offset_56 == -3)
                 {

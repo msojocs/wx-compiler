@@ -547,9 +547,9 @@ namespace WXML
         private:
             /* data */
         public:
-            int offset_0;
+            int offset_0 = 0;
             std::string offset_4;
-            std::string offset_12;
+            std::string offset_16;
             Token(/* args */);
             ~Token();
             std::string GetLiteral(void);

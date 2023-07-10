@@ -48,9 +48,9 @@ namespace WXML
                 if (this->offset_0 != 5)
                 {
                     result = "";
-                    if (this->offset_12.size())
+                    if (this->offset_16.size())
                     {
-                        return this->offset_12;
+                        return this->offset_16;
                     }
                 }
             }
