@@ -9,6 +9,7 @@
 #include <cstring>
 #include <memory>
 #include <deque>
+#include <mutex>
 
 namespace WXML
 {
@@ -521,20 +522,12 @@ namespace WXML
     namespace EXPRLib
     {
         void OutputAsStringOrKeyWord(std::stringstream &,std::string const&,std::string const&, bool &);
-
-
-        class TransitTable
-        {
-        private:
-            /* data */
-        public:
-            TransitTable(/* args */);
-            ~TransitTable();
-            static int GetExprNTType(void);
-            static int GetAttrListNTType(void);
-            static void Init(void);
-        };
-
+        
+        int off_55F220();
+        int off_55F20C();
+        int off_55F1E4();
+        int off_55F1F8();
+        
         class Token
         {
             /**
@@ -563,14 +556,59 @@ namespace WXML
             /* data */
         public:
             Offset0Type *offset_0;
-            std::string offset_4;
-            std::vector<WXML::EXPRLib::Token> offset_8;
-            // int offset_12 = 0;
-            WXML::EXPRLib::Token offset_28;
-            int offset_32 = 0;
+            int offset_4_int;
+            std::string offset_4_str; // std::string或int
+            /*
+            offset_0  值  offset_4    总大小
+            ----------------------------
+            0x55f20c: 3   std::string 88字节
+            0x55f220: 1   std::string
+            0x55f1e4: 2   int         32字节
+            0x55f1f8:     empty
+            */
+            
+            WXML::EXPRLib::Token offset_28; // ?
+            int offset_32 = 0; // 0x55f20c
+            std::string offset_36; // 0x55f20c 例子：a=pop;c=[];c.append()
             Base(/* args */);
             ~Base();
         };
+
+        class BNF
+        {
+            
+        private:
+            /* data */
+            // 大小：12字节
+        public:
+            std::vector<std::shared_ptr<WXML::EXPRLib::Base>> offset_0;
+            Offset0Type *offset_8;
+            BNF(/* args */);
+            ~BNF();
+        };
+        
+        
+        class TransitTable
+        {
+        private:
+            /* data */
+            static std::mutex m;
+            static WXML::EXPRLib::TransitTable* instance;
+            void Init_55F1E4(int root, std::string & key, std::vector<int>& offset4List);
+            void Init_55F1E4_6(int root, std::string & key);
+            void Init_55F1F8(int root, std::string & key);
+            void Init_55F220_0(int root, std::string & key, std::string & offset_4);
+        public:
+            std::map<int,std::map<std::string,std::vector<WXML::EXPRLib::BNF>>> ret;
+            bool offset_24;
+            TransitTable(/* args */);
+            ~TransitTable();
+            static TransitTable* GetInstance();
+            static int GetExprNTType(void);
+            static int GetAttrListNTType(void);
+            void Init(void);
+        };
+
         
         class ExprSyntaxTree 
         {

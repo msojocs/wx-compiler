@@ -17,6 +17,11 @@ namespace WXML
         {
             return 2;
         }
+        int off_55F1F8()
+        {
+            return 4;
+        }
+
 
         Parser::Parser(/* args */)
         {
@@ -36,7 +41,8 @@ namespace WXML
             // WXML::EXPRLib::Parser::Parse - 0
             this->offset_0.clear();
             this->offset_40.clear();
-            
+            auto ttInstance = WXML::EXPRLib::TransitTable::GetInstance();
+            ttInstance->Init();
             WXML::EXPRLib::Tokenizer v77(&a2[0], a3, a4, a5);
             std::vector<WXML::EXPRLib::Token> v74;
             int ret = v77.GetTokens(v74, a6);
@@ -62,24 +68,23 @@ namespace WXML
             // WXML::EXPRLib::Parser::Parse - 15
             std::shared_ptr<WXML::EXPRLib::Base> v68(new WXML::EXPRLib::Base());
             v68->offset_0 = off_55F220;
-            v68->offset_4 = "$";
+            v68->offset_4_str = "$";
             this->offset_0.push_back(v68);
             std::shared_ptr<WXML::EXPRLib::Base> v70(new WXML::EXPRLib::Base());
             v70->offset_0 = off_55F1E4;
             if (a7)
             {
-                v70->offset_4 = WXML::EXPRLib::TransitTable::GetAttrListNTType();
+                v70->offset_4_int = WXML::EXPRLib::TransitTable::GetAttrListNTType();
             }
             else
             {
-                v70->offset_4 = WXML::EXPRLib::TransitTable::GetExprNTType();
+                v70->offset_4_int = WXML::EXPRLib::TransitTable::GetExprNTType();
             }
             this->offset_0.push_back(v70);
             // WXML::EXPRLib::Parser::Parse - 20
             int v49 = 0;
             for(auto cur = this->offset_0.rbegin(); cur != this->offset_0.rend(); cur++)
             {
-
                 auto v72 = *cur;
                 WXML::EXPRLib::Token v84 = v74[v49]; // ???
                 int v15 = v72->offset_0();
@@ -87,7 +92,7 @@ namespace WXML
                 if (v15 == 1)
                 {
                     std::string tokenName = v84.GetTokenName();
-                    if (v72->offset_4 != tokenName || v49 >= v74.size())
+                    if (v72->offset_4_str != tokenName || v49 >= v74.size())
                     {
                         a6 = "error at token `";
                         a6 += v84.GetLiteral();
@@ -142,7 +147,7 @@ namespace WXML
                         {
                             std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree> v22(new WXML::EXPRLib::ExprSyntaxTree());
                             std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree> v78;
-                            v78->offset_0.assign(v72->offset_4);
+                            v78->offset_0.assign(v72->offset_4_str);
                             for (size_t i = 0; i < v72->offset_32; i++)
                             {
                                 if (this->offset_40.begin() == this->offset_40.end())
@@ -179,7 +184,37 @@ namespace WXML
                     // WXML::EXPRLib::Parser::Parse - 20-3
                     if ( v15 == 2)
                     {
-
+                        auto bnfMap = ttInstance->ret[v72->offset_4_int];
+                        std::string v78 = v84.GetTokenName();
+                        bool isNoBnfList = false;
+                        if (bnfMap.find(v78) == bnfMap.end())
+                        {
+                            isNoBnfList = true;
+                        }
+                        else
+                        {
+                            std::string v80 = v84.GetTokenName();
+                            std::vector<WXML::EXPRLib::BNF> v32 = bnfMap[v80];
+                            isNoBnfList = v32.size() == 0;
+                        }
+                        if (isNoBnfList)
+                        {
+                            a6 = "unexpected token `";
+                            a6 += v84.GetLiteral();
+                            a6 += "`";
+                            return -1;
+                        }
+                        this->offset_0.pop_back();
+                        std::string v80 = v84.GetTokenName();
+                        std::vector<WXML::EXPRLib::BNF> v53 = bnfMap[v80];
+                        for (int i = v53.size() - 1; i >= 0; i--)
+                        {
+                            auto cur = v53[i];
+                            if( v53[i].offset_8() == 4)
+                                break;
+                            this->offset_0.push_back(v53[i].offset_0[0]);
+                        }
+                        
                     }
 
                 }

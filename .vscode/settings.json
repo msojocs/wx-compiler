@@ -48,7 +48,13 @@
         "map": "cpp",
         "set": "cpp",
         "ctime": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "ratio": "cpp",
+        "mutex": "cpp",
+        "thread": "cpp",
+        "variant": "cpp"
     },
     "cmake.debugConfig": {
         "cwd": "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram",
@@ -56,5 +62,8 @@
             "\"--config-path\"",
             "\"/mnt/d/Work/disassembly/wcc-exec/wcc/cmd1.txt\""
         ]
+    },
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "/root/vcpkg/scripts/buildsystems/vcpkg.cmake"
     }
 }
