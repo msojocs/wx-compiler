@@ -51,8 +51,8 @@ namespace WXML
                 // RenderAsOps - 5
                 if (
                     this->offset_0[0] == 'O'
-                    && this->offset_0[0] == 'P'
-                    && this->offset_0[0] == '_'
+                    && this->offset_0[1] == 'P'
+                    && this->offset_0[2] == '_'
                     )
                 {
                     if (this->offset_0 == "OP_PATH")

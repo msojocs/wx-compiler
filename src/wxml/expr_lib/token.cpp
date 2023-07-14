@@ -12,9 +12,9 @@ namespace WXML
         Token::~Token()
         {
         }
-        const char * Token::GetTokenName()
+        std::string Token::GetTokenName()
         {
-            const char *result;
+            std::string result = "$";
             switch ( this->offset_0 )
             {
                 case 0u:
@@ -48,9 +48,9 @@ namespace WXML
                 if (this->offset_0 != 5)
                 {
                     result = "";
-                    if (this->offset_16.size())
+                    if (this->offset_12.size())
                     {
-                        return this->offset_16;
+                        return this->offset_12;
                     }
                 }
             }

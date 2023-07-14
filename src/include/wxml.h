@@ -533,20 +533,22 @@ namespace WXML
             /**
              * 内存结构：
              * 00 00 00 00 标识type
-             * 00 00 00 00... 当标识为0时后面为需要的动态字符串tokenName
+             * 00 00 00 00... 当标识为0时后面为需要的动态字符串tokenName(char *)
              * /////
              * 03 00 00 00 00 00 00 00  00 00 00 00 70 87 E8 00(std::string地址)
+             * 00 00 00 00(回调地址)
             */
         private:
             /* data */
         public:
             int offset_0 = 0;
-            std::string offset_4;
-            std::string offset_16;
+            std::string offset_4 = "";
+            std::string offset_12;
+            // offset_16;
             Token(/* args */);
             ~Token();
             std::string GetLiteral(void);
-            const char * GetTokenName();
+            std::string GetTokenName();
         };
         
         using Offset0Type = int();
@@ -595,9 +597,9 @@ namespace WXML
             static std::mutex m;
             static WXML::EXPRLib::TransitTable* instance;
             void Init_55F1E4(int root, std::string & key, std::vector<int>& offset4List);
-            void Init_55F1E4_6(int root, std::string & key);
             void Init_55F1F8(int root, std::string & key);
             void Init_55F220_0(int root, std::string & key, std::string & offset_4);
+            void Init_55F20C(int root, std::string & key, std::string & offset_4, int offset_32, std::string &offset_36);
         public:
             std::map<int,std::map<std::string,std::vector<WXML::EXPRLib::BNF>>> ret;
             bool offset_24;

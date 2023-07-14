@@ -236,8 +236,9 @@ namespace WXML {
                         if (v8)
                         {
                             const char **v31 = KEYWORDS;
-                            std::string v26 = this->offset_0.substr(v29, v27 + 1);
+                            std::string v26 = this->offset_0.substr(v29, v27 + 1 - v29);
 
+                            v39.offset_12 = v26;
                             for (int i = 0; i < 4; i++)
                             {
                                 if (!strcmp(v26.data(), v31[i]))

@@ -2969,6 +2969,7 @@ void __fastcall WXML::EXPRLib::TransitTable::Init(int a1)
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(&v1980, v136);
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(v1978, v1510);
     std::vector<zcc::shared_ptr<WXML::EXPRLib::Base>>::~vector(&v1982);
+    ////////////////// root - 4 ////////////////////
     v137 = std::_Rb_tree_header::_Rb_tree_header(v1511);
     v1979 = 4;
     std::map<int,std::map<std::string,std::vector<WXML::EXPRLib::BNF>>>::operator[](v137);
@@ -3266,6 +3267,7 @@ void __fastcall WXML::EXPRLib::TransitTable::Init(int a1)
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(&v1980, v178);
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(v1978, v1521);
     std::vector<zcc::shared_ptr<WXML::EXPRLib::Base>>::~vector(&v1982);
+    ////////////////// root - 5 ////////////////////
     v179 = std::_Rb_tree_header::_Rb_tree_header(v1522);
     v1979 = 5;
     std::map<int,std::map<std::string,std::vector<WXML::EXPRLib::BNF>>>::operator[](v179);
@@ -3563,6 +3565,7 @@ void __fastcall WXML::EXPRLib::TransitTable::Init(int a1)
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(&v1980, v220);
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(v1978, v1532);
     std::vector<zcc::shared_ptr<WXML::EXPRLib::Base>>::~vector(&v1982);
+    ////////////////// root - 6 ////////////////////
     v221 = std::_Rb_tree_header::_Rb_tree_header(v1533);
     v1979 = 6;
     std::map<int,std::map<std::string,std::vector<WXML::EXPRLib::BNF>>>::operator[](v221);
@@ -3860,6 +3863,7 @@ void __fastcall WXML::EXPRLib::TransitTable::Init(int a1)
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(&v1980, v262);
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(v1978, v1543);
     std::vector<zcc::shared_ptr<WXML::EXPRLib::Base>>::~vector(&v1982);
+    ////////////////// root - 7 ////////////////////
     v263 = std::_Rb_tree_header::_Rb_tree_header(v1544);
     v1979 = 7;
     std::map<int,std::map<std::string,std::vector<WXML::EXPRLib::BNF>>>::operator[](v263);
@@ -4157,6 +4161,7 @@ void __fastcall WXML::EXPRLib::TransitTable::Init(int a1)
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(&v1980, v304);
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(v1978, v1554);
     std::vector<zcc::shared_ptr<WXML::EXPRLib::Base>>::~vector(&v1982);
+    ////////////////// root - 8 ////////////////////
     v305 = std::_Rb_tree_header::_Rb_tree_header(v1555);
     v1979 = 8;
     std::map<int,std::map<std::string,std::vector<WXML::EXPRLib::BNF>>>::operator[](v305);
@@ -4325,7 +4330,6 @@ void __fastcall WXML::EXPRLib::TransitTable::Init(int a1)
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(v1974, v1560);
     std::vector<zcc::shared_ptr<WXML::EXPRLib::Base>>::~vector(&v1979);
     
-    //////////////////////to be continue////////////
     v1979 = 0;
     v1980 = 0;
     v1981 = 0;

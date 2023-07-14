@@ -83,9 +83,11 @@ namespace WXML
             this->offset_0.push_back(v70);
             // WXML::EXPRLib::Parser::Parse - 20
             int v49 = 0;
-            for(auto cur = this->offset_0.rbegin(); cur != this->offset_0.rend(); cur++)
+            while (true)
             {
-                auto v72 = *cur;
+                if (this->offset_0.begin() == this->offset_0.end())
+                    break;
+                auto v72 = *this->offset_0.rbegin();
                 WXML::EXPRLib::Token v84 = v74[v49]; // ???
                 int v15 = v72->offset_0();
                 // WXML::EXPRLib::Parser::Parse - 20-1
@@ -145,8 +147,7 @@ namespace WXML
                         ///////////////////////
                         else
                         {
-                            std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree> v22(new WXML::EXPRLib::ExprSyntaxTree());
-                            std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree> v78;
+                            std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree> v78(new WXML::EXPRLib::ExprSyntaxTree());
                             v78->offset_0.assign(v72->offset_4_str);
                             for (size_t i = 0; i < v72->offset_32; i++)
                             {
@@ -207,12 +208,13 @@ namespace WXML
                         this->offset_0.pop_back();
                         std::string v80 = v84.GetTokenName();
                         std::vector<WXML::EXPRLib::BNF> v53 = bnfMap[v80];
-                        for (int i = v53.size() - 1; i >= 0; i--)
+                        std::vector<std::shared_ptr<WXML::EXPRLib::Base>> baseList = v53[0].offset_0;
+                        for (int i = baseList.size() - 1; i >= 0; i--)
                         {
-                            auto cur = v53[i];
-                            if( v53[i].offset_8() == 4)
+                            std::shared_ptr<WXML::EXPRLib::Base> cur1 = baseList[i];
+                            if( cur1->offset_0() == 4)
                                 break;
-                            this->offset_0.push_back(v53[i].offset_0[0]);
+                            this->offset_0.push_back(cur1);
                         }
                         
                     }

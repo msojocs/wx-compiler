@@ -33,26 +33,20 @@ namespace WXML
             return 12;
         }
 
-        void TransitTable::Init_55F1E4_6(int root, std::string & key)
-        {
-            std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-            std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-            std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-            std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-            base_1->offset_0 = off_55F1E4;
-            base_1->offset_4_int = 6;
-            exclamationBaseList.push_back(base_1);
-            WXML::EXPRLib::BNF exclamationBNF;
-            exclamationBNF.offset_0 = exclamationBaseList;
-            exclamationVector.push_back(exclamationBNF);
-            map1[key] = exclamationVector;
-            this->ret[root] = map1;
-        }
         void TransitTable::Init_55F1E4(int root, std::string & key, std::vector<int>& offset4List)
         {
             std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
             std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-            std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
+            WXML::EXPRLib::BNF bnf;
+            if (exclamationVector.size() == 0)
+            {
+                exclamationVector.push_back(bnf);
+            }
+            else
+            {
+                bnf = exclamationVector[0];
+            }
+            std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList = bnf.offset_0;
 
             for (auto &&i : offset4List)
             {
@@ -61,10 +55,8 @@ namespace WXML
                 base_1->offset_4_int = i;
                 exclamationBaseList.push_back(base_1);
             }
-            
-            WXML::EXPRLib::BNF exclamationBNF;
-            exclamationBNF.offset_0 = exclamationBaseList;
-            exclamationVector.push_back(exclamationBNF);
+            bnf.offset_0 = exclamationBaseList;
+            exclamationVector[0] = bnf;
             map1[key] = exclamationVector;
             this->ret[root] = map1;
         }
@@ -72,13 +64,21 @@ namespace WXML
         {
             std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
             std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-            std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
+            WXML::EXPRLib::BNF bnf;
+            if (exclamationVector.size() == 0)
+            {
+                exclamationVector.push_back(bnf);
+            }
+            else
+            {
+                bnf = exclamationVector[0];
+            }
+            std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList = bnf.offset_0;
             std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
             base_1->offset_0 = off_55F1F8;
             exclamationBaseList.push_back(base_1);
-            WXML::EXPRLib::BNF exclamationBNF;
-            exclamationBNF.offset_0 = exclamationBaseList;
-            exclamationVector.push_back(exclamationBNF);
+            bnf.offset_0 = exclamationBaseList;
+            exclamationVector[0] = bnf;
             map1[key] = exclamationVector;
             this->ret[root] = map1;
         }
@@ -86,15 +86,48 @@ namespace WXML
         {
             std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
             std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-            std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
+            WXML::EXPRLib::BNF bnf;
+            if (exclamationVector.size() == 0)
+            {
+                exclamationVector.push_back(bnf);
+            }
+            else
+            {
+                bnf = exclamationVector[0];
+            }
+            std::vector<std::shared_ptr<WXML::EXPRLib::Base>> baseList = bnf.offset_0;
             std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
             base_1->offset_0 = off_55F220;
             base_1->offset_4_str = offset_4;
             base_1->offset_32 = 0;
+            baseList.push_back(base_1);
+            bnf.offset_0 = baseList;
+            exclamationVector[0] = bnf;
+            map1[key] = exclamationVector;
+            this->ret[root] = map1;
+        }
+        void TransitTable::Init_55F20C(int root, std::string & key, std::string & offset_4, int offset_32, std::string &offset_36)
+        {
+            std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
+            std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
+            WXML::EXPRLib::BNF bnf;
+            if (exclamationVector.size() == 0)
+            {
+                exclamationVector.push_back(bnf);
+            }
+            else
+            {
+                bnf = exclamationVector[0];
+            }
+            std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList = bnf.offset_0;
+            std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
+            base_1->offset_0 = off_55F20C;
+            base_1->offset_4_str = offset_4;
+            base_1->offset_32 = offset_32;
+            base_1->offset_36 = offset_36;
             exclamationBaseList.push_back(base_1);
-            WXML::EXPRLib::BNF exclamationBNF;
-            exclamationBNF.offset_0 = exclamationBaseList;
-            exclamationVector.push_back(exclamationBNF);
+            bnf.offset_0 = exclamationBaseList;
+            exclamationVector[0] = bnf;
             map1[key] = exclamationVector;
             this->ret[root] = map1;
         }
@@ -106,6 +139,7 @@ namespace WXML
                 this->offset_24 = true;
                 std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[1];
 
+                int root;
                 std::vector<std::string> keyList;
                 std::vector<int> t;
                 keyList.push_back("!");
@@ -157,7 +191,8 @@ namespace WXML
                     t.push_back(15);
                     Init_55F1E4(7, i, t);
                 }
-
+                /////////////////// root - 8 ///////////////////
+                root = 8;
                 keyList.clear();
                 keyList.push_back("$");
                 keyList.push_back(")");
@@ -169,26 +204,18 @@ namespace WXML
                     Init_55F1F8(8, i);
                 }
                 std::string target = "&&";
-                std::string offset_4 = ":";
+                std::string offset_4;
                 Init_55F220_0(8, target, target);
-                Init_55F1E4_6(8, target);
-                {
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[8];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1["&&"];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "&&";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b&&a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1["&&"] = exclamationVector;
-                    this->ret[8] = map1;
-                }
 
+                t.clear();
+                t.push_back(6);
+                Init_55F1E4(8, target, t);
+                {
+                    std::string key = "&&";
+                    std::string offset_36 = "a=pop();b=pop();c=b&&a;push(c)";
+                    Init_55F20C(root, key, key, 2, offset_36);
+                }
+                t.clear();
                 t.push_back(8);
                 Init_55F1E4(8, target, t);
                 
@@ -203,6 +230,7 @@ namespace WXML
                 }
 
                 ///////////////////////// root - 9 ////////////////
+                root = 9;
                 keyList.clear();
                 keyList.push_back("$");
                 keyList.push_back(")");
@@ -222,7 +250,7 @@ namespace WXML
                 t.push_back(4);
                 t.push_back(9);
                 Init_55F1E4(9, target, t);
-
+                offset_4 = ":";
                 Init_55F220_0(9, target, offset_4);
                 t.clear();
                 t.push_back(4);
@@ -230,77 +258,47 @@ namespace WXML
                 Init_55F1E4(9, target, t);
 
                 {
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[9];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1["?:"];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "?:";
-                    base_1->offset_32 = 3;
-                    base_1->offset_36 = "a=pop();b=pop();c=pop();c?b:a";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1["&&"] = exclamationVector;
-                    this->ret[9] = map1;
+                    std::string key = "?";
+                    std::string offset_4 = "?:";
+                    std::string offset_36 = "a=pop();b=pop();c=pop();c?b:a";
+                    Init_55F20C(root, key, offset_4, 3, offset_36);
+
                 }
                 //////////////////// root - 10 ///////////////////
-
+                root = 10;
                 target = "[";
-                Init_55F220_0(10, target, target);
+                Init_55F220_0(root, target, target);
                 t.clear();
                 t.push_back(30);
-                Init_55F1E4(10, target, t);
+                Init_55F1E4(root, target, t);
                 offset_4 = "]";
-                Init_55F220_0(10, target, offset_4);
+                Init_55F220_0(root, target, offset_4);
                 {
-                    int root = 10;
-                    std::string key = "$VAR";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_LIST";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop;c=make_list(a);push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string key = "[";
+                    std::string offset_4 = "OP_LIST";
+                    std::string offset_36 = "a=pop;c=make_list(a);push(c)";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
+
                 }
                 t.clear();
                 t.push_back(17);
-                Init_55F1E4(10, target, t);
+                Init_55F1E4(root, target, t);
                 target = "$VAR";
-                Init_55F220_0(10, target, target);
+                Init_55F220_0(root, target, target);
 
                 {
-                    int root = 10;
                     std::string key = "$VAR";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_PATH";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop;c=[];c.append()";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "OP_PATH";
+                    std::string offset_36 = "a=pop;c=[];c.append()";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
+
                 }
                 t.clear();
                 t.push_back(17);
-                Init_55F1E4(10, target, t);
+                Init_55F1E4(root, target, t);
 
                 ////////////////////// root - 11 ////////////////////
+                root = 11;
                 target = ">=";
                 Init_55F1F8(11, target);
                 target = ">>";
@@ -310,22 +308,11 @@ namespace WXML
                 Init_55F1E4(11, target, t);
 
                 {
-                    int root = 11;
                     std::string key = ">>";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = ">>";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b>>a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = ">>";
+                    std::string offset_36 = "a=pop();b=pop();c=b>>a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+
                 }
                 t.clear();
                 t.push_back(11);
@@ -337,22 +324,11 @@ namespace WXML
                 t.push_back(22);
                 Init_55F1E4(11, target, t);
                 {
-                    int root = 11;
                     std::string key = "<<";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "<<";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b<<a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "<<";
+                    std::string offset_36 = "a=pop();b=pop();c=b<<a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+
                 }
                 t.clear();
                 t.push_back(11);
@@ -384,7 +360,7 @@ namespace WXML
                     Init_55F1F8(11, i);
                 }
                 ///////////////// root - 12 ///////////////
-                int root = 12;
+                root = 12;
                 target = "...";
                 Init_55F220_0(root, target, target);
                 t.clear();
@@ -392,22 +368,11 @@ namespace WXML
                 Init_55F1E4(root, target, t);
                 
                 {
-                    int root = 12;
                     std::string key = "...";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_EXPAND";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c=expand(a);push(c);";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "OP_EXPAND";
+                    std::string offset_36 = "a=pop();c=expand(a);push(c);";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(27);
@@ -418,35 +383,7 @@ namespace WXML
                 t.push_back(28);
                 t.push_back(27);
                 Init_55F1E4(root, target, t);
-                target = "...";
-                Init_55F220_0(root, target, target);
-                t.clear();
-                t.push_back(14);
-                Init_55F1E4(root, target, t);
-                {
-                    int root = 12;
-                    std::string key = "...";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_EXPAND";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c=expand(a);push(c);";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
-                }
-                target = "$VAR";
-                Init_55F220_0(root, target, target);
-                t.clear();
-                t.push_back(28);
-                t.push_back(27);
-                Init_55F1E4(root, target, t);
+
                 ////////////////// root - 13 //////////////////////
                 root = 13; // 0xd
                 target = "...";
@@ -455,22 +392,11 @@ namespace WXML
                 t.push_back(14);
                 Init_55F1E4(root, target, t);
                 {
-                    int root = 12;
                     std::string key = "...";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_EXPAND";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c=expand(a);push(c);";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "OP_EXPAND";
+                    std::string offset_36 = "a=pop();c=expand(a);push(c);";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
+                    
                 }
                 target = "$VAR";
                 Init_55F220_0(root, target, target);
@@ -507,22 +433,11 @@ namespace WXML
                 t.push_back(2);
                 Init_55F1E4(root, target, t);
                 {
-                    
                     std::string key = "===";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "===";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b===a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "===";
+                    std::string offset_36 = "a=pop();b=pop();c=b===a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(15);
@@ -534,22 +449,11 @@ namespace WXML
                 t.push_back(2);
                 Init_55F1E4(root, target, t);
                 {
-                    
                     std::string key = "!==";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "!==";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b!==a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "!==";
+                    std::string offset_36 = "a=pop();b=pop();c=b!==a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(15);
@@ -569,22 +473,11 @@ namespace WXML
                 t.push_back(2);
                 Init_55F1E4(root, target, t);
                 {
-                    
                     std::string key = "==";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "==";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b==a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "==";
+                    std::string offset_36 = "a=pop();b=pop();c=b==a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(15);
@@ -608,22 +501,11 @@ namespace WXML
                 t.push_back(2);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = "!=";
+                    std::string offset_4 = "!=";
+                    std::string offset_36 = "a=pop();b=pop();c=b!=a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "!=";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b!=a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(15);
@@ -659,22 +541,11 @@ namespace WXML
                 t.push_back(25);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = "^";
+                    std::string offset_4 = "^";
+                    std::string offset_36 = "a=pop();b=pop();c=b^a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "^";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b^a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(16);
@@ -697,6 +568,22 @@ namespace WXML
                 }
                 target = "(";
                 Init_55F220_0(root, target, target);
+                t.clear();
+                t.push_back(30);
+                Init_55F1E4(root, target, t);
+                offset_4 = ")";
+                Init_55F220_0(root, target, offset_4);
+                {
+                    std::string key = target;
+                    std::string offset_4 = "OP_FUNC";
+                    std::string offset_36 = "a=pop;b=pop;c=b[a]";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
+                }
+                t.clear();
+                t.push_back(17);
+                Init_55F1E4(root, target, t);
+
                 keyList.clear();
                 keyList.push_back("+");
                 keyList.push_back("*");
@@ -709,6 +596,19 @@ namespace WXML
                 }
                 target = ".";
                 Init_55F220_0(root, target, target);
+                offset_4 = "$VAR";
+                Init_55F220_0(root, target, offset_4);
+                {
+                    std::string key = target;
+                    std::string offset_4 = "OP_DICT";
+                    std::string offset_36 = "a=pop;c=top;c.append(a)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
+                }
+                t.clear();
+                t.push_back(17);
+                Init_55F1E4(root, target, t);
+
                 keyList.clear();
                 keyList.push_back(":");
                 keyList.push_back("<<");
@@ -730,27 +630,21 @@ namespace WXML
                 keyList.clear();
                 keyList.push_back("]");
                 keyList.push_back("^");
+                keyList.push_back("===");
+                keyList.push_back("!==");
+                keyList.push_back("<");
+                keyList.push_back("}");
+                keyList.push_back("|");
                 for (auto &&i : keyList)
                 {
                     Init_55F1F8(root, i);
                 }
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_DICT";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop;b=pop;c=b[a]";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "OP_DICT";
+                    std::string offset_36 = "a=pop;b=pop;c=b[a]";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(17);
@@ -771,22 +665,11 @@ namespace WXML
                 t.push_back(3);
                 Init_55F1E4(root, target, t);
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "||";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b||a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "||";
+                    std::string offset_36 = "a=pop();b=pop();c=b||a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(18);
@@ -811,9 +694,12 @@ namespace WXML
                 {
                     Init_55F220_0(root, i, i);
                 }
+                target = "(";
                 t.clear();
                 t.push_back(14);
                 Init_55F1E4(root, target, t);
+                offset_4 = ")";
+                Init_55F220_0(root, target, offset_4);
                 
                 target = "$KEYWORD";
                 Init_55F220_0(root, target, target);
@@ -849,22 +735,11 @@ namespace WXML
                 t.push_back(1);
                 Init_55F1E4(root, target, t);
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = ">=";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b>=a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = ">=";
+                    std::string offset_36 = "a=pop();b=pop();c=b>=a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(20);
@@ -885,22 +760,11 @@ namespace WXML
                 t.push_back(1);
                 Init_55F1E4(root, target, t);
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "<=";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b<=a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "<=";
+                    std::string offset_36 = "a=pop();b=pop();c=b<=a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(20);
@@ -924,22 +788,11 @@ namespace WXML
                 t.push_back(1);
                 Init_55F1E4(root, target, t);
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "<";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b<a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "<";
+                    std::string offset_36 = "a=pop();b=pop();c=b<a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(20);
@@ -958,22 +811,11 @@ namespace WXML
                 t.push_back(1);
                 Init_55F1E4(root, target, t);
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = ">";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b>a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = ">";
+                    std::string offset_36 = "a=pop();b=pop();c=b>a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(20);
@@ -1041,6 +883,17 @@ namespace WXML
                     t.push_back(19);
                     Init_55F1E4(root, i, t);
                 }
+                target = "-";
+                t.clear();
+                t.push_back(23);
+                Init_55F1E4(root, target, t);
+                {
+                    std::string key = target;
+                    std::string offset_4 = "-";
+                    std::string offset_36 = "a=pop();c=-a;push(c)";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
+                    
+                }
                 ////////////////// root - 24 //////////////////////
                 root = 24; //0x18
                 target = "!";
@@ -1050,22 +903,11 @@ namespace WXML
                 Init_55F1E4(root, target, t);
 
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "!";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c=!a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "!";
+                    std::string offset_36 = "a=pop();c=!a;push(c)";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
+                    
                 }
                 keyList.clear();
                 keyList.push_back("$DECIMAL");
@@ -1090,22 +932,11 @@ namespace WXML
                 Init_55F1E4(root, target, t);
 
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "~";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c=~a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "~";
+                    std::string offset_36 = "a=pop();c=~a;push(c)";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
+                    
                 }
                 ////////////////// root - 25 //////////////////////
                 root = 25; //0x19
@@ -1146,22 +977,11 @@ namespace WXML
                 t.push_back(24);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "%";
+                    std::string offset_36 = "a=pop();b=pop();c=b%a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = "%";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "%";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b%a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(26);
@@ -1183,22 +1003,11 @@ namespace WXML
                 t.push_back(24);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "*";
+                    std::string offset_36 = "a=pop();b=pop();c=b*a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = "*";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "*";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b*a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(26);
@@ -1218,22 +1027,11 @@ namespace WXML
                 t.push_back(24);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "/";
+                    std::string offset_36 = "a=pop();b=pop();c=b/a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = "/";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "/";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b/a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(26);
@@ -1272,22 +1070,11 @@ namespace WXML
                 t.push_back(13);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "OP_DICT_CONCAT";
+                    std::string offset_36 = "a=pop();b=top();c=b.a;";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = ",";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_DICT_CONCAT";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=top();c=b.a;";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(27);
@@ -1307,85 +1094,41 @@ namespace WXML
                 t.push_back(14);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "OP_MAKE_DICT";
+                    std::string offset_36 = "a=pop(),key=pop(),c={key:a};push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = ":";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_MAKE_DICT";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop(),key=pop(),c={key:a};push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 
                 target = "}";
                 Init_55F1F8(root, target);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "OP_MAKE_DICT";
+                    std::string offset_36 = "a=pop();c={a:a}";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
                     
-                    std::string key = "}";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_MAKE_DICT";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c={a:a}";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
 
                 target = ",";
                 Init_55F1F8(root, target);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "OP_MAKE_DICT";
+                    std::string offset_36 = "a=pop();c={a:a}";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
                     
-                    std::string key = ",";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_MAKE_DICT";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c={a:a}";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
 
                 target = "$";
                 Init_55F1F8(root, target);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "OP_MAKE_DICT";
+                    std::string offset_36 = "a=pop();c={a:a}";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
                     
-                    std::string key = "$";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_MAKE_DICT";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c={a:a}";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 ////////////////// root - 29 //////////////////////
                 root = 29; //0x1d
@@ -1410,22 +1153,11 @@ namespace WXML
                 t.push_back(21);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "+";
+                    std::string offset_36 = "a=pop();b=pop();c=b+a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = "+";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "+";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b+a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(29);
@@ -1437,22 +1169,11 @@ namespace WXML
                 t.push_back(21);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "-";
+                    std::string offset_36 = "a=pop();b=pop();c=b-a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = "-";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "-";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b-a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(29);
@@ -1486,22 +1207,11 @@ namespace WXML
                 t.push_back(9);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "OP_LIST_CONCAT";
+                    std::string offset_36 = "a=pop();c=make_list(a);push(c)";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
                     
-                    std::string key = "!";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_LIST_CONCAT";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c=make_list(a);push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(31);
@@ -1513,22 +1223,11 @@ namespace WXML
                 t.push_back(9);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "OP_LIST_CONCAT";
+                    std::string offset_36 = "a=pop();c=make_list(a);push(c)";
+                    Init_55F20C(root, key, offset_4, 1, offset_36);
                     
-                    std::string key = "$DECIMAL";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_LIST_CONCAT";
-                    base_1->offset_32 = 1;
-                    base_1->offset_36 = "a=pop();c=make_list(a);push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(31);
@@ -1537,22 +1236,11 @@ namespace WXML
                 target = "$";
                 Init_55F1F8(root, target);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "OP_LIST_CONCAT";
+                    std::string offset_36 = "c=make_list;push(c)";
+                    Init_55F20C(root, key, offset_4, 0, offset_36);
                     
-                    std::string key = "$";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_LIST_CONCAT";
-                    base_1->offset_32 = 0;
-                    base_1->offset_36 = "c=make_list;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
                 t.clear();
                 t.push_back(31);
@@ -1571,22 +1259,11 @@ namespace WXML
                     t.push_back(9);
                     Init_55F1E4(root, target, t);
                     {
-                        
                         std::string key = i;
-                        std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                        std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                        std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                        std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                        base_1->offset_0 = off_55F20C;
-                        base_1->offset_4_str = "OP_LIST_CONCAT";
-                        base_1->offset_32 = 1;
-                        base_1->offset_36 = "a=pop();c=make_list(a);push(c)";
-                        exclamationBaseList.push_back(base_1);
-                        WXML::EXPRLib::BNF exclamationBNF;
-                        exclamationBNF.offset_0 = exclamationBaseList;
-                        exclamationVector.push_back(exclamationBNF);
-                        map1[key] = exclamationVector;
-                        this->ret[root] = map1;
+                        std::string offset_4 = "OP_LIST_CONCAT";
+                        std::string offset_36 = "a=pop();c=make_list(a);push(c)";
+                        Init_55F20C(root, key, offset_4, 1, offset_36);
+                        
                     }
                     t.clear();
                     t.push_back(31);
@@ -1596,22 +1273,11 @@ namespace WXML
                 target = ")";
                 Init_55F1F8(root, target);
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_LIST_CONCAT";
-                    base_1->offset_32 = 0;
-                    base_1->offset_36 = "c=make_list;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "OP_LIST_CONCAT";
+                    std::string offset_36 = "c=make_list;push(c)";
+                    Init_55F20C(root, key, offset_4, 0, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(31);
@@ -1630,22 +1296,11 @@ namespace WXML
                     t.push_back(9);
                     Init_55F1E4(root, target, t);
                     {
+                        std::string key = target;
+                        std::string offset_4 = "OP_LIST_CONCAT";
+                        std::string offset_36 = "a=pop();c=make_list(a);push(c)";
+                        Init_55F20C(root, key, offset_4, 1, offset_36);
                         
-                        std::string key = i;
-                        std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                        std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                        std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                        std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                        base_1->offset_0 = off_55F20C;
-                        base_1->offset_4_str = "OP_LIST_CONCAT";
-                        base_1->offset_32 = 1;
-                        base_1->offset_36 = "a=pop();c=make_list(a);push(c)";
-                        exclamationBaseList.push_back(base_1);
-                        WXML::EXPRLib::BNF exclamationBNF;
-                        exclamationBNF.offset_0 = exclamationBaseList;
-                        exclamationVector.push_back(exclamationBNF);
-                        map1[key] = exclamationVector;
-                        this->ret[root] = map1;
                     }
                     t.clear();
                     t.push_back(31);
@@ -1655,22 +1310,11 @@ namespace WXML
                 target = "]";
                 Init_55F1F8(root, target);
                 {
-                    
                     std::string key = target;
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_LIST_CONCAT";
-                    base_1->offset_32 = 0;
-                    base_1->offset_36 = "c=make_list;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string offset_4 = "OP_LIST_CONCAT";
+                    std::string offset_36 = "c=make_list;push(c)";
+                    Init_55F20C(root, key, offset_4, 0, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(31);
@@ -1688,22 +1332,11 @@ namespace WXML
                     t.push_back(9);
                     Init_55F1E4(root, target, t);
                     {
+                        std::string key = target;
+                        std::string offset_4 = "OP_LIST_CONCAT";
+                        std::string offset_36 = "a=pop();c=make_list(a);push(c)";
+                        Init_55F20C(root, key, offset_4, 1, offset_36);
                         
-                        std::string key = i;
-                        std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                        std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                        std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                        std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                        base_1->offset_0 = off_55F20C;
-                        base_1->offset_4_str = "OP_LIST_CONCAT";
-                        base_1->offset_32 = 1;
-                        base_1->offset_36 = "a=pop();c=make_list(a);push(c)";
-                        exclamationBaseList.push_back(base_1);
-                        WXML::EXPRLib::BNF exclamationBNF;
-                        exclamationBNF.offset_0 = exclamationBaseList;
-                        exclamationVector.push_back(exclamationBNF);
-                        map1[key] = exclamationVector;
-                        this->ret[root] = map1;
                     }
                     t.clear();
                     t.push_back(31);
@@ -1726,23 +1359,15 @@ namespace WXML
                 t.push_back(14);
                 Init_55F1E4(root, target, t);
                 {
+                    std::string key = target;
+                    std::string offset_4 = "OP_LIST_CONCAT";
+                    std::string offset_36 = "a=pop();b=pop();c=b.a";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
                     
-                    std::string key = ",";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "OP_LIST_CONCAT";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b.a";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
                 }
+                t.clear();
+                t.push_back(31);
+                Init_55F1E4(root, target, t);
 
                 target = "$";
                 Init_55F1F8(root, target);
@@ -1756,27 +1381,18 @@ namespace WXML
                 t.push_back(7);
                 Init_55F1E4(root, target, t);
                 {
-                    std::string key = "&";
-                    std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[root];
-                    std::vector<WXML::EXPRLib::BNF> exclamationVector = map1[key];
-                    std::vector<std::shared_ptr<WXML::EXPRLib::Base>> exclamationBaseList;
-                    std::shared_ptr<WXML::EXPRLib::Base> base_1(new WXML::EXPRLib::Base());
-                    base_1->offset_0 = off_55F20C;
-                    base_1->offset_4_str = "&";
-                    base_1->offset_32 = 2;
-                    base_1->offset_36 = "a=pop();b=pop();c=b&a;push(c)";
-                    exclamationBaseList.push_back(base_1);
-                    WXML::EXPRLib::BNF exclamationBNF;
-                    exclamationBNF.offset_0 = exclamationBaseList;
-                    exclamationVector.push_back(exclamationBNF);
-                    map1[key] = exclamationVector;
-                    this->ret[root] = map1;
+                    std::string key = target;
+                    std::string offset_4 = "&";
+                    std::string offset_36 = "a=pop();b=pop();c=b&a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
                 }
                 t.clear();
                 t.push_back(32);
                 Init_55F1E4(root, target, t);
                 keyList.clear();
                 keyList.push_back(")");
+                keyList.push_back("}");
                 keyList.push_back("||");
                 keyList.push_back(",");
                 keyList.push_back("&&");
@@ -1800,14 +1416,26 @@ namespace WXML
                 keyList.push_back("&&");
                 keyList.push_back(":");
                 keyList.push_back("}");
-                keyList.push_back("|");
                 keyList.push_back("?");
                 for (auto &&i : keyList)
                 {
                     Init_55F1F8(root, i);
                 }
-
-                printf("pause\n");
+                target = "|";
+                Init_55F220_0(root, target, target);
+                t.clear();
+                t.push_back(5);
+                Init_55F1E4(root, target, t);
+                {
+                    std::string key = target;
+                    std::string offset_4 = "|";
+                    std::string offset_36 = "a=pop();b=pop();c=b|a;push(c)";
+                    Init_55F20C(root, key, offset_4, 2, offset_36);
+                    
+                }
+                t.clear();
+                t.push_back(33);
+                Init_55F1E4(root, target, t);
             }
         }
     }
