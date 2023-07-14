@@ -19,10 +19,12 @@ namespace WXML
             if (a2 == "false")
             {
                 a1 << WXML::EXPRLib::OPShort::CONST << ",false";
+                return;
             }
             if (a2 != "$global")
             {
                 a1 << WXML::EXPRLib::OPShort::NAME << ",'" << a2 << "'";
+                return;
             }
             a1 << WXML::EXPRLib::OPShort::CS_GLOBAL;
         }

@@ -150,10 +150,11 @@ namespace WXML {
                             a3 << "undefined";
                             break;
                         }
-                        WXML::EXPRLib::ExprSyntaxTree v70;
-                        v70.offset_0 = v85;
+                        // WXML::EXPRLib::ExprSyntaxTree v70;
+                        // v70.offset_0 = vp.offset_80->offset_0;
+                        // v70.offset_52.push_back();
                         // v70.offset_0 = v77[i].offset_4;
-                        v70.RenderAsOps(a3, v85, v77_b);
+                        vp.offset_80->RenderAsOps(a3, v85, v77_b);
                     }
                     else
                     {

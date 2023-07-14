@@ -109,6 +109,7 @@ namespace WXML
                         
                         std::string v18 = v84.GetTokenName();
                         v80->offset_0 = v18;
+                        v80->offset_24 = v84;
                         this->offset_40.push_back(v80);
                         
                     }
@@ -140,7 +141,6 @@ namespace WXML
                                 return 1002;
                             }
                             auto v21 = this->offset_40.back();
-                            this->offset_40.pop_back();
                             this->offset_40.push_back(v78);
 
                         }

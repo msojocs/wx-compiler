@@ -7,7 +7,7 @@ namespace WXML {
     {
         void ToStringCode(char const* src, int len, std::stringstream &ss)
         {
-            for (size_t i = 0; i < len; i++)
+            for (int i = 0; i < len; i++)
             {
                 char v4 = src[i];
                 if ( v4 == '\''/*39*/ )
