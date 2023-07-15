@@ -92,7 +92,7 @@ namespace WXML
             int offset_24 = 0; // ???
             int offset_40 = 0; // AttrsCompartor用到，怎么来不知道
             // ??? -3, -1
-            int offset_56 = 1;
+            int offset_56 = -1;
             std::string offset_60 = ""; // ???
             Token();
             Token(std::string &);
@@ -236,9 +236,9 @@ namespace WXML
         private:
             /* data */
         public:
-            std::string offset_0;
-            int offset_4;
-            RVMOpCodePosition(std::string);
+            int offset_0 = 0;
+            int offset_4 = 0;
+            RVMOpCodePosition(int);
             RVMOpCodePosition(/* args */);
             ~RVMOpCodePosition();
         };

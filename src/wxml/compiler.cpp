@@ -329,7 +329,8 @@ namespace WXML{
                     i->second->RewriteTree();
                     std::string v328 = "ALL";
                     auto v51 = componentListMap[v328];
-                    auto v282 = i->second;
+                    std::shared_ptr<WXML::DOMLib::WXMLDom> v282 = i->second;
+                    // 标记如果有后代
                     v282->MarkIfHasDescendant(v51);
                     if (isLLA)
                     {

@@ -389,6 +389,7 @@ namespace WXML
                         this->offset_20 = this->lineLength;
                         this->offset_16 = this->lineCount;
                         token.offset_24 = WXML::DOMLib::Machine::STT[v45];
+                        token.offset_56 = -1;
                         if(token.offset_24 == 3)
                         {
                             a5.push_back(token);
@@ -416,6 +417,7 @@ namespace WXML
                     v49.offset_20 = this->fileLength - t4;
                     int stt = WXML::DOMLib::Machine::STT[v45];
                     v49.offset_24 = stt;
+                    v49.offset_56 = -1;
                     if (stt == 3)
                     {
                         a5.push_back(v49);

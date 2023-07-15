@@ -104,7 +104,7 @@ namespace WXML {
                 v52 = 0;
                 if (v77.size() == 1)
                 {
-                    v52 = a8 & v77[0].offset_0 == true;
+                    v52 = a8 & (v77[0].offset_0 == true);
                 }
             }
             a3 << "Z(";
@@ -163,13 +163,15 @@ namespace WXML {
                         WXML::Rewrite::ToStringCode(r, a3);
                         a3 << "']";
                     }
+                    int v68 = a9->offset_0;
                     int v43 = -1;
                     if (v52)
                     {
                         v43 = a9->offset_4;
                     }
                     WXML::DOMLib::RVMOpCodePosition pos;
-                    pos.offset_4 = -1;
+                    pos.offset_0 = a9->offset_0;
+                    pos.offset_4 = v43;
                     v80.push_back({v29, pos});
                 }
                 else
@@ -213,6 +215,7 @@ namespace WXML {
                 a3 << "]";
             if (a5->offset_56 == -1)
                 a5->offset_56 = a9->offset_0;
+            a9->offset_4 = 0;
             a9->offset_0++;
             for (auto i = v80.begin(); i != v80.end(); i++)
             {
@@ -1599,9 +1602,6 @@ namespace WXML {
             }
         }
 
-        /**
-         * TODO
-        */
         bool WXMLDom::IfHasItsElse(
             int a2,
             std::vector<std::string> const& a3
@@ -1623,7 +1623,7 @@ namespace WXML {
             {
                 int v11 = a2 - 1;
                 auto v5 = this->offset_72[a2];
-                if(v5->offset_48.begin() == v5->offset_48.end())
+                if(v5->offset_72.begin() == v5->offset_72.end())
                 {
                     for (int i = a2 + 1; i < this->offset_72.size(); i++)
                     {

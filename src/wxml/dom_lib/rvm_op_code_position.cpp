@@ -2,12 +2,8 @@
 namespace WXML
 {
     namespace DOMLib
-    {    
-        /**
-         * 感觉不太对，可能不是一个类
-        */
-        
-        RVMOpCodePosition::RVMOpCodePosition(std::string a)
+    {
+        RVMOpCodePosition::RVMOpCodePosition(int a)
         {
             this->offset_0 = a;
         }
