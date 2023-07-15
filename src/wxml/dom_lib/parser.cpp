@@ -207,7 +207,6 @@ namespace WXML
             if (v16.length() > 0)
             {
                 int v17 = 0;
-                // TODO v18 = *v16 + v43[4];
                 char* v18 = &v16[0] + token.offset_16;
                 // offset_20第一次是3
                 while(token.offset_20 > v17)

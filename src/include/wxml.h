@@ -261,8 +261,6 @@ namespace WXML
             偏移应该不超过0x128u, 296
              */
             // std::string offset_52;
-            int offset_92 = 0; // pos1
-            int offset_96 = 0; // pos2
             int offset_104 = 0; // len
             int offset_140 = 0;
             std::string offset_144;
@@ -278,7 +276,7 @@ namespace WXML
             std::vector<std::shared_ptr<WXML::DOMLib::WXMLDom>> offset_72; // 
             WXML::DOMLib::Token offset_84; // token
             StrCache offset_248;
-            int offset_256; // ???
+            int offset_256 = 0; // ???
             std::map<std::string, std::string> offset_272;
             WXMLDom(/* args */);
             ~WXMLDom();

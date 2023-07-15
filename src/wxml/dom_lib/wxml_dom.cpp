@@ -530,9 +530,7 @@ namespace WXML {
             }
             
         }
-        /**
-         * 有点问题
-        */
+        
         void WXMLDom::RenderChildren(
             std::string const& a2,
             std::string const& a3,
@@ -711,7 +709,7 @@ namespace WXML {
                         std::string v66 = srcToken->second.ToAttrContent();
                         int v67 = this->offset_248.GetStrID(v66);
                         a6 << v67 << "]," << a3 << ",x[" << this->offset_248.GetStrID(a2) << "],";
-                        a6 << cur->offset_92 << "," << cur->offset_96 << ")" << a12;
+                        a6 << cur->offset_84.offset_8 << "," << cur->offset_84.offset_12 << ")" << a12;
                         goto LABEL_74;
                     }
                 }
@@ -844,7 +842,7 @@ namespace WXML {
             {
                 a6 << "cs.push(\"";
                 std::string sc = WXML::Rewrite::ToStringCode(a2);
-                a6 << sc << ":" << this->offset_24 << ":" << this->offset_92 << ":" << this->offset_96 << "\")";
+                a6 << sc << ":" << this->offset_24 << ":" << this->offset_84.offset_8 << ":" << this->offset_84.offset_12 << "\")" << a12;
             }
             if (this->offset_0 == "TEXTNODE")
             {
@@ -1017,8 +1015,8 @@ namespace WXML {
                 {
                     a6 << "_wp('" << WXML::Rewrite::ToStringCode(a2) << ":";
                     a6 << this->offset_24 << ":";
-                    a6 << this->offset_92 << ":";
-                    a6 << this->offset_96;
+                    a6 << this->offset_84.offset_8 << ":";
+                    a6 << this->offset_84.offset_12;
                     a6 << ": Now you can provide attr `wx:key` for a `wx:for` to improve performance.')";
                     a6 << a12;
                 }
@@ -1074,8 +1072,8 @@ namespace WXML {
                             LABEL_181:
                             a6 << "_wp('" << WXML::Rewrite::ToStringCode(a2) << ":";
                             a6 << this->offset_24 << ":";
-                            a6 << this->offset_92 << ":";
-                            a6 << this->offset_96 << ": wx:key=\"";
+                            a6 << this->offset_84.offset_8 << ":";
+                            a6 << this->offset_84.offset_12 << ": wx:key=\"";
                             a6 << WXML::Rewrite::ToStringCode(v336) << "\" does not look like a valid key name (did you mean wx:key=\"";
                             a6 << WXML::Rewrite::ToStringCode(v339) << "\" ?)')";
                             a6 << a12;
@@ -1106,7 +1104,7 @@ namespace WXML {
                     if (v336 != "*this")
                     {
                         a6 << "_wp('" << WXML::Rewrite::ToStringCode(a2) << ":";
-                        a6 << this->offset_24 << ":" << this->offset_92 << ":" << this->offset_96;
+                        a6 << this->offset_24 << ":" << this->offset_84.offset_8 << ":" << this->offset_84.offset_12;
                         a6 << ": wx:key=\"" << WXML::Rewrite::ToStringCode(v336);
                         a6 << "\" does not look like a valid key name.')" << a12;
                         
@@ -1180,7 +1178,7 @@ namespace WXML {
                 if (v269)
                 {
                     a6 << "_wp(\"" << WXML::Rewrite::ToStringCode(a2) << ":template:";
-                    a6 << this->offset_92 << ":" << this->offset_96 << ": `";
+                    a6 << this->offset_84.offset_8 << ":" << this->offset_84.offset_12 << ": `";
                     auto v92 = v281->second.ToAttrContent();
                     WXML::Rewrite::ToStringCode(v92, a6);
                     a6 << "` is not a valid expression for a template.\")";
@@ -1516,11 +1514,11 @@ namespace WXML {
             }
             if (v4->tellp())
             {
-                printf("pos: %d, %d, tag: %s, ", this->offset_92, this->offset_96, this->offset_0.c_str());
+                printf("pos: %d, %d, tag: %s, ", this->offset_84.offset_8, this->offset_84.offset_12, this->offset_0.c_str());
             }
             else
             {
-                *v4 << "pos: " << this->offset_92 << ", " << this->offset_96 << " tag: " << this->offset_0 << ", ";
+                *v4 << "pos: " << this->offset_84.offset_8 << ", " << this->offset_84.offset_12 << " tag: " << this->offset_0 << ", ";
             }
             
             if (this->offset_0 == "TEXTNODE")
@@ -1556,16 +1554,16 @@ namespace WXML {
             {
                 printf(
                     "pos: %d, %d, len: %d, %s",
-                    this->offset_92,
-                    this->offset_96,
+                    this->offset_84.offset_8,
+                    this->offset_84.offset_12,
                     this->offset_104,
                     this->offset_84.ToString().data()
                 );
             }
             else
             {
-                *v4 << "pos: " << this->offset_92
-                << ", " << this->offset_96 << ", len: " << this->offset_104
+                *v4 << "pos: " << this->offset_84.offset_8
+                << ", " << this->offset_84.offset_12 << ", len: " << this->offset_104
                 << ", ";
                 *v4 << this->offset_84.ToString();
             }
