@@ -208,7 +208,6 @@ namespace WXML
             {
                 int v17 = 0;
                 char* v18 = &v16[0] + token.offset_16;
-                // offset_20第一次是3
                 while(token.offset_20 > v17)
                 {
                     int v19 = *(uint8_t *)(v18 + v17) - 9;

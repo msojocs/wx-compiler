@@ -40,7 +40,7 @@ namespace WXML
                     }
                     else
                     {
-                        a2 << WXML::EXPRLib::OPShort::CONST << ",'";
+                        a2 << WXML::EXPRLib::OPShort::CONST << ",";
                         std::string v33 = this->offset_24.GetLiteral();
                         a2 << v33;
 
