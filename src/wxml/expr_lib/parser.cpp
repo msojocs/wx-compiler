@@ -55,7 +55,7 @@ namespace WXML
             // tokenList是空的
             if (v74.begin() == v74.end())
             {
-                std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree> v8;
+                std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree> v8(new WXML::EXPRLib::ExprSyntaxTree());
                 this->offset_80 = v8;
                 return 0;
             }
@@ -69,6 +69,7 @@ namespace WXML
             std::shared_ptr<WXML::EXPRLib::Base> v68(new WXML::EXPRLib::Base());
             v68->offset_0 = off_55F220;
             v68->offset_4_str = "$";
+            v68->offset_32 = 0;
             this->offset_0.push_back(v68);
             std::shared_ptr<WXML::EXPRLib::Base> v70(new WXML::EXPRLib::Base());
             v70->offset_0 = off_55F1E4;
@@ -103,7 +104,7 @@ namespace WXML
                     }
                     ++v49;
                     this->offset_0.pop_back();
-                    if (v84.offset_0 - 1 <= 3)
+                    if ((uint32_t)v84.offset_0 - 1 <= 3)
                     {
                         std::shared_ptr<WXML::EXPRLib::ExprSyntaxTree> v80(new WXML::EXPRLib::ExprSyntaxTree());
                         
@@ -141,7 +142,7 @@ namespace WXML
                                 return 1002;
                             }
                             auto v21 = this->offset_40.back();
-                            this->offset_40.push_back(v78);
+                            v21->offset_52.push_back(v78);
 
                         }
                         ///////////////////////
@@ -167,13 +168,20 @@ namespace WXML
                             {
                                 if (v78->offset_52.begin() != v78->offset_52.end())
                                 {
-                                    auto v51 = v78->offset_52.begin();
-                                    for (auto i = v78->offset_52.rbegin(); i <  v78->offset_52.rend(); i++)
+                                    // auto v51 = v78->offset_52.begin();
+                                    // for (auto i = v78->offset_52.rbegin(); i > v51; i++)
+                                    // {
+                                    //     auto v80 = *v51;
+                                    //     *v51 = *i;
+                                    //     *i = v80;
+                                    //     v51++;
+                                    // }
+                                    int len = v78->offset_52.size();
+                                    for (int i = 0; i < len / 2; i++)
                                     {
-                                        auto v80 = *v51;
-                                        *v51 = *i;
-                                        *i = v80;
-                                        v51++;
+                                        auto v80 = v78->offset_52[i];
+                                        v78->offset_52[i] = v78->offset_52[len - 1 - i];
+                                        v78->offset_52[len - 1 - i] = v80;
                                     }
                                     
                                 }

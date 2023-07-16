@@ -18,7 +18,7 @@ namespace WXML
             switch ( this->offset_0 )
             {
                 case 0u:
-                result = this->offset_4.data();
+                result = this->offset_4;
                 break;
                 case 1u:
                 result = "$DECIMAL";

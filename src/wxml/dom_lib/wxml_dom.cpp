@@ -728,7 +728,7 @@ namespace WXML {
                 {
                     if (
                         cur->offset_0 == "wx-repeat"
-                        && cur->offset_0 == "wx-template"
+                        || cur->offset_0 == "wx-template"
                     )
                     {
                         std::string v155;
