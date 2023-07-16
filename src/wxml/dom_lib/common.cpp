@@ -93,7 +93,7 @@ namespace WXML
 
         bool AttrsCompartor(std::pair<std::string,WXML::DOMLib::Token> const& a1,std::pair<std::string,WXML::DOMLib::Token> const& a2)
         {
-            return a1.second.offset_40 < a2.second.offset_40;
+            return a1.second.offset_56 < a2.second.offset_56;
         }
         
         std::string removern(std::string const& a2)

@@ -1319,7 +1319,7 @@ namespace WXML {
                 v339.append("};");
                 v327 = v339;
             }
-            if (v324.end() - v324.begin() <= 1)
+            if (v324.size() <= 1)
             {
                 a6 << "var " << a5 << "=_n('";
                 a6 << this->offset_0 << "')" << a12;
@@ -1343,14 +1343,14 @@ namespace WXML {
                     {
                         str = WXML::DOMLib::WXMLDom::ToCamelStyle(i->first);
                     }
-                    if(1)
+                    if(i->second.offset_20)
                     {
-                        // if ()
-                        // {
-
-                        // }
+                        if (i->second.offset_56 == -1)
+                        {
+                            throw this->Error(a2, i->second, i->first, "interal error(1010)");
+                        }
                         a6 << "_rz(z," << a5 << ",'" << str << "',";
-                        // a6 << ;
+                        a6 << i->second.offset_56;
                         a6 << "," << a8 << "," << a9 << "," << a10 << ")";
                     }
                     else
