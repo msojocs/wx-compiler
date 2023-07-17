@@ -276,7 +276,7 @@ namespace WXML
             std::map<std::string, WXML::DOMLib::Token> offset_48;
             std::vector<std::shared_ptr<WXML::DOMLib::WXMLDom>> offset_72; // 
             WXML::DOMLib::Token offset_84; // token
-            StrCache offset_248;
+            std::shared_ptr<StrCache> offset_248;
             int offset_256 = 0; // ???
             std::map<std::string, std::string> offset_272;
             WXMLDom(/* args */);

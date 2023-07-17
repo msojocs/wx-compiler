@@ -312,7 +312,7 @@ namespace WXML {
                 if (a15)
                 {
                     a6 << a12 << "[x[";
-                    int id = offset_248.GetStrID(a2);
+                    int id = offset_248->GetStrID(a2);
                     a6 << id;
                     a6 << "]][\"";
                     WXML::Rewrite::ToStringCode(a5, a6);
@@ -336,7 +336,7 @@ namespace WXML {
                 {
                     a6 << "var " << name;
                     a6 << "=x[";
-                    int id = this->offset_248.GetStrID(a2);
+                    int id = this->offset_248->GetStrID(a2);
                     a6 << id << "]";
                     a6 << "+':";
                     WXML::Rewrite::ToStringCode(a5, a6);
@@ -347,7 +347,7 @@ namespace WXML {
                     a6 << a13;
                     a6 << "if(" << a14 << "[" << name << "]){_wl(";
                     a6 << name << ",x[";
-                    id = this->offset_248.GetStrID(a2);
+                    id = this->offset_248->GetStrID(a2);
                     a6 << id << "]);return}" << a13;
 
                     a6 << a14 << "[" << name << "]=true";
@@ -580,7 +580,7 @@ namespace WXML {
                     {
                         a7->GetNextName(v145);
                         a6 << "var " << v145 << "=" << a3 << "[x[";
-                        int StrID = this->offset_248.GetStrID(a2);
+                        int StrID = this->offset_248->GetStrID(a2);
                         a6 << StrID << "]].i" << a12;
                     }
                     v110++;
@@ -593,7 +593,7 @@ namespace WXML {
                         {
                             a7->GetNextName(v147);
                             a6 << "var " << v147 << "=" << a3;
-                            a6 << "[x[" << this->offset_248.GetStrID(a2) << "]].j" << a12;
+                            a6 << "[x[" << this->offset_248->GetStrID(a2) << "]].j" << a12;
                         }
                     }
                 }
@@ -715,8 +715,8 @@ namespace WXML {
                     {
                         a6 << "_ai(" << v145 << ",x[";
                         std::string v66 = srcToken->second.ToAttrContent();
-                        int v67 = this->offset_248.GetStrID(v66);
-                        a6 << v67 << "]," << a3 << ",x[" << this->offset_248.GetStrID(a2) << "],";
+                        int v67 = this->offset_248->GetStrID(v66);
+                        a6 << v67 << "]," << a3 << ",x[" << this->offset_248->GetStrID(a2) << "],";
                         a6 << cur->offset_84.offset_8 << "," << cur->offset_84.offset_12 << ")" << a12;
                         goto LABEL_74;
                     }
@@ -1169,10 +1169,10 @@ namespace WXML {
                 a6 << "_ic(x[";
                 auto srcToken = this->offset_48["src"];
                 v347 = srcToken.ToAttrContent();
-                auto strId = this->offset_248.GetStrID(v347);
+                auto strId = this->offset_248->GetStrID(v347);
                 a6 << strId << "],";
                 a6 << a3 << ",x[";
-                a6 << this->offset_248.GetStrID(a2);
+                a6 << this->offset_248->GetStrID(a2);
                 a6 << "]," << a8 << "," << a9 << "," << a5 << "," << a10 << ");" << a12;
                 // goto LABEL_68;
                 if (a13 && this->offset_24.size())
@@ -1214,7 +1214,7 @@ namespace WXML {
 
                 a7->GetNextName(v336);
                 a6 << "var " << v336;
-                a6 << "=_gd(x[" << this->offset_248.GetStrID(a2);
+                a6 << "=_gd(x[" << this->offset_248->GetStrID(a2);
                 a6 << "]," << v333 << "," << a3 << "," << a11 << ")" << a12;
                 a6 << "if(" << v336 << "){" << a12;
 
@@ -1246,7 +1246,7 @@ namespace WXML {
                 a6 << a10 << ".f=cur_globalf" << a12;
                 a6 << "}" << a12;
                 a6 << "else _w(" << v333 << ",x[";
-                a6 << this->offset_248.GetStrID(a2) << "],";
+                a6 << this->offset_248->GetStrID(a2) << "],";
                 a6 << this->offset_48["is"].offset_8 << ",";
                 a6 << this->offset_48["is"].offset_12;
                 a6 << ")" << a12;
@@ -1443,10 +1443,10 @@ namespace WXML {
                 if (v8)
                 {
                     std::string attr = this->offset_48[v13].ToAttrContent();
-                    if(!this->offset_248.offset_0.count(attr))
+                    if(!this->offset_248->offset_0.count(attr))
                     {
-                        this->offset_248.offset_0[attr] = this->offset_248.offset_0.size();
-                        this->offset_248.offset_24.push_back(attr);
+                        this->offset_248->offset_0[attr] = this->offset_248->offset_0.size();
+                        this->offset_248->offset_24.push_back(attr);
                     }
                 }
             }

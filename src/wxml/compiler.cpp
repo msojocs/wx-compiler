@@ -310,12 +310,6 @@ namespace WXML{
                 {
                     std::set<std::string> v328;
                     WXML::DOMLib::recurseDependencies(i->second, i->first, v328);
-                    // std::vector<std::string> v278;
-                    // for (auto j = v328.begin(); j != v328.end(); j++)
-                    // {
-                    //     v278.push_back(*j);
-                    // }
-                    
                     auto depList = dependencyListMap[i->first];
                     for (auto j = v328.begin(); j != v328.end(); j++)
                     {
@@ -540,22 +534,22 @@ namespace WXML{
                     }
                     // test/wcc.disassembly.cpp line 14346
                     auto v133 = v307_localVecStrMap1[i->first];
-                    WXML::DOMLib::StrCache v319;
+                    std::shared_ptr<WXML::DOMLib::StrCache> v319(new WXML::DOMLib::StrCache());
                     for (auto i1 = v133.begin(); i1 != v133.end(); i1++)
                     {
-                        v319.Insert(*i1);
+                        v319->Insert(*i1);
                         auto v134 = v304[*i1];
                         v134->offset_248 = v319;
                         v134->RecordAllPath();
                     }
-                    v319.RenderPathDefine(*ss);
+                    v319->RenderPathDefine(*ss);
                     auto v136 = v307_localVecStrMap1[i->first];
                     int v228 = 0;
                     for (auto i2 = v136.begin(); i2 != v136.end(); i2++)
                     {
                         auto v256 = v304[*i2];
                         *ss << dMark << "[x[";
-                        auto StrID = v319.GetStrID(*i2);
+                        auto StrID = v319->GetStrID(*i2);
                         *ss << StrID << "]]={}" << lineEndMark;
                         std::string v140 = v256->offset_272["get_page_z_name"];
                         std::map<std::string, std::string> v316;
@@ -608,7 +602,7 @@ namespace WXML{
                             v271
                         );
                         *ss << eMark << "[x[";
-                        *ss << v319.GetStrID(*i2);
+                        *ss << v319->GetStrID(*i2);
                         *ss << "]]={f:" << v321 << ",j:[],i:[],ti:[";
                         std::vector<std::shared_ptr<WXML::DOMLib::WXMLDom>> v146 = v256->offset_72;
                         bool isNeedComma = false;
@@ -626,7 +620,7 @@ namespace WXML{
                                     }
                                     *ss << "x[";
                                     auto v148 = v211->second.ToAttrContent();
-                                    *ss << v319.GetStrID(v148);
+                                    *ss << v319->GetStrID(v148);
                                     *ss << "]";
                                     isNeedComma = true;
                                 }
@@ -649,7 +643,7 @@ namespace WXML{
                                     }
                                     *ss << "x[";
                                     std::string v152 = v217->second.ToAttrContent();
-                                    *ss << v319.GetStrID(v152);
+                                    *ss << v319->GetStrID(v152);
                                     *ss << "]";
                                     isNeedComma = true;
                                 }
