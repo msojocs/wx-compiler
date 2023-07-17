@@ -893,7 +893,7 @@ namespace WXML {
                 return;
             }
             bool v269 = true;
-            bool v270 = false;
+            bool v270 = true;
             std::map<std::string, WXML::DOMLib::Token>::iterator v281;
             std::stringstream ss;
             std::vector<std::pair<std::string,WXML::DOMLib::Token>> v324;

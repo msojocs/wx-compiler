@@ -155,6 +155,7 @@ namespace WXML
             // 有缓存（offset_84），直接返回
             if( this->offset_0.size() == 0 || this->offset_84)
                 return this->offset_88;
+            this->offset_88 = "";
             char * v6 = &this->offset_0[0] + this->offset_16;
             int v8 = this->offset_20;
             int v7 = *v6 == '\''/*39*/ || *v6 == '"'/*34*/;

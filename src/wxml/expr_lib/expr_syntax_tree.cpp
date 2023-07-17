@@ -114,7 +114,7 @@ namespace WXML
                         }
                         else
                         {
-                            this->offset_52[0]->RenderAsOps(a2, a3, a4);
+                            this->offset_52[1]->RenderAsOps(a2, a3, a4);
                         }
                     }
                     else

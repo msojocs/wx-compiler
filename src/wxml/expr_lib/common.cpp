@@ -21,6 +21,7 @@ namespace WXML
                 a1 << WXML::EXPRLib::OPShort::CONST << ",false";
                 return;
             }
+            a4 = true;
             if (a2 != "$global")
             {
                 a1 << WXML::EXPRLib::OPShort::NAME << ",'" << a2 << "'";
