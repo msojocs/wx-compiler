@@ -351,13 +351,17 @@ namespace WXML
                     this->offset_24 = (uint16_t)v46;
                     if (bittest(&v46, 0x15u)) // 0x15 -> 21
                     {
-                        // TODO: 
                         if (this->fileLength > this->offset_4)
                         {
-                            this->offset_4++;
-                            this->offset_20++;
-
                             WXML::DOMLib::Token token;
+                            token.offset_8 = this->offset_16;
+                            token.offset_12 = this->offset_20;
+                            this->offset_20++;
+                            token.offset_16 = this->offset_4;
+                            this->offset_4++;
+                            
+                            token.offset_20 = 1;
+                            token.offset_24 = 0;
                             a3.push_back(token);
                         }
                     }
