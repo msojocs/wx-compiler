@@ -1248,7 +1248,7 @@ namespace WXML {
                 a6 << "else _w(" << v333 << ",x[";
                 a6 << this->offset_248.GetStrID(a2) << "],";
                 a6 << this->offset_48["is"].offset_8 << ",";
-                a6 << this->offset_48["is"].offset_12 << ",";
+                a6 << this->offset_48["is"].offset_12;
                 a6 << ")" << a12;
                 LABEL_84:
                 goto LABEL_169;

@@ -104,8 +104,6 @@ namespace WXML
                     else if (this->offset_0 == "OP_MAKE_DICT")
                     {
                         a2 << "[" << WXML::EXPRLib::OPShort::MAKE_KV << "],'";
-                        const char off_5542FA[] = {'\'','\0','[','\0'};
-                        a2 << off_5542FA;
                         std::string v18 = this->offset_52[0]->offset_24.GetLiteral();
                         a2 << v18 << "',";
                         if (this->offset_52.size() <= 1)
