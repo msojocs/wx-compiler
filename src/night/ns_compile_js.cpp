@@ -267,19 +267,19 @@ namespace night
         return "";
     }
 
-    void NSCompileJs::compile_once(std::string &a3, std::vector<std::string> *a4, bool a5)
+    std::string NSCompileJs::compile_once(std::string &a3, std::vector<std::string> *a4, bool a5)
     {
         this->offset_28 = a4;
         a3 = "";
-        this->offset_24->top_down();
-        night::ns_node v5;
+        night::ns_node* v5 = this->offset_24->top_down();
         if (a5)
         {
-            std::string ret = v5.debug_no_space();
+            std::string ret = v5->debug_no_space();
             printf("ast :%s\n", ret.data());
         }
-        std::string v9 = this->compile(&v5);
+        std::string v9 = this->compile(v5);
         a3 = v9;
+        return this->offset_0;
     }
 
 }

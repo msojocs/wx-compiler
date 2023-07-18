@@ -40,22 +40,13 @@ namespace night
     extern std::string std_v_n;
     extern std::string std_v_v_n;
 
+    extern std::string nsv_;
+    extern std::string nst_;
+
     int compile_ns(std::string const&,std::string const&,std::string const&,uint,std::string&,bool);
     void compile_ns_with_sourcemap(std::string const&,std::string const&,std::string const&,std::string const&,uint,std::string&,std::string&);
     void readfile(char const*, std::string &);
     void writefile(char const*, std::string &);
-
-    class NSGod
-    {
-    private:
-        /* data */
-    public:
-        NSGod(/* args */);
-        ~NSGod();
-        void gen_girl(std::string);
-        void gen_son(std::string);
-        void hamlet(void);
-    };
 
     class ns_node
     {
@@ -65,6 +56,7 @@ namespace night
         std::string offset_0;
         std::string offset_24;
         std::string offset_60;
+        std::string offset_84;
         std::string offset_108;
         std::string offset_156;
         night::ns_node * offset_180;
@@ -77,17 +69,31 @@ namespace night
         std::string debug_no_space(void);
     };
     
+    class NSGod
+    {
+    private:
+        /* data */
+    public:
+        std::vector<night::ns_node *> offset_0;
+        NSGod(/* args */);
+        ~NSGod();
+        std::vector<night::ns_node *> gen_girl(std::string a2);
+        night::ns_node* gen_son(std::string);
+        void hamlet(void);
+    };
+
     class NSToken
     {
     private:
         /* data */
     public:
+        int offset_4;
         NSToken(/* args */);
         ~NSToken();
         bool eof(void);
-        void err(std::string const&,int,int,bool);
+        void err(std::string const&, int, int, bool);
         void get_tokens_for_sourcemap(std::map<std::string, uint> &, std::map<uint,std::string> &);
-        void next(void);
+        night::ns_node* next(void);
         void pass(void);
         void peek(void);
         void push(night::ns_node *);
@@ -95,7 +101,7 @@ namespace night
         void read_comment_method_2(void);
         void read_next(void);
         void read_number(std::string const&);
-        void read_string(char,std::string const&);
+        void read_string(char, std::string const&);
         void read_var(std::string const&);
         std::string read_while(bool (*)(char,void *),void *);
         void rw_cb_number(char,void *);
@@ -127,7 +133,7 @@ namespace night
         void ast_code_block(void);
         void ast_dispatch(bool);
         void ast_do_while(void);
-        void ast_expression(void);
+        night::ns_node * ast_expression(void);
         void ast_expression_no_binary(void);
         void ast_expression_no_comma(void);
         void ast_for(void);
@@ -166,7 +172,7 @@ namespace night
         /**
          * 是否是标点符号（punctuation）
         */
-        void is_punctuation(std::string const&);
+        bool is_punctuation(std::string const&);
         void is_save_for_division(night::ns_node *);
         void make_binary_or_just_value(night::ns_node *,bool);
         void make_call_or_just_expression(night::ns_node *);
@@ -179,7 +185,7 @@ namespace night
             int,
             std::string
             );
-        void top_down(void);
+        night::ns_node* top_down(void);
     };
 
     class ns_sourcemap
@@ -216,7 +222,7 @@ namespace night
         std::string compile_obj_dot(night::ns_node *);
         std::string compile_obj_property(night::ns_node *);
         std::string compile_obj_self_op(night::ns_node *);
-        void compile_once(std::string &, std::vector<std::string> *, bool);
+        std::string compile_once(std::string &, std::vector<std::string> *, bool);
         std::string compile_op_self(night::ns_node *);
         std::string compile_prog(night::ns_node *);
         std::string compile_prog_no_sem(night::ns_node *);

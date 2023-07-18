@@ -10,7 +10,7 @@ namespace night
     {
     }
     
-    void NSGod::gen_girl(std::string a2)
+    std::vector<night::ns_node *> NSGod::gen_girl(std::string a2)
     {
         if (night::std_v_n == a2)
         {
@@ -20,9 +20,10 @@ namespace night
         {
 
         }
+
     }
 
-    void NSGod::gen_son(std::string)
+    night::ns_node* NSGod::gen_son(std::string)
     {
 
     }
