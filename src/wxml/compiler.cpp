@@ -124,8 +124,7 @@ namespace WXML{
                             data = data.append(v74);
                             auto v83 = WXML::Compiler::GetFuncId(a11, data);
                             std::string v72;
-                            night::compile_ns(filePath, v83, v79, v65, v72, 0);
-                            int compilerResult = 1;
+                            int compilerResult = night::compile_ns(filePath, v83, v79, v65, v72, 0);
                             if (compilerResult)
                             {
                                 throw compilerResult;
@@ -815,23 +814,29 @@ namespace WXML{
             int * a6,
             std::string& errorMessage)
         {
+            // DealWxsTag - 0
             std::string content = a2.GetContent();
-            int pos = content.find('>', content[4]);
             int tokenPos = a2.GetPos();
+            int pos = content.find('>', tokenPos);
             int tokenSize = a2.GetSize();
             std::string sub;
             if (content[pos - 1] == '/')
             {
                 // 这个尖括号附近是这样的：/>
-                sub = content.substr(tokenPos + 1, pos + 1 - tokenPos - 6);
+                sub = content.substr(tokenPos + 4, pos + 1 - tokenPos - 6);
             }
             else
             {
-                sub = content.substr(tokenPos + 1, pos + 1 - tokenPos - 5);
+                sub = content.substr(tokenPos + 4, pos + 1 - tokenPos - 5);
             }
             std::string data = "<fak";
             data = data.append(sub);
             data = data.append("/>");
+            /*
+             ....<fak module=
+            "refresh"/>.....
+            */
+            // DealWxsTag - 5
             for (int i = 1; i < a2.offset_8; i++)
             {
                 data = "\n" + data;
@@ -842,8 +847,9 @@ namespace WXML{
             }
             WXML::DOMLib::Parser p;
             std::vector<WXML::DOMLib::Token> v50;
-            bool parseResult = p.Parse(&content[0], errorMessage, filePath, v50);
-            if (!parseResult)
+            bool parseResult = p.Parse(data.data(), errorMessage, filePath, v50);
+            // DealWxsTag - 10
+            if (parseResult)
             {
                 auto dom = p.GetParsed();
                 *a6 = a2.offset_8;
@@ -857,7 +863,6 @@ namespace WXML{
                 int v41 = 1;
                 for (int i = 0; i < a5.length(); i++)
                 {
-                    /* code */
                     int v14 = a5[i] - 9;
                     if (v14 > 0x17u)
                     {
@@ -871,10 +876,58 @@ namespace WXML{
                     }
                 }
                 
-                // TODO....
+                int v39 = dom->offset_72[0]->offset_48.count("src");
+                if (v39)
+                {
+                    auto v16 = dom->offset_72[0]->offset_48["src"];
+                    a4 = v16.ToAttrContent();
+                }
+                if (!v39 || v41)
+                {
+                    auto v42 = dom->offset_72[0]->offset_48;
+                    if (v42.count("module"))
+                    {
+                        auto v23 = v42["module"];
+                        std::string v24 = v23.ToAttrContent();
+                        a3.assign(v24);
+                        // 检查字符串命名格式是否正确
+                        for (auto &&i : v24)
+                        {
+                            bool v27 = i - 'a' <= 0x19u || i - '0' <= 9u;
+                            if (!v27)
+                            {
+                                v27 = i == '_' || i - 'A' <= 0x19u;
+                            }
+                            if (!v27)
+                            {
+                                std::stringstream ss;
+                                ss << filePath << ":" << a2.offset_8 << ":" << a2.offset_12 << ":" << errorMessage;
+                                ss << "invalid module name, [0-9a-zA-Z_] allowed only";
+                                errorMessage = ss.str();
+                                return 1;
+                            }
+                        }
+                        return 0;
+                    }
+                    else
+                    {
+                        std::stringstream ss;
+                        ss << filePath << ":" << a2.offset_8 << ":" << a2.offset_12 << ":" << errorMessage;
+                        ss << "module expected in wxs tag";
+                        errorMessage = ss.str();
+                    }
+
+                }
+                else
+                {
+                    std::stringstream ss;
+                    ss << filePath << ":" << a2.offset_8 << ":" << a2.offset_12 << ":" << errorMessage;
+                    ss << "wxs tag with src don't need any content";
+                    errorMessage = ss.str();
+                }
 
             }
-            return 0;
+            return 1;
         }
 
         void GetVersionInfo(std::string &a1, std::string a2) 

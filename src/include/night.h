@@ -40,7 +40,7 @@ namespace night
     extern std::string std_v_n;
     extern std::string std_v_v_n;
 
-    void compile_ns(std::string const&,std::string const&,std::string const&,uint,std::string&,bool);
+    int compile_ns(std::string const&,std::string const&,std::string const&,uint,std::string&,bool);
     void compile_ns_with_sourcemap(std::string const&,std::string const&,std::string const&,std::string const&,uint,std::string&,std::string&);
     void readfile(char const*, std::string &);
     void writefile(char const*, std::string &);

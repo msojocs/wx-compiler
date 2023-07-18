@@ -381,7 +381,6 @@ namespace WXML
         {
         private:
             /* data */
-            std::shared_ptr<WXML::DOMLib::WXMLDom> dom; // offset_4 ?
             std::deque<std::string> dequeStr;// offset_8
             std::deque<std::shared_ptr<WXML::DOMLib::WXMLDom>> dequeDom; // offset_48 int a1 + 48, _DWORD * a1 + 12
             std::vector<WXML::DOMLib::Token> tokenList; // offset_88
@@ -391,6 +390,7 @@ namespace WXML
             WXML::DOMLib::Token offset_216;
             std::string filePath;
         public:
+            std::shared_ptr<WXML::DOMLib::WXMLDom> dom; // offset_72
             Parser(/* args */);
             ~Parser();
             void Match();

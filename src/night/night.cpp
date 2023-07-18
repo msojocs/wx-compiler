@@ -36,7 +36,7 @@ namespace night
     std::string std_v_n = "";
     std::string std_v_v_n = "";
 
-    void compile_ns(
+    int compile_ns(
         std::string const& a1,
         std::string const& a2,
         std::string const& a3,
@@ -51,7 +51,7 @@ namespace night
         night::NSASTParse v39(a1, &v27, &v17);
 
         v17.hamlet();
-
+        return 0;
     }
 
     void compile_ns_with_sourcemap(
