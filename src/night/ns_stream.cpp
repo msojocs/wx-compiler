@@ -41,5 +41,31 @@ namespace night
 
         }
     }
+    void NSStream::err(std::string const& a2, int a3, int a4, bool a5)
+    {
+        std::string v10;
+        std::string v13 = this->offset_0;
+        v13.append(":");
+        v10 += v13;
+        std::string v12;
+        if (a5)
+        {
+            v12 = std::to_string(a3);
+            v12.append(":");
+            v10 += v12;
+            v12 = std::to_string(a4);
+        }
+        else
+        {
+            v12 = std::to_string(this->offset_52 + a3);
+            v12.append(":");
+            v10 += v12;
+            v12 = std::to_string(this->offset_56 + a4);
+        }
+        v12.append(":");
+        v10 += v12;
+        v10 += a2;
+        throw v10;
+    }
 
 }

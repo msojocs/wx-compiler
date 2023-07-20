@@ -36,6 +36,7 @@ namespace night
     extern std::string NS_TYPE_FOR;
     extern std::string NS_TYPE_IF;
     extern std::string NS_TYPE_K_V;
+    extern std::string NS_TYPE_OP;
 
     extern std::string std_v_n;
     extern std::string std_v_v_n;
@@ -58,12 +59,13 @@ namespace night
         std::string offset_60;
         std::string offset_84;
         std::string offset_108;
+        std::string offset_132;
         std::string offset_156;
         night::ns_node * offset_180;
         night::ns_node * offset_184;
         night::ns_node * offset_192;
-        std::vector<night::ns_node *> offset_196;
-        std::vector<night::ns_node *> offset_228;
+        std::vector<night::ns_node *>* offset_196;
+        std::vector<night::ns_node *>* offset_228;
         ns_node(/* args */);
         ~ns_node();
         std::string debug_no_space(void);
@@ -74,12 +76,37 @@ namespace night
     private:
         /* data */
     public:
-        std::vector<night::ns_node *> offset_0;
+        struct GodsSon {
+            std::string offset_0;
+            std::vector<night::ns_node *>* offset_24;
+        };
+        std::vector<night::NSGod::GodsSon *> offset_0;
         NSGod(/* args */);
         ~NSGod();
-        std::vector<night::ns_node *> gen_girl(std::string a2);
+        std::vector<night::ns_node *>* gen_girl(std::string a2);
         night::ns_node* gen_son(std::string);
         void hamlet(void);
+    };
+    
+    class NSStream
+    {
+    private:
+        /* data */
+        std::string offset_24;
+        int offset_48 = 0;
+    public:
+        std::string offset_0;
+        int offset_52 = 0; // 当前行数
+        int offset_56 = 0; // 当前行第几个字符位置
+        NSStream(/* args */);
+        NSStream(std::string const&,std::string const&,uint);
+        ~NSStream();
+        void eof(void);
+        void eof_2(void);
+        void err(std::string const&,int,int,bool);
+        void next(void);
+        void peek(void);
+        void peek_2(void);
     };
 
     class NSToken
@@ -87,7 +114,8 @@ namespace night
     private:
         /* data */
     public:
-        int offset_4;
+        NSStream offset_4; // 不是int
+        night::ns_node* offset_8;
         NSToken(/* args */);
         ~NSToken();
         bool eof(void);
@@ -95,11 +123,11 @@ namespace night
         void get_tokens_for_sourcemap(std::map<std::string, uint> &, std::map<uint,std::string> &);
         night::ns_node* next(void);
         void pass(void);
-        void peek(void);
+        night::ns_node* peek(void);
         void push(night::ns_node *);
         void read_comment_method_1(void);
         void read_comment_method_2(void);
-        void read_next(void);
+        night::ns_node* read_next(void);
         void read_number(std::string const&);
         void read_string(char, std::string const&);
         void read_var(std::string const&);
@@ -129,53 +157,53 @@ namespace night
         NSASTParse(/* args */);
         NSASTParse(std::string, night::NSToken *, night::NSGod *);
         ~NSASTParse();
-        void ast_call(night::ns_node *);
-        void ast_code_block(void);
-        void ast_dispatch(bool);
-        void ast_do_while(void);
+        night::ns_node * ast_call(night::ns_node *);
+        night::ns_node * ast_code_block(void);
+        night::ns_node * ast_dispatch(bool);
+        night::ns_node * ast_do_while(void);
         night::ns_node * ast_expression(void);
-        void ast_expression_no_binary(void);
-        void ast_expression_no_comma(void);
-        void ast_for(void);
-        void ast_function(void);
-        void ast_if(void);
-        void ast_new_array(void);
-        void ast_obj_block(void);
-        void ast_obj_dot(night::ns_node *);
-        void ast_obj_op(night::ns_node *);
-        void ast_obj_op_self(night::ns_node *);
-        void ast_op_self(void);
-        void ast_require(void);
-        void ast_switch(void);
-        void ast_ternary_expression(void);
-        void ast_trans_kw(void);
-        void ast_var(void);
-        void ast_varname(void);
-        void ast_while(void);
+        night::ns_node * ast_expression_no_binary(void);
+        night::ns_node * ast_expression_no_comma(void);
+        night::ns_node * ast_for(void);
+        night::ns_node * ast_function(void);
+        night::ns_node * ast_if(void);
+        night::ns_node * ast_new_array(void);
+        night::ns_node * ast_obj_block(void);
+        night::ns_node * ast_obj_dot(night::ns_node *);
+        night::ns_node * ast_obj_op(night::ns_node *);
+        night::ns_node * ast_obj_op_self(night::ns_node *);
+        night::ns_node * ast_op_self(void);
+        night::ns_node * ast_require(void);
+        night::ns_node * ast_switch(void);
+        night::ns_node * ast_ternary_expression(void);
+        night::ns_node * ast_trans_kw(void);
+        night::ns_node * ast_var(void);
+        night::ns_node * ast_varname(void);
+        night::ns_node * ast_while(void);
         void end_line(void);
         void ignore_buildin_kw(std::string const&);
         void ignore_op(std::string const&);
         void ignore_punc(std::string const&);
         void ignore_punc_pass_sem(std::string const&);
-        void is_buildin_keywords(std::string const&);
-        void is_exp(night::ns_node *);
-        void is_obj_op_self(bool);
-        void is_op(std::string const&);
+        bool is_buildin_keywords(std::string const&);
+        bool is_exp(night::ns_node *);
+        bool is_obj_op_self(bool);
+        bool is_op(std::string const&);
 
         /**
          * 是 op操作符 或者是 comma逗号
         */
-        void is_op_or_comma(std::string const&);
+        bool is_op_or_comma(std::string const&);
 
-        void is_op_self(bool);
+        bool is_op_self(bool);
 
         /**
          * 是否是标点符号（punctuation）
         */
         bool is_punctuation(std::string const&);
-        void is_save_for_division(night::ns_node *);
-        void make_binary_or_just_value(night::ns_node *,bool);
-        void make_call_or_just_expression(night::ns_node *);
+        bool is_save_for_division(night::ns_node *);
+        night::ns_node * make_binary_or_just_value(night::ns_node *,bool);
+        night::ns_node * make_call_or_just_expression(night::ns_node *);
         void make_list_by_parser(
             std::string const&,
             std::string const&,
@@ -230,26 +258,6 @@ namespace night
         std::string compile_ternary(night::ns_node *);
         std::string compile_var(night::ns_node *);
         std::string compile_while(night::ns_node *);
-    };
-    
-    class NSStream
-    {
-    private:
-        /* data */
-        std::string offset_24;
-        int offset_48 = 0;
-        int offset_52 = 0; // 当前行数
-        int offset_56 = 0; // 当前行第几个字符位置
-    public:
-        NSStream(/* args */);
-        NSStream(std::string const&,std::string const&,uint);
-        ~NSStream();
-        void eof(void);
-        void eof_2(void);
-        void err(std::string const&,int,int,bool);
-        void next(void);
-        void peek(void);
-        void peek_2(void);
     };
 
     namespace str

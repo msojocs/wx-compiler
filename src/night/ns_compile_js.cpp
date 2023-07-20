@@ -66,7 +66,7 @@ namespace night
     std::string NSCompileJs::compile_op_self(night::ns_node *a3)
     {
         this->compile(a3->offset_192);
-        for (auto i = a3->offset_196.begin(); i != a3->offset_196.end(); i++)
+        for (auto i = a3->offset_196->begin(); i != a3->offset_196->end(); i++)
         {
             this->compile(*i);
         }
@@ -104,11 +104,11 @@ namespace night
         }
         auto v4 = a3->offset_228;
         int v6 = 0;
-        for (auto i = v4.begin(); i != v4.end(); i++)
+        for (auto i = v4->begin(); i != v4->end(); i++)
         {
             this->compile(*i);
             v6++;
-            if (v6 != v4.size())
+            if (v6 != v4->size())
             {
                 // +=
                 this->offset_48 += v9.size();
@@ -125,7 +125,7 @@ namespace night
             // +=
             this->offset_48++;
         }
-        for (auto i = a3->offset_228.begin(); i != a3->offset_228.end(); i++)
+        for (auto i = a3->offset_228->begin(); i != a3->offset_228->end(); i++)
         {
             this->compile(*i);
             // +=
