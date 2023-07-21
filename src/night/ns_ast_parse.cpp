@@ -590,9 +590,9 @@ namespace night
             auto v16 = this->ast_expression();
             v6->push_back(v16);
             auto v7 = this->offset_28;
-            // v7->offset_4;
-            // auto v5 = v1.offset_56;
-            // auto v4 = v1.offset_52;
+            auto v1 = v7->offset_4;
+            auto v5 = v1.offset_56;
+            auto v4 = v1.offset_52;
             if (
                 night::NS_TYPE_BOOL == v16->offset_0 || night::NS_TYPE_VAR == v16->offset_0 || night::NS_TYPE_STR == v16->offset_0 || night::NS_TYPE_NUM == v16->offset_0 || night::NS_TYPE_B_TYPE == v16->offset_0 || night::NS_TYPE_KW == v16->offset_0 || night::NS_TYPE_OP_SELF == v16->offset_0 || night::NS_TYPE_BINARY == v16->offset_0 || night::NS_TYPE_ASSIGN == v16->offset_0 || night::NS_TYPE_TERNARY == v16->offset_0 || night::NS_TYPE_OBJ_DOT == v16->offset_0 || night::NS_TYPE_OBJ_PROPERTY == v16->offset_0 || night::NS_TYPE_OBJ_SELF_OP == v16->offset_0 || night::NS_TYPE_ARRAY == v16->offset_0 || night::NS_TYPE_BRACKET == v16->offset_0 || night::NS_TYPE_CALL == v16->offset_0)
             {
@@ -601,7 +601,7 @@ namespace night
                 {
                     if (";" != v2->offset_60 && v2->offset_84.find(10, 0) == -1)
                     {
-                        // this->offset_28->err("Expected LineFeed", , , true);
+                        this->offset_28->err("Expected LineFeed", v4, v5, true);
                     }
                 }
             }
@@ -631,11 +631,92 @@ namespace night
         v22->offset_60 = "(\000)\000{";
         v17->push_back(v22);
         this->offset_28->next();
+        auto v2 = this->offset_28->offset_4;
+        int v8 = v2.offset_52;
+        int v9 = v2.offset_56;
         auto v3 = this->offset_28->next();
+
+        if (!v3 || night::NS_TYPE_STR != v3->offset_0)
+        {
+            this->offset_28->err("Expected string", v8, v9, true);
+        }
+        std::string v24;
+        if (night::str::path_combine(this->offset_0, v3->offset_60, v24))
+        {
+            this->offset_28->err("Expected wxs file", v8, v9, true);
+        }
+        std::string v26 = "p_" + v24;
+        v3->offset_60 = v26;
+        v17->push_back(v3);
+
+        v22 = this->offset_24->gen_son(night::NS_TYPE_PUNC);
+        v22->offset_60 = ")\000{";
+        v17->push_back(v22);
+
+        this->offset_28->next();
+        auto v13 = this->offset_24;
+        v22 = v13->gen_son(night::NS_TYPE_PUNC);
+        v22->offset_60 = "(\000)\000{";
+        v17->push_back(v22);
+
+        auto v14 = this->offset_24;
+        v22 = v14->gen_son(night::NS_TYPE_PUNC);
+        v22->offset_60 = ")\000{";
+        v17->push_back(v22);
+
+        auto v15 = this->offset_24;
+        v22 = v15->gen_son(night::NS_TYPE_PROG_NO_SEM_REQUIRE);
+        v22->offset_228 = v17;
+        v22->offset_108 = "\0";
+
+        auto v5 = this->offset_28->peek();
+        if (!v5)
+            return v22;
+        auto v18 = v5->offset_60;
+        if (v18 != "[")
+        {
+            if (v18 == ".")
+            {
+                auto v6 = this->ast_obj_dot(v22);
+                return make_call_or_just_expression(v6);
+            }
+            return v22;
+        }
+        auto v6 = this->ast_obj_op(v22);
+        return this->make_call_or_just_expression(v6);
     }
     
-    void NSASTParse::ignore_punc(std::string const&)
+    void NSASTParse::ignore_punc(std::string const& a2)
     {
-        
+        if (!this->is_punctuation(a2))
+        {
+            auto node = this->offset_28->peek();
+            std::string v11 = " ";
+            int code;
+            if (node)
+            {
+                std::string v6 = node->offset_60;
+                std::string v13 = v6.substr(0, 3);
+                if (
+                    node->offset_60.length() > 3
+                    && v13 == night::nsv_
+                )
+                {
+                    v11 = v6.substr(3);
+                }
+                else
+                {
+                    v11.assign(v6);
+                }
+                code = v11.length();
+            }
+            else
+            {
+                code = 0;
+            }
+            std::string v13 = "Unexpected identifier `" + v11 + "`";
+            this->offset_28->err(v13, 0, code, false);
+        }
+        this->offset_28->next();
     }
 }

@@ -8,7 +8,7 @@ namespace night
         {
 
         }
-        void path_combine(std::string const&, std::string const&, std::string&)
+        bool path_combine(std::string const&, std::string const&, std::string&)
         {
 
         }

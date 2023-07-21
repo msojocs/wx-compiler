@@ -263,7 +263,7 @@ namespace night
     namespace str
     {
         void get_token(std::string const&, int);
-        void path_combine(
+        bool path_combine(
             std::string const&,
             std::string const&,
             std::string&
