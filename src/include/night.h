@@ -44,6 +44,8 @@ namespace night
     extern std::string nsv_;
     extern std::string nst_;
 
+    extern std::string NS_BUILTIN_SPACE;
+
     int compile_ns(std::string const&,std::string const&,std::string const&,uint,std::string&,bool);
     void compile_ns_with_sourcemap(std::string const&,std::string const&,std::string const&,std::string const&,uint,std::string&,std::string&);
     void readfile(char const*, std::string &);
@@ -61,11 +63,11 @@ namespace night
         std::string offset_108;
         std::string offset_132;
         std::string offset_156;
-        night::ns_node * offset_180;
-        night::ns_node * offset_184;
-        night::ns_node * offset_192;
-        std::vector<night::ns_node *>* offset_196;
-        std::vector<night::ns_node *>* offset_228;
+        night::ns_node * offset_180 = nullptr;
+        night::ns_node * offset_184 = nullptr;
+        night::ns_node * offset_192 = nullptr;
+        std::vector<night::ns_node *>* offset_196 = nullptr;
+        std::vector<night::ns_node *>* offset_228 = nullptr;
         ns_node(/* args */);
         ~ns_node();
         std::string debug_no_space(void);
@@ -78,7 +80,15 @@ namespace night
     public:
         struct GodsSon {
             std::string offset_0;
-            std::vector<night::ns_node *>* offset_24;
+            union 
+            {
+                /* data */
+                std::vector<night::ns_node *>* offset_24_vec = nullptr;
+                night::ns_node * offset_24_node;
+            };
+            
+            // std::vector<night::ns_node *>* offset_24;
+            
         };
         std::vector<night::NSGod::GodsSon *> offset_0;
         NSGod(/* args */);
@@ -101,12 +111,12 @@ namespace night
         NSStream(/* args */);
         NSStream(std::string const&,std::string const&,uint);
         ~NSStream();
-        void eof(void);
-        void eof_2(void);
+        bool eof(void);
+        bool eof_2(void);
         void err(std::string const&,int,int,bool);
-        void next(void);
-        void peek(void);
-        void peek_2(void);
+        char next(void);
+        char peek(void);
+        char peek_2(void);
     };
 
     class NSToken
@@ -114,8 +124,11 @@ namespace night
     private:
         /* data */
     public:
+        NSGod offset_0;
         NSStream offset_4; // 不是int
-        night::ns_node* offset_8;
+        night::ns_node* offset_8 = nullptr;
+        std::vector<night::ns_node *> offset_12;
+
         NSToken(/* args */);
         ~NSToken();
         bool eof(void);
@@ -129,17 +142,17 @@ namespace night
         void read_comment_method_2(void);
         night::ns_node* read_next(void);
         void read_number(std::string const&);
-        void read_string(char, std::string const&);
+        night::ns_node * read_string(char, std::string const&);
         void read_var(std::string const&);
         std::string read_while(bool (*)(char,void *),void *);
         void rw_cb_number(char,void *);
         void skip_comment(std::string &);
-        void tk_is_comment2(char,void *);
-        void tk_is_not_line_break(char,void *);
-        void tk_is_valid_op_str(char,void *);
-        void tk_is_var(char,void *);
+        static bool tk_is_comment2(char,void *);
+        static bool tk_is_not_line_break(char,void *);
+        bool tk_is_valid_op_str(char,void *);
+        bool tk_is_var(char,void *);
         void tk_is_var_start(char,void *);
-        void tk_is_whitespace(char,void *);
+        static bool tk_is_whitespace(char,void *);
     };
     
     class NSASTParse
@@ -147,8 +160,8 @@ namespace night
     private:
         /* data */
         std::string offset_0;
-        night::NSGod * offset_24;
-        night::NSToken * offset_28;
+        night::NSGod * offset_24 = nullptr;
+        night::NSToken * offset_28 = nullptr;
         int offset_36;
         int offset_40;
         std::string offset_44;
@@ -230,10 +243,10 @@ namespace night
     {
     private:
         /* data */
-        night::NSASTParse * offset_24;
-        std::vector<std::string> * offset_28;
     public:
         std::string offset_0;
+        night::NSASTParse * offset_24 = nullptr;
+        std::vector<std::string> * offset_28 = nullptr;
         std::vector<night::ns_sourcemap> offset_36;
         int offset_48;
         NSCompileJs(/* args */);
@@ -262,7 +275,7 @@ namespace night
 
     namespace str
     {
-        void get_token(std::string const&, int);
+        std::string get_token(std::string const&, int);
         bool path_combine(
             std::string const&,
             std::string const&,

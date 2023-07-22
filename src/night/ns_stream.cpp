@@ -14,18 +14,25 @@ namespace night
     {
     }
 
-    void NSStream::peek(void)
+    char NSStream::peek(void)
     {
         if (this->offset_48 < this->offset_24.length())
         {
             char v3 = this->offset_24.at(this->offset_48);
+            return v3;
         }
         else
         {
-
+            return 0;
         }
     }
-    void NSStream::peek_2(void)
+
+    bool NSStream::eof(void)
+    {
+        return this->peek() == 0;
+    }
+
+    char NSStream::peek_2(void)
     {
         if (this->offset_48 + 1 < this->offset_24.length())
         {
@@ -35,12 +42,42 @@ namespace night
                 this->offset_52++;
                 this->offset_56 = 1;
             }
+            return v3;
         }
         else
         {
-
+            return 0;
         }
     }
+
+    bool NSStream::eof_2(void)
+    {
+        return this->peek_2() == 0;
+    }
+
+    char NSStream::next(void)
+    {
+        if (this->offset_48 < this->offset_24.length())
+        {
+            char v7 = this->offset_24.at(this->offset_48);
+            this->offset_48++;
+            if (v7 == 10) // \n
+            {
+                this->offset_56 = 1;
+                this->offset_52++;
+            }
+            else
+            {
+                this->offset_56++;
+            }
+            return v7;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     void NSStream::err(std::string const& a2, int a3, int a4, bool a5)
     {
         std::string v10;

@@ -37,6 +37,7 @@ namespace night
     std::string NS_BUILTIN_OP_SELF = "~!";
     std::string NS_BUILTIN_ALL_OP = " = ? + - * / % ++ -- + - ~ ! << >> >>> & ^ | < > <= >= == != === !== *= /= %= += -= <<= >>= >>>= &= ^= |= && || ";
     std::string NS_BUILTIN_PUNC = ".,;(){}[]:";
+    std::string NS_BUILTIN_SPACE = " \t\r\n";
 
     std::string std_v_n = "new std::vector<ns_node*>";
     std::string std_v_v_n = "new std::vector<std::vector<ns_node*>*>";
@@ -60,6 +61,7 @@ namespace night
         NSCompileJs cjs;
         std::string v19;
         std::vector<std::string> v18;
+        cjs.offset_24 = &v39;
         std::string v21 = cjs.compile_once(v19, &v18, a6);
         v17.hamlet();
         if (v21.length())
