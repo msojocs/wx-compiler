@@ -72,8 +72,14 @@ namespace night
         std::string offset_156;
         night::ns_node * offset_180 = nullptr;
         night::ns_node * offset_184 = nullptr;
+        night::ns_node * offset_188 = nullptr;
         night::ns_node * offset_192 = nullptr;
         std::vector<night::ns_node *>* offset_196 = nullptr;
+        bool offset_200 = false;
+        night::ns_node * offset_204 = nullptr;
+        night::ns_node * offset_216 = nullptr;
+        night::ns_node * offset_220 = nullptr;
+        std::vector<std::vector<night::ns_node *>*> offset_224;
         std::vector<night::ns_node *>* offset_228 = nullptr;
         ns_node(/* args */);
         ~ns_node();
@@ -250,7 +256,16 @@ namespace night
         /* data */
     public:
         std::string offset_0;
+        int offset_24;
+        int offset_28;
+        std::string offset_32;
+        int offset_56;
+        int offset_60;
         ns_sourcemap(/* args */);
+        ns_sourcemap(ns_sourcemap &&);
+        ns_sourcemap(ns_sourcemap const&);
+        ns_sourcemap& operator=(ns_sourcemap const&);
+        ns_sourcemap& operator=(ns_sourcemap &&);
         ~ns_sourcemap();
     };
     
