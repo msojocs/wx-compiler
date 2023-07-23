@@ -38,6 +38,9 @@ namespace night
     std::string NS_BUILTIN_ALL_OP = " = ? + - * / % ++ -- + - ~ ! << >> >>> & ^ | < > <= >= == != === !== *= /= %= += -= <<= >>= >>>= &= ^= |= && || ";
     std::string NS_BUILTIN_PUNC = ".,;(){}[]:";
     std::string NS_BUILTIN_SPACE = " \t\r\n";
+    std::string NS_BUILTIN_TYPE = " Number Math Date ";
+    // keywords
+    std::string NS_BUILTIN_KW = " delete void typeof null undefined NaN Infinity var if else true false require this function arguments return for while do break continue switch case default ";
 
     std::string std_v_n = "new std::vector<ns_node*>";
     std::string std_v_v_n = "new std::vector<std::vector<ns_node*>*>";

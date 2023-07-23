@@ -45,6 +45,11 @@ namespace night
     extern std::string nst_;
 
     extern std::string NS_BUILTIN_SPACE;
+    extern std::string NS_BUILTIN_PUNC;
+    extern std::string NS_BUILTIN_OP;
+    extern std::string NS_BUILTIN_ALL_OP;
+    extern std::string NS_BUILTIN_TYPE;
+    extern std::string NS_BUILTIN_KW;
 
     int compile_ns(std::string const&,std::string const&,std::string const&,uint,std::string&,bool);
     void compile_ns_with_sourcemap(std::string const&,std::string const&,std::string const&,std::string const&,uint,std::string&,std::string&);
@@ -58,6 +63,8 @@ namespace night
     public:
         std::string offset_0;
         std::string offset_24;
+        int offset_48;
+        int offset_52;
         std::string offset_60;
         std::string offset_84;
         std::string offset_108;
@@ -97,6 +104,13 @@ namespace night
         night::ns_node* gen_son(std::string);
         void hamlet(void);
     };
+
+    struct PeekData
+    {
+        char data;
+        int offset_4;
+        int offset_8;
+    };
     
     class NSStream
     {
@@ -114,9 +128,9 @@ namespace night
         bool eof(void);
         bool eof_2(void);
         void err(std::string const&,int,int,bool);
-        char next(void);
-        char peek(void);
-        char peek_2(void);
+        PeekData next(void);
+        PeekData peek(void);
+        PeekData peek_2(void);
     };
 
     class NSToken
@@ -128,6 +142,7 @@ namespace night
         NSStream offset_4; // 不是int
         night::ns_node* offset_8 = nullptr;
         std::vector<night::ns_node *> offset_12;
+        std::map<std::string, unsigned int> offset_24;
 
         NSToken(/* args */);
         ~NSToken();
@@ -140,18 +155,18 @@ namespace night
         void push(night::ns_node *);
         void read_comment_method_1(void);
         void read_comment_method_2(void);
-        night::ns_node* read_next(void);
-        void read_number(std::string const&);
+        night::ns_node * read_next(void);
+        night::ns_node * read_number(std::string const&);
         night::ns_node * read_string(char, std::string const&);
-        void read_var(std::string const&);
+        night::ns_node * read_var(std::string const&);
         std::string read_while(bool (*)(char,void *),void *);
-        void rw_cb_number(char,void *);
+        static bool rw_cb_number(char,void *);
         void skip_comment(std::string &);
         static bool tk_is_comment2(char,void *);
         static bool tk_is_not_line_break(char,void *);
-        bool tk_is_valid_op_str(char,void *);
-        bool tk_is_var(char,void *);
-        void tk_is_var_start(char,void *);
+        static bool tk_is_valid_op_str(char,void *);
+        static bool tk_is_var(char,void *);
+        static bool tk_is_var_start(char,void *);
         static bool tk_is_whitespace(char,void *);
     };
     

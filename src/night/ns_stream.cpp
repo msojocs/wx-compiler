@@ -14,53 +14,70 @@ namespace night
     {
     }
 
-    char NSStream::peek(void)
+    PeekData NSStream::peek(void)
     {
+        PeekData ret;
         if (this->offset_48 < this->offset_24.length())
         {
             char v3 = this->offset_24.at(this->offset_48);
-            return v3;
+            ret.data = v3;
+            ret.offset_4 = this->offset_52;
+            ret.offset_8 = this->offset_56;
         }
         else
         {
-            return 0;
+            ret.data = 0;
+            ret.offset_4 = 0;
+            ret.offset_8 = 0;
         }
+        return ret;
     }
 
     bool NSStream::eof(void)
     {
-        return this->peek() == 0;
+        return this->peek().data == 0;
     }
 
-    char NSStream::peek_2(void)
+    PeekData NSStream::peek_2(void)
     {
+        PeekData ret;
         if (this->offset_48 + 1 < this->offset_24.length())
         {
             char v3 = this->offset_24.at(this->offset_48 + 1);
+            int v4 = this->offset_52;
+            int v5 = this->offset_56 + 1;
             if (v3 == '\n')
             {
-                this->offset_52++;
-                this->offset_56 = 1;
+                v4++;
+                v5 = 1;
             }
-            return v3;
+            ret.data = v3;
+            ret.offset_4 = v4;
+            ret.offset_8 = v5;
         }
         else
         {
-            return 0;
+            ret.data = 0;
+            ret.offset_4 = 0;
+            ret.offset_8 = 0;
         }
+        return ret;
     }
 
     bool NSStream::eof_2(void)
     {
-        return this->peek_2() == 0;
+        return this->peek_2().data == 0;
     }
 
-    char NSStream::next(void)
+    PeekData NSStream::next(void)
     {
+        PeekData ret;
         if (this->offset_48 < this->offset_24.length())
         {
             char v7 = this->offset_24.at(this->offset_48);
             this->offset_48++;
+            int v5 = this->offset_52;
+            int v6 = this->offset_56;
             if (v7 == 10) // \n
             {
                 this->offset_56 = 1;
@@ -70,12 +87,17 @@ namespace night
             {
                 this->offset_56++;
             }
-            return v7;
+            ret.data = v7;
+            ret.offset_4 = v5;
+            ret.offset_8 = v6;
         }
         else
         {
-            return 0;
+            ret.data = 0;
+            ret.offset_4 = 0;
+            ret.offset_8 = 0;
         }
+        return ret;
     }
 
     void NSStream::err(std::string const& a2, int a3, int a4, bool a5)
