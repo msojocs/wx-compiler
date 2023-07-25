@@ -28,14 +28,15 @@ namespace night
         /**
          * todo...
         */
-        bool path_combine(std::string const& a1, std::string const& a2, std::string& a3)
+        int path_combine(std::string const& a1, std::string const& a2, std::string& a3)
         {
             std::string v11;
             MMBizWxaAppComm::PathCombine(a1, a2, v11);
+            int code = 0;
             if (v11.length() > 3)
             {
                 std::string v14 = v11.substr(v11.length() - 3);
-                int code = v14 == ".wxs";
+                code = v14 == ".wxs";
                 if (code)
                 {
                     code = 2;
@@ -43,16 +44,10 @@ namespace night
                 else
                 {
                     std::string v3 = WXML::Rewrite::ToStringCode(v11);
-                    if (v3 == "")
-                    {
-
-                    }
-                    else
-                    {
-
-                    }
+                    a3 = v3;
                 }
             }
+            return code;
         }
     } // namespace str
 } // namespace night

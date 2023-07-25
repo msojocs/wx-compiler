@@ -6,8 +6,12 @@ namespace night
     NSStream::NSStream(/* args */)
     {
     }
-    NSStream::NSStream(std::string const&,std::string const&,uint)
+    NSStream::NSStream(std::string const& a2, std::string const& a3, uint a4)
     {
+        this->offset_0.assign(a2);
+        this->offset_24.assign(a3);
+        this->offset_52 = a4;
+        this->offset_56 = 1;
     }
     
     NSStream::~NSStream()

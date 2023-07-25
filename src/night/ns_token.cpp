@@ -28,20 +28,20 @@ namespace night
         if (this->offset_12.begin() == this->offset_12.end())
         {
             auto v14 = this->read_while(night::NSToken::tk_is_whitespace, 0);
-            bool isEnd = this->offset_4.eof();
+            bool isEnd = this->offset_4->eof();
             if (!isEnd)
             {
                 this->skip_comment(v14);
             }
             if ( isEnd
-                || (this->offset_4.eof())
+                || (this->offset_4->eof())
             )
             {
                 v7 = 0;
             }
             else
             {
-                auto v13 = this->offset_4.peek();
+                auto v13 = this->offset_4->peek();
                 if (v13.data == '"' || v13.data == '\'')
                 {
                     v7 = this->read_string(v13.data, v14);
@@ -59,17 +59,17 @@ namespace night
                                 std::string msg = "Unexpected token `";
                                 msg.append(std::string(1, v13.data));
                                 msg.append("`");
-                                this->offset_4.err(msg, 0, 0, false);
+                                this->offset_4->err(msg, 0, 0, false);
                             }
                             std::string v15;
                             auto v17 = this->read_while(night::NSToken::tk_is_valid_op_str, (void *)&v15);
-                            auto v7 = this->offset_0.gen_son(night::NS_TYPE_OP);
+                            auto v7 = this->offset_0->gen_son(night::NS_TYPE_OP);
 
                         }
                         else
                         {
-                            auto v7 = this->offset_0.gen_son(night::NS_TYPE_PUNC);
-                            auto v19 = this->offset_4.next();
+                            auto v7 = this->offset_0->gen_son(night::NS_TYPE_PUNC);
+                            auto v19 = this->offset_4->next();
                             std::string v15(1, v19.data);
                             v7->offset_60 = v15;
                         }
@@ -129,40 +129,40 @@ namespace night
     void NSToken::read_comment_method_2()
     {
         this->read_while(night::NSToken::tk_is_comment2, &this->offset_4);
-        this->offset_4.next();
+        this->offset_4->next();
     }
 
     void NSToken::skip_comment(std::string &a2)
     {
         while (true)
         {
-            if (this->offset_4.eof())
+            if (this->offset_4->eof())
             {
                 break;
             }
-            auto v5 = this->offset_4.peek();
+            auto v5 = this->offset_4->peek();
             if (v5.data != '/')
             {
                 break;
             }
-            if (this->offset_4.eof_2())
+            if (this->offset_4->eof_2())
             {
                 break;
             }
-            v5 = this->offset_4.peek_2();
+            v5 = this->offset_4->peek_2();
             if (v5.data == '/')
             {
-                v5 = this->offset_4.next();
-                v5 = this->offset_4.next();
+                v5 = this->offset_4->next();
+                v5 = this->offset_4->next();
                 this->read_comment_method_1();
             }
             else
             {
-                v5 = this->offset_4.peek_2();
+                v5 = this->offset_4->peek_2();
                 if (v5.data == '*')
                     return;
-                v5 = this->offset_4.next();
-                v5 = this->offset_4.next();
+                v5 = this->offset_4->next();
+                v5 = this->offset_4->next();
                 this->read_comment_method_2();
             }
             a2 = this->read_while(night::NSToken::tk_is_whitespace, 0);
@@ -173,22 +173,22 @@ namespace night
 
     night::ns_node * NSToken::read_string(char a2, std::string const& a3)
     {
-        auto v12 = this->offset_4.next();
+        auto v12 = this->offset_4->next();
         std::string v10 = "";
         char v4;
         for (int i = 0; ; i = v4)
         {
-            v4 = this->offset_4.eof();
+            v4 = this->offset_4->eof();
             if (v4)
             {
                 break;
             }
-            auto v9 = this->offset_4.eof();
+            auto v9 = this->offset_4->eof();
             if ( v9 == '\n')
             {
                 if (!i)
                 {
-                    this->offset_4.err("Unexpected `\\n`", 0, 0, false);
+                    this->offset_4->err("Unexpected `\\n`", 0, 0, false);
                 }
                 v10.push_back('\n');
             }
@@ -210,7 +210,7 @@ namespace night
                 v10.push_back(v9);
             }
         }
-        auto son = this->offset_0.gen_son(night::NS_TYPE_STR);
+        auto son = this->offset_0->gen_son(night::NS_TYPE_STR);
         
         son->offset_60 = WXML::Rewrite::ToStringCode(v10);
         son->offset_108.replace(0, son->offset_108.length(), 1, a2);
@@ -223,15 +223,15 @@ namespace night
     {
         int v8;
         auto v9 = this->read_while(night::NSToken::rw_cb_number, &v8);
-        auto v13 = this->offset_4.peek();
+        auto v13 = this->offset_4->peek();
         if (night::NSToken::tk_is_var_start(v13.data, nullptr))
         {
             std::string msg = "Unexpected token `";
             msg.append(std::string(1, v13.data));
             msg.append("`");
-            this->offset_4.err(msg, 0, 0, false);
+            this->offset_4->err(msg, 0, 0, false);
         }
-        auto son = this->offset_0.gen_son(night::NS_TYPE_NUM);
+        auto son = this->offset_0->gen_son(night::NS_TYPE_NUM);
         son->offset_60 = v9;
         son->offset_84 = a2;
         return son;
@@ -240,14 +240,14 @@ namespace night
     std::string NSToken::read_while(bool (*a3)(char,void *), void *a4)
     {
         std::string result = "";
-        while (!this->offset_4.eof())
+        while (!this->offset_4->eof())
         {
-            auto v6 = this->offset_4.peek();
+            auto v6 = this->offset_4->peek();
             if (!a3(v6.data, a4))
             {
                 break;
             }
-            v6 = this->offset_4.next();
+            v6 = this->offset_4->next();
             result.push_back(v6.data);
         }
         return result;
@@ -255,7 +255,7 @@ namespace night
 
     night::ns_node *NSToken::read_var(std::string const & a2)
     {
-        auto v12 = this->offset_4.peek();
+        auto v12 = this->offset_4->peek();
         auto v13 = this->read_while(night::NSToken::tk_is_var, 0);
         std::string v16 = " " + v13 + " ";
         int pos = night::NS_BUILTIN_TYPE.find(v16, 0);
@@ -268,7 +268,7 @@ namespace night
             {
                 v4 = night::NS_TYPE_VAR;
             }
-            son = this->offset_0.gen_son(v4);
+            son = this->offset_0->gen_son(v4);
             if (v6 == -1)
             {
                 v16 = night::nsv_ + v13;
@@ -289,7 +289,7 @@ namespace night
         }
         else
         {
-            son = this->offset_0.gen_son(night::NS_TYPE_B_TYPE);
+            son = this->offset_0->gen_son(night::NS_TYPE_B_TYPE);
             son->offset_60 = v13;
             son->offset_84 = a2;
         }
@@ -298,7 +298,7 @@ namespace night
 
     void NSToken::err(std::string const& a2, int a3, int a4, bool a5)
     {
-        this->offset_4.err(a2, a3, a4, a5);
+        this->offset_4->err(a2, a3, a4, a5);
     }
     bool NSToken::rw_cb_number(char ch, void *t)
     {
@@ -376,7 +376,7 @@ namespace night
     }
     bool NSToken::tk_is_var_start(char ch, void * t)
     {
-        uint8_t v1 = ch - 'A';
+        uint8_t v1 = (ch & 0xFFFFFFDF) - 'A';
         return (v1 <= 0x19u) | (ch == '_');
     }
 }

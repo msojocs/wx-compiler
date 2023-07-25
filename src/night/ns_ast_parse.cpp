@@ -15,7 +15,6 @@ namespace night
         this->offset_36 = 0;
         this->offset_40 = 0;
         this->offset_44 = "";
-        this->offset_52 = 0;
     }
 
     NSASTParse::~NSASTParse()
@@ -378,8 +377,8 @@ namespace night
             {
                 auto v3 = this->offset_28->offset_4;
                 auto v61 = this->offset_28;
-                int v27;
-                int v30;
+                int v27 = v3->offset_52;
+                int v30 = v3->offset_56;
                 std::string v81 = "Unexpected statement[" + v80->offset_0 + "]";
                 this->offset_28->err(v81, v27, v30, 1);
             }
@@ -437,8 +436,8 @@ namespace night
         {
             auto v3 = this->offset_28->next();
             auto v4 = this->offset_28->offset_4;
-            int v15 = v4.offset_52;
-            int v16 = v4.offset_56;
+            int v15 = v4->offset_52;
+            int v16 = v4->offset_56;
             if ("?" == v3->offset_60)
             {
                 auto v19 = this->ast_ternary_expression();
@@ -517,27 +516,112 @@ namespace night
     
     night::ns_node *NSASTParse::ast_ternary_expression()
     {
+        printf("ast_ternary_expression\n");
     }
     
     night::ns_node *NSASTParse::ast_obj_dot(night::ns_node*)
     {
+        printf("ast_obj_dot\n");
     }
 
     night::ns_node *NSASTParse::ast_obj_op(night::ns_node*)
     {
+        printf("ast_obj_op\n");
     }
 
     night::ns_node *NSASTParse::ast_call(night::ns_node*)
     {
+        printf("ast_call\n");
     }
     night::ns_node *NSASTParse::ast_function()
     {
+        printf("ast_function\n");
     }
     night::ns_node *NSASTParse::ast_var()
     {
+        printf("ast_var\n");
     }
     night::ns_node *NSASTParse::ast_trans_kw()
     {
+        auto v1 = this->offset_28;
+        auto v2 = v1->offset_4;
+        auto v19 = v2->offset_52;
+        auto v20 = v2->offset_56;
+        auto v24 = v1->next();
+        std::string v43 = v24->offset_60;
+        night::ns_node *v3;
+        
+        if ("true" == v43 || "false" == v43)
+        {
+            v3 = this->offset_24->gen_son(night::NS_TYPE_BOOL);
+            // goto LABEL_31;
+        }
+        if (
+            "null" == v43
+            || "undefined" == v43
+            || "NaN" == v43
+            || "Infinity" == v43
+        )
+        {
+            auto son = this->offset_24->gen_son(night::NS_TYPE_KW);
+            son->offset_24.assign(v24->offset_24);
+            son->offset_48 = v24->offset_48;
+            son->offset_52 = v24->offset_52;
+            son->offset_60.assign(v43);
+            return son;
+        }
+        if (
+            "return" == v43
+            || "delete" == v43
+            || "void" == v43
+        )
+        {
+            if (!v43.compare("return") && this->offset_32 <= 0)
+            {
+                std::string msg = "Illegal " + v43 + " statement";
+                this->offset_28->err(msg, v19, v20, true);
+            }
+            auto v21 = this->offset_24->gen_son(night::NS_TYPE_VAR);
+            v21->offset_60.assign(v43);
+            v21->offset_24.assign(v24->offset_24);
+            v21->offset_48 = v24->offset_48;
+            v21->offset_52 = v24->offset_52;
+
+            auto v25 = this->offset_24->gen_girl(night::std_v_v_n);
+            auto lt = this->offset_24->gen_son(night::NS_TYPE_CALL);
+            lt->offset_220 = v21;
+            // lt->offset_224 = v25; // TODO...
+            auto v5 = this->offset_28->peek();
+            std::vector<night::ns_node *> * v44;
+            if (v5 && v5->offset_84.find('\n') == -1)
+            {
+                v44 = this->offset_24->gen_girl(night::std_v_n);
+                auto v45 = this->ast_expression(); // TODO...待确认
+                v44->emplace_back(v45);
+            }
+            else
+            {
+                v44 = this->offset_24->gen_girl(night::std_v_n);
+            }
+            // v25->push_back(v44);
+            return lt;
+        }
+        if ("typeof" == v43)
+        {
+            
+        }
+        if ("this" == v43)
+        {
+            
+        }
+        if ("arguments" != v43)
+        {
+            
+        }
+        if (this->offset_32 < 0)
+        {
+
+        }
     }
 
     bool NSASTParse::is_punctuation(std::string const &a2)
@@ -584,17 +668,31 @@ namespace night
     night::ns_node *NSASTParse::top_down()
     {
         auto v6 = this->offset_24->gen_girl(night::std_v_n);
-        night::ns_node ret;
         while (!this->offset_28->eof())
         {
             auto v16 = this->ast_expression();
             v6->push_back(v16);
             auto v7 = this->offset_28;
             auto v1 = v7->offset_4;
-            auto v5 = v1.offset_56;
-            auto v4 = v1.offset_52;
+            auto v5 = v1->offset_56;
+            auto v4 = v1->offset_52;
             if (
-                night::NS_TYPE_BOOL == v16->offset_0 || night::NS_TYPE_VAR == v16->offset_0 || night::NS_TYPE_STR == v16->offset_0 || night::NS_TYPE_NUM == v16->offset_0 || night::NS_TYPE_B_TYPE == v16->offset_0 || night::NS_TYPE_KW == v16->offset_0 || night::NS_TYPE_OP_SELF == v16->offset_0 || night::NS_TYPE_BINARY == v16->offset_0 || night::NS_TYPE_ASSIGN == v16->offset_0 || night::NS_TYPE_TERNARY == v16->offset_0 || night::NS_TYPE_OBJ_DOT == v16->offset_0 || night::NS_TYPE_OBJ_PROPERTY == v16->offset_0 || night::NS_TYPE_OBJ_SELF_OP == v16->offset_0 || night::NS_TYPE_ARRAY == v16->offset_0 || night::NS_TYPE_BRACKET == v16->offset_0 || night::NS_TYPE_CALL == v16->offset_0)
+                night::NS_TYPE_BOOL == v16->offset_0
+                || night::NS_TYPE_VAR == v16->offset_0 
+                || night::NS_TYPE_STR == v16->offset_0 
+                || night::NS_TYPE_NUM == v16->offset_0 
+                || night::NS_TYPE_B_TYPE == v16->offset_0 
+                || night::NS_TYPE_KW == v16->offset_0 
+                || night::NS_TYPE_OP_SELF == v16->offset_0 
+                || night::NS_TYPE_BINARY == v16->offset_0 
+                || night::NS_TYPE_ASSIGN == v16->offset_0 
+                || night::NS_TYPE_TERNARY == v16->offset_0 
+                || night::NS_TYPE_OBJ_DOT == v16->offset_0 
+                || night::NS_TYPE_OBJ_PROPERTY == v16->offset_0 
+                || night::NS_TYPE_OBJ_SELF_OP == v16->offset_0 
+                || night::NS_TYPE_ARRAY == v16->offset_0 
+                || night::NS_TYPE_BRACKET == v16->offset_0 
+                || night::NS_TYPE_CALL == v16->offset_0)
             {
                 night::ns_node *v2 = v7->peek();
                 if (v2)
@@ -615,7 +713,8 @@ namespace night
             }
         }
         auto son = this->offset_24->gen_son(night::NS_TYPE_PROG);
-        son->offset_108 = "";
+        son->offset_228 = v6;
+        son->offset_108 = "\0";
 
         return son;
     }
@@ -632,8 +731,8 @@ namespace night
         v17->push_back(v22);
         this->offset_28->next();
         auto v2 = this->offset_28->offset_4;
-        int v8 = v2.offset_52;
-        int v9 = v2.offset_56;
+        int v8 = v2->offset_52;
+        int v9 = v2->offset_56;
         auto v3 = this->offset_28->next();
 
         if (!v3 || night::NS_TYPE_STR != v3->offset_0)

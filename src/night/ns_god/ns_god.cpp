@@ -51,10 +51,12 @@ namespace night
                 if (v4)
                 {
                     delete v4;
+                    v3->offset_24_vec = nullptr;
                 }
                 if (v3->offset_24_node)
                 {
                     delete v3->offset_24_node;
+                    v3->offset_24_node = nullptr;
                 }
             }
             if (v3->offset_0 == night::std_v_v_n)
@@ -63,10 +65,12 @@ namespace night
                 if (v4)
                 {
                     delete v4;
+                    v3->offset_24_vec = nullptr;
                 }
                 if (v3->offset_24_node)
                 {
                     delete v3->offset_24_node;
+                    v3->offset_24_node = nullptr;
                 }
 
             }

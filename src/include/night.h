@@ -63,8 +63,9 @@ namespace night
     public:
         std::string offset_0;
         std::string offset_24;
-        int offset_48;
-        int offset_52;
+        int offset_48 = 0;
+        int offset_52 = 0;
+        int offset_56 = 0;
         std::string offset_60;
         std::string offset_84;
         std::string offset_108;
@@ -77,10 +78,15 @@ namespace night
         std::vector<night::ns_node *>* offset_196 = nullptr;
         bool offset_200 = false;
         night::ns_node * offset_204 = nullptr;
+        night::ns_node * offset_208 = nullptr;
+        night::ns_node * offset_212 = nullptr;
         night::ns_node * offset_216 = nullptr;
         night::ns_node * offset_220 = nullptr;
         std::vector<std::vector<night::ns_node *>*> offset_224;
         std::vector<night::ns_node *>* offset_228 = nullptr;
+        std::vector<night::ns_node *>* offset_232 = nullptr;
+        std::vector<std::vector<night::ns_node *>*>* offset_236 = nullptr;
+        std::vector<night::ns_node *>* offset_240 = nullptr;
         ns_node(/* args */);
         ~ns_node();
         std::string debug_no_space(void);
@@ -131,6 +137,8 @@ namespace night
         NSStream(/* args */);
         NSStream(std::string const&,std::string const&,uint);
         ~NSStream();
+        NSStream(NSStream const&);
+        NSStream& operator=(NSStream const&);
         bool eof(void);
         bool eof_2(void);
         void err(std::string const&,int,int,bool);
@@ -144,8 +152,8 @@ namespace night
     private:
         /* data */
     public:
-        NSGod offset_0;
-        NSStream offset_4; // 不是int
+        NSGod* offset_0 = nullptr;
+        NSStream * offset_4 = nullptr;
         night::ns_node* offset_8 = nullptr;
         std::vector<night::ns_node *> offset_12;
         std::map<std::string, unsigned int> offset_24;
@@ -183,10 +191,10 @@ namespace night
         std::string offset_0;
         night::NSGod * offset_24 = nullptr;
         night::NSToken * offset_28 = nullptr;
-        int offset_36;
-        int offset_40;
+        int offset_32 = 0;
+        int offset_36 = 0;
+        int offset_40 = 0;
         std::string offset_44;
-        int offset_52;
     public:
         NSASTParse(/* args */);
         NSASTParse(std::string, night::NSToken *, night::NSGod *);
@@ -306,7 +314,7 @@ namespace night
     namespace str
     {
         std::string get_token(std::string const&, int);
-        bool path_combine(
+        int path_combine(
             std::string const&,
             std::string const&,
             std::string&

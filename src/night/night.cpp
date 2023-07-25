@@ -60,11 +60,14 @@ namespace night
         night::NSStream v38(a1, a3, a4);
         night::NSToken v27;
         night::NSGod v17;
+        v27.offset_0 = &v17;
+        v27.offset_4 = &v38;
         night::NSASTParse v39(a1, &v27, &v17);
         NSCompileJs cjs;
         std::string v19;
         std::vector<std::string> v18;
         cjs.offset_24 = &v39;
+        cjs.offset_48 = 1;
         std::string v21 = cjs.compile_once(v19, &v18, a6);
         v17.hamlet();
         if (v21.length())

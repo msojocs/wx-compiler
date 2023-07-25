@@ -93,23 +93,72 @@ namespace night
     }
     std::string NSCompileJs::compile_do_while(night::ns_node *a3)
     {
-        std::string str = "";
-        str += "do";
-        // 要确认加的长度是str还是"do"的
+        std::string result = "";
+        result += "do";
+        this->offset_48 += 2;
+        result += this->compile(a3->offset_216);
 
-        return "";
+        result += "while(";
+        this->offset_48 += 6;
+        result += this->compile(a3->offset_204);
+
+        result += ");";
+        this->offset_48 += 2;
+
+        return result;
     }
     std::string NSCompileJs::compile_for(night::ns_node *a3)
     {
-        return "";
+        std::string result = "";
+        result += "for(";
+        this->offset_48 += 4;
+
+        auto v3 = a3->offset_228;
+        if (v3->size() != 3)
+        {
+            throw "error : sys error for compile_for";
+        }
+        result += this->compile(v3->at(0));
+        result += ";";
+        this->offset_48++;
+
+        result += this->compile(v3->at(1));
+        result += ";";
+        this->offset_48++;
+
+        result += this->compile(v3->at(2));
+        result += 5580790;
+        this->offset_48++;
+
+        result += this->compile(a3->offset_216);
+
+        return result;
     }
     std::string NSCompileJs::compile_function(night::ns_node *a3)
     {
-        return "";
+        std::string result = "";
+        // TODO...
+        return result;
     }
     std::string NSCompileJs::compile_if(night::ns_node *a3)
     {
-        return "";
+        std::string result = "";
+        result += "if ";
+        this->offset_48 += 3;
+
+        result += this->compile(a3->offset_204);
+        result += this->compile(a3->offset_208);
+        result += a3->offset_108;
+        this->offset_48 += a3->offset_108.length();
+
+        if (a3->offset_212)
+        {
+            std::string v5 = " else ";
+            result += v5;
+            this->offset_48 += v5.length();
+            result += this->compile(a3->offset_212);
+        }
+        return result;
     }
     std::string NSCompileJs::compile_k_v(night::ns_node * a3)
     {
@@ -136,6 +185,7 @@ namespace night
     }
     std::string NSCompileJs::compile_obj_property(night::ns_node *)
     {
+        // TODO...
         return "";
     }
     std::string NSCompileJs::compile_obj_self_op(night::ns_node *a3)
@@ -158,18 +208,56 @@ namespace night
     }
     std::string NSCompileJs::compile_op_self(night::ns_node *a3)
     {
-        this->compile(a3->offset_192);
-        for (auto i = a3->offset_196->begin(); i != a3->offset_196->end(); i++)
-        {
-            this->compile(*i);
-            // TODO...
-        }
-        
-        return "";
+        std::string result = "";
+        result += a3->offset_156;
+        this->offset_48 += a3->offset_156.length();
+        result += this->compile(a3->offset_192);
+        return result;
     }
-    std::string NSCompileJs::compile_switch(night::ns_node *)
+    std::string NSCompileJs::compile_switch(night::ns_node *a3)
     {
-        return "";
+        std::string result = "";
+        result += "switch(";
+        this->offset_48 += 7;
+        result += this->compile(a3->offset_204);
+        result += "){";
+        this->offset_48 += 2;
+
+        auto v232 = a3->offset_232;
+        for (int i = 0; i < v232->size(); i++)
+        {
+            result += "case ";
+            this->offset_48 += 5;
+            result += this->compile(v232->at(i));
+            result.append(":");
+            this->offset_48++;
+            auto v6 = a3->offset_236->at(i);
+            for (int j = 0; j < v6->size(); j++)
+            {
+                auto v8 = v6->at(j);
+                result += this->compile(v8);
+                result += ";";
+                this->offset_48++;
+            }
+        }
+
+        // 240
+        for (int i = 0; i < a3->offset_240->size(); i++)
+        {
+            if (!i)
+            {
+                result += "default:";
+                this->offset_48 += 8;
+            }
+            auto v10 = a3->offset_240->at(i);
+            result += this->compile(v10);
+            result.append(";");
+            this->offset_48++;
+        }
+        result += "}";
+        this->offset_48++;
+        
+        return result;
     }
     std::string NSCompileJs::compile_ternary(night::ns_node *a3)
     {
@@ -181,9 +269,41 @@ namespace night
         result += this->compile(a3->offset_184);
         return result;
     }
-    std::string NSCompileJs::compile_var(night::ns_node *)
+    std::string NSCompileJs::compile_var(night::ns_node *a3)
     {
-        return "";
+        std::string result = "";
+        if (a3->offset_56)
+        {
+            result = "var ";
+        }
+        this->offset_48 += result.length();
+        std::string v11 = a3->offset_60.substr(0, 3);
+        bool v6 = false;
+        if (
+            v11 != night::nsv_
+            && "return" != a3->offset_60
+            && "delete" != a3->offset_60
+        )
+        {
+            v6 = "void" != a3->offset_60;
+        }
+        if (v6)
+        {
+            throw "error : sys error for compile_var `" + a3->offset_60 + "`";
+        }
+        night::ns_sourcemap _v11;
+        _v11.offset_0 = a3->offset_24;
+        _v11.offset_24 = a3->offset_48;
+        _v11.offset_28 = a3->offset_52;
+        _v11.offset_32 = a3->offset_60;
+        _v11.offset_56 = a3->offset_48;
+        _v11.offset_60 = a3->offset_48;
+        this->offset_36.push_back(_v11);
+
+        this->offset_48 += a3->offset_60.length();
+        result += a3->offset_60;
+
+        return result;
     }
     std::string NSCompileJs::compile_while(night::ns_node * a3)
     {
@@ -395,7 +515,7 @@ namespace night
             printf("ast :%s\n", ret.data());
         }
         std::string v9 = this->compile(v5);
-        a3 = v9;
+        a3.assign(v9);
         return this->offset_0;
     }
 
