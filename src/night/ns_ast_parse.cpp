@@ -513,6 +513,11 @@ namespace night
         auto binary_or_just_value = this->make_binary_or_just_value(v1, false);
         return this->make_call_or_just_expression(binary_or_just_value);
     }
+    night::ns_node *NSASTParse::ast_expression_no_binary()
+    {
+        auto v1 = this->ast_dispatch(false);
+        return this->make_call_or_just_expression(v1);
+    }
     
     night::ns_node *NSASTParse::ast_ternary_expression()
     {
@@ -539,8 +544,80 @@ namespace night
     }
     night::ns_node *NSASTParse::ast_var()
     {
-        printf("ast_var\n");
+        this->offset_28->next();
+        auto v17 = this->offset_24;
+        auto v16 = v17->gen_girl(night::std_v_n);
+
+        while (true)
+        {
+            auto v1 = this->offset_28;
+            auto v2 = v1->offset_4;
+            auto v9 = v2->offset_52;
+            auto v11 = v2->offset_56;
+
+            auto v18 = v1->next();
+            if (!v18)
+            {
+                std::string msg = "End of file";
+                this->offset_28->err(msg, 0, 0, false);
+            }
+            if (night::NS_TYPE_VAR != v18->offset_0)
+            {
+                std::string msg = "Expected variable name";
+                this->offset_28->err(msg, v9, v11, true);
+            }
+            v18->offset_56 = 1;
+            auto v3 = this->offset_28->peek();
+            if (v3 && "=" == v3->offset_60)
+            {
+                auto v26 = this->make_binary_or_just_value(v18, true);
+                v16->emplace_back(v26);
+            }
+            else
+            {
+                v16->push_back(v18);
+            }
+
+            auto v4 = this->offset_28;
+            auto v5 = v4->offset_4;
+            auto v10 = v5->offset_52;
+            auto v12 = v5->offset_56;
+            auto v14 = v4->peek();
+            if (!v14)
+            {
+                break;
+            }
+            auto v19 = v14->offset_60;
+            if (
+                ";" == v19
+                || "," != v19 && v14->offset_84.find("\n") != -1
+            )
+            {
+                break;
+            }
+            if (this->offset_28->eof())
+            {
+                std::string msg = "End of file";
+                this->offset_28->err(msg, 0, 0, false);
+            }
+            auto v7 = "," != v19;
+            if (v7)
+            {
+                std::string msg = "Unexpected token `" + v19 + "`";
+                this->offset_28->err(msg, v10, v12, true);
+            }
+            this->offset_28->next();
+        }
+        auto son = this->offset_24->gen_son(night::NS_TYPE_PROG);
+        son->offset_228 = v16;
+        son->offset_108 = "\0";
+        return son;
+        
     }
+
+    /**
+     * 未完成
+    */
     night::ns_node *NSASTParse::ast_trans_kw()
     {
         auto v1 = this->offset_28;
@@ -554,7 +631,7 @@ namespace night
         if ("true" == v43 || "false" == v43)
         {
             v3 = this->offset_24->gen_son(night::NS_TYPE_BOOL);
-            // goto LABEL_31;
+            goto LABEL_31;
         }
         if (
             "null" == v43
@@ -608,20 +685,87 @@ namespace night
         }
         if ("typeof" == v43)
         {
-            
+            auto son =this->offset_24->gen_son(night::NS_TYPE_OP_SELF);
+            son->offset_156 = v43 + " ";
+            auto v8 = this->ast_expression_no_binary();
+            son->offset_192 = v8;
+
+            if (!this->is_exp(v8))
+            {
+                std::string msg = "Unexpected statement[" + v8->offset_0 + "]";
+                this->offset_28->err(msg, v19, v20, true);
+            }
+            return son;
         }
         if ("this" == v43)
         {
-            
+            goto LABEL_30;
         }
         if ("arguments" != v43)
         {
+            if (v43 != "break" && "continue" != v43)
+            {
+                std::string msg = "Unexpected token `" + v43 + "`";
+                this->offset_28->err(msg, v19, v20, true);
+            }
+            if (
+                !v43.compare("break") && this->offset_36 <= 0
+                || !v43.compare("continue") && this->offset_40 <= 0
+            )
+            {
+                std::string msg = "Illegal " + v43 + " statement";
+                this->offset_28->err(msg, v19, v20, true);
+            }
+            bool v18 = this->end_line();
+            if (!v18)
+            {
+                if (!this->is_punctuation(";"))
+                {
+                    v18 = this->is_punctuation("}") == false;
+                }
+                if (v18)
+                {
+                    std::string msg = "Unexpected token after `" + v43 + "`";
+                    this->offset_28->err(msg, v19, v20, true);
+                }
+            }
             
+            auto son = this->offset_24->gen_son(night::NS_TYPE_KW);
+            son->offset_24.assign(v24->offset_24);
+            son->offset_48 = v24->offset_48;
+            son->offset_52 = v24->offset_52;
+            son->offset_60.assign(v43);
+            return son;
         }
         if (this->offset_32 < 0)
         {
-
+            std::string msg = "Illegal " + v43 + " statement";
+            this->offset_28->err(msg, v19, v20, true);
         }
+        LABEL_30:
+        v3 = this->offset_24->gen_son(night::NS_TYPE_KW);
+        LABEL_31:
+        auto lt = v3;
+        lt->offset_60.assign(v43);
+        lt->offset_24.assign(v24->offset_24);
+        lt->offset_48 = v24->offset_48;
+        lt->offset_52 = v24->offset_52;
+        auto v11 = this->offset_28->peek();
+        if (v11)
+        {
+            auto v26 = v11->offset_60;
+            if ("[" == v26)
+            {
+                auto v12 = this->ast_obj_op(lt);
+                return this->make_call_or_just_expression(v12);
+            }
+            if ("." == v26)
+            {
+                auto v12 = this->ast_obj_dot(lt);
+                return this->make_call_or_just_expression(v12);
+            }
+        }
+        return lt;
     }
 
     bool NSASTParse::is_punctuation(std::string const &a2)
@@ -641,6 +785,7 @@ namespace night
         }
         return true;
     }
+    
     bool NSASTParse::is_buildin_keywords(std::string const &a2)
     {
         auto v2 = this->offset_28->peek();
@@ -658,11 +803,93 @@ namespace night
         }
         return true;
     }
+    
     bool NSASTParse::is_save_for_division(night::ns_node *a2)
     {
+        bool result = false;
+        if (this->offset_0.length())
+        {
+            std::string v5 = this->offset_0;
+            if ( v5 != night::NS_TYPE_BOOL
+                && v5 != night::NS_TYPE_VAR
+                && v5 != night::NS_TYPE_NUM
+                && v5 != night::NS_TYPE_B_TYPE
+                && v5 != night::NS_TYPE_OP_SELF
+                && v5 != night::NS_TYPE_BINARY
+                && v5 != night::NS_TYPE_ASSIGN
+                && v5 != night::NS_TYPE_TERNARY
+                && v5 != night::NS_TYPE_OBJ_DOT
+                && v5 != night::NS_TYPE_OBJ_PROPERTY
+                && v5 != night::NS_TYPE_OBJ_SELF_OP
+                && v5 != night::NS_TYPE_OBJ_BLOCK
+                && v5 != night::NS_TYPE_BRACKET
+                && v5 != night::NS_TYPE_CALL )
+            {
+                bool v2 = v5 == night::NS_TYPE_KW;
+                if (!v2)
+                {
+                    return v2;
+                }
+                auto v3 = this->offset_60;
+                if (
+                    "null" != v3
+                    && "undefined" != v3
+                    && "NaN" != v3
+                )
+                {
+                    v2 = "Infinity" == v3;
+                    return v2;
+                }
+            }
+            return true;
+        }
+        return result;
     }
+
     bool NSASTParse::is_exp(night::ns_node *a2)
     {
+        bool result = false;
+        if (this->offset_0.length())
+        {
+            std::string v5 = this->offset_0;
+            if ( v5 != night::NS_TYPE_BOOL
+                && v5 != night::NS_TYPE_VAR
+                && v5 != night::NS_TYPE_STR
+                && v5 != night::NS_TYPE_NUM
+                && v5 != night::NS_TYPE_B_TYPE
+                && v5 != night::NS_TYPE_OP_SELF
+                && v5 != night::NS_TYPE_BINARY
+                && v5 != night::NS_TYPE_ASSIGN
+                && v5 != night::NS_TYPE_TERNARY
+                && v5 != night::NS_TYPE_OBJ_DOT
+                && v5 != night::NS_TYPE_OBJ_PROPERTY
+                && v5 != night::NS_TYPE_OBJ_SELF_OP
+                && v5 != night::NS_TYPE_OBJ_BLOCK
+                && v5 != night::NS_TYPE_ARRAY
+                && v5 != night::NS_TYPE_BRACKET
+                && v5 != night::NS_TYPE_PROG_NO_SEM_REQUIRE
+                && v5 != night::NS_TYPE_FUNC
+                && v5 != night::NS_TYPE_CALL )
+            {
+                bool v2 = v5 == night::NS_TYPE_KW;
+                if (!v2)
+                {
+                    return v2;
+                }
+                auto v3 = this->offset_60;
+                if (
+                    "null" != v3
+                    && "undefined" != v3
+                    && "NaN" != v3
+                )
+                {
+                    v2 = "Infinity" == v3;
+                    return v2;
+                }
+            }
+            return true;
+        }
+        return result;
     }
 
     night::ns_node *NSASTParse::top_down()
@@ -719,6 +946,16 @@ namespace night
         return son;
     }
 
+    bool NSASTParse::end_line(void)
+    {
+        auto v1 = this->offset_28->peek();
+        bool v2 = true;
+        if (v1)
+        {
+            v2 = v1->offset_84.find("\n") + 1 != 0;
+        }
+        return v2;
+    }
     night::ns_node *NSASTParse::ast_require()
     {
         auto v17 = this->offset_24->gen_girl(night::std_v_n);

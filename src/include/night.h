@@ -195,6 +195,7 @@ namespace night
         int offset_36 = 0;
         int offset_40 = 0;
         std::string offset_44;
+        std::string offset_60;
     public:
         NSASTParse(/* args */);
         NSASTParse(std::string, night::NSToken *, night::NSGod *);
@@ -222,7 +223,7 @@ namespace night
         night::ns_node * ast_var(void);
         night::ns_node * ast_varname(void);
         night::ns_node * ast_while(void);
-        void end_line(void);
+        bool end_line(void);
         void ignore_buildin_kw(std::string const&);
         void ignore_op(std::string const&);
         void ignore_punc(std::string const&);
