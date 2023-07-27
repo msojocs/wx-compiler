@@ -46,7 +46,7 @@ namespace night
                 {
                     v7 = this->read_string(v13.data, v14);
                 }
-                else if (v13.data - '0' > 9)
+                else if ((uint8_t)(v13.data - '0') > 9)
                 {
                     if (!night::NSToken::tk_is_var_start(v13.data, 0))
                     {
@@ -63,12 +63,13 @@ namespace night
                             }
                             std::string v15;
                             auto v17 = this->read_while(night::NSToken::tk_is_valid_op_str, (void *)&v15);
-                            auto v7 = this->offset_0->gen_son(night::NS_TYPE_OP);
-
+                            v7 = this->offset_0->gen_son(night::NS_TYPE_OP);
+                            v7->offset_60.assign(v17);
+                            v7->offset_84.assign(v14);
                         }
                         else
                         {
-                            auto v7 = this->offset_0->gen_son(night::NS_TYPE_PUNC);
+                            v7 = this->offset_0->gen_son(night::NS_TYPE_PUNC);
                             auto v19 = this->offset_4->next();
                             std::string v15(1, v19.data);
                             v7->offset_60 = v15;
@@ -96,7 +97,7 @@ namespace night
     night::ns_node* NSToken::next(void)
     {
         auto result = this->offset_8;
-        this->offset_8 = 0;
+        this->offset_8 = nullptr;
         if (!result)
         {
             return this->read_next();

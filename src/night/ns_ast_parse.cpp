@@ -50,50 +50,149 @@ namespace night
 
     night::ns_node *NSASTParse::ast_obj_block()
     {
+        throw "not implement";
     }
     night::ns_node *NSASTParse::ast_code_block()
     {
+        throw "not implement";
     }
     night::ns_node *NSASTParse::ast_new_array()
     {
+        throw "not implement";
     }
-    night::ns_node *NSASTParse::ast_obj_op_self(night::ns_node *)
+
+    night::ns_node *NSASTParse::ast_obj_op_self(night::ns_node *a2)
     {
+        auto v14 = this->offset_24;
+        auto v15 = v14->gen_son(night::NS_TYPE_OBJ_SELF_OP);
+        v15->offset_200 = a2 == nullptr;
+        v15->offset_156 = "";
+        v15->offset_192 = 0;
+        auto v2 = this->offset_28->next();
+        if (!v2)
+        {
+            std::string msg = "End of file";
+            this->offset_28->err(msg, 0, 0, false);
+        }
+        auto v3 = v2->offset_60;
+        auto v7 = v2->offset_84;
+        if (a2)
+        {
+            v15->offset_192 = a2;
+            v15->offset_156.assign(v3);
+            v15->offset_84.assign(v7);
+        }
+        else
+        {
+            v15->offset_156.assign(v3);
+            v15->offset_84.assign(v7);
+            auto v12 = this->offset_28->peek();
+            if (!v12)
+            {
+                std::string msg = "End of file";
+                this->offset_28->err(msg, 0, 0, false);
+            }
+            if (night::NS_TYPE_VAR != v12->offset_0)
+            {
+                std::string msg = "Unexpected token `" + v12->offset_60 + "`";
+                this->offset_28->err(msg, 0, 0, false);
+            }
+            auto v13 = this->ast_expression_no_comma();
+            if (night::NS_TYPE_OBJ_SELF_OP == v13->offset_0)
+            {
+                auto v10 = this->offset_24->gen_son(night::NS_TYPE_OP);
+                v10->offset_60.assign(v13->offset_156);
+                v10->offset_84.assign(v13->offset_84);
+                this->offset_28->push(v10);
+                v15->offset_192 = v13->offset_192;
+            }
+            else
+            {
+                v15->offset_192 = v13;
+            }
+        }
+        return v15;
     }
+
     night::ns_node *NSASTParse::ast_op_self()
     {
+        throw "not implement";
     }
     night::ns_node *NSASTParse::ast_if()
     {
+        throw "not implement";
     }
     night::ns_node *NSASTParse::ast_for()
     {
+        throw "not implement";
     }
     night::ns_node *NSASTParse::ast_while()
     {
+        throw "not implement";
     }
     night::ns_node *NSASTParse::ast_do_while()
     {
+        throw "not implement";
     }
     night::ns_node *NSASTParse::ast_switch()
     {
+        throw "not implement";
     }
-    bool NSASTParse::is_obj_op_self(bool)
+    bool NSASTParse::is_obj_op_self(bool a3)
     {
+        if (a3)
+        {
+            auto v3 = this->offset_28->peek();
+            if (v3)
+            {
+                if (v3->offset_84.find('\n') != -1)
+                {
+                    return 0;
+                }
+            }
+        }
+        bool result = true;
+        if (!this->is_op("++"))
+        {
+            result = this->is_op("--") != 0;
+        }
+        return result;
     }
-    bool NSASTParse::is_op_self(bool)
+    bool NSASTParse::is_op_self(bool a3)
     {
+        auto v3 = this->offset_28->peek();
+        if (!v3)
+        {
+            return false;
+        }
+        bool v6 = night::NS_TYPE_OP == v3->offset_0;
+        if (!v6)
+        {
+            return false;
+        }
+        if (v3->offset_60.find_first_not_of(night::NS_BUILTIN_OP_SELF) == -1)
+        {
+            return v6;
+        }
+        if (!a3 || night::NS_TYPE_OP != v3->offset_0)
+        {
+            return false;
+        }
+        if ("-" != v3->offset_60)
+        {
+            return "+" == v3->offset_60;
+        }
+        return v6;
     }
     night::ns_node *NSASTParse::ast_dispatch(bool a3)
     {
         // ast_dispatch - 0
-        auto v42 = this->is_punctuation("(\000)\000{");
+        auto v42 = this->is_punctuation("(");
         if (!v42)
         {
             auto v67 = this->offset_44;
             this->offset_44 = "";
-            const char asc_5527F4[] = "(\000)\000{";
-            auto v45 = this->is_punctuation("[");
+            auto v45 = this->is_punctuation("{");
             if (v45)
             {
                 auto v28 = this->offset_28->next();
@@ -264,7 +363,7 @@ namespace night
                     }
                 }
             } // end check for "true"
-            v21 = true;
+            // v21 = false;
             if (v21)
             {
                 auto v11 = this->ast_trans_kw();
@@ -366,7 +465,7 @@ namespace night
         auto v43 = this->offset_24;
         auto v44 = v43->gen_girl(night::std_v_n);
         auto v79 = v43->gen_son(night::NS_TYPE_PUNC);
-        v79->offset_60 = "(\000)\000{";
+        v79->offset_60 = "(";
         v44->push_back(v79);
         this->offset_28->next();
         auto v80 = this->ast_expression(); // 待确认
@@ -384,9 +483,9 @@ namespace night
             }
         }
         v44->push_back(v80);
-        this->ignore_punc(")\000{"); // 参数待确认
+        this->ignore_punc(")"); // 参数待确认
         v79 = this->offset_24->gen_son(night::NS_TYPE_PUNC);
-        v79->offset_60 = ")\000{";
+        v79->offset_60 = ")";
         v44->push_back(v79);
         v79 = this->offset_24->gen_son(night::NS_TYPE_BRACKET);
         v79->offset_228 = v44;
@@ -418,12 +517,12 @@ namespace night
         bool v18;
         if (a3)
         {
-            v21 = this->is_op("\0");
+            v21 = this->is_op("");
             v18 = a3;
         }
         else
         {
-            v21 = this->is_op_or_comma("\0");
+            v21 = this->is_op_or_comma("");
             v18 = false;
         }
         
@@ -489,6 +588,7 @@ namespace night
         }
         return a2;
     }
+
     night::ns_node *NSASTParse::make_call_or_just_expression(night::ns_node * a2)
     {
         if (
@@ -499,7 +599,7 @@ namespace night
             || a2->offset_132 == ""
             )
         {
-            if (this->is_punctuation("(\000)\000{"))
+            if (this->is_punctuation("("))
             {
                 a2 = this->ast_call(a2);
             }
@@ -524,9 +624,41 @@ namespace night
         printf("ast_ternary_expression\n");
     }
     
-    night::ns_node *NSASTParse::ast_obj_dot(night::ns_node*)
+    night::ns_node *NSASTParse::ast_obj_dot(night::ns_node* a2)
     {
-        printf("ast_obj_dot\n");
+        auto v11 = this->offset_24;
+        auto v9 = v11->gen_girl(night::std_v_n);
+        auto v10 = v11->gen_son(night::NS_TYPE_OBJ_DOT);
+        night::ns_node * v5 = nullptr;
+
+        v10->offset_192 = a2;
+        v10->offset_196 = v9;
+
+        do
+        {
+            this->ignore_punc(".");
+            auto v2 = this->offset_28;
+            auto v3 = v2->offset_4;
+            auto v7 = v3->offset_52;
+            auto v8 = v3->offset_56;
+            
+            auto v13 = v2->peek();
+            if (!v13)
+            {
+                std::string msg = "End of file";
+                this->offset_28->err(msg, 0, 0, false);
+            }
+            if (night::NS_TYPE_VAR != v13->offset_0)
+            {
+                std::string msg = "Unexpected token `" + v13->offset_60 + "`";
+                this->offset_28->err(msg, v7, v8, true);
+            }
+            auto v18 = this->ast_expression_no_comma();
+            v9->push_back(v18);
+            v5 = this->offset_28->peek();
+
+        } while (v5 && "." == v5->offset_60);
+        return v10;
     }
 
     night::ns_node *NSASTParse::ast_obj_op(night::ns_node*)
@@ -541,6 +673,12 @@ namespace night
     night::ns_node *NSASTParse::ast_function()
     {
         printf("ast_function\n");
+    }
+    night::ns_node *NSASTParse::ast_expression_no_comma()
+    {
+        auto v1 = this->ast_dispatch(false);
+        auto bojv = this->make_binary_or_just_value(v1, true);
+        return this->make_call_or_just_expression(bojv);
     }
     night::ns_node *NSASTParse::ast_var()
     {
@@ -610,7 +748,7 @@ namespace night
         }
         auto son = this->offset_24->gen_son(night::NS_TYPE_PROG);
         son->offset_228 = v16;
-        son->offset_108 = "\0";
+        son->offset_108 = "";
         return son;
         
     }
@@ -665,7 +803,7 @@ namespace night
             v21->offset_52 = v24->offset_52;
 
             auto v25 = this->offset_24->gen_girl(night::std_v_v_n);
-            auto lt = this->offset_24->gen_son(night::NS_TYPE_CALL);
+            night::ns_node * lt = this->offset_24->gen_son(night::NS_TYPE_CALL);
             lt->offset_220 = v21;
             // lt->offset_224 = v25; // TODO...
             auto v5 = this->offset_28->peek();
@@ -721,7 +859,7 @@ namespace night
             {
                 if (!this->is_punctuation(";"))
                 {
-                    v18 = this->is_punctuation("}") == false;
+                    v18 = this->is_punctuation("}") == nullptr;
                 }
                 if (v18)
                 {
@@ -768,7 +906,7 @@ namespace night
         return lt;
     }
 
-    bool NSASTParse::is_punctuation(std::string const &a2)
+    night::ns_node * NSASTParse::is_punctuation(std::string const &a2)
     {
         auto v2 = this->offset_28->peek();
         if (v2)
@@ -776,14 +914,14 @@ namespace night
             if (night::NS_TYPE_PUNC == v2->offset_0)
             {
                 if (a2 != v2->offset_60)
-                    return 0;
+                    return nullptr;
             }
             else
             {
-                return 0;
+                return nullptr;
             }
         }
-        return true;
+        return v2;
     }
     
     bool NSASTParse::is_buildin_keywords(std::string const &a2)
@@ -849,9 +987,9 @@ namespace night
     bool NSASTParse::is_exp(night::ns_node *a2)
     {
         bool result = false;
-        if (this->offset_0.length())
+        if (a2->offset_0.length())
         {
-            std::string v5 = this->offset_0;
+            std::string v5 = a2->offset_0;
             if ( v5 != night::NS_TYPE_BOOL
                 && v5 != night::NS_TYPE_VAR
                 && v5 != night::NS_TYPE_STR
@@ -876,7 +1014,7 @@ namespace night
                 {
                     return v2;
                 }
-                auto v3 = this->offset_60;
+                auto v3 = a2->offset_60;
                 if (
                     "null" != v3
                     && "undefined" != v3
@@ -941,7 +1079,7 @@ namespace night
         }
         auto son = this->offset_24->gen_son(night::NS_TYPE_PROG);
         son->offset_228 = v6;
-        son->offset_108 = "\0";
+        son->offset_108 = "";
 
         return son;
     }
@@ -964,7 +1102,7 @@ namespace night
         v17->push_back(v22);
 
         v22 = this->offset_24->gen_son(night::NS_TYPE_PUNC);
-        v22->offset_60 = "(\000)\000{";
+        v22->offset_60 = "(";
         v17->push_back(v22);
         this->offset_28->next();
         auto v2 = this->offset_28->offset_4;
@@ -992,7 +1130,7 @@ namespace night
         this->offset_28->next();
         auto v13 = this->offset_24;
         v22 = v13->gen_son(night::NS_TYPE_PUNC);
-        v22->offset_60 = "(\000)\000{";
+        v22->offset_60 = "(";
         v17->push_back(v22);
 
         auto v14 = this->offset_24;
@@ -1003,7 +1141,7 @@ namespace night
         auto v15 = this->offset_24;
         v22 = v15->gen_son(night::NS_TYPE_PROG_NO_SEM_REQUIRE);
         v22->offset_228 = v17;
-        v22->offset_108 = "\0";
+        v22->offset_108 = "";
 
         auto v5 = this->offset_28->peek();
         if (!v5)

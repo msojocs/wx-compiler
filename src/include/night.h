@@ -50,6 +50,7 @@ namespace night
     extern std::string NS_BUILTIN_ALL_OP;
     extern std::string NS_BUILTIN_TYPE;
     extern std::string NS_BUILTIN_KW;
+    extern std::string NS_BUILTIN_OP_SELF;
 
     int compile_ns(std::string const&,std::string const&,std::string const&,uint,std::string&,bool);
     void compile_ns_with_sourcemap(std::string const&,std::string const&,std::string const&,std::string const&,uint,std::string&,std::string&);
@@ -82,15 +83,31 @@ namespace night
         night::ns_node * offset_212 = nullptr;
         night::ns_node * offset_216 = nullptr;
         night::ns_node * offset_220 = nullptr;
-        std::vector<std::vector<night::ns_node *>*> offset_224;
+
+        /**
+         * 分析内存，两层vector
+        */
+        std::vector<std::vector<night::ns_node *>*>* offset_224 = nullptr;
+
         std::vector<night::ns_node *>* offset_228 = nullptr;
         std::vector<night::ns_node *>* offset_232 = nullptr;
         std::vector<std::vector<night::ns_node *>*>* offset_236 = nullptr;
         std::vector<night::ns_node *>* offset_240 = nullptr;
+        std::vector<night::ns_node *>* offset_244 = nullptr;
         ns_node(/* args */);
         ~ns_node();
         std::string debug_no_space(void);
     };
+
+    // class GodsSon
+    // {
+    // private:
+    //     /* data */
+    // public:
+    //     std::string offset_0;
+
+    // };
+    
     
     class NSGod
     {
@@ -103,6 +120,7 @@ namespace night
             {
                 /* data */
                 std::vector<night::ns_node *>* offset_24_vec = nullptr;
+                std::vector<std::vector<night::ns_node *>*>* offset_24_vecVec;
                 night::ns_node * offset_24_node;
             };
             
@@ -128,10 +146,10 @@ namespace night
     {
     private:
         /* data */
-        std::string offset_24;
-        int offset_48 = 0;
     public:
         std::string offset_0;
+        std::string offset_24;
+        int offset_48 = 0;
         int offset_52 = 0; // 当前行数
         int offset_56 = 0; // 当前行第几个字符位置
         NSStream(/* args */);
@@ -243,7 +261,7 @@ namespace night
         /**
          * 是否是标点符号（punctuation）
         */
-        bool is_punctuation(std::string const&);
+        night::ns_node * is_punctuation(std::string const&);
         bool is_save_for_division(night::ns_node *);
         night::ns_node * make_binary_or_just_value(night::ns_node *,bool);
         night::ns_node * make_call_or_just_expression(night::ns_node *);
@@ -263,6 +281,9 @@ namespace night
     {
     private:
         /* data */
+        /*
+        大小：64byte
+        */
     public:
         std::string offset_0;
         int offset_24;

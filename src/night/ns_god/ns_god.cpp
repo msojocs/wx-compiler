@@ -24,7 +24,7 @@ namespace night
             node->offset_24_vec = new std::vector<night::ns_node *>();
         }
         this->offset_0.push_back(node);
-        return node->offset_24_vec;
+        return node->offset_24_vec; // 审查内存，是一层vector
     }
 
     night::ns_node* NSGod::gen_son(std::string a2)

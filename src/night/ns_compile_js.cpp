@@ -22,10 +22,10 @@ namespace night
         std::string v3 = v10.append(" ");
         this->offset_48 += v3.length();
 
-        this->compile(a3->offset_184);
-        // v10 = v7 + v8;
+        std::string v7 = this->compile(a3->offset_184);
         std::string v4 = "";
-        // v4 = v10.append(v9);
+        v4 = v7 + v3;
+        // v4.append(v9);
         return v4;
     }
     std::string NSCompileJs::compile_call(night::ns_node *a3)
@@ -37,9 +37,9 @@ namespace night
             auto v3 = a3->offset_224;
             for (int i = 0; ; i++)
             {
-                if (i >= v3.size())
+                if (i >= v3->size())
                     break;
-                auto v4 = v3.at(i);
+                auto v4 = v3->at(i);
                 if (v4->begin() != v4->end())
                 {
                     if (
@@ -47,7 +47,7 @@ namespace night
                         || (v4->at(0)->offset_0 != night::NS_TYPE_SKIP)
                     )
                     {
-                        str += "(\000)\000{"; // 待确认
+                        str += "("; // 待确认
 
                         this->offset_48++;
                         for (int v19 = 0; v19 < v4->size(); v19++)
@@ -70,11 +70,11 @@ namespace night
         }
         else
         {
-            for (int i = 0; i < a3->offset_224.size(); i++)
+            for (int i = 0; i < a3->offset_224->size(); i++)
             {
-                str += "(\000)\000{";
+                str += "(";
                 this->offset_48++;
-                auto v12 = a3->offset_224[i];
+                auto v12 = a3->offset_224->at(i);
                 for (int j = 0; j < v12->size(); j++)
                 {
                     str += this->compile(v12->at(j));
@@ -136,8 +136,138 @@ namespace night
     }
     std::string NSCompileJs::compile_function(night::ns_node *a3)
     {
+        // compile_function - 0
         std::string result = "";
-        // TODO...
+        if (a3->offset_132.length())
+        {
+            result += "function ";
+            this->offset_48 += 9;
+
+            night::ns_sourcemap v43;
+            v43.offset_0.assign(a3->offset_24);
+            v43.offset_24 = a3->offset_48;
+            v43.offset_28 = a3->offset_52;
+            v43.offset_32.assign(a3->offset_132);
+            v43.offset_56 = a3->offset_48;
+            v43.offset_60 = this->offset_48;
+
+            this->offset_36.push_back(v43);
+            result += a3->offset_132;
+            this->offset_48 += a3->offset_132.length();
+
+        }
+        else
+        {
+            result += "(function ";
+            this->offset_48 += 10;
+        }
+        // compile_function - 5
+        result += "(";
+        this->offset_48++;
+        auto v4 = a3->offset_244;
+        bool v29 = false;
+        for (int i = 0; i < v4->size(); i++)
+        {
+            auto v5 = v4->at(i);
+            if (night::NS_TYPE_VAR == v5->offset_0)
+            {
+                result += v5->offset_60;
+                this->offset_48 += v5->offset_60.length();
+            }
+            else
+            {
+                result += v5->offset_180->offset_60;
+                v29 = true;
+                this->offset_48 += v5->offset_180->offset_60.length();
+            }
+            if (i + 1 != v4->size())
+            {
+                result += ",";
+                this->offset_48++;
+            }
+        }
+        // compile_function - 10
+        result += 5580790;
+        this->offset_48++;
+        if (v29)
+        {
+            result += 5580792;
+            this->offset_48++;
+            auto v10 = a3->offset_244;
+            for (int i = 0; i < v10->size(); i++)
+            {
+                auto cur = v10->at(i);
+                if (night::NS_TYPE_ASSIGN == cur->offset_0)
+                {
+                    std::string v41 = cur->offset_180->offset_60;
+                    v41.append("=undefined===");
+                    v41.append(v41);
+                    v41.append("?");
+                    result += v41;
+                    this->offset_48 += v41.length();
+
+                    result += this->compile(cur->offset_184);
+                    std::string v43 = ":" + cur->offset_180->offset_60;
+                    v43.append(";");
+                    result += v43;
+                    this->offset_48 += v43.length();
+                }
+            }
+            
+        }
+        // compile_function - 15
+        std::string v37 = this->compile(a3->offset_216);
+        std::string v38;
+        if (v29)
+        {
+            std::string v38;
+            if (v37.find("arguments") != -1)
+            {
+                std::string v41 = "arguments." + night::nsv_;
+                v41.append("length=arguments.length;");
+                v38 = v41;
+                result += v38;
+                this->offset_48 += v38.length();
+            }
+            result += v37.substr(1);
+            this->offset_48--;
+            for (int i = 0; i < this->offset_36.size(); i++)
+            {
+                auto v18 = this->offset_36[i];
+                auto v27 = v38.length() + v18.offset_60 - 1;
+                v18.offset_60 = v27;
+            }
+
+            goto LABEL_31;
+        }
+        // compile_function - 20
+        if (v37.find("arguments") != -1)
+        {
+            std::string v41 = "{arguments." + night::nsv_;
+            v41.append("length=arguments.length;");
+            v38 = v41;
+            result += v38;
+            this->offset_48 += v38.length();
+
+            result += v37.substr(1);
+            this->offset_48--;
+            for (int i = 0; i < this->offset_36.size(); i++)
+            {
+                auto v18 = this->offset_36[i];
+                auto v27 = v38.length() + v18.offset_60 - 1;
+                v18.offset_60 = v27;
+            }
+            goto LABEL_31;
+        }
+
+        // compile_function - 25
+        result += v37;
+        LABEL_31:
+        if (!a3->offset_132.length())
+        {
+            result += 5580790;
+            this->offset_48++;
+        }
         return result;
     }
     std::string NSCompileJs::compile_if(night::ns_node *a3)
@@ -347,7 +477,7 @@ namespace night
         std::string result = "";
         if (night::NS_TYPE_OBJ_BLOCK == a3->offset_0)
         {
-            result += "(\000)\000{";
+            result += "(";
             this->offset_48++;
         }
         for (auto i = a3->offset_228->begin(); i != a3->offset_228->end(); i++)
