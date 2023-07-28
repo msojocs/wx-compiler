@@ -50,11 +50,122 @@ namespace night
 
     night::ns_node *NSASTParse::ast_obj_block()
     {
-        throw "not implement";
+        auto v13 = this->offset_24;
+        auto v12 = v13->gen_girl(night::std_v_n);
+        this->ignore_punc("{");
+
+        auto v25 = v13->gen_son(night::NS_TYPE_PUNC);
+        v25->offset_60 = "{";
+        v12.vec->push_back(v25);
+        auto v15 = this->is_punctuation("}");
+
+        auto v1 = v15 == nullptr;
+
+        LABEL_2:
+        if (v1)
+        {
+            while(true)
+            {
+                auto v2 = this->offset_28->next();
+                if (
+                    !v2
+                    || night::NS_TYPE_VAR != v2->offset_0
+                    && night::NS_TYPE_STR != v2->offset_0
+                )
+                {
+                    std::string msg = "Expected variable|string";
+                    this->offset_28->err(msg, 0, 0, false);
+                }
+                if (night::NS_TYPE_STR == v2->offset_0)
+                {
+                    std::string v26 = night::nsv_ + v2->offset_60;
+                    v2->offset_60 = v26;
+                }
+                this->ignore_punc(":");
+                auto v10 = this->ast_expression_no_comma();
+                v25 = this->offset_24->gen_son(night::NS_TYPE_K_V);
+                v25->offset_188 = v2;
+                v25->offset_192 = v10;
+                v12.vec->push_back(v25);
+
+                auto v4 = this->offset_28->peek();
+                if (!v4)
+                {
+                    std::string msg = "Expected variable|string";
+                    this->offset_28->err(msg, 0, 0, false);
+                }
+                if ("}" == v4->offset_60)
+                {
+                    break;
+                }
+                if ("," == v4->offset_60)
+                {
+                    this->offset_28->next();
+                    auto v5 = this->offset_28->peek();
+                    if (!v5)
+                    {
+                        std::string msg = "Expected variable|string";
+                        this->offset_28->err(msg, 0, 0, false);
+                    }
+                    v1 = "}" != v5->offset_60;
+                    goto LABEL_2;
+                }
+            }
+        }
+
+        this->ignore_punc("}");
+
+        v25 = this->offset_24->gen_son(night::NS_TYPE_PUNC);
+        v25->offset_60 = "}";
+        v12.vec->push_back(v25);
+
+        v25 = this->offset_24->gen_son(night::NS_TYPE_OBJ_BLOCK);
+        v25->offset_228 = v12.vec;
+        v25->offset_108 = "";
+
+        auto v7 = this->offset_28->peek();
+        if (!v7)
+        {
+            return this->make_call_or_just_expression(v25);
+        }
+        if ("[" != v7->offset_60)
+        {
+            if ("." == v7->offset_60)
+            {
+                auto v8 = this->ast_obj_dot(v25);
+                return this->make_call_or_just_expression(v8);
+            }
+            return this->make_call_or_just_expression(v25);
+        }
+        auto v8 = this->ast_obj_op(v25);
+        return this->make_call_or_just_expression(v8);
+
+        // throw "not implement";
     }
     night::ns_node *NSASTParse::ast_code_block()
     {
-        throw "not implement";
+        auto lbp = this->make_list_by_parser("{", "}", ";", "ast_expression", true, -1, "");
+        auto v10 = this->offset_24->gen_girl(night::std_v_n);
+        auto v15 = this->offset_24->gen_son(night::NS_TYPE_PUNC);
+        v15->offset_60 = "{";
+        v10.vec->push_back(v15);
+
+        if (lbp->begin() != lbp->end())
+        {
+            v15 = this->offset_24->gen_son(night::NS_TYPE_PROG);
+            v15->offset_228 = lbp;
+            v15->offset_108 = "";
+            v10.vec->push_back(v15);
+        }
+        v15 = this->offset_24->gen_son(night::NS_TYPE_PUNC);
+        v15->offset_60 = "}";
+        v10.vec->push_back(v15);
+
+        v15 = this->offset_24->gen_son(night::NS_TYPE_PROG_NO_SEM);
+        v15->offset_228 = v10.vec;
+        v15->offset_108 = "";
+        
+        return this->make_call_or_just_expression(v15);
     }
     night::ns_node *NSASTParse::ast_new_array()
     {
@@ -466,7 +577,7 @@ namespace night
         auto v44 = v43->gen_girl(night::std_v_n);
         auto v79 = v43->gen_son(night::NS_TYPE_PUNC);
         v79->offset_60 = "(";
-        v44->push_back(v79);
+        v44.vec->push_back(v79);
         this->offset_28->next();
         auto v80 = this->ast_expression(); // 待确认
         // ast_dispatch - 10
@@ -482,13 +593,13 @@ namespace night
                 this->offset_28->err(v81, v27, v30, 1);
             }
         }
-        v44->push_back(v80);
+        v44.vec->push_back(v80);
         this->ignore_punc(")"); // 参数待确认
         v79 = this->offset_24->gen_son(night::NS_TYPE_PUNC);
         v79->offset_60 = ")";
-        v44->push_back(v79);
+        v44.vec->push_back(v79);
         v79 = this->offset_24->gen_son(night::NS_TYPE_BRACKET);
-        v79->offset_228 = v44;
+        v79->offset_228 = v44.vec;
         v79->offset_108 = "";
         auto v6 = this->offset_28->peek();
         // ast_dispatch - 15
@@ -509,6 +620,76 @@ namespace night
         }
         // ast_dispatch - 20
         return this->make_call_or_just_expression(v79);
+    }
+    
+    std::vector<night::ns_node *>* NSASTParse::make_list_by_parser(
+        std::string const& a2,
+        std::string const& a3,
+        std::string const& a4,
+        std::string const& a5,
+        bool a6,
+        int a7,
+        std::string a8
+        )
+    {
+        auto v18 = this->offset_24->gen_girl(night::std_v_n);
+        this->ignore_punc(a2);
+        int v14 = 0;
+        for (int i = 1; !this->offset_28->eof() && ! this->is_punctuation(a3); i = 0)
+        {
+            if (!i)
+            {
+                if (a6)
+                {
+                    this->ignore_punc_pass_sem(a4);
+                }
+                else
+                {
+                    this->ignore_punc(a4);
+                }
+                v14++;
+            }
+            if (this->is_punctuation(a3))
+            {
+                break;
+            }
+            if ("ast_expression_no_comma" == a5)
+            {
+                if ("ast_new_array" == a8)
+                {
+                    if (this->is_punctuation(a4))
+                    {
+                        auto v20 = this->offset_24->gen_son(night::NS_TYPE_SKIP);
+                        v18.vec->push_back(v20);
+                        continue;
+                    }
+                }
+                auto v20 = this->ast_expression_no_comma();
+                v18.vec->push_back(v20);
+            }
+            else if ("ast_expression" == a5)
+            {
+                auto v20 = this->ast_expression();
+                v18.vec->push_back(v20);
+            }
+            else
+            {
+                if ("ast_varname" != a5)
+                {
+                    v18.vec->push_back(nullptr); // TODO...待确认
+                    continue;
+                }
+                auto v20 = this->ast_varname();
+                v18.vec->push_back(v20);
+            }
+        }
+        if (a7 != -1 && v14 != a7)
+        {
+            return 0;
+        }
+        this->ignore_punc(a3);
+        return v18.vec;
+        
     }
 
     night::ns_node *NSASTParse::make_binary_or_just_value(night::ns_node * a2, bool a3)
@@ -621,7 +802,7 @@ namespace night
     
     night::ns_node *NSASTParse::ast_ternary_expression()
     {
-        printf("ast_ternary_expression\n");
+        throw "not implement";
     }
     
     night::ns_node *NSASTParse::ast_obj_dot(night::ns_node* a2)
@@ -632,7 +813,7 @@ namespace night
         night::ns_node * v5 = nullptr;
 
         v10->offset_192 = a2;
-        v10->offset_196 = v9;
+        v10->offset_196 = v9.vec;
 
         do
         {
@@ -654,7 +835,7 @@ namespace night
                 this->offset_28->err(msg, v7, v8, true);
             }
             auto v18 = this->ast_expression_no_comma();
-            v9->push_back(v18);
+            v9.vec->push_back(v18);
             v5 = this->offset_28->peek();
 
         } while (v5 && "." == v5->offset_60);
@@ -663,16 +844,85 @@ namespace night
 
     night::ns_node *NSASTParse::ast_obj_op(night::ns_node*)
     {
-        printf("ast_obj_op\n");
+        throw "not implement";
     }
 
-    night::ns_node *NSASTParse::ast_call(night::ns_node*)
+    night::ns_node *NSASTParse::ast_call(night::ns_node* a2)
     {
-        printf("ast_call\n");
+        auto v10 = this->offset_24->gen_girl(night::std_v_v_n);
+        auto v15 = this->offset_24->gen_son(night::NS_TYPE_CALL);
+        v15->offset_220 = a2;
+        v15->offset_224 = v10.vecVec;
+
+        auto v8 = this->offset_28->peek();
+        auto v7 = this->is_punctuation("(");
+        if (!v7)
+        {
+            this->offset_28->err("Unexpected token `" + v8->offset_60 + "`", 0, 0, false);
+        }
+        auto lbp = this->make_list_by_parser("(", ")", ",", "ast_expression_no_comma", false, -1, "");
+        
+        std::vector<night::ns_node *> * v19;
+        for (auto i = lbp; ; i = v19)
+        {
+            v10.vecVec->push_back(i);
+            if (!this->is_punctuation("("))
+            {
+                break;
+            }
+            v19 = this->make_list_by_parser("(", ")", ",", "ast_expression_no_comma", false, -1, "");
+        }
+        auto v4 = this->offset_28->peek();
+        if (v4)
+        {
+            night::ns_node * v5;
+            if ("[" == v4->offset_60)
+            {
+                this->ast_obj_op(v15);
+                v5 = this->is_punctuation("(");
+            }
+            else
+            {
+                if ("." != v4->offset_60)
+                {
+                    return v15;
+                }
+                v15 = this->ast_obj_dot(v15);
+                v5 = this->is_punctuation("(");
+            }
+            if (v5)
+            {
+                return this->ast_call(v15);
+            }
+        }
+        return v15;
     }
     night::ns_node *NSASTParse::ast_function()
     {
-        printf("ast_function\n");
+        auto god = this->offset_24;
+        auto son = god->gen_son(night::NS_TYPE_FUNC);
+        son->offset_0.assign(night::NS_TYPE_FUNC);
+        this->offset_28->next();
+        auto v3 = this->offset_28->peek();
+
+        if (v3 && night::NS_TYPE_VAR == v3->offset_0)
+        {
+            son->offset_132.assign(v3->offset_60);
+            son->offset_24.assign(v3->offset_24);
+            son->offset_48 = v3->offset_48;
+            son->offset_52 = v3->offset_52;
+            this->offset_28->next();
+        }
+        else
+        {
+            son->offset_132 = "";
+        }
+
+        son->offset_244 = this->make_list_by_parser("(", ")", ",", "ast_varname", false, -1, "");
+        this->offset_32++;
+        son->offset_216 = this->ast_code_block();
+        this->offset_32--;
+        return son;
     }
     night::ns_node *NSASTParse::ast_expression_no_comma()
     {
@@ -709,11 +959,11 @@ namespace night
             if (v3 && "=" == v3->offset_60)
             {
                 auto v26 = this->make_binary_or_just_value(v18, true);
-                v16->emplace_back(v26);
+                v16.vec->emplace_back(v26);
             }
             else
             {
-                v16->push_back(v18);
+                v16.vec->push_back(v18);
             }
 
             auto v4 = this->offset_28;
@@ -747,12 +997,27 @@ namespace night
             this->offset_28->next();
         }
         auto son = this->offset_24->gen_son(night::NS_TYPE_PROG);
-        son->offset_228 = v16;
+        son->offset_228 = v16.vec;
         son->offset_108 = "";
         return son;
         
     }
 
+    night::ns_node *NSASTParse::ast_varname()
+    {
+        auto v1 = this->offset_28->offset_4;
+        auto v4 = v1->offset_52;
+        auto v5 = v1->offset_56;
+        auto t = this->ast_expression_no_comma();
+        if (
+            (night::NS_TYPE_ASSIGN != t->offset_0 || night::NS_TYPE_VAR != t->offset_180->offset_0)
+            && night::NS_TYPE_VAR != t->offset_0
+        )
+        {
+            this->offset_28->err("Expected variable", v4, v5, true);
+        }
+        return t;
+    }
     /**
      * 未完成
     */
@@ -810,13 +1075,13 @@ namespace night
             std::vector<night::ns_node *> * v44;
             if (v5 && v5->offset_84.find('\n') == -1)
             {
-                v44 = this->offset_24->gen_girl(night::std_v_n);
+                v44 = this->offset_24->gen_girl(night::std_v_n).vec;
                 auto v45 = this->ast_expression(); // TODO...待确认
                 v44->emplace_back(v45);
             }
             else
             {
-                v44 = this->offset_24->gen_girl(night::std_v_n);
+                v44 = this->offset_24->gen_girl(night::std_v_n).vec;
             }
             // v25->push_back(v44);
             return lt;
@@ -945,9 +1210,9 @@ namespace night
     bool NSASTParse::is_save_for_division(night::ns_node *a2)
     {
         bool result = false;
-        if (this->offset_0.length())
+        if (a2->offset_0.length())
         {
-            std::string v5 = this->offset_0;
+            std::string v5 = a2->offset_0;
             if ( v5 != night::NS_TYPE_BOOL
                 && v5 != night::NS_TYPE_VAR
                 && v5 != night::NS_TYPE_NUM
@@ -1036,7 +1301,7 @@ namespace night
         while (!this->offset_28->eof())
         {
             auto v16 = this->ast_expression();
-            v6->push_back(v16);
+            v6.vec->push_back(v16);
             auto v7 = this->offset_28;
             auto v1 = v7->offset_4;
             auto v5 = v1->offset_56;
@@ -1078,7 +1343,7 @@ namespace night
             }
         }
         auto son = this->offset_24->gen_son(night::NS_TYPE_PROG);
-        son->offset_228 = v6;
+        son->offset_228 = v6.vec;
         son->offset_108 = "";
 
         return son;
@@ -1099,11 +1364,11 @@ namespace night
         auto v17 = this->offset_24->gen_girl(night::std_v_n);
         auto v22 = this->offset_28->next();
         v22->offset_60 = night::nsv_ + v22->offset_60;
-        v17->push_back(v22);
+        v17.vec->push_back(v22);
 
         v22 = this->offset_24->gen_son(night::NS_TYPE_PUNC);
         v22->offset_60 = "(";
-        v17->push_back(v22);
+        v17.vec->push_back(v22);
         this->offset_28->next();
         auto v2 = this->offset_28->offset_4;
         int v8 = v2->offset_52;
@@ -1121,26 +1386,26 @@ namespace night
         }
         std::string v26 = "p_" + v24;
         v3->offset_60 = v26;
-        v17->push_back(v3);
+        v17.vec->push_back(v3);
 
         v22 = this->offset_24->gen_son(night::NS_TYPE_PUNC);
         v22->offset_60 = ")\000{";
-        v17->push_back(v22);
+        v17.vec->push_back(v22);
 
         this->offset_28->next();
         auto v13 = this->offset_24;
         v22 = v13->gen_son(night::NS_TYPE_PUNC);
         v22->offset_60 = "(";
-        v17->push_back(v22);
+        v17.vec->push_back(v22);
 
         auto v14 = this->offset_24;
         v22 = v14->gen_son(night::NS_TYPE_PUNC);
         v22->offset_60 = ")\000{";
-        v17->push_back(v22);
+        v17.vec->push_back(v22);
 
         auto v15 = this->offset_24;
         v22 = v15->gen_son(night::NS_TYPE_PROG_NO_SEM_REQUIRE);
-        v22->offset_228 = v17;
+        v22->offset_228 = v17.vec;
         v22->offset_108 = "";
 
         auto v5 = this->offset_28->peek();
@@ -1160,6 +1425,40 @@ namespace night
         return this->make_call_or_just_expression(v6);
     }
     
+    void NSASTParse::ignore_punc_pass_sem(std::string const& a2)
+    {
+        std::string v9;
+        int v6 = 0;
+        if (this->is_punctuation(a2))
+        {
+            this->offset_28->next();
+        }
+        else if (";" != a2)
+        {
+            auto v4 = this->offset_28->peek();
+            if (v4)
+            {
+                auto v3 = v4->offset_60;
+                auto v11 = v3.substr(0, 3);
+                if (v3.length() > 3 && v11 == night::nsv_)
+                {
+                    v11 = v3.substr(3);
+                    v9 = v11;
+                }
+                else
+                {
+                    v9.assign(v3);
+                }
+                v6 = v9.length();
+            }
+            else
+            {
+                v6 = 0;
+            }
+            std::string msg = "Unexpected identifier `" + v9 + "`";
+            this->offset_28->err(msg, 0, v6, false);
+        }
+    }
     void NSASTParse::ignore_punc(std::string const& a2)
     {
         if (!this->is_punctuation(a2))

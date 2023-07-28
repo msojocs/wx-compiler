@@ -129,7 +129,7 @@ namespace night
     }
     void NSToken::read_comment_method_2()
     {
-        this->read_while(night::NSToken::tk_is_comment2, &this->offset_4);
+        this->read_while(night::NSToken::tk_is_comment2, this->offset_4);
         this->offset_4->next();
     }
 
@@ -160,7 +160,7 @@ namespace night
             else
             {
                 v5 = this->offset_4->peek_2();
-                if (v5.data == '*')
+                if (v5.data != '*')
                     return;
                 v5 = this->offset_4->next();
                 v5 = this->offset_4->next();
@@ -184,8 +184,8 @@ namespace night
             {
                 break;
             }
-            auto v9 = this->offset_4->eof();
-            if ( v9 == '\n')
+            auto v9 = this->offset_4->next();
+            if ( v9.data == '\n')
             {
                 if (!i)
                 {
@@ -197,18 +197,18 @@ namespace night
             {
                 if (!i)
                 {
-                    if (v9 == '\\')
+                    if (v9.data == '\\')
                     {
                         v4 = 1;
                         v10.push_back('\\');
                         continue;
                     }
-                    if (v9 == a2)
+                    if (v9.data == a2)
                     {
                         break;
                     }
                 }
-                v10.push_back(v9);
+                v10.push_back(v9.data);
             }
         }
         auto son = this->offset_0->gen_son(night::NS_TYPE_STR);
@@ -217,7 +217,6 @@ namespace night
         son->offset_108.replace(0, son->offset_108.length(), 1, a2);
         son->offset_84.assign(a3);
         return son;
-
     }
 
     night::ns_node * NSToken::read_number(std::string const& a2)

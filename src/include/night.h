@@ -116,13 +116,14 @@ namespace night
     public:
         struct GodsSon {
             std::string offset_0;
-            union 
+            union Offset24
             {
                 /* data */
-                std::vector<night::ns_node *>* offset_24_vec = nullptr;
-                std::vector<std::vector<night::ns_node *>*>* offset_24_vecVec;
-                night::ns_node * offset_24_node;
+                std::vector<night::ns_node *>* vec = nullptr;
+                std::vector<std::vector<night::ns_node *>*>* vecVec;
+                night::ns_node * node;
             };
+            Offset24 offset_24;
             
             // std::vector<night::ns_node *>* offset_24;
             
@@ -130,7 +131,7 @@ namespace night
         std::vector<night::NSGod::GodsSon *> offset_0;
         NSGod(/* args */);
         ~NSGod();
-        std::vector<night::ns_node *>* gen_girl(std::string a2);
+        GodsSon::Offset24 gen_girl(std::string a2);
         night::ns_node* gen_son(std::string);
         void hamlet(void);
     };
@@ -148,7 +149,7 @@ namespace night
         /* data */
     public:
         std::string offset_0;
-        std::string offset_24;
+        std::string offset_24 = "";
         int offset_48 = 0;
         int offset_52 = 0; // 当前行数
         int offset_56 = 0; // 当前行第几个字符位置
@@ -265,7 +266,7 @@ namespace night
         bool is_save_for_division(night::ns_node *);
         night::ns_node * make_binary_or_just_value(night::ns_node *,bool);
         night::ns_node * make_call_or_just_expression(night::ns_node *);
-        void make_list_by_parser(
+        std::vector<night::ns_node *>* make_list_by_parser(
             std::string const&,
             std::string const&,
             std::string const&,
