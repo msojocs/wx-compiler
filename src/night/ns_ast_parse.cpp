@@ -792,7 +792,8 @@ namespace night
     {
         auto v1 = this->ast_dispatch(false);
         auto binary_or_just_value = this->make_binary_or_just_value(v1, false);
-        return this->make_call_or_just_expression(binary_or_just_value);
+        auto result = this->make_call_or_just_expression(binary_or_just_value);
+        return result;
     }
     night::ns_node *NSASTParse::ast_expression_no_binary()
     {

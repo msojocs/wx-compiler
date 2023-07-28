@@ -73,6 +73,7 @@ namespace night
                             auto v19 = this->offset_4->next();
                             std::string v15(1, v19.data);
                             v7->offset_60 = v15;
+                            v7->offset_84 = v14;
                         }
                         // goto LABEL_19;
                     }

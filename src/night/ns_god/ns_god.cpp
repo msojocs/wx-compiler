@@ -22,7 +22,7 @@ namespace night
         }
         if (night::std_v_v_n == a2)
         {
-            node->offset_24.vec = new std::vector<night::ns_node *>();
+            node->offset_24.vecVec = new std::vector<std::vector<night::ns_node *>*>();
         }
         this->offset_0.push_back(node);
         // return node->offset_24_vec; // 审查内存，是一层vector
