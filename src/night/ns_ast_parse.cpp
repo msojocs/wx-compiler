@@ -295,8 +295,10 @@ namespace night
         }
         return v6;
     }
+    int ast_dispatch_i = 0;
     night::ns_node *NSASTParse::ast_dispatch(bool a3)
     {
+        int inner_ast_dispatch_i = ++ast_dispatch_i;
         // ast_dispatch - 0
         auto v42 = this->is_punctuation("(");
         if (!v42)
@@ -560,7 +562,8 @@ namespace night
                 if ("." == v40)
                 {
                     auto v11 = this->ast_obj_dot(v59);
-                    return this->make_call_or_just_expression(v11);   
+                    auto result = this->make_call_or_just_expression(v11);
+                    return result;
                 }
             }
             if (this->is_obj_op_self(true))
@@ -569,7 +572,8 @@ namespace night
                 return this->make_call_or_just_expression(v11);
             }
             auto v11 = v59;
-            return this->make_call_or_just_expression(v11);
+            night::ns_node * result = this->make_call_or_just_expression(v11);
+            return result;
             
         }
         // ast_dispatch - 5
@@ -619,7 +623,8 @@ namespace night
             }
         }
         // ast_dispatch - 20
-        return this->make_call_or_just_expression(v79);
+        auto result = this->make_call_or_just_expression(v79);
+        return result;
     }
     
     std::vector<night::ns_node *>* NSASTParse::make_list_by_parser(
@@ -691,9 +696,11 @@ namespace night
         return v18.vec;
         
     }
-
+    
+    int make_binary_or_just_value_i = 0;
     night::ns_node *NSASTParse::make_binary_or_just_value(night::ns_node * a2, bool a3)
     {
+        int inner_make_binary_or_just_value_i = ++make_binary_or_just_value_i;
         bool v21;
         bool v18;
         if (a3)
@@ -765,6 +772,7 @@ namespace night
                 {
                     this->offset_28->err("Expected exp", v15, v16, 1);
                 }
+                return this->make_binary_or_just_value(v26, a3);
             }
         }
         return a2;
@@ -787,9 +795,10 @@ namespace night
         }
         return a2;
     }
-
+    int ast_expression_i = 0;
     night::ns_node *NSASTParse::ast_expression()
     {
+        ast_expression_i++;
         auto v1 = this->ast_dispatch(false);
         auto binary_or_just_value = this->make_binary_or_just_value(v1, false);
         auto result = this->make_call_or_just_expression(binary_or_just_value);
@@ -806,8 +815,10 @@ namespace night
         throw "not implement";
     }
     
+    int ast_obj_dot_i = 0;
     night::ns_node *NSASTParse::ast_obj_dot(night::ns_node* a2)
     {
+        ast_obj_dot_i++;
         auto v11 = this->offset_24;
         auto v9 = v11->gen_girl(night::std_v_n);
         auto v10 = v11->gen_son(night::NS_TYPE_OBJ_DOT);

@@ -17,15 +17,14 @@ namespace night
     }
     std::string NSCompileJs::compile_binary(night::ns_node *a3)
     {
-        this->compile(a3->offset_180);
+        std::string ret = this->compile(a3->offset_180);
         std::string v10 = " " + a3->offset_156;
         std::string v3 = v10.append(" ");
         this->offset_48 += v3.length();
 
         std::string v7 = this->compile(a3->offset_184);
         std::string v4 = "";
-        v4 = v7 + v3;
-        // v4.append(v9);
+        v4 = ret + v3 + v7;
         return v4;
     }
     std::string NSCompileJs::compile_call(night::ns_node *a3)
@@ -60,7 +59,7 @@ namespace night
                                 this->offset_48++;
                             }
                         }
-                        str += 5580790; // TODO...待确认
+                        str += ")"; // TODO...待确认
                         this->offset_48++;
 
                     }
@@ -84,7 +83,7 @@ namespace night
                         this->offset_48++;
                     }
                 }
-                str += 5580790;
+                str += ")";
                 this->offset_48++;
             }
             
@@ -127,7 +126,7 @@ namespace night
         this->offset_48++;
 
         result += this->compile(v3->at(2));
-        result += 5580790;
+        result += ")";
         this->offset_48++;
 
         result += this->compile(a3->offset_216);
@@ -187,11 +186,12 @@ namespace night
             }
         }
         // compile_function - 10
-        result += 5580790;
+        result += ")";
+        // "(function (nv_evt,nv_instanc"
         this->offset_48++;
         if (v29)
         {
-            result += 5580792;
+            result += ")";
             this->offset_48++;
             auto v10 = a3->offset_244;
             for (int i = 0; i < v10->size(); i++)
@@ -265,7 +265,7 @@ namespace night
         LABEL_31:
         if (!a3->offset_132.length())
         {
-            result += 5580790;
+            result += ")";
             this->offset_48++;
         }
         return result;
@@ -442,7 +442,7 @@ namespace night
         result += v5;
         this->offset_48 += v5.length();
         result += this->compile(a3->offset_204);
-        result += 5580790;
+        result += ")";
         this->offset_48++;
 
         result += this->compile(a3->offset_216);
@@ -487,7 +487,7 @@ namespace night
         }
         if (night::NS_TYPE_OBJ_BLOCK == a3->offset_0)
         {
-            result += 5580790;
+            result += ")";
             this->offset_48++;
         }
         return result;
