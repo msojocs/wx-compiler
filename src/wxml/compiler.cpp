@@ -832,10 +832,6 @@ namespace WXML{
             std::string data = "<fak";
             data = data.append(sub);
             data = data.append("/>");
-            /*
-             ....<fak module=
-            "refresh"/>.....
-            */
             // DealWxsTag - 5
             for (int i = 1; i < a2.offset_8; i++)
             {
@@ -1053,7 +1049,7 @@ namespace WXML{
                 a2.insert({a3, a2.size()});
             }
             auto v5 = a2[a3];
-            sprintf(&result[0], "np_%d", v5);
+            result = "np_" + std::to_string(v5);
             return result;
         }
     } // namespace Compiler

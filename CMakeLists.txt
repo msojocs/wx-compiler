@@ -30,6 +30,7 @@ add_executable(wcc
     src/night/ns_stream.cpp
     src/night/ns_token.cpp
     src/night/ns_god/ns_god.cpp
+    src/night/str/str.cpp
     src/wxml/expr_lib/base.cpp
     src/wxml/expr_lib/bnf.cpp
     src/wxml/expr_lib/common.cpp

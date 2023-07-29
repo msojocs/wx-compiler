@@ -13,7 +13,7 @@ namespace night
     
     std::string ns_node::debug_no_space()
     {
-        return "";
+        throw "not implement";
     }
     
 }
