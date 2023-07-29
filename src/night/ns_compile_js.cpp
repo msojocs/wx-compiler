@@ -46,7 +46,7 @@ namespace night
                         || (v4->at(0)->offset_0 != night::NS_TYPE_SKIP)
                     )
                     {
-                        str += "("; // 待确认
+                        str += "(";
 
                         this->offset_48++;
                         for (int v19 = 0; v19 < v4->size(); v19++)
@@ -59,7 +59,7 @@ namespace night
                                 this->offset_48++;
                             }
                         }
-                        str += ")"; // TODO...待确认
+                        str += ")";
                         this->offset_48++;
 
                     }
@@ -187,7 +187,6 @@ namespace night
         }
         // compile_function - 10
         result += ")";
-        // "(function (nv_evt,nv_instanc"
         this->offset_48++;
         if (v29)
         {
@@ -316,7 +315,7 @@ namespace night
     std::string NSCompileJs::compile_obj_property(night::ns_node *)
     {
         // TODO...
-        return "";
+        throw "not implement";
     }
     std::string NSCompileJs::compile_obj_self_op(night::ns_node *a3)
     {
