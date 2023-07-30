@@ -26,6 +26,7 @@ namespace WXML{
             bool b1, // mark指定运算结果是否非0 a12
             bool b2)  // mark指定运算结果是否非0 a13
         {
+            // ParseSource - 0
             int pResult = 0;
             bool isWxml = filePath.substr(filePath.length() - 5) == ".wxml";
             if (isWxml)
@@ -38,6 +39,7 @@ namespace WXML{
 
                 if (parseResult)
                 {
+                    // ParseSource - 5
                     // GetParsed
                     std::shared_ptr<WXML::DOMLib::WXMLDom> parseDom = v50.GetParsed();
                     result[filePath] = parseDom;
@@ -49,9 +51,9 @@ namespace WXML{
                         ss << "']={};";
                         ss << lineEndMark;
                     }
+                    // ParseSource - 10
                     for (int i = 0; i < tokenList.size(); i++)
                     {
-                        /* code */
                         int dealResult = 0;
                         std::string v74, v76, v79;
                         int v65;
@@ -141,6 +143,7 @@ namespace WXML{
                             ss << lineEndMark;
                         }
                     }
+                    // ParseSource - 15
                     auto v69 = ss.str();
                     if (v69.length() > 0)
                     {
@@ -149,18 +152,17 @@ namespace WXML{
                 }
             // LABEL_24:
             }
+            // ParseSource - 20
             else if(filePath.substr(filePath.length() - 4) == ".wxs") 
             {
-                std::string v84;
+                std::string v84; // errorMessage
                 std::string p = "p_" + filePath;
                 auto v86 = WXML::Compiler::GetFuncId(a11, p);
                 int compilerResultCode = 0;
-                
-                // TODO: compile_ns
-
+                compilerResultCode = night::compile_ns(filePath, v86, content, 1, v84, false);
+                pResult = compilerResultCode;
                 if (compilerResultCode) {
-                    errorMessage.assign("error...");
-                    throw compilerResultCode;
+                    errorMessage.assign(v84);
                 }
                 else
                 {

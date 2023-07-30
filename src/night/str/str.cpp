@@ -26,7 +26,6 @@ namespace night
         }
 
         /**
-         * todo...
         */
         int path_combine(std::string const& a1, std::string const& a2, std::string& a3)
         {

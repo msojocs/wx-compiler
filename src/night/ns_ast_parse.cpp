@@ -231,7 +231,31 @@ namespace night
     }
     night::ns_node *NSASTParse::ast_if()
     {
-        throw "not implement";
+        this->ignore_buildin_kw("if");
+        auto v2 = this->ast_expression_no_comma();
+        auto v3 = this->ast_expression_no_comma();
+        auto v7 = this->offset_24->gen_son(night::NS_TYPE_IF);
+        v7->offset_204 = v2;
+        v7->offset_208 = v3;
+        v7->offset_212 = nullptr;
+
+        if (night::NS_TYPE_PROG_NO_SEM != v3->offset_0)
+        {
+            if (!this->offset_28->eof())
+            {
+                if (this->is_punctuation(";"))
+                {
+                    this->offset_28->next();
+                }
+            }
+            v7->offset_108 = ";";
+        }
+        if (this->is_buildin_keywords("else"))
+        {
+            this->offset_28->next();
+            v7->offset_212 = this->ast_expression_no_comma();
+        }
+        return v7;
     }
     night::ns_node *NSASTParse::ast_for()
     {
@@ -392,7 +416,7 @@ namespace night
                 auto v11 = this->ast_switch();
                 return this->make_call_or_just_expression(v11);
             }
-            bool v21 = false;
+            bool v21 = true;
             if (this->is_buildin_keywords("true"))
             {
             }
@@ -461,6 +485,7 @@ namespace night
                                                                 v21 = this->is_buildin_keywords("continue") != 0;
                                                             }
                                                         }
+                                                        // goto LABEL_62;
                                                     }
                                                     else
                                                     {
@@ -476,7 +501,7 @@ namespace night
                     }
                 }
             } // end check for "true"
-            // v21 = false;
+            // LABEL_62:
             if (v21)
             {
                 auto v11 = this->ast_trans_kw();
@@ -795,10 +820,10 @@ namespace night
         }
         return a2;
     }
-    // int ast_expression_i = 0;
+    int ast_expression_i = 0;
     night::ns_node *NSASTParse::ast_expression()
     {
-        // int inner_ast_expression_i = ast_expression_i++;
+        int inner_ast_expression_i = ++ast_expression_i;
         auto v1 = this->ast_dispatch(false);
         auto binary_or_just_value = this->make_binary_or_just_value(v1, false);
         auto result = this->make_call_or_just_expression(binary_or_just_value);
@@ -1082,20 +1107,20 @@ namespace night
             auto v25 = this->offset_24->gen_girl(night::std_v_v_n);
             night::ns_node * lt = this->offset_24->gen_son(night::NS_TYPE_CALL);
             lt->offset_220 = v21;
-            // lt->offset_224 = v25; // TODO...
+            lt->offset_224 = v25.vecVec;
             auto v5 = this->offset_28->peek();
             std::vector<night::ns_node *> * v44;
             if (v5 && v5->offset_84.find('\n') == -1)
             {
                 v44 = this->offset_24->gen_girl(night::std_v_n).vec;
-                auto v45 = this->ast_expression(); // TODO...待确认
+                auto v45 = this->ast_expression();
                 v44->emplace_back(v45);
             }
             else
             {
                 v44 = this->offset_24->gen_girl(night::std_v_n).vec;
             }
-            // v25->push_back(v44);
+            v25.vecVec->push_back(v44);
             return lt;
         }
         if ("typeof" == v43)
@@ -1501,6 +1526,15 @@ namespace night
             }
             std::string v13 = "Unexpected identifier `" + v11 + "`";
             this->offset_28->err(v13, 0, code, false);
+        }
+        this->offset_28->next();
+    }
+    void NSASTParse::ignore_buildin_kw(std::string const& a2)
+    {
+        if (!this->is_buildin_keywords(a2))
+        {
+            std::string msg = "Expected `" + a2 + "`";
+            this->offset_28->err(msg, 0, 0, false);
         }
         this->offset_28->next();
     }

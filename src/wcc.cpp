@@ -387,11 +387,11 @@ int main(int argc, const char **argv)
                 string helperCode;
                 WXML::Compiler::WXMLHelperCode(helperCode);
                 string data = "var __wxAppData=__wxAppData||{};var __wxAppCode__=__wxAppCode__||{};var global=global||{};var __WXML_GLOBAL__="
-                              "__WXML_GLOBAL__||{entrys:{},defines:{},modules:{},ops:[],wxs_nf_init:undefined,total_ops:0};var Component=Comp"
-                              "onent||function(){};var definePlugin=definePlugin||function(){};var requirePlugin=requirePlugin||function(){};"
-                              "var Behavior=Behavior||function(){};var __vd_version_info__=__vd_version_info__||{};var __GWX_GLOBAL__=__GWX_G"
-                              "LOBAL__||{};var __globalThis=(typeof __vd_version_info__!=='undefined'&&typeof __vd_version_info__.globalThis!"
-                              "=='undefined')?__vd_version_info__.globalThis:(typeof window!=='undefined'?window:globalThis);";
+                            "__WXML_GLOBAL__||{entrys:{},defines:{},modules:{},ops:[],wxs_nf_init:undefined,total_ops:0};var Component=Comp"
+                            "onent||function(){};var definePlugin=definePlugin||function(){};var requirePlugin=requirePlugin||function(){};"
+                            "var Behavior=Behavior||function(){};var __vd_version_info__=__vd_version_info__||{};var __GWX_GLOBAL__=__GWX_G"
+                            "LOBAL__||{};var __globalThis=(typeof __vd_version_info__!=='undefined'&&typeof __vd_version_info__.globalThis!"
+                            "=='undefined')?__vd_version_info__.globalThis:(typeof window!=='undefined'?window:globalThis);";
                 data = data + helperCode;
                 outputContentMap["__COMMON__"] = data;
             }

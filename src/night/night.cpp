@@ -104,16 +104,19 @@ namespace night
         std::string&
         )
     {
-
+        
+        throw "not implement";
     }
 
     void readfile(char const*, std::string &)
     {
 
+        throw "not implement";
     }
 
     void writefile(char const*, std::string &)
     {
 
+        throw "not implement";
     }
 }

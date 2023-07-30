@@ -314,7 +314,6 @@ namespace night
     }
     std::string NSCompileJs::compile_obj_property(night::ns_node *)
     {
-        // TODO...
         throw "not implement";
     }
     std::string NSCompileJs::compile_obj_self_op(night::ns_node *a3)
@@ -492,8 +491,10 @@ namespace night
         return result;
     }
     
+    int compile_i = 0;
     std::string NSCompileJs::compile(night::ns_node * a3)
     {
+        int inner_compile_i = ++compile_i;
         if (this->offset_0.size() == 0)
         {
             std::string v9 = a3->offset_0;

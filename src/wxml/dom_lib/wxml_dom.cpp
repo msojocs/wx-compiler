@@ -452,7 +452,8 @@ namespace WXML {
                 auto cur = this->offset_72[i];
                 if (cur->offset_0 == "block")
                 {
-                    // TODO...
+                    // this->offset_72[i]
+                    // throw "not implement";
                 }
             }
 
@@ -810,6 +811,10 @@ namespace WXML {
             for (int i = 0; i < v142.size(); i++)
             {
                 a6 << v142[i].first << ".wxXCkey=" << v142[i].second << a12;
+                // if (v142[i].first == "oVD")
+                // {
+                //     printf("\n");
+                // }
             }
             
             // RenderChildren - 20
@@ -829,6 +834,7 @@ namespace WXML {
             
         }
 
+        // int emplace_back_i = 0;
         void WXMLDom::RenderNonDefine(
             std::string const& a2,
             std::string const& a3,
@@ -1278,7 +1284,11 @@ namespace WXML {
                     || v161 != "wx:scope-data")
                 {
                     // pos: 搜索 -> !__stricmp((const char *)v161, "wx:scope-data")
-                    
+                    // ++emplace_back_i;
+                    // if (emplace_back_i == 139)
+                    // {
+                    //     printf("\n");
+                    // }
                     // WXML::DOMLib::Token token = this.;
                     v324.emplace_back(j->first, j->second);
                 }
@@ -1305,7 +1315,7 @@ namespace WXML {
                     // {
                     //     /* code */
                     // }
-                    // TODO...
+                    throw "not implement";
                     
                 }
             }
@@ -1332,11 +1342,12 @@ namespace WXML {
                     }
                     if (!strncmp(&i->first[0], "data-", 5u) || i->first.find(':') != -1)
                     {
+                        str.assign(i->first);
                         if (!strncmp(&i->first[0], "generic:", 8u))
                         {
                             a6 << "var $tmp=";
                             // if (i->second.)
-                            // TODO...
+                            throw "not implement";
                         }
                     }
                     else
@@ -1786,7 +1797,7 @@ namespace WXML {
                     // 0x48 -> 72
                     this->offset_72[v4]->MarkIfHasDescendant(a2);
                     auto v6 = this->offset_72[v4];
-                    this->offset_256 = v6->offset_256;
+                    this->offset_256 |= v6->offset_256;
                     auto ret = std::find(a2.begin(), a2.end(), v6->offset_0);
                     if (ret != a2.end())
                     {

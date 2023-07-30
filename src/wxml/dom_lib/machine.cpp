@@ -367,7 +367,7 @@ namespace WXML
                     }
                     if (bittest(&v46, 0x16u)) // 0x16 -> 22
                     {
-                        // TODO:
+                        throw "not implement";
                         // WXML::DOMLib::Token token(*(a5.end() - 1));
                         a5.pop_back();
                         

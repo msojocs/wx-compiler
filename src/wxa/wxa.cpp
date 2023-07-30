@@ -54,7 +54,7 @@ namespace MMBizWxaAppComm
                     dirList.pop_back();
                 }
             }
-            else if (v15[i] == ".")
+            else if (v15[i].compare("."))
             {
                 dirList.push_back(v15[i]);
             }
