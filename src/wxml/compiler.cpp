@@ -26,7 +26,7 @@ namespace WXML{
             bool b1, // mark指定运算结果是否非0 a12
             bool b2)  // mark指定运算结果是否非0 a13
         {
-            int pResult;
+            int pResult = 0;
             bool isWxml = filePath.substr(filePath.length() - 5) == ".wxml";
             if (isWxml)
             {
@@ -235,6 +235,10 @@ namespace WXML{
                                 (mark & 4) != 0,  // a11 -> mark a12
                                 (mark & 0x20) != 0); // a13
                     // printf("parse result: %d", parseResult);
+                    if (parseResult)
+                    {
+                        return parseResult;
+                    }
                 }
                 // mark - 5
                 std::shared_ptr<std::stringstream> v301_localCommonStream1(new std::stringstream()); // v301
@@ -295,7 +299,7 @@ namespace WXML{
                     for (auto j: i.second)
                     {
                         info << j << " ";
-                        if (v304.find( j) == v304.end())
+                        if (v304.find(j) == v304.end())
                         {
                             errorMessage = "WXML file not found: " + j;
                             return -1152;

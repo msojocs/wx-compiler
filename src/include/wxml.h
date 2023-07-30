@@ -206,7 +206,7 @@ namespace WXML
             /* data */
             std::string fileContent;
             std::string fileName;
-            WXML::DOMLib::Machine machine; // this + 2
+            WXML::DOMLib::Machine machine; // this->offset_8
         public:
             Tokenizer(char const* fileContent, std::string const& filePath);
             Tokenizer(/* args */);

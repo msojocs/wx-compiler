@@ -8,6 +8,7 @@ namespace WXML
         Tokenizer::Tokenizer(char const* fileContent, std::string const& filePath)
         {
             this->fileContent = std::string(fileContent);
+            this->fileContent.resize(this->fileContent.size() + 1);
             this->fileName = filePath;
             WXML::DOMLib::Machine m(filePath);
             this->machine = m;
