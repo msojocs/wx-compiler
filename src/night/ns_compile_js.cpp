@@ -15,8 +15,10 @@ namespace night
     {
         return this->compile_binary(a3);
     }
+    int compile_binary_i = 0;
     std::string NSCompileJs::compile_binary(night::ns_node *a3)
     {
+        int inner_compile_binary_i = ++compile_binary_i;
         std::string ret = this->compile(a3->offset_180);
         std::string v10 = " " + a3->offset_156;
         std::string v3 = v10.append(" ");
@@ -312,9 +314,53 @@ namespace night
         
         return result;
     }
-    std::string NSCompileJs::compile_obj_property(night::ns_node *)
+    int compile_obj_property_i = 0;
+    std::string NSCompileJs::compile_obj_property(night::ns_node *a3)
     {
-        throw "not implement";
+        int inner_compile_obj_property_i = ++compile_obj_property_i;
+        std::string v26 = night::nst_ + std::to_string(this->offset_32);
+        this->offset_32++;
+        
+        std::string result;
+
+        result += this->compile(a3->offset_192);
+        for (int i = 0; i < a3->offset_196->size(); i++)
+        {
+            result += "[(";
+            this->offset_48 += 2;
+            auto cur = a3->offset_196->at(i);
+            if (night::NS_TYPE_STR == cur->offset_0)
+            {
+                std::string v38;
+                v38 = "\"" + night::nsv_ + "\"+";
+                result += v38;
+                this->offset_48 += v38.length();
+                result += this->compile(cur);
+            }
+            else
+            {
+                if (night::NS_TYPE_NUM == cur->offset_0)
+                {
+                    result += this->compile(cur);
+                }
+                else
+                {
+                    std::string v27 = "(" + v26 + "=(";
+                    result += v27;
+                    this->offset_48 += v27.length();
+
+                    result += this->compile(cur) + "),";
+                    this->offset_48 += 2;
+
+                    v27 = "null==" + v26 + "?undefined:" + "'number'=== typeof " + v26 + "?" + v26 + ":\"" + night::nsv_ + "\"+" + v26 + ")";
+                    result += v27;
+                    this->offset_48 += v27.length();
+                }
+            }
+            result += ")]";
+            this->offset_48 += 2;
+        }
+        return result;
     }
     std::string NSCompileJs::compile_obj_self_op(night::ns_node *a3)
     {
@@ -446,8 +492,10 @@ namespace night
         result += this->compile(a3->offset_216);
         return result;
     }
+    int compile_prog_i = 0;
     std::string NSCompileJs::compile_prog(night::ns_node *a3)
     {
+        int inner_compile_prog_i = ++compile_prog_i;
         std::string result = "";
         std::string v9 = a3->offset_108;
         if (v9.size() == 0)

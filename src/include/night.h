@@ -308,6 +308,7 @@ namespace night
         std::string offset_0;
         night::NSASTParse * offset_24 = nullptr;
         std::vector<std::string> * offset_28 = nullptr;
+        int offset_32 = 0;
         std::vector<night::ns_sourcemap> offset_36;
         int offset_48;
         NSCompileJs(/* args */);
