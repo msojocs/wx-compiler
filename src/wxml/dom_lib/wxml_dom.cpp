@@ -647,10 +647,10 @@ namespace WXML {
             }
             // RenderChildren - 10
             std::string v151;
-            v151.assign(a5);
             std::vector<std::pair<std::string,int>> v142;
             for (int j = 0; j < this->offset_72.size(); j++)
             {
+                v151.assign(a5); // 不能提到外面
                 std::shared_ptr<WXML::DOMLib::WXMLDom> cur = this->offset_72[j];
                 std::string v153;
                 const char **v98 = szWXIFControlAttrs;
@@ -677,6 +677,11 @@ namespace WXML {
                 }
                 if (v153 == "wx-if" || v153 == "wx:if")
                 {
+                    // if (cur->offset_220 == "f3E")
+                    // {
+                    //     std::string test = a6.str();
+                    //     printf("\n");
+                    // }
                     a6 << "var " << cur->offset_220 << "=_v()" << a12;
                     a6 << "_(" << a5 << "," << cur->offset_220 << ")" << a12;
                     a6 << "if(_oz(z," << cur->offset_48[v153].offset_56 << "," << a8 << ",";
@@ -736,6 +741,11 @@ namespace WXML {
                         a7->GetNextName(v155);
                         a6 << "var " << v155 << "=_v()" << a12;
                         a6 << "_(" << v151 << "," << v155 << ")" << a12;
+                        // if (v155 == "f3E")
+                        // {
+                        //     std::string test = a6.str();
+                        //     printf("\n");
+                        // }
                         cur->RenderNonDefine(
                             a2,
                             a3,
