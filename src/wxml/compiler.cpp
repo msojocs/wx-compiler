@@ -948,6 +948,7 @@ namespace WXML{
             a1 = result.str();
         }
         
+        int RenderDefine_i = 0;
         int RenderDefine(
             WXML::DOMLib::WXMLDom & a1,
             std::string const& a2,
@@ -973,6 +974,7 @@ namespace WXML{
         {
             try
             {
+                int inner_RenderDefine_i = ++RenderDefine_i;
                 if (a1 == "template")
                 {
                     auto it = a1.offset_48.find("name");

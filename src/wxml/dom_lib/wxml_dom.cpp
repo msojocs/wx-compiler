@@ -57,26 +57,34 @@ namespace WXML {
                     WXML::StringTemplating::Token v85;
                     v85.offset_0 = false;
                     v85.offset_4 = ptm->second;
-                    v77.push_back(v85);
-                }
-                std::string v80 = ptm->second;
-                for (int i = 1; i < v77.size(); i++)
-                {
-                    WXML::StringTemplating::Token curToken = v77[i];
-                    if (curToken.offset_0)
+                    
+                    if (v77.begin() != v77.end() && v77[0].offset_0)
                     {
-                        if (!v77[i - 1].offset_0)
-                        {
-                            v77[i - 1].offset_4.append(v80);
-                        }
+                        v77.insert(v77.begin(), v85);
                     }
-                    else if (!curToken.offset_0 && v77[i - 1].offset_0)
+                    if (v77.begin() != v77.end() && v77.back().offset_0)
                     {
-                        curToken.offset_4 = v80 + curToken.offset_4;
+                        v77.push_back(v85);
+                    }
+                    std::string v80 = ptm->second;
+                    for (int i = 1; i < v77.size(); i++)
+                    {
+                        WXML::StringTemplating::Token curToken = v77[i];
+                        if (curToken.offset_0)
+                        {
+                            if (!v77[i - 1].offset_0)
+                            {
+                                v77[i - 1].offset_4.append(v80);
+                            }
+                        }
+                        else if (v77[i - 1].offset_0)
+                        {
+                            curToken.offset_4 = v80 + curToken.offset_4;
+                        }
                     }
                 }
                 
-            }
+            } // end a8
             // DealSingleTokenToOps - 15
             if (a7)
             {
@@ -844,7 +852,7 @@ namespace WXML {
             
         }
 
-        // int emplace_back_i = 0;
+        int RenderNonDefine_i = 0;
         void WXMLDom::RenderNonDefine(
             std::string const& a2,
             std::string const& a3,
@@ -862,6 +870,7 @@ namespace WXML {
             std::map<std::string,std::string> * a15
             )
         {
+            int inner_RenderNonDefine_i = ++RenderNonDefine_i;
             // RenderNonDefine - 0
             if (a13 && this->offset_24.size())
             {
@@ -871,10 +880,10 @@ namespace WXML {
             }
             if (this->offset_0 == "TEXTNODE")
             {
-                int code = this->offset_140;
+                int code = this->offset_84.offset_56;
                 if (code == -3)
                 {
-                    std::string ret = this->Error(a2, this->offset_84, "", this->offset_144);
+                    std::string ret = this->Error(a2, this->offset_84, "", this->offset_84.offset_60);
                     throw ret;
                 }
                 if (code == -1)
@@ -882,7 +891,7 @@ namespace WXML {
                     std::string ret = this->Error(a2, this->offset_84, "", "value not set");
                     throw ret;
                 }
-                a6 << "var " << a5 << "=_oz(z," << this->offset_140;
+                a6 << "var " << a5 << "=_oz(z," << this->offset_84.offset_56;
                 a6 << "," << a8 << "," << a9 << "," << a10 << ")";
                 LABEL_69:
                 a6 << a12;
@@ -1645,14 +1654,14 @@ namespace WXML {
                     "pos: %d, %d, len: %d, %s",
                     this->offset_84.offset_8,
                     this->offset_84.offset_12,
-                    this->offset_104,
+                    this->offset_84.offset_20,
                     this->offset_84.ToString().data()
                 );
             }
             else
             {
                 *v4 << "pos: " << this->offset_84.offset_8
-                << ", " << this->offset_84.offset_12 << ", len: " << this->offset_104
+                << ", " << this->offset_84.offset_12 << ", len: " << this->offset_84.offset_20
                 << ", ";
                 *v4 << this->offset_84.ToString();
             }

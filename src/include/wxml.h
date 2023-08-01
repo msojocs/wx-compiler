@@ -262,9 +262,6 @@ namespace WXML
             偏移应该不超过0x128u, 296
              */
             // std::string offset_52;
-            int offset_104 = 0; // len
-            int offset_140 = 0;
-            std::string offset_144;
             std::string offset_196;
             std::string offset_220;
             int offset_244 = 0;
