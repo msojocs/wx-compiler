@@ -1324,17 +1324,22 @@ namespace WXML {
                 std::string v333 = v324[m].first.substr(0, 6u);
                 if (v333 == "model:")
                 {
-                    std::string subStr = v324[m].first.substr(6u);
                     ss << "\"model:";
+                    std::string subStr = v324[m].first.substr(6u);
                     ss << subStr << "\"" << ":\"";
                     ss << WXML::Rewrite::ToStringCode(v324[m].second.ToAttrContent());
                     ss << "\",";
                     std::string v336 = subStr;
-                    // while (/* condition */)
-                    // {
-                    //     /* code */
-                    // }
-                    throw "not implement";
+                    // find
+                    if (v330.find(v336) == v330.end())
+                    {
+                        v324[m].first = v336;
+                    }
+                    else
+                    {
+                        v324.erase(v324.begin() + m);
+                        m = m - 1;
+                    }
                     
                 }
             }
