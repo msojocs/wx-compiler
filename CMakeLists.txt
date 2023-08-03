@@ -44,11 +44,19 @@ add_executable(wcc
     src/wxml/compiler.cpp
     src/wxml/dom_lib/str_cache.cpp
     src/wxml/dom_lib/wxml_dom.cpp
+    src/utils/json.cpp
     src/utils/string_utils.cpp
     src/utils/file.cpp
     )
 add_executable(wcsc
     src/wcsc.cpp
+    src/wcsc/usage.cpp
+    src/wxss/css_tree_lib/parser.cpp
+    src/wxss/common.cpp
+    src/wxss/x_compiler.cpp
+    src/utils/json.cpp
+    src/utils/string_utils.cpp
+    src/utils/file.cpp
     )
 add_executable(
     resolve_path

@@ -65,5 +65,12 @@
     },
     "cmake.configureSettings": {
         "CMAKE_TOOLCHAIN_FILE": "/root/vcpkg/scripts/buildsystems/vcpkg.cmake"
-    }
+    },
+    "clangd.arguments": [
+        "-log=verbose", 
+        "-pretty", 
+        "--background-index", 
+        //"--query-driver=/bin/arm-buildroot-linux-gnueabihf-g++", //for cross compile usage
+        "--compile-commands-dir=${workspaceFolder}/build/"
+    ]
 }
