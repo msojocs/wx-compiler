@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include <deque>
 
 namespace WXSS
 {
@@ -13,29 +14,73 @@ namespace WXSS
     int NewLintAndParseCSSList(std::map<std::string,std::string> const&, std::vector<std::string> &, std::string&, std::string&, int, bool, std::string const&, std::string const&);
     int LintAndParseCSSList(std::map<std::string,std::string> const&, std::string&, std::string&, std::string&, int, bool, bool, bool, std::string const&);
     void LintAndParseCSS(std::string const&, std::string const&, std::string&, std::string&, bool, bool, bool, bool, std::string const&);
-    
+    enum TokenType {
+        A,
+    };
     class Token
     {
     private:
         /* data */
     public:
+        int offset_0;
+        int offset_20;
+        int offset_24;
+        std::string offset_28;
         Token(/* args */);
         ~Token();
         std::string GetLiteral(void);
+        WXSS::Token& operator=(WXSS::Token const&);
     };
     
-
+    class Tokenizer
+    {
+    private:
+        /* data */
+    public:
+        struct STATE
+        {
+            /* data */
+        };
+    
+        static int TT[26113];
+        static bool bInited;
+        std::string offset_0;
+        std::string offset_24;
+        Tokenizer(/* args */);
+        Tokenizer(char const*,std::string const&);
+        ~Tokenizer();
+        void InitTransitTable(void);
+        void InitSubStrCheckingCaluseTable(void);
+        WXSS::TokenType TryGetAnotherTypeByAnySubStr(char const*, uint, WXSS::Tokenizer::STATE, WXSS::TokenType);
+        int GetTokens(std::vector<WXSS::Token> &, std::string &, int);
+    };
+    
     namespace CSSTreeLib
     {
-        class CSSSyntaxTree
+        class TransitTable
         {
         private:
             /* data */
+        public:
+            TransitTable(/* args */);
+            ~TransitTable();
+            static TransitTable* GetInstance();
+            void Init(void);
+            std::string GetTopType();
+        };
+        
+        class CSSSyntaxTree
+        {
+        private:
+            /* data
+                size: 0xB0
+             */
         public:
             std::string offset_0;
             WXSS::Token offset_24;
             std::vector<std::shared_ptr<CSSSyntaxTree>> offset_120;
             std::shared_ptr<std::string> offset_140;
+            std::string offset_164; // 类型？
             CSSSyntaxTree(/* args */);
             ~CSSSyntaxTree();
             void GetHostRule(std::string &);
@@ -54,11 +99,28 @@ namespace WXSS
             void Traval(std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &);
             void GetInstance(void);
         };
-
+        using Offset0Type = int();
+        class Base
+        {
+        private:
+            /* data
+                size: 0x78u
+             */
+        public:
+            Offset0Type *offset_0;
+            std::string offset_4;
+            Base(/* args */);
+            ~Base();
+        };
+        
+        
         class Parser
         {
         private:
             /* data */
+            std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> offset_0;
+            std::deque<std::shared_ptr<WXSS::CSSTreeLib::Base>> offset_8;
+            std::deque<std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree>> offset_48;
         public:
             Parser(/* args */);
             ~Parser();

@@ -10,4 +10,13 @@ namespace WXSS
     Token::~Token()
     {
     }
+    
+    std::string Token::GetLiteral(void)
+    {
+        throw "not implement";
+    }
+    WXSS::Token& Token::operator=(WXSS::Token const&)
+    {
+        throw "not implement";
+    }
 }

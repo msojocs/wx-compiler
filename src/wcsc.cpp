@@ -16,7 +16,7 @@ int main(int argc, const char **argv) {
         return usage(argc, argv);
     }
     // main - 5
-    std::string configPath = "";
+    std::string configFilePath = "";
     std::vector<std::string> v69;
     for (int i = 1; i < argc; i++)
     {
@@ -29,7 +29,7 @@ int main(int argc, const char **argv) {
         if (isUseConfigFile)
         {
             i++;
-            configPath = argv[i];
+            configFilePath = argv[i];
         }
         else
         {
@@ -37,11 +37,11 @@ int main(int argc, const char **argv) {
         }
     }
     // main - 10
-    if (configPath.length() > 0)
+    if (configFilePath.length() > 0)
     {
         // 使用配置文件
         std::string configData = "";
-        readFile(configPath.data(), configData);
+        readFile(configFilePath.data(), configData);
         while (configData.length() > 0) {
             std::string v104;
             v104 = getNextArg(configData, "\n");
@@ -51,6 +51,9 @@ int main(int argc, const char **argv) {
     
     // main - 15
     bool v56 = false;
+    /**
+     * 文件列表
+    */
     std::vector<std::string> v66;
     std::string v75, v83;
     int v29 = 0;
@@ -185,6 +188,9 @@ int main(int argc, const char **argv) {
     {
         f = fopen(fileName.data(), "w");
     }
+    /**
+     * 文件内容map filename -> fileContent
+    */
     std::map<std::string, std::string> v77;
     if (!v35)
     {

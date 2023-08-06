@@ -51,9 +51,17 @@ add_executable(wcc
 add_executable(wcsc
     src/wcsc.cpp
     src/wcsc/usage.cpp
-    src/wxss/css_tree_lib/parser.cpp
+    src/wxa/wxa.cpp
+    src/wxml/rewrite.cpp
     src/wxss/common.cpp
+    src/wxss/token.cpp
+    src/wxss/tokenizer.cpp
     src/wxss/x_compiler.cpp
+    src/wxss/css_tree_lib/base.cpp
+    src/wxss/css_tree_lib/css_syntax_tree.cpp
+    src/wxss/css_tree_lib/lexical_checker.cpp
+    src/wxss/css_tree_lib/parser.cpp
+    src/wxss/css_tree_lib/transit_table.cpp
     src/utils/json.cpp
     src/utils/string_utils.cpp
     src/utils/file.cpp

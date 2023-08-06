@@ -140,5 +140,44 @@ namespace WXSS
     {
     }
     
-
+    void XCompiler::DealRPX(std::string &, std::stringstream &)
+    {
+        throw "not implement";
+    }
+    void XCompiler::GetHostRule(std::string &)
+    {
+        throw "not implement";
+    }
+    void XCompiler::ShowTree(std::string &)
+    {
+        throw "not implement";
+    }
+    void XCompiler::GetCompiled(std::string const&, std::string&)
+    {
+        throw "not implement";
+    }
+    void XCompiler::GetJSCompiled(std::string const&, std::string&)
+    {
+        throw "not implement";
+    }
+    void XCompiler::GetWellFormattedJSCompiled(std::string const&, std::string&)
+    {
+        throw "not implement";
+    }
+    void XCompiler::GenExpr(std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree>, std::stringstream &, std::string &)
+    {
+        throw "not implement";
+    }
+    int XCompiler::GetPageCss(std::string const&, std::string&, uint)
+    {
+        throw "not implement";
+    }
+    void XCompiler::MarkImported(std::string const&)
+    {
+        throw "not implement";
+    }
+    int XCompiler::GetCommHead(std::vector<std::string> &, std::string&, bool, std::string const&)
+    {
+        throw "not implement";
+    }
 } // namespace WXSS

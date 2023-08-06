@@ -60,7 +60,7 @@
         "cwd": "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram",
         "args": [
             "\"--config-path\"",
-            "\"/mnt/d/Work/disassembly/wcc-exec/wcc/config/llw2.txt\""
+            "\"/mnt/d/Work/disassembly/wcc-exec/wcsc/config/ll1.txt\""
         ]
     },
     "cmake.configureSettings": {
