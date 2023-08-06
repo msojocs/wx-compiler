@@ -13,6 +13,14 @@
 
 namespace WXML
 {
+    using STRTOKEN = int;
+    void GetStrForMakingCSS(std::string const&,std::stringstream &);
+    bool IsFloat(char const*);
+    bool IsFloat(std::string const&);
+    void RenderStrToken(std::pair<WXML::STRTOKEN,std::string> &, std::stringstream &);
+    void StrSplitList4ClassSuffix(char const*,char const*,std::vector<std::pair<WXML::STRTOKEN,std::string>> &);
+    void StrSplitList4RPX(char const*, char const*, char const*, std::vector<std::pair<WXML::STRTOKEN, std::string>> &);
+
     namespace Rewrite
     {
         void ToStringCode(char const*, int, std::stringstream &ss);

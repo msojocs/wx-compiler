@@ -52,6 +52,7 @@ add_executable(wcsc
     src/wcsc.cpp
     src/wcsc/usage.cpp
     src/wxa/wxa.cpp
+    src/wxml/common.cpp
     src/wxml/rewrite.cpp
     src/wxss/common.cpp
     src/wxss/token.cpp

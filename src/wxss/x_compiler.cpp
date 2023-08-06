@@ -1,5 +1,6 @@
 #include "../include/wxss.h"
 #include "../include/wxa.h"
+#include "../include/wxml.h"
 
 namespace WXSS
 {
@@ -140,9 +141,11 @@ namespace WXSS
     {
     }
     
-    void XCompiler::DealRPX(std::string &, std::stringstream &)
+    void XCompiler::DealRPX(std::string & a1, std::stringstream & a2)
     {
-        throw "not implement";
+        std::string v3 = WXML::Rewrite::ToStringCode2(a1);
+        WXML::GetStrForMakingCSS(v3, a2);
+        a1 = "";
     }
     void XCompiler::GetHostRule(std::string &)
     {
