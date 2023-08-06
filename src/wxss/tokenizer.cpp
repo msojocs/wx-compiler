@@ -275,10 +275,26 @@ namespace WXSS
         }
     }
     
+    bool WXSS::Tokenizer::SubStrCheckingClause::inited = false;
+    WXSS::Tokenizer::SubStrCheckingClause WXSS::Tokenizer::SCC[5];
     void Tokenizer::InitSubStrCheckingCaluseTable()
     {
-
+        if (!SubStrCheckingClause::inited)
+        {
+            SubStrCheckingClause::inited = true;
+            SubStrCheckingClause v1(9, "url", 9);
+            WXSS::Tokenizer::SCC[0] = v1;
+            SubStrCheckingClause v2(9, "rpx", 9);
+            WXSS::Tokenizer::SCC[1] = v2;
+            SubStrCheckingClause v3(10, "url", 9);
+            WXSS::Tokenizer::SCC[2] = v3;
+            SubStrCheckingClause v4(10, "rpx", 9);
+            WXSS::Tokenizer::SCC[3] = v4;
+            SubStrCheckingClause v5(0, "", 0);
+            WXSS::Tokenizer::SCC[4] = v5;
+        }
     }
+
     int Tokenizer::GetTokens(std::vector<WXSS::Token> & a2, std::string & a3, int a4)
     {
         // GetTokens - 0
@@ -314,7 +330,7 @@ namespace WXSS
                 v10 = 0;
             }
             int v11 = this->TT[1024 * v4 + 2 * 10];
-            WXSS::TokenType AnotherTypeByAnySubStr = A;
+            // WXSS::TokenType AnotherTypeByAnySubStr;
             // AnotherTypeByAnySubStr = this->TryGetAnotherTypeByAnySubStr(this->offset_0.data(), v47, v42, AnotherTypeByAnySubStr);
         }
 
@@ -328,5 +344,23 @@ namespace WXSS
         }
         a3 = v66.str();
         return 0;
+    }
+    Tokenizer::SubStrCheckingClause::SubStrCheckingClause()
+    {
+    }
+    Tokenizer::SubStrCheckingClause::SubStrCheckingClause(WXSS::Tokenizer::STATE a2, char const* a3, WXSS::TokenType a4)
+    {
+        this->offset_0 = a2;
+        this->offset_4 = strlen(a3);
+        strcpy(this->offset_8, a3);
+        this->offset_24 = a4;
+    }
+    Tokenizer::SubStrCheckingClause& Tokenizer::SubStrCheckingClause::operator=(SubStrCheckingClause const & t)
+    {
+        this->offset_0 = t.offset_0;
+        this->offset_4 = t.offset_4;
+        memcpy(this->offset_8, t.offset_8, 16);
+        this->offset_24 = t.offset_24;
+        return *this;
     }
 }

@@ -14,9 +14,11 @@ namespace WXSS
     int NewLintAndParseCSSList(std::map<std::string,std::string> const&, std::vector<std::string> &, std::string&, std::string&, int, bool, std::string const&, std::string const&);
     int LintAndParseCSSList(std::map<std::string,std::string> const&, std::string&, std::string&, std::string&, int, bool, bool, bool, std::string const&);
     void LintAndParseCSS(std::string const&, std::string const&, std::string&, std::string&, bool, bool, bool, bool, std::string const&);
-    enum TokenType {
-        A,
-    };
+    // enum TokenType {
+    //     A,
+    // };
+    using TokenType = int;
+
     class Token
     {
     private:
@@ -37,11 +39,7 @@ namespace WXSS
     private:
         /* data */
     public:
-        struct STATE
-        {
-            /* data */
-        };
-    
+        using STATE = int;
         static int TT[26113];
         static bool bInited;
         std::string offset_0;
@@ -53,6 +51,23 @@ namespace WXSS
         void InitSubStrCheckingCaluseTable(void);
         WXSS::TokenType TryGetAnotherTypeByAnySubStr(char const*, uint, WXSS::Tokenizer::STATE, WXSS::TokenType);
         int GetTokens(std::vector<WXSS::Token> &, std::string &, int);
+        class SubStrCheckingClause
+        {
+        private:
+            /* data */
+        public:
+            static bool inited;
+            WXSS::Tokenizer::STATE offset_0;
+            int offset_4 = 0;
+            char offset_8[16];
+            WXSS::TokenType offset_24;
+            SubStrCheckingClause();
+            SubStrCheckingClause(WXSS::Tokenizer::STATE, char const*, WXSS::TokenType);
+            SubStrCheckingClause& operator=(SubStrCheckingClause const &);
+        };
+        static SubStrCheckingClause SCC[5];
+        
+        
     };
     
     namespace CSSTreeLib
