@@ -3,9 +3,25 @@
 namespace WXSS
 {
     
-    std::string RemoveQuote(std::string const&)
+    std::string RemoveQuote(std::string const& a2)
     {
-        throw "not implement";
+        std::string a1;
+        if (a2.length() <= 2)
+        {
+            a1 = "";
+        }
+        else
+        {
+            if (a2[0] == '\'' || a2[0] == '"')
+            {
+                a1 = a2.substr(1, a2.length() - 2);
+            }
+            else
+            {
+                a1 = a2;
+            }
+        }
+        return a1;
     }
     int LintAndParseCSSList(std::map<std::string,std::string> const&, std::string&, std::string&, std::string&, int, bool, bool, bool, std::string const&)
     {
