@@ -148,11 +148,11 @@ namespace WXSS
     {
         throw "not implement";
     }
-    void XCompiler::ShowTree(std::string &)
+    int XCompiler::ShowTree(std::string &)
     {
         throw "not implement";
     }
-    void XCompiler::GetCompiled(std::string const&, std::string&)
+    int XCompiler::GetCompiled(std::string const&, std::string&)
     {
         throw "not implement";
     }
@@ -160,7 +160,7 @@ namespace WXSS
     {
         throw "not implement";
     }
-    void XCompiler::GetWellFormattedJSCompiled(std::string const&, std::string&)
+    int XCompiler::GetWellFormattedJSCompiled(std::string const&, std::string&)
     {
         throw "not implement";
     }

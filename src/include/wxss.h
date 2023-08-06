@@ -162,10 +162,10 @@ namespace WXSS
         ~XCompiler();
         void DealRPX(std::string &, std::stringstream &);
         void GetHostRule(std::string &);
-        void ShowTree(std::string &);
-        void GetCompiled(std::string const&, std::string&);
+        int ShowTree(std::string &);
+        int GetCompiled(std::string const&, std::string&);
         void GetJSCompiled(std::string const&, std::string&);
-        void GetWellFormattedJSCompiled(std::string const&, std::string&);
+        int GetWellFormattedJSCompiled(std::string const&, std::string&);
         void GenExpr(std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree>, std::stringstream &, std::string &);
         int GetPageCss(std::string const&, std::string&, uint);
         void MarkImported(std::string const&);
