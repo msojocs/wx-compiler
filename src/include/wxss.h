@@ -164,7 +164,7 @@ namespace WXSS
         void GetHostRule(std::string &);
         int ShowTree(std::string &);
         int GetCompiled(std::string const&, std::string&);
-        void GetJSCompiled(std::string const&, std::string&);
+        int GetJSCompiled(std::string const&, std::string&);
         int GetWellFormattedJSCompiled(std::string const&, std::string&);
         void GenExpr(std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree>, std::stringstream &, std::string &);
         int GetPageCss(std::string const&, std::string&, uint);
