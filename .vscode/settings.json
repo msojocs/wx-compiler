@@ -72,5 +72,6 @@
         "--background-index", 
         //"--query-driver=/bin/arm-buildroot-linux-gnueabihf-g++", //for cross compile usage
         "--compile-commands-dir=${workspaceFolder}/build/"
-    ]
+    ],
+    "cmake.sourceDirectory": "/root/github/wx-compiler"
 }

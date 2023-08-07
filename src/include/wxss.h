@@ -169,7 +169,7 @@ namespace WXSS
         int GetWellFormattedJSCompiled(std::string const&, std::string&);
         void GenExpr(std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree>, std::stringstream &, std::string &);
         int GetPageCss(std::string const&, std::string&, uint);
-        void MarkImported(std::string const&);
+        int MarkImported(std::string const&);
         int GetCommHead(std::vector<std::string> &, std::string&, bool, std::string const&);
 
     };

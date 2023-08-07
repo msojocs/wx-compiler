@@ -416,12 +416,195 @@ namespace WXSS
         }
         return this->offset_0;
     }
-    void XCompiler::MarkImported(std::string const&)
+    int XCompiler::MarkImported(std::string const& a2)
     {
+        if (this->offset_32.count(a2))
+        {
+            std::vector<std::string> v15;
+            v15.push_back(a2);
+            while (v15.begin() != v15.end())
+            {
+                throw "not implement";
+            }
+            
+        }
         throw "not implement";
     }
-    int XCompiler::GetCommHead(std::vector<std::string> &, std::string&, bool, std::string const&)
+    int XCompiler::GetCommHead(std::vector<std::string> & a2, std::string& a3, bool a4, std::string const& a5)
     {
-        throw "not implement";
+        if (a4 && this->offset_32.count(a5))
+        {
+            a2.push_back(a5);
+        }
+        for (int i = 0; i < a2.size(); i++)
+        {
+            int t = this->MarkImported(a2[i]);
+            if (t)
+                return t;
+        }
+        std::stringstream v37;
+        for (auto j = this->offset_32.rbegin(); j != this->offset_32.rend(); j++)
+        {
+            if (this->offset_128[j->first] > 1)
+            {
+                this->offset_152[j->first] = j->first;
+            }
+        }
+        for (auto k = this->offset_32.rbegin(); k != this->offset_32.rend(); k++)
+        {
+            if (this->offset_128[k->first] > 1)
+            {
+                auto v9 = this->offset_152[k->first];
+                v37 << "if (!__COMMON_STYLESHEETS__.hasOwnProperty('";
+                v37 << WXML::Rewrite::ToStringCode2(v9);
+                v37 << "'))__COMMON_STYLESHEETS__['";
+                v37 << WXML::Rewrite::ToStringCode2(v9);
+                v37 << "']=[";
+
+                std::string v33;
+                auto v29 = k->second;
+                this->GenExpr(v29, v37, v33);
+                if (v33.length())
+                {
+                    this->DealRPX(v33, v37);
+                }
+                v37 << "];";
+
+            }
+        }
+        std::string v26;
+        if (a4)
+        {
+            this->GetPageCss(a5, v26, 1);
+            if (v26.length())
+            {
+                v26.append("();");
+            }
+        }
+        std::string v29;
+        this->GetHostRule(v29);
+        if (v29.length())
+        {
+            v29 += "();";
+        }
+        std::string v33 = v37.str();
+        int v23 = v33.length() + 3022;
+        char buf[v23];
+        snprintf(buf, v23, "var BASE_DEVICE_WIDTH = 750;\n"
+            "var isIOS=navigator.userAgent.match(\"iPhone\");\n"
+            "var deviceWidth = window.screen.width || 375;\n"
+            "var deviceDPR = window.devicePixelRatio || 2;\n"
+            "var checkDeviceWidth = window.__checkDeviceWidth__ || function() {\n"
+            "var newDeviceWidth = window.screen.width || 375\n"
+            "var newDeviceDPR = window.devicePixelRatio || 2\n"
+            "var newDeviceHeight = window.screen.height || 375\n"
+            "if (window.screen.orientation && /^landscape/.test(window.screen.orientation.type || '')) newDeviceWidth = newD"
+            "eviceHeight\n"
+            "if (newDeviceWidth !== deviceWidth || newDeviceDPR !== deviceDPR) {\n"
+            "deviceWidth = newDeviceWidth\n"
+            "deviceDPR = newDeviceDPR\n"
+            "}\n"
+            "}\n"
+            "checkDeviceWidth()\n"
+            "var eps = 1e-4;\n"
+            "var transformRPX = window.__transformRpx__ || function(number, newDeviceWidth) {\n"
+            "if ( number === 0 ) return 0;\n"
+            "number = number / BASE_DEVICE_WIDTH * ( newDeviceWidth || deviceWidth );\n"
+            "number = Math.floor(number + eps);\n"
+            "if (number === 0) {\n"
+            "if (deviceDPR === 1 || !isIOS) {\n"
+            "return 1;\n"
+            "} else {\n"
+            "return 0.5;\n"
+            "}\n"
+            "}\n"
+            "return number;\n"
+            "}\n"
+            "window.__rpxRecalculatingFuncs__ = window.__rpxRecalculatingFuncs__ || [];\n"
+            "var __COMMON_STYLESHEETS__ = __COMMON_STYLESHEETS__||{}\n"
+            "%s\n"
+            "var setCssToHead = function(file, _xcInvalid, info) {\n"
+            "var Ca = {};\n"
+            "var css_id;\n"
+            "var info = info || {};\n"
+            "var _C = __COMMON_STYLESHEETS__\n"
+            "function makeup(file, opt) {\n"
+            "var _n = typeof(file) === \"string\";\n"
+            "if ( _n && Ca.hasOwnProperty(file)) return \"\";\n"
+            "if ( _n ) Ca[file] = 1;\n"
+            "var ex = _n ? _C[file] : file;\n"
+            "var res=\"\";\n"
+            "for (var i = ex.length - 1; i >= 0; i--) {\n"
+            "var content = ex[i];\n"
+            "if (typeof(content) === \"object\")\n"
+            "{\n"
+            "var op = content[0];\n"
+            "if ( op == 0 )\n"
+            "res = transformRPX(content[1], opt.deviceWidth) + \"px\" + res;\n"
+            "else if ( op == 1)\n"
+            "res = opt.suffix + res;\n"
+            "else if ( op == 2 )\n"
+            "res = makeup(content[1], opt) + res;\n"
+            "}\n"
+            "else\n"
+            "res = content + res\n"
+            "}\n"
+            "return res;\n"
+            "}\n"
+            "var styleSheetManager = window.__styleSheetManager2__\n"
+            "var rewritor = function(suffix, opt, style){\n"
+            "opt = opt || {};\n"
+            "suffix = suffix || \"\";\n"
+            "opt.suffix = suffix;\n"
+            "if ( opt.allowIllegalSelector != undefined && _xcInvalid != undefined )\n"
+            "{\n"
+            "if ( opt.allowIllegalSelector )\n"
+            "console.warn( \"For developer:\" + _xcInvalid );\n"
+            "else\n"
+            "{\n"
+            "console.error( _xcInvalid );\n"
+            "}\n"
+            "}\n"
+            "Ca={};\n"
+            "css = makeup(file, opt);\n"
+            "if (styleSheetManager) {\n"
+            "var key = (info.path || Math.random()) + ':' + suffix\n"
+            "if (!style) {\n"
+            "styleSheetManager.addItem(key, info.path);\n"
+            "window.__rpxRecalculatingFuncs__.push(function(size){\n"
+            "opt.deviceWidth = size.width;\n"
+            "rewritor(suffix, opt, true);\n"
+            "});\n"
+            "}\n"
+            "styleSheetManager.setCss(key, css);\n"
+            "return;\n"
+            "}\n"
+            "if ( !style )\n"
+            "{\n"
+            "var head = document.head || document.getElementsByTagName('head')[0];\n"
+            "style = document.createElement('style');\n"
+            "style.type = 'text/css';\n"
+            "style.setAttribute( \"wxss:path\", info.path );\n"
+            "head.appendChild(style);\n"
+            "window.__rpxRecalculatingFuncs__.push(function(size){\n"
+            "opt.deviceWidth = size.width;\n"
+            "rewritor(suffix, opt, style);\n"
+            "});\n"
+            "}\n"
+            "if (style.styleSheet) {\n"
+            "style.styleSheet.cssText = css;\n"
+            "} else {\n"
+            "if ( style.childNodes.length == 0 )\n"
+            "style.appendChild(document.createTextNode(css));\n"
+            "else\n"
+            "style.childNodes[0].nodeValue = css;\n"
+            "}\n"
+            "}\n"
+            "return rewritor;\n"
+            "}\n",
+            v33);
+        std::string v32 = buf + v29;
+        a3 = v32.append(v26);
+        return 0;
     }
 } // namespace WXSS
