@@ -93,9 +93,13 @@ namespace WXSS
         public:
             std::string offset_0;
             WXSS::Token offset_24;
+            bool offset_116; // 类型未确定
+            bool offset_132; // 类型未确定
             std::vector<std::shared_ptr<CSSSyntaxTree>> offset_120;
             std::shared_ptr<std::string> offset_140;
+            std::string offset_148;
             std::string offset_164; // 类型？
+            int offset_172; // 类型未确定
             CSSSyntaxTree(/* args */);
             ~CSSSyntaxTree();
             void GetHostRule(std::string &);

@@ -602,7 +602,7 @@ namespace WXSS
             "}\n"
             "return rewritor;\n"
             "}\n",
-            v33);
+            v33.data());
         std::string v32 = buf + v29;
         a3 = v32.append(v26);
         return 0;
