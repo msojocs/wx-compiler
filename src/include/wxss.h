@@ -156,7 +156,8 @@ namespace WXSS
         std::string offset_8;
         std::map<std::string, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree>> offset_32;
         std::map<std::string, std::vector<std::string>> offset_56;
-        std::map<std::string, int> offset_136;
+        std::map<std::string, int> offset_128;
+        std::map<std::string, std::string> offset_152;
         XCompiler(/* args */);
         XCompiler(std::map<std::string, std::string> const&, bool, std::string const&);
         ~XCompiler();

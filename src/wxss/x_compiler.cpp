@@ -318,11 +318,103 @@ namespace WXSS
     }
     void XCompiler::GenExpr(std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> a2, std::stringstream & a3, std::string & a4)
     {
-        throw "not implement";
+        auto target = a2->offset_120;
+        for (int i = 0; i < target.size(); i++)
+        {
+            auto cur = target[i];
+            if (cur->offset_0 == "DIRECTIVE"
+                && cur->offset_120.size() > 1
+                && cur->offset_120[0]->offset_0 == "@import"
+                && cur->offset_140.get()
+                )
+            {
+                std::string v16= *cur->offset_140;
+                if (this->offset_128[v16] > 1)
+                {
+                    this->DealRPX(a4, a3);
+                    a3 << "[2,\"";
+                    auto v8 = this->offset_152[v16];
+                    a3 << WXML::Rewrite::ToStringCode2(v8);
+                    a3 <<"\"],";
+                }
+                else
+                {
+                    auto v17 = this->offset_32[v16];
+                    this->GenExpr(v17, a3, a4);
+                }
+            }
+            else
+            {
+                cur->RenderCode(a4, 1);
+            }
+        }
+        
+        return ;
     }
-    int XCompiler::GetPageCss(std::string const&, std::string&, uint)
+    int XCompiler::GetPageCss(std::string const& a2, std::string& a3, uint a4)
     {
-        throw "not implement";
+        if (this->offset_0)
+        {
+            return 6;
+        }
+        if (this->offset_32.find(a2) == this->offset_32.end())
+        {
+            std::stringstream v38;
+            v38 << "setCssToHead([],undefined,{path:\"";
+            v38 << WXML::Rewrite::ToStringCode2(a2);
+            v38 << "\"})";
+            a3 = v38.str();
+            return 1;
+        }
+        else
+        {
+            std::string v30;
+            auto v23 = this->offset_32;
+            std::stringstream v38;
+            throw "not implement";
+            // if (
+            //     this->offset_32[a2]->offset_156
+            //     && this->offset_32[a2]->offset_156->offset_12!= -1
+            // )
+            // {
+            //     auto v6 = this->offset_32[a2];
+            // }
+            v38.clear();
+            v38 << "setCssToHead([";
+            if (this->offset_128[a2] <= 1)
+            {
+                std::string v35;
+                auto v33 = v23[a2];
+                this->GenExpr(v33, v38, v35);
+                if (v35.length())
+                {
+                    this->DealRPX(v35, v38);
+                }
+
+            }
+            else
+            {
+                v38 << "[2,\"";
+                std::string v12 = this->offset_152[a2];
+                v38 << WXML::Rewrite::ToStringCode2(v12);
+                v38 << "\"]";
+            }
+            v38 << "]";
+            if (v30.length())
+            {
+                v38 << ",\"" << v30 << "\"";
+            }
+            else
+            {
+                v38 << ",undefined";
+            }
+            v38 << ",{path:\"";
+            v38 << WXML::Rewrite::ToStringCode2(a2);
+            v38 << "\"})";
+            a3 = v38.str();
+
+        }
+        return this->offset_0;
     }
     void XCompiler::MarkImported(std::string const&)
     {
