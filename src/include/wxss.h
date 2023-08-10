@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 #include <deque>
+#include <mutex>
 
 namespace WXSS
 {
@@ -107,18 +108,36 @@ namespace WXSS
             void RenderCode(std::string &,bool);
         };
         
+        using Offset0Type = int();
+        class Rule
+        {
+        private:
+            /* data */
+        public:
+            Offset0Type *offset_0 = nullptr;
+            std::vector<std::shared_ptr<WXSS::CSSTreeLib::Rule>> offset_4_vecPtr;
+            std::vector<std::pair<std::string, std::shared_ptr<WXSS::CSSTreeLib::Rule>>> offset_4_vecPair;
+            std::vector<std::string> offset_4_vecStr;
+            // ~Rule();
+        };
+        
+        
         class LexicalChecker
         {
         private:
             /* data */
         public:
+            static LexicalChecker* instance;
+            static std::mutex m;
+            bool offset_0 = false;
+            std::shared_ptr<WXSS::CSSTreeLib::Rule> offset_4; // 8字节
             LexicalChecker(/* args */);
             ~LexicalChecker();
-            void Init();
+            void Init(bool a3);
             void Traval(std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &);
-            void GetInstance(void);
+            static LexicalChecker* GetInstance(bool);
         };
-        using Offset0Type = int();
+
         class Base
         {
         private:
@@ -126,7 +145,7 @@ namespace WXSS
                 size: 0x78u
              */
         public:
-            Offset0Type *offset_0;
+            Offset0Type *offset_0 = nullptr;
             std::string offset_4;
             Base(/* args */);
             ~Base();
@@ -157,7 +176,7 @@ namespace WXSS
     public:
         int offset_0 = 0;
         int offset_4 = 0;
-        std::string offset_8;
+        std::string offset_8; // 长度24
         std::map<std::string, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree>> offset_32;
         std::map<std::string, std::vector<std::string>> offset_56;
         std::map<std::string, int> offset_128;

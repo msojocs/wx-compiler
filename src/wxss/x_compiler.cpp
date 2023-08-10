@@ -11,15 +11,7 @@ namespace WXSS
     
     XCompiler::XCompiler(std::map<std::string, std::string> const& a2, bool a3, std::string const& a4)
     {
-        std::map<std::string, int> _v64;
-        if (a3)
-        {
-            // GetInstance
-        }
-        else
-        {
-            // GetInstance
-        }
+        auto v4 = WXSS::CSSTreeLib::LexicalChecker::GetInstance(a3);
         this->offset_0 = 0;
         this->offset_4 = 0;
 
@@ -39,8 +31,7 @@ namespace WXSS
             else
             {
                 std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v57(new WXSS::CSSTreeLib::CSSSyntaxTree());
-                WXSS::CSSTreeLib::LexicalChecker v31;
-                v31.Traval(v57);
+                v4->Traval(v57);
                 std::string v42;
                 for (int j = 0; j < v57->offset_120.size(); j++)
                 {
@@ -103,6 +94,7 @@ namespace WXSS
         }
         // end for
         // XCompiler - 5
+        std::map<std::string, int> _v64;
         if (!this->offset_0)
         {
             for (auto j = a2.begin(); j != a2.end(); j++)
@@ -112,17 +104,59 @@ namespace WXSS
             for (auto k = a2.begin(); k != a2.end(); k++)
             {
                 std::string v32 = k->first;
+                auto v43 = this->offset_56.find(v32);
+                if (v43 != this->offset_56.end())
+                {
+                    for (int k = 0; k < this->offset_56[v32].size(); k++)
+                    {
+                        _v64[this->offset_56[v32][k]]++;
+                    }
+                    
+                }
 
             }
             // XCompiler - 5 - 0
+            std::map<std::string,unsigned int> v37;
+            std::map<std::string, std::vector<std::string>> v34;
+            std::set<std::string> v72;
             while (true)
             {
-                while (true)
+                std::vector<std::string> v61;
+                for (auto v20 = _v64.begin(); v20 != _v64.end(); v20++)
                 {
-                    /* code */
+                    if (v20->second)
+                    {
+                        auto v36 = v72.find(v20->first);
+                        if (v36 == v72.end())
+                        {
+                            v61.push_back(v20->first);
+                            v72.insert(v20->first);
+                        }
+                    }
+                }
+                
+                if (v61.begin() == v61.end())
+                {
                     break;
                 }
-                break;
+                for (int i = 0; i < v61.size(); i++)
+                {
+                    std::string v74 = v61[i];
+                    int v45 = 0;
+                    if (a2.find(v74) != a2.end())
+                    {
+                        v45 = a2.find(v74)->second.size();
+                    }
+                    v37[v74] = v37[v74] + v45;
+                    for (int j = 0; j < v34[v74].size(); j++)
+                    {
+                        std::string v77 = v34[v74][j];
+                        _v64[v77]--;
+                        v37[v77] = v37[v77] + v37[v74];
+                    }
+                    
+                }
+                
                 
             }
             
