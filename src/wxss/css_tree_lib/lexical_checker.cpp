@@ -146,9 +146,8 @@ namespace WXSS
         {
             if (this->offset_0)
             {
-                
+                this->offset_4->offset_4_vecPtr.back()->offset_0(this->offset_4, a2);
             }
-            throw "not implement";
         }
             
     }

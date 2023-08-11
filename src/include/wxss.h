@@ -95,11 +95,12 @@ namespace WXSS
             std::string offset_0;
             WXSS::Token offset_24;
             bool offset_116; // 类型未确定
-            bool offset_132; // 类型未确定
             std::vector<std::shared_ptr<CSSSyntaxTree>> offset_120;
+            bool offset_132; // 类型未确定，不是布尔值
             std::shared_ptr<std::string> offset_140;
             std::string offset_148;
-            std::string offset_164; // 类型？
+            int offset_164;
+            int offset_168;
             int offset_172; // 类型未确定
             CSSSyntaxTree(/* args */);
             ~CSSSyntaxTree();
@@ -107,14 +108,14 @@ namespace WXSS
             void Print2Stream(int, std::stringstream &);
             void RenderCode(std::string &,bool);
         };
-        
-        using Offset0Type = int();
         class Rule
         {
         private:
             /* data */
         public:
-            Offset0Type *offset_0 = nullptr;
+        
+            using Offset0Type1 = int(std::shared_ptr<WXSS::CSSTreeLib::Rule>&, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &);
+            Offset0Type1 *offset_0 = nullptr;
             std::vector<std::shared_ptr<WXSS::CSSTreeLib::Rule>> offset_4_vecPtr;
             std::vector<std::pair<std::string, std::shared_ptr<WXSS::CSSTreeLib::Rule>>> offset_4_vecPair;
             std::vector<std::string> offset_4_vecStr;
@@ -129,6 +130,9 @@ namespace WXSS
         public:
             static LexicalChecker* instance;
             static std::mutex m;
+            /**
+             * 初始化标志
+            */
             bool offset_0 = false;
             std::shared_ptr<WXSS::CSSTreeLib::Rule> offset_4; // 8字节
             LexicalChecker(/* args */);
@@ -138,6 +142,7 @@ namespace WXSS
             static LexicalChecker* GetInstance(bool);
         };
 
+        using Offset0Type = int();
         class Base
         {
         private:

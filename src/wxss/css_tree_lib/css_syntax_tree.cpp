@@ -20,10 +20,34 @@ namespace WXSS
             {
                 if (!this->offset_172)
                 {
-
+                    if (this->offset_132 && a3)
+                    {
+                        a2 += this->offset_132;
+                    }
+                    else
+                    {
+                        a2 += this->offset_24.GetLiteral();
+                    }
+                    for (int i = 0; i < this->offset_120.size(); i++)
+                    {
+                        auto cur = this->offset_120[i];
+                        if (
+                            i
+                            && cur->offset_164 > this->offset_120[i - 1]->offset_168
+                            && a2[a2.length() - 1] != '\n'
+                        )
+                        {
+                            a2 += " ";
+                        }
+                        cur->RenderCode(a2, a3);
+                    }
+                    if (this->offset_0 == "MEDIA_RULE" || this->offset_0 == "RULE" || this->offset_0 == "DIRECTIVE")
+                    {
+                        a2 += "\n";
+                    }
+                    
                 }
             }
-            throw "not implement";
         }
         
         /**
