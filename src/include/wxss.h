@@ -25,9 +25,12 @@ namespace WXSS
     private:
         /* data */
     public:
-        int offset_0;
-        int offset_20;
-        int offset_24;
+        int offset_0 = 0;
+        std::shared_ptr<std::string> offset_4;
+        int offset_12 = 0;
+        int offset_16 = 0;
+        int offset_20 = 0;
+        int offset_24 = 0;
         std::string offset_28;
         Token(/* args */);
         ~Token();
@@ -167,7 +170,13 @@ namespace WXSS
         public:
             Parser(/* args */);
             ~Parser();
-            int Parse(std::string const&, std::string const&, std::string&, std::string const&);
+            /**
+             * 
+             * @param a2 文件内容
+             * @param a3 文件相对路径
+             * @param a4 errorMessage
+            */
+            int Parse(std::string const& a2, std::string const& a3, std::string& a4, std::string const& a5);
         };
         
         

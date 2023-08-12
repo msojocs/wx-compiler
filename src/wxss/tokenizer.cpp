@@ -1,4 +1,5 @@
 #include "../include/wxss.h"
+#include "../include/bittest.h"
 #include <cstring>
 #include <sstream>
 
@@ -306,12 +307,14 @@ namespace WXSS
         {
             v4 = a4;
         }
-        std::string v35, v41;
         int v47 = 0, v44 = 0;
         a2.reserve(a2.size());
         // GetTokens - 5
-        int AnotherTypeByAnySubStr = 0;
         int v33 = 4194305;
+        // int AnotherTypeByAnySubStr = 0;
+        int v37 = 1;
+        int v41 = 1;
+        int v35 = 1;
         int v31 = 0;
         for (int sa = 0; ; sa = v31)
         {
@@ -329,9 +332,163 @@ namespace WXSS
             {
                 v10 = 0;
             }
-            int v11 = this->TT[1024 * v4 + 2 * 10];
-            // WXSS::TokenType AnotherTypeByAnySubStr;
-            // AnotherTypeByAnySubStr = this->TryGetAnotherTypeByAnySubStr(this->offset_0.data(), v47, v42, AnotherTypeByAnySubStr);
+            int lt = this->TT[1024 * v4 + 2 * 10];
+            WXSS::TokenType AnotherTypeByAnySubStr;
+            AnotherTypeByAnySubStr = this->TryGetAnotherTypeByAnySubStr(this->offset_0.data(), v47, v4, AnotherTypeByAnySubStr);
+
+            if (!lt)
+            {
+                lt = this->TT[1024 * v4];
+                if (!lt)
+                {
+                    std::stringstream v66;
+                    v66 << "no transition for " << v4 << " with input " << v44;
+                    a3 = v66.str();
+                    return -1;
+                }
+
+            }
+            if (lt == -1)
+                break;
+            if (lt & 0x30000 != 0)
+            {
+                int v43 = ((lt & 0x20000) == 0) + v47 - 1;
+                if ( !AnotherTypeByAnySubStr )
+                {
+                    AnotherTypeByAnySubStr = 2;
+                    if (!bittest(&lt, 0x12))
+                    {
+                        AnotherTypeByAnySubStr = 4;
+                        if (!bittest(&lt, 0x13))
+                        {
+                            AnotherTypeByAnySubStr = 6;
+                            if (!bittest(&lt, 0x16))
+                            {
+                                AnotherTypeByAnySubStr = 5;
+                                if (!bittest(&lt, 0x15))
+                                {
+                                    AnotherTypeByAnySubStr = (lt & 0x2000000) == 0 ? 1 : 7;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (sa <= v43)
+                {
+                    char dest[64];
+                    int v58 = AnotherTypeByAnySubStr;
+                    const char * v59 = nullptr;
+                    int v61 = sa; 
+                    int v63 = v35;
+                    int v62 = ((lt & 0x20000) == 0) + v47 - sa;
+                    if (AnotherTypeByAnySubStr == 1)
+                    {
+                        strncpy(dest, &this->offset_0[sa], v62);
+                        dest[v43 - sa + 1] = 0;
+                    }
+                    else
+                    {
+                        int v38 = ((lt & 0x20000) == 0) + v47 - 1;
+                        if (bittest(&lt, 0x18u))
+                        {
+                            for (char i = this->offset_0[sa]; v43 != sa && i-10 <= 0x16u && ((0x400009u >> (i - 10)) & 1) != 0 ; i = this->offset_0[sa])
+                            {
+                                if (i == 10)
+                                {
+                                    ++v63;
+                                }
+                                sa++;
+                            }
+                            int v38 = ((lt & 0x20000) == 0) + v47 - 1;
+                            for (char j = this->offset_0[v43]; sa < v38; j = this->offset_0[v38])
+                            {
+                                int v21 = j - 10;
+                                if (v21 > 0x16 || ((0x400009u >> v21) & 1) == 0)
+                                {
+                                    break;
+                                }
+                                --v38;
+                            }
+                            
+                        }
+                        v61 = sa;
+                        int v39 = v38 - sa + 1;
+                        std::string str = this->offset_0.substr(sa, v39);
+                        v59 = str.data();
+                    }
+                    if (v58 != 1)
+                    {
+                        if (!v59)
+                        {
+                            std::stringstream ss;
+                            ss << "pos: " << v47 << "f739 error" << std::endl;
+                            a3 = ss.str();
+                            return -1;
+                        }
+                        if (v58 == 4)
+                        {
+                            int v42 = 0;
+                            if (
+                                !strcasecmp(v59, "@media")
+                                || !strcasecmp(v59, "@keyframes")
+                                || !strcasecmp(v59, "@-webkit-keyframes")
+                                || !strcasecmp(v59, "@supports")
+                            )
+                            {
+                                v42 = 24;
+                            }
+                            const char *DIRECTIVES = "@import";
+                            for (int k = 0; DIRECTIVES[k]; k++)
+                            {
+                                if (!strcasecmp(v59, DIRECTIVES + k))
+                                {
+                                    WXSS::Token v66;
+                                    v66.offset_0 = 1;
+                                    v66.offset_12 = v61;
+                                    v66.offset_16 = v62;
+                                    v66.offset_20 = v63;
+                                    v66.offset_24 = v37;
+                                    v66.offset_28 = DIRECTIVES + k;
+                                    a2.push_back(v66);
+                                    goto LABEL_77;
+                                }
+                                
+                            }
+                            
+                        }
+                    }
+                    {
+                        WXSS::Token _v58;
+                        a2.push_back(_v58);
+                    }
+                    LABEL_77:
+                    sa = v43 + 1;
+                    v37 = v41 + 1;
+                }
+                AnotherTypeByAnySubStr = 0;
+            }
+            if (bittest(&lt, 0x1Au))
+            {
+                --v47;
+            }
+            else
+            {
+                if (v44 == 10)
+                {
+                    ++v35;
+                    v41 = 0;
+                }
+                ++v41;
+            }
+            ++v47;
+            int v30 = v37;
+            v31 = sa;
+            if ((lt & 0x8000000) != 0)
+            {
+                v30 = v41;
+                v31 = v47;
+            }
+            v37 = v30;
         }
 
         // GetTokens - 10
@@ -362,5 +519,34 @@ namespace WXSS
         memcpy(this->offset_8, t.offset_8, 16);
         this->offset_24 = t.offset_24;
         return *this;
+    }
+    
+    WXSS::TokenType Tokenizer::TryGetAnotherTypeByAnySubStr(char const* a1, uint a2, WXSS::Tokenizer::STATE a3, WXSS::TokenType a4)
+    {
+        if (!a4)
+        {
+            auto v4 = WXSS::Tokenizer::SCC;
+            int v5 = 0;
+            int v6 = a2 + 1;
+            for (int i = 0; i < 5; i++)
+            {
+                auto cur = v4[i];
+                if (!cur.offset_0)
+                {
+                    break;
+                }
+                if (a3 == cur.offset_0)
+                {
+                    auto v7 = cur.offset_4;
+                    if (v6 >= v7 && !strncmp(cur.offset_8, a1 + v6 - v7, cur.offset_4))
+                    {
+                        return this->TT[(0x5206B8 - 0x005222A0) / 4 + 7 * i];
+                    }
+                }
+
+            }
+            
+        }
+        return a4;
     }
 }

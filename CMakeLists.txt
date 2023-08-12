@@ -49,6 +49,8 @@ add_executable(wcc
     src/utils/file.cpp
     )
 add_executable(wcsc
+    src/include/bittest.h
+    src/utils/bittest.cpp
     src/wcsc.cpp
     src/wcsc/usage.cpp
     src/wxa/wxa.cpp

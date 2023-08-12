@@ -88,8 +88,7 @@ namespace WXSS
                 }
                 std::string v74 = v42;
                 std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v75(new WXSS::CSSTreeLib::CSSSyntaxTree());
-                // this->offset_32.
-                // todo...
+                this->offset_32[v74] = v75;
             }
         }
         // end for
@@ -156,7 +155,6 @@ namespace WXSS
                     }
                     
                 }
-                
                 
             }
             
