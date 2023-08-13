@@ -36,7 +36,11 @@ namespace WXSS
         this->offset_16 = old.offset_16;
         this->offset_20 = old.offset_20;
         this->offset_24 = old.offset_24;
-        this->offset_28 = old.offset_28;
+        for (int i = 0; i < 64; i++)
+        {
+            this->offset_28[i] = old.offset_28[i];
+        }
+        
         return *this;
     }
 }

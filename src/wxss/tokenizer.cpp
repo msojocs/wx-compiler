@@ -332,13 +332,14 @@ namespace WXSS
             {
                 v10 = 0;
             }
-            int lt = this->TT[1024 * v4 + 2 * 10];
+            v44 = v10;
+            int lt = this->TT[1024 * v4 + 2 * v10];
             WXSS::TokenType AnotherTypeByAnySubStr;
             AnotherTypeByAnySubStr = this->TryGetAnotherTypeByAnySubStr(this->offset_0.data(), v47, v4, AnotherTypeByAnySubStr);
 
             if (!lt)
             {
-                lt = this->TT[1024 * v4];
+                lt = this->TT[(0x522AA0 - 0x005222A0) / 4 + 1024 * v4];
                 if (!lt)
                 {
                     std::stringstream v66;
@@ -350,7 +351,8 @@ namespace WXSS
             }
             if (lt == -1)
                 break;
-            if (lt & 0x30000 != 0)
+            v4 = (int16_t)lt;
+            if ((lt & 0x30000) != 0)
             {
                 int v43 = ((lt & 0x20000) == 0) + v47 - 1;
                 if ( !AnotherTypeByAnySubStr )
@@ -375,16 +377,17 @@ namespace WXSS
                 }
                 if (sa <= v43)
                 {
-                    char dest[64];
-                    int v58 = AnotherTypeByAnySubStr;
-                    const char * v59 = nullptr;
-                    int v61 = sa; 
-                    int v63 = v35;
-                    int v62 = ((lt & 0x20000) == 0) + v47 - sa;
+                    WXSS::Token v58;
+                    v58.offset_0 = AnotherTypeByAnySubStr;
+                    // const char * v59 = nullptr;
+                    v58.offset_12 = sa;  // v61
+                    v58.offset_20 = v35;
+                    v58.offset_24 = v37;
+                    v58.offset_16 = ((lt & 0x20000) == 0) + v47 - sa;
                     if (AnotherTypeByAnySubStr == 1)
                     {
-                        strncpy(dest, &this->offset_0[sa], v62);
-                        dest[v43 - sa + 1] = 0;
+                        strncpy(v58.offset_28, &this->offset_0[sa], v58.offset_16);
+                        v58.offset_28[v43 - sa + 1] = 0;
                     }
                     else
                     {
@@ -395,7 +398,7 @@ namespace WXSS
                             {
                                 if (i == 10)
                                 {
-                                    ++v63;
+                                    ++v58.offset_20;
                                 }
                                 sa++;
                             }
@@ -411,46 +414,47 @@ namespace WXSS
                             }
                             
                         }
-                        v61 = sa;
+                        v58.offset_12 = sa;
                         int v39 = v38 - sa + 1;
                         std::string str = this->offset_0.substr(sa, v39);
-                        v59 = str.data();
+                        v58.offset_4 = std::make_shared<std::string>(str);
                     }
-                    if (v58 != 1)
+                    if (v58.offset_0 != 1)
                     {
-                        if (!v59)
+                        if (!v58.offset_4.get())
                         {
                             std::stringstream ss;
                             ss << "pos: " << v47 << "f739 error" << std::endl;
                             a3 = ss.str();
                             return -1;
                         }
-                        if (v58 == 4)
+                        if (v58.offset_0 == 4)
                         {
-                            int v42 = 0;
                             if (
-                                !strcasecmp(v59, "@media")
-                                || !strcasecmp(v59, "@keyframes")
-                                || !strcasecmp(v59, "@-webkit-keyframes")
-                                || !strcasecmp(v59, "@supports")
+                                !strcasecmp(v58.offset_4->data(), "@media")
+                                || !strcasecmp(v58.offset_4->data(), "@keyframes")
+                                || !strcasecmp(v58.offset_4->data(), "@-webkit-keyframes")
+                                || !strcasecmp(v58.offset_4->data(), "@supports")
                             )
                             {
-                                v42 = 24;
+                                v4 = 24;
                             }
                             const char *DIRECTIVES = "@import";
                             for (int k = 0; DIRECTIVES[k]; k++)
                             {
-                                if (!strcasecmp(v59, DIRECTIVES + k))
+                                if (!strcasecmp(v58.offset_4->data(), DIRECTIVES + k))
                                 {
                                     WXSS::Token v66;
                                     v66.offset_0 = 1;
-                                    v66.offset_12 = v61;
-                                    v66.offset_16 = v62;
-                                    v66.offset_20 = v63;
+                                    v66.offset_12 = v58.offset_12;
+                                    v66.offset_16 = v58.offset_16;
+                                    v66.offset_20 = v58.offset_20;
                                     v66.offset_24 = v37;
-                                    v66.offset_28 = DIRECTIVES + k;
+                                    // v66.offset_28 = DIRECTIVES + k;
+                                    strcpy(v66.offset_28, DIRECTIVES + k);
                                     a2.push_back(v66);
                                     goto LABEL_77;
+                                    break;
                                 }
                                 
                             }
@@ -458,8 +462,7 @@ namespace WXSS
                         }
                     }
                     {
-                        WXSS::Token _v58;
-                        a2.push_back(_v58);
+                        a2.push_back(v58);
                     }
                     LABEL_77:
                     sa = v43 + 1;

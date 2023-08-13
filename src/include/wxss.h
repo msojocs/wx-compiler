@@ -23,7 +23,9 @@ namespace WXSS
     class Token
     {
     private:
-        /* data */
+        /* data 
+            size: 92字节
+        */
     public:
         int offset_0 = 0;
         std::shared_ptr<std::string> offset_4;
@@ -31,7 +33,7 @@ namespace WXSS
         int offset_16 = 0;
         int offset_20 = 0;
         int offset_24 = 0;
-        std::string offset_28;
+        char offset_28[64];
         Token(/* args */);
         ~Token();
         std::string GetLiteral(void);
@@ -46,8 +48,8 @@ namespace WXSS
         using STATE = int;
         static int TT[26113];
         static bool bInited;
-        std::string offset_0;
-        std::string offset_24;
+        std::string offset_0; // 文件内容
+        std::string offset_24; // 文件路径
         Tokenizer(/* args */);
         Tokenizer(char const*,std::string const&);
         ~Tokenizer();
