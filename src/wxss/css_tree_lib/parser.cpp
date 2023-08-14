@@ -38,18 +38,22 @@ namespace WXSS
                 return 0;
             }
             
-            // Parse - 10
             WXSS::Token v127;
+            v127.offset_0 = 8;
+            v127.offset_20 = v118.back().offset_20;
+            v127.offset_24 = v118.back().offset_24;
+            v127.offset_28[0] = 0;
             v118.push_back(v127);
+            // Parse - 10
 
             std::shared_ptr<WXSS::CSSTreeLib::Base> v102(new WXSS::CSSTreeLib::Base());
-            v102->offset_4 = "$";
+            v102->offset_4_str = "$";
             this->offset_8.push_back(v102);
             
             // off_519A44
             std::shared_ptr<WXSS::CSSTreeLib::Base> v104(new WXSS::CSSTreeLib::Base());
             // v104->offset_0 = off_519A44;
-            v104->offset_4 = instance->GetTopType();
+            v104->offset_4_str = instance->GetTopType();
             this->offset_8.push_back(v104);
 
             // Parse - 15

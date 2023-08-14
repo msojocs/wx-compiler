@@ -78,11 +78,42 @@ namespace WXSS
     
     namespace CSSTreeLib
     {
+        using Offset0Type = int();
+        
+        int off_519B58();
+        int off_519B2C();
+        int off_519A44();
+        int off_519B18();
+
+        class Base
+        {
+        private:
+            /* data
+                size: 0x78u
+             */
+        public:
+            Offset0Type *offset_0 = nullptr;
+            std::string offset_4_str;
+            std::string offset_4_int;
+            int offset_28 = 0;
+            int offset_32 = 0;
+            std::string offset_36 = "";
+            Base(/* args */);
+            ~Base();
+        };
+        
+        
+        using BNF = std::vector<std::shared_ptr<WXSS::CSSTreeLib::Base>>;
+        
         class TransitTable
         {
         private:
             /* data */
         public:
+            static TransitTable* instance;
+            static std::mutex m;
+            std::map<int,std::map<std::string,std::vector<WXSS::CSSTreeLib::BNF>>> offset_0;
+            bool offset_24;
             TransitTable(/* args */);
             ~TransitTable();
             static TransitTable* GetInstance();
@@ -147,19 +178,6 @@ namespace WXSS
             static LexicalChecker* GetInstance(bool);
         };
 
-        using Offset0Type = int();
-        class Base
-        {
-        private:
-            /* data
-                size: 0x78u
-             */
-        public:
-            Offset0Type *offset_0 = nullptr;
-            std::string offset_4;
-            Base(/* args */);
-            ~Base();
-        };
         
         
         class Parser

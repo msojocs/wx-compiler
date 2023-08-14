@@ -588,7 +588,7 @@ namespace WXML
             // 大小：12字节
         public:
             std::vector<std::shared_ptr<WXML::EXPRLib::Base>> offset_0;
-            Offset0Type *offset_8;
+            // Offset0Type *offset_8;
             BNF(/* args */);
             ~BNF();
         };
