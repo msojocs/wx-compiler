@@ -32,7 +32,8 @@ namespace WXSS
 
             // Parse - 5
             std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> le(new WXSS::CSSTreeLib::CSSSyntaxTree());
-            
+            this->offset_0 = le;
+            le->offset_0 = "RULES";
             if (v118.begin() == v118.end())
             {
                 return 0;
@@ -48,12 +49,13 @@ namespace WXSS
 
             std::shared_ptr<WXSS::CSSTreeLib::Base> v102(new WXSS::CSSTreeLib::Base());
             v102->offset_4_str = "$";
+            v102->offset_28 = 1;
             this->offset_8.push_back(v102);
             
             // off_519A44
             std::shared_ptr<WXSS::CSSTreeLib::Base> v104(new WXSS::CSSTreeLib::Base());
-            // v104->offset_0 = off_519A44;
-            v104->offset_4_str = instance->GetTopType();
+            v104->offset_0 = off_519A44;
+            v104->offset_4_int = instance->GetTopType();
             this->offset_8.push_back(v104);
 
             // Parse - 15
@@ -63,10 +65,11 @@ namespace WXSS
             int v75 = 0;
             while (true)
             {
-                if (/* ??? || */v75 >= v118.size())
+                if (this->offset_8.begin() == this->offset_8.end() || v75 >= v118.size())
                 {
                     break;
                 }
+                auto v116 = this->offset_8.back();
                 auto cur = v118[v75];
                 std::string str;
                 switch (cur.offset_0)
@@ -116,9 +119,10 @@ namespace WXSS
                     break;
                 }
                 // Parse - 20-0
-                if (true)
+                if (v116->offset_0() == 1)
                 {
-                    if (true)
+                    auto v27 = v116->offset_4_str;
+                    if (str[0] != v27[0] || str != v27)
                     {
                         std::stringstream v135;
                         if (str[0] != '$' || str[1])
@@ -135,10 +139,10 @@ namespace WXSS
                                 if (cur.offset_0 != 8)
                                 {
                                     v41 = "UNKNOWN";
-                                    // if (cur.offset_4)
-                                    // {
-                                    //     v41 = cur.offset_4;
-                                    // }
+                                    if (cur.offset_4.get() != nullptr)
+                                    {
+                                        v41 = cur.offset_4.get()->data();
+                                    }
                                 }
                             }
                             v135 << v41;
@@ -166,10 +170,10 @@ namespace WXSS
                     }
                 }
                 // Parse - 20-5
-                else if (true)
+                else if (v116->offset_0() == 3)
                 {
                     this->offset_8.pop_back();
-                    if (2)
+                    if (v116->offset_28 == 2)
                     {
                         if (this->offset_48.begin() == this->offset_48.end())
                         {
@@ -233,8 +237,45 @@ namespace WXSS
 
                 }
                 // Parse - 20-10
-                else if (true)
+                else if (v116->offset_0() == 2)
                 {
+                    // off_519A44
+
+                    int v52 = v116->offset_4_int;
+                    
+                    std::string v135 = str;
+                    auto v86 = instance->offset_0[v52];
+                    auto strc = v86.find(v135);
+                    if ( strc == v86.end() || strc->second.size() == 0)
+                    {
+                        std::stringstream v135;
+                        v135 << a3 << "(" << cur.offset_20;
+                        v135 << cur.offset_24 << "): unexpected token `";
+                        std::string v63 = cur.offset_28;
+                        if (cur.offset_0 != 1)
+                        {
+                            v63 = "$";
+                            if (cur.offset_0 != 8)
+                            {
+                                v63 = "UNKNOWN";
+                                if (cur.offset_4.get() != nullptr)
+                                {
+                                    v63 = *cur.offset_4.get();
+                                }
+                            }
+                        }
+                        v135 << v63 << "`";
+                        a4 = v135.str();
+                        return -1;
+                    }
+                    this->offset_8.pop_back();
+                    for (int i = strc->second.size() - 1; i >= 0; i--)
+                    {
+                        auto cur = strc->second[i];
+                        if (cur[0]->offset_0() == 4)
+                            break;
+                        this->offset_8.push_back(cur[0]);
+                    }
                     
                 }
                 // Parse - 20-15

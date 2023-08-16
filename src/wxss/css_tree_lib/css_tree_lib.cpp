@@ -7,19 +7,19 @@ namespace WXSS
         
         int off_519B58()
         {
-            throw "not implement";
+            return 1;
         }
         int off_519B2C()
         {
-            throw "not implement";
+            return 3;
         }
         int off_519A44()
         {
-            throw "not implement";
+            return 2;
         }
         int off_519B18()
         {
-            throw "not implement";
+            return 4;
         }
     }
 }

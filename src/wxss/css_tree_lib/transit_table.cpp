@@ -4201,9 +4201,9 @@ namespace WXSS
                 }
             }
         }
-        std::string TransitTable::GetTopType()
+        int TransitTable::GetTopType()
         {
-            throw "not implement";
+            return 25;
         }
     }
 }

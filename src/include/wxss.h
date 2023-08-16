@@ -94,7 +94,7 @@ namespace WXSS
         public:
             Offset0Type *offset_0 = nullptr;
             std::string offset_4_str;
-            std::string offset_4_int;
+            int offset_4_int;
             int offset_28 = 0;
             int offset_32 = 0;
             std::string offset_36 = "";
@@ -118,19 +118,19 @@ namespace WXSS
             ~TransitTable();
             static TransitTable* GetInstance();
             void Init(void);
-            std::string GetTopType();
+            int GetTopType();
         };
         
         class CSSSyntaxTree
         {
         private:
             /* data
-                size: 0xB0
+                size: 0xB0 176
              */
         public:
             std::string offset_0;
             WXSS::Token offset_24;
-            bool offset_116; // 类型未确定
+            int offset_116; // 类型未确定
             std::vector<std::shared_ptr<CSSSyntaxTree>> offset_120;
             bool offset_132; // 类型未确定，不是布尔值
             std::shared_ptr<std::string> offset_140;
@@ -184,10 +184,10 @@ namespace WXSS
         {
         private:
             /* data */
-            std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> offset_0;
             std::deque<std::shared_ptr<WXSS::CSSTreeLib::Base>> offset_8;
             std::deque<std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree>> offset_48;
         public:
+            std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> offset_0;
             Parser(/* args */);
             ~Parser();
             /**
@@ -213,6 +213,7 @@ namespace WXSS
         std::string offset_8; // 长度24
         std::map<std::string, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree>> offset_32;
         std::map<std::string, std::vector<std::string>> offset_56;
+        std::map<std::string,std::string> offset_104;
         std::map<std::string, int> offset_128;
         std::map<std::string, std::string> offset_152;
         XCompiler(/* args */);

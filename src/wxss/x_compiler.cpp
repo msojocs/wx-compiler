@@ -20,7 +20,6 @@ namespace WXSS
         {
             WXSS::CSSTreeLib::Parser v29;
             std::string v61;
-            std::string v77;
             int v47 = v29.Parse(i->second, i->first, v61, a4);
             if (v47)
             {
@@ -30,12 +29,11 @@ namespace WXSS
             }
             else
             {
-                std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v57(new WXSS::CSSTreeLib::CSSSyntaxTree());
-                v4->Traval(v57);
+                v4->Traval(v29.offset_0);
                 std::string v42;
-                for (int j = 0; j < v57->offset_120.size(); j++)
+                for (int j = 0; j < v29.offset_0->offset_120.size(); j++)
                 {
-                    auto cur = v57->offset_120[j];
+                    auto cur = v29.offset_0->offset_120[j];
                     if (cur->offset_0 == "DIRECTIVE")
                     {
                         auto v8 = cur->offset_120;
@@ -209,6 +207,11 @@ namespace WXSS
     }
     int XCompiler::GetCompiled(std::string const&, std::string&)
     {
+        if (this->offset_0)
+        {
+            return 6;
+        }
+        
         throw "not implement";
     }
     int XCompiler::GetJSCompiled(std::string const& a2, std::string& a3)
