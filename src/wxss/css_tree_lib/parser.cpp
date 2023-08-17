@@ -48,6 +48,7 @@ namespace WXSS
             // Parse - 10
 
             std::shared_ptr<WXSS::CSSTreeLib::Base> v102(new WXSS::CSSTreeLib::Base());
+            v102->offset_0 = off_519B58;
             v102->offset_4_str = "$";
             v102->offset_28 = 1;
             this->offset_8.push_back(v102);
@@ -59,7 +60,9 @@ namespace WXSS
             this->offset_8.push_back(v104);
 
             // Parse - 15
-            // 一堆东西
+            std::shared_ptr<std::string[3]> v9(new std::string[3]());
+            std::shared_ptr<WXSS::Token> v14(new WXSS::Token());
+            v14->offset_4.reset(new std::string());
 
             // Parse - 20
             int v75 = 0;
@@ -165,7 +168,11 @@ namespace WXSS
                     if (str[0] != '$' || str[1])
                     {
                         std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v82(new WXSS::CSSTreeLib::CSSSyntaxTree());
-                        
+                        v82->offset_24 = cur;
+                        v82->offset_148 = v9;
+                        v82->offset_156 = v14;
+                        v82->offset_164 = cur.offset_12;
+                        v82->offset_168 = cur.offset_16 + cur.offset_12;
                         this->offset_48.push_back(v82);
                     }
                 }
@@ -197,10 +204,10 @@ namespace WXSS
                     }
                     else
                     {
-                        int stra = 1;
+                        int stra = v116->offset_32;
                         std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> lh(new WXSS::CSSTreeLib::CSSSyntaxTree());
                         std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v123(new WXSS::CSSTreeLib::CSSSyntaxTree());
-                        // v123->offset_0.assign(v84->offset_4);
+                        v123->offset_0.assign(v116->offset_4_str);
                         for (int j = 0; j < stra; j++)
                         {
                             if (this->offset_48.begin() == this->offset_48.end())
@@ -209,15 +216,19 @@ namespace WXSS
                                 return 1003;
                             }
                             auto v47 = this->offset_48.back();
-                            // lb->offset_120.push_back(v47);
+                            v123->offset_120.push_back(v47);
                             this->offset_48.pop_back();
                         }
                         if (stra > 0)
                         {
-
+                            auto v48 = v123->offset_120;
+                            auto v49 = v48[stra - 1];
+                            v123->offset_164 = v49->offset_164;
+                            v123->offset_168 = v49->offset_168;
+                            v123->offset_148 = v9;
+                            v123->offset_156 = v14;
                         }
-                        int v76 = 1;
-                        if (!v76)
+                        if (!v116->offset_28)
                         {
                             if (v123->offset_120.begin() != v123->offset_120.end())
                             {

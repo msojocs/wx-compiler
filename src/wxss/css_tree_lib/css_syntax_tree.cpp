@@ -94,7 +94,8 @@ namespace WXSS
                     auto cur = this->offset_120[i];
                     if (cur->offset_0 == "SELECTORS")
                     {
-                        std::string v14 = this->offset_148.substr(2, this->offset_148.length() - 7);
+                        auto v148 = this->offset_148.get();
+                        std::string v14 = v148[0].substr(2, v148[0].length() - 7);
                         std::string v15 = WXML::Rewrite::ToStringCode2(v14);
                         v15.insert(0, "[is=\"");
                         v15.append("\"]");
@@ -120,7 +121,8 @@ namespace WXSS
                     else
                     {
                         cur->RenderCode(a2, true);
-                        std::string v14 = this->offset_148.substr(2, this->offset_148.length() - 7);
+                        auto v148 = this->offset_148.get();
+                        std::string v14 = v148[0].substr(2, v148[0].length() - 7);
                         auto v15 = WXML::Rewrite::ToStringCode2(v14);
                         v15.insert(0, "[is=\"");
                         v15.append("\"]");
