@@ -158,8 +158,6 @@ namespace WXSS
             std::vector<std::string> offset_4_vecStr;
             // ~Rule();
         };
-        
-        
         class LexicalChecker
         {
         private:
@@ -179,8 +177,6 @@ namespace WXSS
             static LexicalChecker* GetInstance(bool);
         };
 
-        
-        
         class Parser
         {
         private:

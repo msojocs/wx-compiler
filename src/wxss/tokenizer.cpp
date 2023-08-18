@@ -543,7 +543,7 @@ namespace WXSS
                     auto v7 = cur.offset_4;
                     if (v6 >= v7 && !strncmp(cur.offset_8, a1 + v6 - v7, cur.offset_4))
                     {
-                        return this->TT[(0x5206B8 - 0x005222A0) / 4 + 7 * i];
+                        return WXSS::Tokenizer::SCC[i].offset_24;
                     }
                 }
 
