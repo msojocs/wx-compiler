@@ -132,7 +132,7 @@ namespace WXSS
             WXSS::Token offset_24;
             int offset_116; // 类型未确定
             std::vector<std::shared_ptr<CSSSyntaxTree>> offset_120;
-            bool offset_132; // 类型未确定，不是布尔值
+            std::shared_ptr<std::string> offset_132; // 类型未确定，不是布尔值
             std::shared_ptr<std::string> offset_140;
             std::shared_ptr<std::string[3]> offset_148;
             std::shared_ptr<Token> offset_156;
@@ -158,6 +158,14 @@ namespace WXSS
             std::vector<std::string> offset_4_vecStr;
             // ~Rule();
         };
+
+        namespace RuleDebugRule
+        {
+            void InsertOriginSelectorInfo(
+                std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &,
+                int,
+                std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &);
+        }
         class LexicalChecker
         {
         private:

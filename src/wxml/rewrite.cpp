@@ -230,5 +230,121 @@ namespace WXML {
         {
             return ToStringCode3(src.data(), src.size());
         }
+        
+        void GetToken(std::string const& a1,std::vector<std::pair<int,std::string>> & a2)
+        {
+            for (int i = 0; i < a1.length(); )
+            {
+                int v9 = a1.length() - i;
+                const char* v6 = &a1[i];
+                int v8 = -1;
+                int lt = WXML::RPX::acceptID(v6, v9);
+                if (lt)
+                {
+                    lt = 1;
+                    if (WXML::RPX::acceptNum(v6, v9))
+                    {
+                        lt = 2;
+                        if (WXML::RPX::acceptStr(v6, v9))
+                        {
+                            lt = 3;
+                            if (!WXML::RPX::acceptSymbol(v6, v9, v8))
+                            {
+                                lt = (v8 == 7) + 3;
+                            }
+                        }
+                    }
+                }
+                std::string v10(a1.begin() + i, a1.end() - 9);
+                a2.push_back(std::make_pair(lt, v10));
+                i = a1.length() - v9;
+
+            }
+        }
+        
+        int RewriteImg(std::string const& a1, std::string& a2, std::string a3, int a4, int a5)
+        {
+            std::vector<std::pair<int,std::string>> v21;
+            WXML::Rewrite::GetToken(a1, v21);
+            a2 = "";
+            bool v17 = 1;
+            int result = 0;
+            for (int i=0; i < v21.size() - 1; i++)
+            {
+                auto cur = v21[i];
+                if (
+                    v21[i].second == "url"
+                    && v21[i + 1].second == "("
+                )
+                {
+                    std::string v24 = "";
+                    while (v21.size() - 1 > ++i)
+                    {
+                        if (v21[i].second == ")")
+                        {
+                            const char*sa = v24.data();
+                            while (v24.length() > 0 && (*sa == ' ' || *sa == '\t'))
+                            {
+                                sa++;
+                            }
+                            if (
+                                !strncmp(sa, "http://", 7)
+                                || !strncmp(sa, "https://", 8)
+                                || !strncmp(sa, "//", 2)
+                                || !strncmp(sa, "data:", 5)
+                            )
+                            {
+                                std::string v26 = "url(" + v24 + ")";
+                                a2 += v26;
+                            }
+                            else
+                            {
+                                std::stringstream v29;
+                                v29 << "url(" << sa << "-do-not-use-local-path-" << a3;
+                                v29 << "&" << a4 << "&" << a5 << ")";
+                                std::string v26 = v29.str();
+                                a2 += v26;
+                                result = 1;
+                            }
+                            if (++i == v21.size() - 1)
+                            {
+                                v17 = 0;
+                            }
+                            break;
+                            
+                        }
+                        auto v5 = v21[i];
+                        if (v5.first != 4)
+                        {
+                            if (v5.first == 2)
+                            {
+                                std::string v29 = v5.second.substr(1, v5.second.length() - 2);
+                                a2 += v29;
+                            }
+                            else
+                            {
+                                a2 += v5.second;
+                            }
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    a2 += v21[i].second;
+                }
+            }
+            if (v21.end() != v21.begin() && v17)
+            {
+                a2 += v21.back().second;
+            }
+
+            return result;
+        }
+        int RewriteRPX(std::string const&,std::string&,char const*,char const*)
+        {
+            
+            throw "not implement";
+        }
     }
 }

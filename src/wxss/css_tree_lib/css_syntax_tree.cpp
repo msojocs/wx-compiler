@@ -22,7 +22,7 @@ namespace WXSS
                 {
                     if (this->offset_132 && a3)
                     {
-                        a2 += this->offset_132;
+                        a2 += *this->offset_132;
                     }
                     else
                     {

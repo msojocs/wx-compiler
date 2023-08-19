@@ -54,6 +54,7 @@ add_executable(wcsc
     src/wxa/wxa.cpp
     src/wxml/common.cpp
     src/wxml/rewrite.cpp
+    src/wxml/rpx.cpp
     src/wxss/common.cpp
     src/wxss/token.cpp
     src/wxss/tokenizer.cpp
@@ -63,6 +64,7 @@ add_executable(wcsc
     src/wxss/css_tree_lib/css_syntax_tree.cpp
     src/wxss/css_tree_lib/lexical_checker.cpp
     src/wxss/css_tree_lib/parser.cpp
+    src/wxss/css_tree_lib/rule.cpp
     src/wxss/css_tree_lib/transit_table.cpp
     src/utils/bittest.cpp
     src/utils/json.cpp

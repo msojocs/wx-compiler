@@ -233,7 +233,7 @@ int main(int argc, const char **argv) {
 
         v96.assign(lt.offset_8);
         std::map<std::string, std::string> v92;
-        if (!lt.offset_4)
+        if (!lt.offset_0)
         {
             int ret = lt.GetCommHead(v72, v94, true, v76);
             if (ret)
@@ -245,7 +245,7 @@ int main(int argc, const char **argv) {
                 std::string v98;
                 std::string cur = v72[i];
                 std::string v101 = WXML::Rewrite::ToStringCode(cur);
-                int ret = lt.GetPageCss(v101, v98, 0);
+                ret = lt.GetPageCss(v101, v98, 0);
                 if (ret)
                 {
                     fprintf(stderr, "INFO: GetPageCss fail ret %d", ret);
@@ -261,6 +261,15 @@ int main(int argc, const char **argv) {
             v104 << "}";
             std::string v101 = v104.str();
             
+            if (ret)
+            {
+                fprintf(stderr, "ERR: %s\nerror file count: %d\n", v90.data(), 0);
+                return 1;
+            }
+            fprintf(f, "%s", v88.data());
+            fclose(f);
+            // main - 45
+            return 0;
         }
         fprintf(stderr, "ERR: wxss GetCompiledResult: %s, error file count: %d, ret %d", v96.data(), lt.offset_4, lt.offset_0);
         return 1;
@@ -280,6 +289,7 @@ int main(int argc, const char **argv) {
         goto LABEL_102;
     }
     int v25 = WXSS::NewLintAndParseCSSList(v77, v72, v88, v90, 0, v37, v75, v76);
+    
     if (v25)
     {
         fprintf(stderr, "ERR: %s\nerror file count: %d\n", v90.data(), 0);

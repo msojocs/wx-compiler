@@ -316,6 +316,7 @@ namespace WXSS
         int v41 = 1;
         int v35 = 1;
         int v31 = 0;
+        WXSS::TokenType AnotherTypeByAnySubStr = 0;
         for (int sa = 0; ; sa = v31)
         {
             if (v47 > this->offset_0.length())
@@ -334,7 +335,6 @@ namespace WXSS
             }
             v44 = v10;
             int lt = this->TT[1024 * v4 + 2 * v10];
-            WXSS::TokenType AnotherTypeByAnySubStr;
             AnotherTypeByAnySubStr = this->TryGetAnotherTypeByAnySubStr(this->offset_0.data(), v47, v4, AnotherTypeByAnySubStr);
 
             if (!lt)

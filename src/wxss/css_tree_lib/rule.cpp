@@ -4,8 +4,16 @@ namespace WXSS
 {
     namespace CSSTreeLib
     {
-        Rule::~Rule()
+        namespace RuleDebugRule
         {
+            void InsertOriginSelectorInfo(
+                std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &,
+                int,
+                std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &)
+            {
+                throw "not implement";
+            }
         }
     }
+    
 }

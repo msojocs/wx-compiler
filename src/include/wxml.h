@@ -31,8 +31,28 @@ namespace WXML
         std::string ToStringCode2(std::string const&);
         std::string ToStringCode3(char const*, int);
         std::string ToStringCode3(std::string const&);
+        void GetToken(std::string const&,std::vector<std::pair<int,std::string>> &);
+        int RewriteImg(std::string const&,std::string&,std::string,int,int);
+        int RewriteRPX(std::string const&,std::string&,char const*,char const*);
     }
 
+    namespace RPX
+    {
+        struct Table
+        {
+            bool inited = false;
+            int *nextPos;
+            int canAccept[266];
+        };
+        
+        int accept(int *,int *[266],int &,char const*);
+        int acceptID(char const*,int &);
+        int acceptStr(char const*,int &);
+        int acceptNum(char const*,int &);
+        int acceptSymbol(char const*,int &,int &);
+    } // namespace RPX
+
+    
     class NameAllocator
     {
     private:
