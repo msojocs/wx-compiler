@@ -30,14 +30,13 @@ namespace WXSS
             else
             {
                 v4->Traval(v29.offset_0);
-                std::string v42;
+                std::string v42 = i->first;
                 for (int j = 0; j < v29.offset_0->offset_120.size(); j++)
                 {
                     auto cur = v29.offset_0->offset_120[j];
                     if (cur->offset_0 == "DIRECTIVE")
                     {
                         auto v8 = cur->offset_120;
-                        v42 = i->first;
                         if (v8.size() > 1 && v8[0]->offset_0 == "@import")
                         {
                             std::string lit = v8[1]->offset_24.GetLiteral();
@@ -454,15 +453,29 @@ namespace WXSS
     {
         if (this->offset_32.count(a2))
         {
-            std::vector<std::string> v15;
+            std::deque<std::string> v15;
             v15.push_back(a2);
             while (v15.begin() != v15.end())
             {
-                throw "not implement";
+                std::string v14 = v15.front();
+                v15.pop_front();
+
+                if (this->offset_32[v14]->offset_156.get() && this->offset_32[v14]->offset_156->offset_12 != -1)
+                {
+                    auto v11 = this->offset_32[v14];
+                    auto v5 = this->offset_32[a2];
+                    v5->offset_156 = v11->offset_156;
+                }
+                this->offset_128[v14]++;
+                for (int i = 0; i < this->offset_56[v14].size(); i++)
+                {
+                    v15.push_back(this->offset_56[v14][i]);
+                }
+                
             }
             
         }
-        throw "not implement";
+        return 0;
     }
     int XCompiler::GetCommHead(std::vector<std::string> & a2, std::string& a3, bool a4, std::string const& a5)
     {
