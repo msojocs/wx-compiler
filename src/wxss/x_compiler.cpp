@@ -72,12 +72,12 @@ namespace WXSS
                             }
                             else
                             {
-                                auto v34 = this->offset_56;
-                                std::vector<std::string> v10 = v34[i->first];
+                                auto v10 = this->offset_56[i->first];
                                 v10.push_back(v70);
                                 std::shared_ptr<std::string> v33(new std::string());
                                 v33->assign(v70);
                                 cur->offset_140 = v33;
+                                this->offset_56[i->first] = v10;
                             }
 
                         }
@@ -104,9 +104,9 @@ namespace WXSS
                 auto v43 = this->offset_56.find(v32);
                 if (v43 != this->offset_56.end())
                 {
-                    for (int k = 0; k < this->offset_56[v32].size(); k++)
+                    for (int m = 0; m < this->offset_56[v32].size(); m++)
                     {
-                        _v64[this->offset_56[v32][k]]++;
+                        _v64[this->offset_56[v32][m]]++;
                     }
                     
                 }
@@ -114,20 +114,19 @@ namespace WXSS
             }
             // XCompiler - 5 - 0
             std::map<std::string,unsigned int> v37;
-            std::map<std::string, std::vector<std::string>> v34;
-            std::set<std::string> v72;
+            std::set<std::string> v70;
             while (true)
             {
                 std::vector<std::string> v61;
                 for (auto v20 = _v64.begin(); v20 != _v64.end(); v20++)
                 {
-                    if (v20->second)
+                    if (!v20->second)
                     {
-                        auto v36 = v72.find(v20->first);
-                        if (v36 == v72.end())
+                        auto v36 = v70.find(v20->first);
+                        if (v36 == v70.end())
                         {
                             v61.push_back(v20->first);
-                            v72.insert(v20->first);
+                            v70.insert(v20->first);
                         }
                     }
                 }
@@ -145,9 +144,9 @@ namespace WXSS
                         v45 = a2.find(v74)->second.size();
                     }
                     v37[v74] = v37[v74] + v45;
-                    for (int j = 0; j < v34[v74].size(); j++)
+                    for (int j = 0; j < this->offset_56[v74].size(); j++)
                     {
-                        std::string v77 = v34[v74][j];
+                        std::string v77 = this->offset_56[v74][j];
                         _v64[v77]--;
                         v37[v77] = v37[v77] + v37[v74];
                     }
@@ -157,7 +156,7 @@ namespace WXSS
             }
             
             // XCompiler - 5 - 5
-            if (a2.size() != 0) // todo...
+            if (a2.size() != v70.size()) // todo...
             {
                 v55 += "I don't know what will happen if a snake eats its tail, but a file can not import itself.";
                 this->offset_0 = 4;

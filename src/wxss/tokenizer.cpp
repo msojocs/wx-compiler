@@ -5,54 +5,55 @@
 
 namespace WXSS
 {
-    
+
     Tokenizer::Tokenizer(/* args */)
     {
     }
-    
-    Tokenizer::Tokenizer(char const* str, std::string const& a3)
+
+    Tokenizer::Tokenizer(char const *str, std::string const &a3)
     {
         this->offset_0.replace(0, 0, str, strlen(str));
         this->offset_24.assign(a3);
     }
-    
+
     Tokenizer::~Tokenizer()
     {
     }
-    
+
+    const char *DIRECTIVES[] = {"@import", "@charset", "@media", "@keyframes", "@-webkit-keyframes", "@supports", "nth-child", "nth-last-child", "nth-of-type", "nth-last-of-type"};
     int Tokenizer::TT[26113] = {0};
     bool Tokenizer::bInited = false;
     void Tokenizer::InitTransitTable(/* args */)
     {
         // start 0x005222A0
-        if(!this->bInited)
+        if (!this->bInited)
         {
             // InitTransitTable - 0
             this->bInited = true;
-            const char* ntr = " \n\t\r";
-            for (int i = 0; i < 5; i++)
+            const char *ntr = " \n\t\r";
+            for (int i = 0; i < 4; i++)
             {
                 char v1 = ntr[i];
                 this->TT[(0x5232A0 - 0x005222A0) / 4 + 2 * v1] = 134217729;
                 this->TT[(0x5232A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
-            const char* dotabc = ".abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
-            for (int i = 0; i < 56; i++)
+            const char *dotabc = ".abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
+            for (int i = 0; i < 55; i++)
             {
                 char v1 = dotabc[i];
                 this->TT[(0x5232A0 - 0x005222A0) / 4 + 2 * v1] = 2;
                 this->TT[(0x5232A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
-            const char* _0123 = "0123456789";
-            for (int i = 0; i < 11; i++)
+            const char *_0123 = "0123456789";
+            for (int i = 0; i < 10; i++)
             {
                 char v1 = _0123[i];
                 this->TT[(0x5232A0 - 0x005222A0) / 4 + 2 * v1] = 5;
                 this->TT[(0x5232A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
             // InitTransitTable - 5
-            const char* sharp = "#*,{}[]:()~=|>\"+^@;";
-            for (int i = 0; i < 20; i++)
+            const char *sharp = "#*,{}[]:()~=|>\"+^@;";
+            for (int i = 0; i < 19; i++)
             {
                 char v1 = sharp[i];
                 this->TT[(0x5232A0 - 0x005222A0) / 4 + 2 * v1] = 1114113;
@@ -85,7 +86,7 @@ namespace WXSS
             this->TT[(0x53BAA0 - 0x005222A0) / 4] = -1;
             this->TT[(0x53BAA4 - 0x005222A0) / 4] = -1;
             // InitTransitTable - 10
-            for (int i = 0; i < 56; i++)
+            for (int i = 0; i < 55; i++)
             {
                 char v1 = dotabc[i];
                 this->TT[(0x5392A0 - 0x005222A0) / 4 + 2 * v1] = 2;
@@ -93,14 +94,14 @@ namespace WXSS
             }
             this->TT[(0x539AA0 - 0x005222A0) / 4] = 68288513;
             this->TT[(0x539AA4 - 0x005222A0) / 4] = 0;
-            for (int i = 0; i < 56; i++)
+            for (int i = 0; i < 55; i++)
             {
                 char v1 = dotabc[i];
                 this->TT[(0x5272A0 - 0x005222A0) / 4 + 2 * v1] = 5;
                 this->TT[(0x5272A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
             // InitTransitTable - 15
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 10; i++)
             {
                 char v1 = _0123[i];
                 this->TT[(0x5272A0 - 0x005222A0) / 4 + 2 * v1] = 5;
@@ -151,19 +152,19 @@ namespace WXSS
             this->TT[(0x536AA0 - 0x005222A0) / 4] = 19;
             this->TT[(0x536AA4 - 0x005222A0) / 4] = 0;
             // InitTransitTable - 20
-            for (int i = 0; i < 56; i++)
+            for (int i = 0; i < 55; i++)
             {
                 char v1 = dotabc[i];
                 this->TT[(0x5242A0 - 0x005222A0) / 4 + 2 * v1] = 2;
                 this->TT[(0x5242A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 10; i++)
             {
                 char v1 = _0123[i];
                 this->TT[(0x5242A0 - 0x005222A0) / 4 + 2 * v1] = 2;
                 this->TT[(0x5242A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 char v1 = ntr[i];
                 this->TT[(0x5242A0 - 0x005222A0) / 4 + 2 * v1] = 67764225;
@@ -174,13 +175,13 @@ namespace WXSS
             this->TT[(0x5243B4 - 0x005222A0) / 4] = 0;
             this->TT[(0x524AA0 - 0x005222A0) / 4] = 67764225;
             this->TT[(0x524AA4 - 0x005222A0) / 4] = 0;
-            for (int i = 0; i < 56; i++)
+            for (int i = 0; i < 55; i++)
             {
                 char v1 = dotabc[i];
                 this->TT[(0x5252A0 - 0x005222A0) / 4 + 2 * v1] = 3;
                 this->TT[(0x5252A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 10; i++)
             {
                 char v1 = _0123[i];
                 this->TT[(0x5252A0 - 0x005222A0) / 4 + 2 * v1] = 3;
@@ -189,32 +190,32 @@ namespace WXSS
             // InitTransitTable - 30
             this->TT[(0x525AA0 - 0x005222A0) / 4] = 69337089;
             this->TT[(0x525AA4 - 0x005222A0) / 4] = 0;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 char v1 = ntr[i];
                 this->TT[(0x5262A0 - 0x005222A0) / 4 + 2 * v1] = 134217732;
                 this->TT[(0x5262A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
-            for (int i = 0; i < 56; i++)
+            for (int i = 0; i < 55; i++)
             {
                 char v1 = dotabc[i];
                 this->TT[(0x5262A0 - 0x005222A0) / 4 + 2 * v1] = 8;
                 this->TT[(0x5262A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
-            for (int i = 0; i < 56; i++)
+            for (int i = 0; i < 55; i++)
             {
                 char v1 = dotabc[i];
                 this->TT[(0x52A2A0 - 0x005222A0) / 4 + 2 * v1] = 8;
                 this->TT[(0x52A2A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
             // InitTransitTable - 35
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 10; i++)
             {
                 char v1 = _0123[i];
                 this->TT[(0x52A2A0 - 0x005222A0) / 4 + 2 * v1] = 8;
                 this->TT[(0x52A2A4 - 0x005222A0) / 4 + 2 * v1] = 0;
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 char v1 = ntr[i];
                 this->TT[(0x52A2A0 - 0x005222A0) / 4 + 2 * v1] = 67764228;
@@ -275,7 +276,7 @@ namespace WXSS
             // InitTransitTable - 40
         }
     }
-    
+
     bool WXSS::Tokenizer::SubStrCheckingClause::inited = false;
     WXSS::Tokenizer::SubStrCheckingClause WXSS::Tokenizer::SCC[5];
     void Tokenizer::InitSubStrCheckingCaluseTable()
@@ -296,8 +297,11 @@ namespace WXSS
         }
     }
 
-    int Tokenizer::GetTokens(std::vector<WXSS::Token> & a2, std::string & a3, int a4)
+    int GetTokens_i = 0;
+    int Tokenizer::GetTokens(std::vector<WXSS::Token> &a2, std::string &a3, int a4)
     {
+        GetTokens_i++;
+        int inner_GetTokens_i = GetTokens_i;
         // GetTokens - 0
         this->InitTransitTable();
         this->InitSubStrCheckingCaluseTable();
@@ -311,14 +315,17 @@ namespace WXSS
         a2.reserve(a2.size());
         // GetTokens - 5
         int v33 = 4194305;
-        // int AnotherTypeByAnySubStr = 0;
         int v37 = 1;
         int v41 = 1;
         int v35 = 1;
         int v31 = 0;
         WXSS::TokenType AnotherTypeByAnySubStr = 0;
-        for (int sa = 0; ; sa = v31)
+        for (int sa = 0;; sa = v31)
         {
+            if (inner_GetTokens_i == 2 && a2.size() == 75)
+            {
+                int a = 1;
+            }
             if (v47 > this->offset_0.length())
             {
                 return 0;
@@ -347,7 +354,6 @@ namespace WXSS
                     a3 = v66.str();
                     return -1;
                 }
-
             }
             if (lt == -1)
                 break;
@@ -355,7 +361,7 @@ namespace WXSS
             if ((lt & 0x30000) != 0)
             {
                 int v43 = ((lt & 0x20000) == 0) + v47 - 1;
-                if ( !AnotherTypeByAnySubStr )
+                if (!AnotherTypeByAnySubStr)
                 {
                     AnotherTypeByAnySubStr = 2;
                     if (!bittest(&lt, 0x12))
@@ -380,7 +386,7 @@ namespace WXSS
                     WXSS::Token v58;
                     v58.offset_0 = AnotherTypeByAnySubStr;
                     // const char * v59 = nullptr;
-                    v58.offset_12 = sa;  // v61
+                    v58.offset_12 = sa; // v61
                     v58.offset_20 = v35;
                     v58.offset_24 = v37;
                     v58.offset_16 = ((lt & 0x20000) == 0) + v47 - sa;
@@ -394,7 +400,7 @@ namespace WXSS
                         int v38 = ((lt & 0x20000) == 0) + v47 - 1;
                         if (bittest(&lt, 0x18u))
                         {
-                            for (char i = this->offset_0[sa]; v43 != sa && i-10 <= 0x16u && ((0x400009u >> (i - 10)) & 1) != 0 ; i = this->offset_0[sa])
+                            for (char i = this->offset_0[sa]; v43 != sa && i - 10 <= 0x16u && ((0x400009u >> (i - 10)) & 1) != 0; i = this->offset_0[sa])
                             {
                                 if (i == 10)
                                 {
@@ -412,7 +418,6 @@ namespace WXSS
                                 }
                                 --v38;
                             }
-                            
                         }
                         v58.offset_12 = sa;
                         int v39 = v38 - sa + 1;
@@ -431,18 +436,13 @@ namespace WXSS
                         if (v58.offset_0 == 4)
                         {
                             if (
-                                !strcasecmp(v58.offset_4->data(), "@media")
-                                || !strcasecmp(v58.offset_4->data(), "@keyframes")
-                                || !strcasecmp(v58.offset_4->data(), "@-webkit-keyframes")
-                                || !strcasecmp(v58.offset_4->data(), "@supports")
-                            )
+                                !strcasecmp(v58.offset_4->data(), "@media") || !strcasecmp(v58.offset_4->data(), "@keyframes") || !strcasecmp(v58.offset_4->data(), "@-webkit-keyframes") || !strcasecmp(v58.offset_4->data(), "@supports"))
                             {
                                 v4 = 24;
                             }
-                            const char *DIRECTIVES = "@import";
-                            for (int k = 0; DIRECTIVES[k]; k++)
+                            for (int k = 0; k < 10; k++)
                             {
-                                if (!strcasecmp(v58.offset_4->data(), DIRECTIVES + k))
+                                if (!strcasecmp(v58.offset_4->data(), DIRECTIVES[k]))
                                 {
                                     WXSS::Token v66;
                                     v66.offset_0 = 1;
@@ -451,20 +451,17 @@ namespace WXSS
                                     v66.offset_20 = v58.offset_20;
                                     v66.offset_24 = v37;
                                     // v66.offset_28 = DIRECTIVES + k;
-                                    strcpy(v66.offset_28, DIRECTIVES + k);
+                                    strcpy(v66.offset_28, DIRECTIVES[k]);
                                     a2.push_back(v66);
                                     goto LABEL_77;
                                     break;
                                 }
-                                
                             }
-                            
                         }
                     }
-                    {
-                        a2.push_back(v58);
-                    }
-                    LABEL_77:
+                    a2.push_back(v58);
+
+                LABEL_77:
                     sa = v43 + 1;
                     v37 = v41 + 1;
                 }
@@ -508,14 +505,14 @@ namespace WXSS
     Tokenizer::SubStrCheckingClause::SubStrCheckingClause()
     {
     }
-    Tokenizer::SubStrCheckingClause::SubStrCheckingClause(WXSS::Tokenizer::STATE a2, char const* a3, WXSS::TokenType a4)
+    Tokenizer::SubStrCheckingClause::SubStrCheckingClause(WXSS::Tokenizer::STATE a2, char const *a3, WXSS::TokenType a4)
     {
         this->offset_0 = a2;
         this->offset_4 = strlen(a3);
         strcpy(this->offset_8, a3);
         this->offset_24 = a4;
     }
-    Tokenizer::SubStrCheckingClause& Tokenizer::SubStrCheckingClause::operator=(SubStrCheckingClause const & t)
+    Tokenizer::SubStrCheckingClause &Tokenizer::SubStrCheckingClause::operator=(SubStrCheckingClause const &t)
     {
         this->offset_0 = t.offset_0;
         this->offset_4 = t.offset_4;
@@ -523,8 +520,8 @@ namespace WXSS
         this->offset_24 = t.offset_24;
         return *this;
     }
-    
-    WXSS::TokenType Tokenizer::TryGetAnotherTypeByAnySubStr(char const* a1, uint a2, WXSS::Tokenizer::STATE a3, WXSS::TokenType a4)
+
+    WXSS::TokenType Tokenizer::TryGetAnotherTypeByAnySubStr(char const *a1, uint a2, WXSS::Tokenizer::STATE a3, WXSS::TokenType a4)
     {
         if (!a4)
         {
@@ -546,9 +543,7 @@ namespace WXSS
                         return WXSS::Tokenizer::SCC[i].offset_24;
                     }
                 }
-
             }
-            
         }
         return a4;
     }

@@ -13,8 +13,11 @@ namespace WXSS
         {
         }
         
+        int parse_i = 0;
+        int temp_count = 0;
         int Parser::Parse(std::string const& a2, std::string const& a3, std::string& a4, std::string const& a5)
         {
+            int inner_parse_i = ++parse_i;
             // Parse - 0
             WXSS::Tokenizer v125(a2.data(), a3);
             std::vector<WXSS::Token> v118;
@@ -51,12 +54,14 @@ namespace WXSS
             v102->offset_0 = off_519B58;
             v102->offset_4_str = "$";
             v102->offset_28 = 1;
+            temp_count++;
             this->offset_8.push_back(v102);
             
             // off_519A44
             std::shared_ptr<WXSS::CSSTreeLib::Base> v104(new WXSS::CSSTreeLib::Base());
             v104->offset_0 = off_519A44;
             v104->offset_4_int = instance->GetTopType();
+            temp_count++;
             this->offset_8.push_back(v104);
 
             // Parse - 15
@@ -74,6 +79,7 @@ namespace WXSS
                 {
                     break;
                 }
+                // this->offset_8.back()
                 auto v116 = this->offset_8.back();
                 auto cur = v118[v75];
                 std::string str;
@@ -170,6 +176,7 @@ namespace WXSS
                     if (str[0] != '$' || str[1])
                     {
                         std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v82(new WXSS::CSSTreeLib::CSSSyntaxTree());
+                        v82->offset_0 = str;
                         v82->offset_24 = cur;
                         v82->offset_148 = v9;
                         v82->offset_156 = v14;
@@ -201,6 +208,7 @@ namespace WXSS
                         {
                             v45->offset_164 = v44->offset_164;
                         }
+                        v45->offset_168 = v44->offset_168;
                         v45->offset_120.push_back(v44);
 
                     }
@@ -226,7 +234,7 @@ namespace WXSS
                             auto v48 = v123->offset_120;
                             auto v49 = v48[stra - 1];
                             v123->offset_164 = v49->offset_164;
-                            v123->offset_168 = v49->offset_168;
+                            v123->offset_168 = v48[0]->offset_168;
                             v123->offset_148 = v9;
                             v123->offset_156 = v14;
                         }
@@ -253,7 +261,11 @@ namespace WXSS
                 else if (v116->offset_0() == 2)
                 {
                     // off_519A44
-
+                    if (inner_parse_i == 2)
+                    {
+                        int a = temp_count;
+                    }
+    
                     int v52 = v116->offset_4_int;
                     
                     std::string v135 = str;
@@ -282,12 +294,19 @@ namespace WXSS
                         return -1;
                     }
                     this->offset_8.pop_back();
-                    for (int i = strc->second.size() - 1; i >= 0; i--)
+
+                    for (int i = strc->second[0].size() - 1; i >= 0; i--)
                     {
-                        auto cur = strc->second[i];
-                        if (cur[0]->offset_0() == 4)
+                        auto cur = strc->second[0][i];
+                        if (cur->offset_0() == 4)
                             break;
-                        this->offset_8.push_back(cur[0]);
+                        temp_count++;
+                        this->offset_8.push_back(cur);
+                        
+                        if (inner_parse_i == 2 && temp_count > 2983)
+                        {
+                            int a = temp_count;
+                        }
                     }
                     
                 }
@@ -306,7 +325,7 @@ namespace WXSS
                 this->offset_0 = v68;
             }
             // Parse - 30
-            throw "not implement";
+            return 0;
         }
     }
 
