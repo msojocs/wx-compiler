@@ -403,16 +403,21 @@ namespace WXSS
         {
             std::string v30;
             auto v23 = this->offset_32;
+            
+            if (
+                this->offset_32[a2]->offset_156.get()
+                && this->offset_32[a2]->offset_156->offset_12 != -1
+            )
+            {
+                auto v6 = this->offset_32[a2];
+                auto v28 = v6->offset_156;
+                std::stringstream v38;
+                v38 << "Some selectors are not allowed in component wxss, including tag name selectors, ID selectors, and attribute selectors.(";
+                v38 << WXML::Rewrite::ToStringCode2(a2);
+                v38 << ":" << v28->offset_20 << ":" << v28->offset_24 << ")";
+                v30 = v38.str();
+            }
             std::stringstream v38;
-            throw "not implement";
-            // if (
-            //     this->offset_32[a2]->offset_156
-            //     && this->offset_32[a2]->offset_156->offset_12!= -1
-            // )
-            // {
-            //     auto v6 = this->offset_32[a2];
-            // }
-            v38.clear();
             v38 << "setCssToHead([";
             if (this->offset_128[a2] <= 1)
             {

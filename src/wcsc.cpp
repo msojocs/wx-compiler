@@ -266,9 +266,9 @@ int main(int argc, const char **argv) {
                 fprintf(stderr, "ERR: %s\nerror file count: %d\n", v90.data(), 0);
                 return 1;
             }
-            fprintf(f, "%s", v88.data());
+            fprintf(f, "%s", v101.data());
             fclose(f);
-            // main - 45
+            // main - 25 - 9
             return 0;
         }
         fprintf(stderr, "ERR: wxss GetCompiledResult: %s, error file count: %d, ret %d", v96.data(), lt.offset_4, lt.offset_0);
