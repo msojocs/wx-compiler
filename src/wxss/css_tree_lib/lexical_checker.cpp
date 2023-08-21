@@ -252,6 +252,10 @@ namespace WXSS
             }
             return 0;
         }
+        int off_519B00(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
+        {
+            throw "not implement";
+        }
         int off_519B40(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
             // WXSS::CSSTreeLib::AndRules::MarkGood
@@ -402,7 +406,7 @@ namespace WXSS
                 v69->offset_4_vecPair.emplace_back("SELECTOR", v77);
 
                 std::shared_ptr<WXSS::CSSTreeLib::Rule> v79(new WXSS::CSSTreeLib::Rule());
-                v79->offset_0 = off_519B84;
+                v79->offset_0 = off_519B00;
                 v77->offset_4_vecPair.emplace_back("$NAME", v79);
                 // Init - 30
                 std::shared_ptr<WXSS::CSSTreeLib::Rule> v81(new WXSS::CSSTreeLib::Rule());

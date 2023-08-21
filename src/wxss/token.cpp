@@ -23,7 +23,7 @@ namespace WXSS
             result = "UNKNOWN";
             if (this->offset_4.get())
             {
-                return *this->offset_4.get();
+                return *this->offset_4;
             }
         }
         return result;

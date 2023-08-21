@@ -65,7 +65,7 @@ int main(int argc, const char **argv) {
     bool v36 = false;
     bool v37 = false;
     std::string fileName;
-    std::string v76;
+    std::string v76 = "./app.wxss";
     for (int i = 0; i < v69.size(); i++) {
         std::string cur = v69[i];
         if (cur[0] != '-')
@@ -175,7 +175,7 @@ int main(int argc, const char **argv) {
             v101.append("./", 2);
             v101.append(v69[i + 1]);
             // TODO... 待检验
-            v76 = v101;
+            v76 = v101.append("/app.wxss");
         }
     }
     // main - 20

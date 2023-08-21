@@ -27,7 +27,7 @@ namespace WXSS
             size: 92字节
         */
     public:
-        int offset_0 = 0;
+        int offset_0 = 1;
         std::shared_ptr<std::string> offset_4;
         int offset_12 = 0;
         int offset_16 = 0;
@@ -130,20 +130,21 @@ namespace WXSS
         public:
             std::string offset_0;
             WXSS::Token offset_24;
-            int offset_116; // 类型未确定
+            int offset_116 = 1; // 类型未确定
             std::vector<std::shared_ptr<CSSSyntaxTree>> offset_120;
             std::shared_ptr<std::string> offset_132; // 类型未确定，不是布尔值
             std::shared_ptr<std::string> offset_140;
             std::shared_ptr<std::string[3]> offset_148;
             std::shared_ptr<Token> offset_156;
-            int offset_164;
-            int offset_168;
-            int offset_172; // 类型未确定
+            int offset_164 = 0;
+            int offset_168 = 0;
+            int offset_172 = 0; // 类型未确定
             CSSSyntaxTree(/* args */);
             ~CSSSyntaxTree();
             void GetHostRule(std::string &);
             void Print2Stream(int, std::stringstream &);
             void RenderCode(std::string &,bool);
+            CSSSyntaxTree& operator=(CSSSyntaxTree&);
         };
         class Rule
         {

@@ -8,6 +8,7 @@ namespace WXSS
     {
         CSSSyntaxTree::CSSSyntaxTree(/* args */)
         {
+            this->offset_24.offset_0 = 1;
         }
         
         CSSSyntaxTree::~CSSSyntaxTree()
@@ -139,6 +140,22 @@ namespace WXSS
                 cur->GetHostRule(a2);
             }
             
+        }
+        
+        CSSSyntaxTree& CSSSyntaxTree::operator=(CSSSyntaxTree& old)
+        {
+            this->offset_0 = old.offset_0;
+            this->offset_24 = old.offset_24;
+            this->offset_116 = old.offset_116;
+            this->offset_120 = old.offset_120;
+            this->offset_132 = old.offset_132;
+            this->offset_140 = old.offset_140;
+            this->offset_148 = old.offset_148;
+            this->offset_156 = old.offset_156;
+            this->offset_164 = old.offset_164;
+            this->offset_168 = old.offset_168;
+            this->offset_172 = old.offset_172;
+            return *this;
         }
     }
 

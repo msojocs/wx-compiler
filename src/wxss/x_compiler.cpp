@@ -84,8 +84,8 @@ namespace WXSS
                     }
                 }
                 std::string v74 = v42;
-                std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v75(new WXSS::CSSTreeLib::CSSSyntaxTree());
-                this->offset_32[v74] = v75;
+                
+                this->offset_32[v74] = v29.offset_0;
             }
         }
         // end for
@@ -502,7 +502,7 @@ namespace WXSS
                 this->offset_152[j->first] = j->first;
             }
         }
-        for (auto k = this->offset_32.rbegin(); k != this->offset_32.rend(); k++)
+        for (auto k = this->offset_32.begin(); k != this->offset_32.end(); k++)
         {
             if (this->offset_128[k->first] > 1)
             {
