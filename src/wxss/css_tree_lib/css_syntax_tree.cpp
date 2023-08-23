@@ -21,7 +21,7 @@ namespace WXSS
             {
                 if (!this->offset_172)
                 {
-                    if (this->offset_132 && a3)
+                    if (this->offset_132.get() && a3)
                     {
                         a2 += *this->offset_132;
                     }

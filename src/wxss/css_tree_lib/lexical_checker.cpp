@@ -10,9 +10,9 @@ namespace WXSS
     namespace CSSTreeLib
     {
         
+        // WXSS::CSSTreeLib::MarkHostRule::MarkGood
         int off_519A58(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            // WXSS::CSSTreeLib::MarkHostRule::MarkGood
             for (auto lt = a2->offset_120.begin(); lt != a2->offset_120.end(); lt++)
             {
                 if (lt->get()->offset_0 == "SELECTORS")
@@ -73,9 +73,10 @@ namespace WXSS
             
             return 1;
         }
+    
+        // WXSS::CSSTreeLib::AttrDebugRule::MarkGood
         int off_519A70(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            // WXSS::CSSTreeLib::AttrDebugRule::MarkGood
             auto v9 = a2->offset_168;
             std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> la(new WXSS::CSSTreeLib::CSSSyntaxTree());
             std::stringstream v26;
@@ -130,9 +131,10 @@ namespace WXSS
             }
             return v13;
         }
+    
+        // WXSS::CSSTreeLib::BlackListRule::MarkGood
         int off_519A88(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            // WXSS::CSSTreeLib::BlackListRule::MarkGood
             auto lit = a2->offset_24.GetLiteral();
             for (int i = 0; i < a1->offset_4_vecStr.size(); i++) {
                 std::string cur = a1->offset_4_vecStr[i];
@@ -144,23 +146,30 @@ namespace WXSS
             }
             return a2->offset_116;
         }
+
+        // WXSS::CSSTreeLib::RuleDebugRule::MarkGood
         int off_519AA0(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            // WXSS::CSSTreeLib::RuleDebugRule::MarkGood
             std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v21;
             std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v23;
             std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> v25;
+            bool hasAttrs = false;
             for (int i = 0; i < a2->offset_120.size(); i++)
             {
                 auto cur = a2->offset_120[i];
                 if (cur->offset_0 == "ATTRS")
                 {
+                    hasAttrs = true;
                     v21 = cur;
                 }
                 else if (cur->offset_0 == "{")
                 {
                     v23 = cur;
                 }
+            }
+            if (!hasAttrs)
+            {
+                v21 = v23;
             }
             auto v11 = v21->offset_168;
             auto v17 = a2->offset_120[0];
@@ -213,9 +222,10 @@ namespace WXSS
             }
             return la;
         }
+    
+        // WXSS::CSSTreeLib::ReWriteRpxRule::MarkGood
         int off_519AB8(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            // WXSS::CSSTreeLib::ReWriteRpxRule::MarkGood
             auto lit = a2->offset_24.GetLiteral();
             std::string v9;
             if (WXML::Rewrite::RewriteRPX(lit, v9, "%%?", "?%%"))
@@ -227,14 +237,159 @@ namespace WXSS
             }
             return 0;
         }
+
+        // WXSS::CSSTreeLib::MarkSelectorRule::MarkGood
         int off_519AD0(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            // WXSS::CSSTreeLib::MarkSelectorRule::MarkGood
-            throw "not implement";
+            for (int i = 0; i < a2->offset_120.size(); i++)
+            {
+                auto cur = a2->offset_120[i];
+                std::string v14 = cur->offset_0;
+                if (i)
+                {
+                    if (cur->offset_164 <= a2->offset_120[i - 1]->offset_168)
+                    {
+                        if (v14[0] == 'F')
+                        {
+                            if (strcmp(v14.data() + 1, "_SELECTOR"))
+                            {
+                                // LABEL_35:
+                                auto v5 = a2->offset_156;
+                                auto v6 = cur;
+                                auto v10 = v6->offset_120[0];
+                                *v5 = v10->offset_24;
+                                std::shared_ptr<std::string> str(new std::string());
+                                *str = a2->offset_148[0];
+                                a2->offset_156->offset_4 = str;
+                                return 1;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                        auto v13 = cur->offset_120;
+                        if (v14[0] == 'S' && !strcmp(v14.data() + 1, "ELECTOR"))
+                        {
+                            if (v13.size() == 0)
+                            {
+                                continue;
+                            }
+                            for (auto i = v13.begin(); i != v13.end(); i++)
+                            {
+                                if ((*i)->offset_0[0] == '$')
+                                {
+                                    if (!strcmp((*i)->offset_0.data() + 1, "NAME"))
+                                    {
+                                        std::string lit = (*i)->offset_24.GetLiteral();
+                                        if (lit[0] == '.' || lit[0] == '@')
+                                        {
+                                            continue;
+                                        }
+                                        if (lit[0] == 'f')
+                                        {
+                                            if (!strcmp(lit.data() + 1, "orm"))
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                        else if (lit[0] == 't')
+                                        {
+                                            if (!strcmp(lit.data() + 1, "o"))
+                                            {
+                                                continue;
+                                            }
+
+                                        }
+                                        if (lit[lit.length() - 1] != '%')
+                                        {
+                                            // LABEL_32
+                                            auto v5 = a2->offset_156;
+                                            auto v10 = *i;
+                                            *v5 = v10->offset_24;
+                                            std::shared_ptr<std::string> str(new std::string());
+                                            *str = a2->offset_148[0];
+                                            a2->offset_156->offset_4 = str;
+                                            return 1;
+                                        }
+                                        continue;
+                                    }
+                                    if (!strcmp((*i)->offset_0.data() + 1,"ID"))
+                                    {
+                                        auto v5 = a2->offset_156;
+                                        auto v10 = *i;
+                                        *v5 = v10->offset_24;
+                                        std::shared_ptr<std::string> str(new std::string());
+                                        *str = a2->offset_148[0];
+                                        a2->offset_156->offset_4 = str;
+                                        return 1;
+                                    }
+                                }
+                            }
+                            
+                        }
+                        break;
+                    }
+                }
+                if (v14[0] != 'F' || strcmp(v14.data() + 1, "_SELECTOR"))
+                {
+                    if (v14[0] == 'F')
+                    {
+                        if (strcmp(v14.data() + 1, "_SELECTOR"))
+                        {
+                            // LABEL_35:
+                            auto v5 = a2->offset_156;
+                            auto v6 = cur;
+                            auto v10 = v6->offset_120[0];
+                            *v5 = v10->offset_24;
+                            std::shared_ptr<std::string> str(new std::string());
+                            *str = a2->offset_148[0];
+                            a2->offset_156->offset_4 = str;
+                            return 1;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    break;
+                }
+                if (cur->offset_120.size() <= 1)
+                {
+                    // goto LABEL_14;
+                    auto v5 = a2->offset_156;
+                    auto v6 = cur;
+                    auto v10 = v6->offset_120[0];
+                    *v5 = v10->offset_24;
+                    std::shared_ptr<std::string> str(new std::string());
+                    *str = a2->offset_148[0];
+                    a2->offset_156->offset_4 = str;
+                    return 1;
+                }
+                auto v3 = cur->offset_120[0];
+                std::string lit = v3->offset_24.GetLiteral();
+                if (v3->offset_0[0] != '$'
+                    || strcmp(v3->offset_0.data() + 1, "NAME")
+                    || lit[0] != 'h'
+                    || strcmp(lit.data() + 1, "ost")
+                )
+                {
+                    auto v5 = a2->offset_156;
+                    auto v6 = cur;
+                    auto v10 = v6->offset_120[0];
+                    *v5 = v10->offset_24;
+                    std::shared_ptr<std::string> str(new std::string());
+                    *str = a2->offset_148[0];
+                    a2->offset_156->offset_4 = str;
+                    return 1;
+                }
+            }
+            return 1;
         }
+
+        // WXSS::CSSTreeLib::RewriteImgUrlRule::MarkGood
         int off_519AE8(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            // WXSS::CSSTreeLib::RewriteImgUrlRule::MarkGood
             std::string lit = a2->offset_24.GetLiteral();
             std::string v10;
             auto la = a2->offset_24.offset_24;
@@ -252,13 +407,75 @@ namespace WXSS
             }
             return 0;
         }
+        // WXSS::CSSTreeLib::RewriteSelectorRule::MarkGood
         int off_519B00(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            throw "not implement";
+            std::string v14;
+            std::string lit = a2->offset_24.GetLiteral();
+            if (lit.length())
+            {
+                for (int i = 0; i < lit.length(); i++)
+                {
+                    char ch = lit[i];
+                    if (ch == '.' && i + 1 < lit.length() && lit[i+1] - '0' > 9)
+                    {
+                        v14 += ".%%HERESUFFIX%%";
+                    }
+                    else
+                    {
+                        v14.push_back(ch);
+                    }
+                }
+                if (a2->offset_24.offset_16 != lit.length())
+                {
+                    std::shared_ptr<std::string> str(new std::string());
+                    *str = v14;
+                    a2->offset_132 = str;
+                }
+                if (!strcasecmp(v14.data(), "page"))
+                {
+                    std::shared_ptr<std::string> str(new std::string());
+                    *str = "body";
+                    a2->offset_132 = str;
+                }
+                else if(strcasecmp(v14.data(), "f"))
+                {
+                    if(strcasecmp(v14.data(), "to"))
+                    {
+                        if(strcasecmp(v14.data(), "not"))
+                        {
+                            if (v14.length())
+                            {
+                                if (isalpha(v14[0]))
+                                {
+                                    std::string v20 = v14.substr(0, 3);
+                                    if (v20 != "wx-")
+                                    {
+                                        v20 = "wx-";
+                                        v20 += v14;
+                                        
+                                        std::shared_ptr<std::string> str(new std::string());
+                                        *str = v20;
+                                        a2->offset_132 = str;
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                a2->offset_116 = 1;
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+
         }
+        // WXSS::CSSTreeLib::AndRules::MarkGood
         int off_519B40(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            // WXSS::CSSTreeLib::AndRules::MarkGood
             for (int i=0; i < a1->offset_4_vecPtr.size(); i++)
             {
                 auto cur = a1->offset_4_vecPtr[i];
@@ -273,17 +490,21 @@ namespace WXSS
             return 1;
         }
 
+        // WXSS::CSSTreeLib::TrueRule::MarkGood
         int off_519B6C(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            // WXSS::CSSTreeLib::TrueRule::MarkGood
             a2->offset_116 = 1;
             return 1;
         }
+
+        int off_519B84_i = 0;
         /**
          * WXSS::CSSTreeLib::ChildRule::MarkGood
         */
         int off_519B84(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
+            off_519B84_i++;
+            int inner_off_519B84_i = off_519B84_i;
             int v8 = 1;
             for (int j = 0; j < a2->offset_120.size(); j++)
             {
@@ -304,6 +525,7 @@ namespace WXSS
         {
             throw "not implement";
         }
+
         /**
          * 00519BB4 - WXSS::CSSTreeLib::RuleChain::MarkGood
          * 
@@ -320,9 +542,18 @@ namespace WXSS
             a2->offset_116 = ret;
             return ret;
         }
+        // WXSS::CSSTreeLib::SPNotRule::MarkGood
         int off_519BCC(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            throw "not implement";
+            if (a2->offset_120.size() == 5)
+            {
+                std::string lit = a2->offset_120[1]->offset_24.GetLiteral();
+                if (!strcasecmp(lit.data(), "not") && !strcasecmp(a2->offset_120[3]->offset_0.data(), "SELECTOR"))
+                {
+                    a1->offset_4_ptr->offset_0(a1->offset_4_ptr, a2->offset_120[3]);
+                }
+            }
+            return 1;
         }
 
         LexicalChecker::LexicalChecker(/* args */)
@@ -368,7 +599,9 @@ namespace WXSS
                 v44->push_back(v57);
                 v44->push_back(v3);
                 std::shared_ptr<WXSS::CSSTreeLib::Rule> v59(new WXSS::CSSTreeLib::Rule());
+                v59->offset_0 = off_519B84;
                 std::shared_ptr<WXSS::CSSTreeLib::Rule> v61(new WXSS::CSSTreeLib::Rule());
+                v61->offset_0 = off_519B40;
                 // Init - 10
                 v61->offset_4_vecPtr.push_back(v59);
                 if (a3) {
@@ -417,7 +650,7 @@ namespace WXSS
                 v83->offset_0 = off_519B84;
                 std::shared_ptr<WXSS::CSSTreeLib::Rule> v85(new WXSS::CSSTreeLib::Rule());
                 v85->offset_0 = off_519BCC;
-                // v85->
+                v85->offset_4_ptr = v77;
                 v81->offset_4_vecPtr.push_back(v83);
                 v81->offset_4_vecPtr.push_back(v85);
                 
@@ -430,8 +663,8 @@ namespace WXSS
 
                 // Init - 40
                 std::shared_ptr<WXSS::CSSTreeLib::Rule> v73(new WXSS::CSSTreeLib::Rule());
-                
                 v73->offset_0 = off_519BB4;
+
                 v59->offset_4_vecPair.emplace_back("ATTRS", v73);
 
                 std::shared_ptr<WXSS::CSSTreeLib::Rule> v75(new WXSS::CSSTreeLib::Rule());
@@ -479,7 +712,7 @@ namespace WXSS
         {
             if (this->offset_0)
             {
-                this->offset_4->offset_4_vecPtr.front()->offset_0(this->offset_4, a2);
+                this->offset_4->offset_0(this->offset_4, a2);
             }
         }
             

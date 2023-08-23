@@ -231,8 +231,11 @@ namespace WXML {
             return ToStringCode3(src.data(), src.size());
         }
         
+        int GetToken_i = 0;
         void GetToken(std::string const& a1,std::vector<std::pair<int,std::string>> & a2)
         {
+            GetToken_i++;
+            int inner_GetToken_i = GetToken_i;
             for (int i = 0; i < a1.length(); )
             {
                 int v9 = a1.length() - i;
@@ -255,7 +258,7 @@ namespace WXML {
                         }
                     }
                 }
-                std::string v10(a1.begin() + i, a1.end() - 9);
+                std::string v10(a1.begin() + i, a1.end() - v9);
                 a2.push_back(std::make_pair(lt, v10));
                 i = a1.length() - v9;
 
@@ -341,10 +344,51 @@ namespace WXML {
 
             return result;
         }
-        int RewriteRPX(std::string const&,std::string&,char const*,char const*)
+        int RewriteRPX(std::string const& a1, std::string& a2, char const* a3, char const* a4)
         {
+            std::vector<std::pair<WXML::STRTOKEN, std::string>> v22;
+            WXML::Rewrite::GetToken(a1, v22);
+            a2 = "";
+            bool v17 = true;
+            for (int i = 1; i < v22.size(); i++)
+            {
+                auto cur = v22[i];
+                if (v22[i - 1].first == 1 && !cur.first && !cur.second.compare("rpx"))
+                {
+                    std::string v29 = a4;
+                    std::string v25 = a3;
+                    v25.append(v22[i - 1].second);
+                    v25.append(v22[i].second);
+                    // int v8 = v25.length() + v29.length();
+                    v25.append(v29);
+                    a2 += v25;
+                    if (++i == v22.size())
+                    {
+                        v17 = false;
+                    }
+                }
+                else
+                {
+                    a2 += v22[i - 1].second;
+                }
+            }
+            if (v22.begin() != v22.end() && v17)
+            {
+                a2 += v22.back().second;
+            }
+            if (a2.length() == a1.length())
+            {
+                if (a2.length())
+                {
+                    return a2 != a1;
+                }
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
             
-            throw "not implement";
         }
     }
 }

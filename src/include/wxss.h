@@ -157,6 +157,7 @@ namespace WXSS
             std::vector<std::shared_ptr<WXSS::CSSTreeLib::Rule>> offset_4_vecPtr;
             std::vector<std::pair<std::string, std::shared_ptr<WXSS::CSSTreeLib::Rule>>> offset_4_vecPair;
             std::vector<std::string> offset_4_vecStr;
+            std::shared_ptr<WXSS::CSSTreeLib::Rule> offset_4_ptr;
             // ~Rule();
         };
 

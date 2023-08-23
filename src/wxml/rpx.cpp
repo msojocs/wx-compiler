@@ -832,8 +832,8 @@ namespace WXML
             int i;
             for (i = a3; i > 0; i--)
             {
-                int v7 = v4;
-                v4 = a1[266 * v4 + *a4];
+                v7 = v4;
+                v4 = a1[266 * v4 + *a4]; // 266 * 4 = 0x428
                 if (v4 == -1)
                 {
                     break;
@@ -841,7 +841,7 @@ namespace WXML
                 a4++;
             }
 
-            if (a2[v7])
+            if (((char *)a2)[v7])
             {
                 a3 = i;
                 return 0;
