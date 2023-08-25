@@ -8,7 +8,6 @@ namespace WXML {
         std::vector<std::pair<WXML::STRTOKEN,std::string>> & a3
         )
     {
-        const char* lt = nullptr;
         const char* v3 = nullptr;
         if (a1 && str)
         {
