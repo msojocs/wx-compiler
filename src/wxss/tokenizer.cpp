@@ -408,7 +408,7 @@ namespace WXSS
                                 }
                                 sa++;
                             }
-                            int v38 = ((lt & 0x20000) == 0) + v47 - 1;
+                            v38 = ((lt & 0x20000) == 0) + v47 - 1;
                             for (char j = this->offset_0[v43]; sa < v38; j = this->offset_0[v38])
                             {
                                 int v21 = j - 10;
@@ -421,8 +421,10 @@ namespace WXSS
                         }
                         v58.offset_12 = sa;
                         int v39 = v38 - sa + 1;
+                        v58.offset_16 = v39;
                         std::string str = this->offset_0.substr(sa, v39);
                         v58.offset_4 = std::make_shared<std::string>(str);
+                        
                     }
                     if (v58.offset_0 != 1)
                     {

@@ -15,15 +15,15 @@ namespace WXSS
         {
             for (auto lt = a2->offset_120.begin(); lt != a2->offset_120.end(); lt++)
             {
-                if (lt->get()->offset_0 == "SELECTORS")
+                if ((*lt)->offset_0 == "SELECTORS")
                 {
-                    auto v2 = lt->get()->offset_120;
+                    auto v2 = (*lt)->offset_120;
                     if (v2.size() == 1)
                     {
-                        auto v3 = v2.front().get();
+                        auto v3 = v2[0];
                         if (v3->offset_0 == "F_SELECTOR")
                         {
-                            auto v4 = v2.front()->offset_120;
+                            auto v4 = v2[0]->offset_120;
                             if (v4.size() > 1)
                             {
                                 auto v12 = v4[1];
@@ -35,7 +35,7 @@ namespace WXSS
                                         a2->offset_172 = 1;
                                         if (v4.size() == 5)
                                         {
-                                            auto lb = v4[3].get();
+                                            auto lb = v4[3];
                                             if (lb->offset_0 == "SELECTOR")
                                             {
                                                 auto v13 = lb->offset_120;
@@ -119,6 +119,7 @@ namespace WXSS
                 *v24 = v26.str();
                 
                 v18->offset_24.offset_4 = v24;
+                v18->offset_24.offset_0 = 3;
                 v18->offset_164 = v9 + 1;
                 v18->offset_168 = v9 + 2;
 
@@ -426,7 +427,7 @@ namespace WXSS
                         v14.push_back(ch);
                     }
                 }
-                if (a2->offset_24.offset_16 != lit.length())
+                if (a2->offset_24.offset_16 != v14.length())
                 {
                     std::shared_ptr<std::string> str(new std::string());
                     *str = v14;
@@ -530,8 +531,11 @@ namespace WXSS
          * 00519BB4 - WXSS::CSSTreeLib::RuleChain::MarkGood
          * 
         */
+        int off_519BB4_i = 0;
         int off_519BB4(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
+            off_519BB4_i++;
+            int inner_off_519BB4_i = off_519BB4_i;
             int ret = 0;
             for (int i = 0; i < a1->offset_4_vecPtr.size(); i++)
             {

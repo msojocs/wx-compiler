@@ -5,6 +5,7 @@ namespace WXSS
     
     Token::Token(/* args */)
     {
+        this->offset_28[0] = '\0';
     }
     
     Token::~Token()
