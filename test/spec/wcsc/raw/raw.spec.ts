@@ -1,8 +1,8 @@
-const assert = require("assert");
-const node = require("../../runner/node");
-const wine = require("../../runner/wine");
-const path = require("path");
-const fs = require("fs");
+import assert from "assert";
+import path from "path";
+import node from '../../../runner/node'
+import wine from '../../../runner/wine'
+import * as fs from 'fs'
 
 describe("wcsc", function () {
     describe("Raw: node output should equal with wine", function () {
@@ -14,7 +14,7 @@ describe("wcsc", function () {
         it("主界面", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "../../examples/miniprogram-demo/miniprogram"
+                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-db",
@@ -43,7 +43,7 @@ describe("wcsc", function () {
             const n = await node.wcsc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test.title}`
+                `miniprogram-demo/${this.test?.title}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -61,7 +61,7 @@ describe("wcsc", function () {
         it("接口-设置界面标题", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "../../examples/miniprogram-demo/miniprogram/"
+                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram/"
             );
             const args = [
                 "-db",
@@ -166,7 +166,7 @@ describe("wcsc", function () {
             const n = await node.wcsc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test.title}`
+                `miniprogram-demo/${this.test?.title}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
