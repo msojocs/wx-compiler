@@ -121,9 +121,11 @@ namespace WXML {
             {
                 std::vector<std::pair<WXML::STRTOKEN,std::string>> v10;
                 WXML::StrSplitList4ClassSuffix(cur.second.data(), "%%HERESUFFIX%%", v10);
+                std::string str = a2.str();
                 for (int j=0; j < v10.size(); j++)
                 {
-                    WXML::RenderStrToken(v10[i], a2);
+                    WXML::RenderStrToken(v10[j], a2);
+                    str = a2.str();
                 }
             }
             else if (!cur.first)

@@ -239,13 +239,18 @@ namespace WXSS
             return 0;
         }
 
+        int MarkSelectorRule_i = 0;
         // WXSS::CSSTreeLib::MarkSelectorRule::MarkGood
         int off_519AD0(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
+            MarkSelectorRule_i++;
+            int inner_MarkSelectorRule_i = MarkSelectorRule_i; // TODO: 校对至80
+            // MarkSelectorRule - 0
             for (int i = 0; i < a2->offset_120.size(); i++)
             {
                 auto cur = a2->offset_120[i];
                 std::string v14 = cur->offset_0;
+                // MarkSelectorRule - 5
                 if (i)
                 {
                     if (cur->offset_164 <= a2->offset_120[i - 1]->offset_168)
@@ -259,10 +264,11 @@ namespace WXSS
                                 auto v6 = cur;
                                 auto v10 = v6->offset_120[0];
                                 *v5 = v10->offset_24;
-                                std::shared_ptr<std::string> str(new std::string());
-                                *str = a2->offset_148[0];
-                                a2->offset_156->offset_4 = str;
-                                return 1;
+                                // std::shared_ptr<std::string> str(new std::string());
+                                // *str = a2->offset_148[0];
+                                // a2->offset_156->offset_4 = str;
+                                // return 1;
+                                break;
                             }
                             else
                             {
@@ -332,6 +338,7 @@ namespace WXSS
                         break;
                     }
                 }
+                // MarkSelectorRule - 10
                 if (v14[0] != 'F' || strcmp(v14.data() + 1, "_SELECTOR"))
                 {
                     if (v14[0] == 'F')
@@ -343,18 +350,83 @@ namespace WXSS
                             auto v6 = cur;
                             auto v10 = v6->offset_120[0];
                             *v5 = v10->offset_24;
-                            std::shared_ptr<std::string> str(new std::string());
-                            *str = a2->offset_148[0];
-                            a2->offset_156->offset_4 = str;
-                            return 1;
+                            // std::shared_ptr<std::string> str(new std::string());
+                            // *str = a2->offset_148[0];
+                            // a2->offset_156->offset_4 = str;
+                            // return 1;
+                            break;
                         }
                         else
                         {
                             continue;
                         }
                     }
+                    else if (v14[0] == 'S' && !strcmp(v14.data() + 1, "ELECTOR"))
+                    {
+                        auto v13 = cur->offset_120;
+                        if (v13.size() == 0)
+                        {
+                            continue;
+                        }
+                        for (auto i = v13.begin(); i != v13.end(); i++)
+                        {
+                            if ((*i)->offset_0[0] == '$')
+                            {
+                                if (!strcmp((*i)->offset_0.data() + 1, "NAME"))
+                                {
+                                    std::string lit = (*i)->offset_24.GetLiteral();
+                                    if (lit[0] == '.' || lit[0] == '@')
+                                    {
+                                        continue;
+                                    }
+                                    if (lit[0] == 'f')
+                                    {
+                                        if (!strcmp(lit.data() + 1, "orm"))
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    else if (lit[0] == 't')
+                                    {
+                                        if (!strcmp(lit.data() + 1, "o"))
+                                        {
+                                            continue;
+                                        }
+
+                                    }
+                                    if (lit[lit.length() - 1] != '%')
+                                    {
+                                        // LABEL_32
+                                        auto v5 = a2->offset_156;
+                                        auto v10 = *i;
+                                        *v5 = v10->offset_24;
+                                        std::shared_ptr<std::string> str(new std::string());
+                                        *str = a2->offset_148[0];
+                                        a2->offset_156->offset_4 = str;
+                                        return 1;
+                                    }
+                                    continue;
+                                }
+                                if (!strcmp((*i)->offset_0.data() + 1,"ID"))
+                                {
+                                    auto v5 = a2->offset_156;
+                                    auto v10 = *i;
+                                    *v5 = v10->offset_24;
+                                    std::shared_ptr<std::string> str(new std::string());
+                                    *str = a2->offset_148[0];
+                                    a2->offset_156->offset_4 = str;
+                                    return 1;
+                                }
+                            }
+                        }
+                        continue;
+                    }
+                    auto v5 = a2->offset_156;
+                    auto v10 = cur->offset_120[0];
+                    *v5 = v10->offset_24;
                     break;
                 }
+                // MarkSelectorRule - 15
                 if (cur->offset_120.size() <= 1)
                 {
                     // goto LABEL_14;
@@ -362,11 +434,13 @@ namespace WXSS
                     auto v6 = cur;
                     auto v10 = v6->offset_120[0];
                     *v5 = v10->offset_24;
-                    std::shared_ptr<std::string> str(new std::string());
-                    *str = a2->offset_148[0];
-                    a2->offset_156->offset_4 = str;
-                    return 1;
+                    // std::shared_ptr<std::string> str(new std::string());
+                    // *str = a2->offset_148[0];
+                    // a2->offset_156->offset_4 = str;
+                    // return 1;
+                    break;
                 }
+                // MarkSelectorRule - 20
                 auto v3 = cur->offset_120[0];
                 std::string lit = v3->offset_24.GetLiteral();
                 if (v3->offset_0[0] != '$'
@@ -379,12 +453,17 @@ namespace WXSS
                     auto v6 = cur;
                     auto v10 = v6->offset_120[0];
                     *v5 = v10->offset_24;
-                    std::shared_ptr<std::string> str(new std::string());
-                    *str = a2->offset_148[0];
-                    a2->offset_156->offset_4 = str;
-                    return 1;
+                    // std::shared_ptr<std::string> str(new std::string());
+                    // *str = a2->offset_148[0];
+                    // a2->offset_156->offset_4 = str;
+                    // return 1;
+                    break;
                 }
             }
+            std::shared_ptr<std::string> str(new std::string());
+            *str = a2->offset_148[0];
+            a2->offset_156->offset_4 = str;
+
             return 1;
         }
 
