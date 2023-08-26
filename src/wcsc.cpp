@@ -176,6 +176,7 @@ int main(int argc, const char **argv) {
             v101.append(v69[i + 1]);
             // TODO... 待检验
             v76 = v101.append("/app.wxss");
+            i++;
         }
     }
     // main - 20
@@ -282,6 +283,10 @@ int main(int argc, const char **argv) {
     // TODO...
 
     // main - 35
+    if (v77.find(v76) == v77.end())
+    {
+        v77[v76] = "";
+    }
     
     // main - 40
     if (v36)

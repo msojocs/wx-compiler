@@ -278,13 +278,13 @@ namespace WXSS
                             {
                                 continue;
                             }
-                            for (auto i = v13.begin(); i != v13.end(); i++)
+                            for (auto j = v13.begin(); j != v13.end(); j++)
                             {
-                                if ((*i)->offset_0[0] == '$')
+                                if ((*j)->offset_0[0] == '$')
                                 {
-                                    if (!strcmp((*i)->offset_0.data() + 1, "NAME"))
+                                    if (!strcmp((*j)->offset_0.data() + 1, "NAME"))
                                     {
-                                        std::string lit = (*i)->offset_24.GetLiteral();
+                                        std::string lit = (*j)->offset_24.GetLiteral();
                                         if (lit[0] == '.' || lit[0] == '@')
                                         {
                                             continue;
@@ -308,7 +308,7 @@ namespace WXSS
                                         {
                                             // LABEL_32
                                             auto v5 = a2->offset_156;
-                                            auto v10 = *i;
+                                            auto v10 = *j;
                                             *v5 = v10->offset_24;
                                             std::shared_ptr<std::string> str(new std::string());
                                             *str = a2->offset_148[0];
@@ -317,10 +317,10 @@ namespace WXSS
                                         }
                                         continue;
                                     }
-                                    if (!strcmp((*i)->offset_0.data() + 1,"ID"))
+                                    if (!strcmp((*j)->offset_0.data() + 1,"ID"))
                                     {
                                         auto v5 = a2->offset_156;
-                                        auto v10 = *i;
+                                        auto v10 = *j;
                                         *v5 = v10->offset_24;
                                         std::shared_ptr<std::string> str(new std::string());
                                         *str = a2->offset_148[0];
@@ -360,30 +360,32 @@ namespace WXSS
                     else if (v14[0] == 'S' && !strcmp(v14.data() + 1, "ELECTOR"))
                     {
                         auto v13 = cur->offset_120;
-                        if (v13.size() == 0)
+                        if (v13.size() == 0) // todo: 这个if语句块应该能去掉
                         {
                             continue;
                         }
-                        for (auto i = v13.begin(); i != v13.end(); i++)
+                        for (auto j = v13.begin(); j != v13.end(); j++)
                         {
-                            if ((*i)->offset_0[0] == '$')
+                            if ((*j)->offset_0[0] == '$')
                             {
-                                if (!strcmp((*i)->offset_0.data() + 1, "NAME"))
+                                if (!strcmp((*j)->offset_0.data() + 1, "NAME"))
                                 {
-                                    std::string lit = (*i)->offset_24.GetLiteral();
+                                    std::string lit = (*j)->offset_24.GetLiteral();
                                     if (lit[0] == '.' || lit[0] == '@')
                                     {
                                         continue;
                                     }
                                     if (lit[0] == 'f')
                                     {
-                                        if (!strcmp(lit.data() + 1, "orm"))
+                                        // from
+                                        if (!strcmp(lit.data() + 1, "rom"))
                                         {
                                             continue;
                                         }
                                     }
                                     else if (lit[0] == 't')
                                     {
+                                        // to
                                         if (!strcmp(lit.data() + 1, "o"))
                                         {
                                             continue;
@@ -394,7 +396,7 @@ namespace WXSS
                                     {
                                         // LABEL_32
                                         auto v5 = a2->offset_156;
-                                        auto v10 = *i;
+                                        auto v10 = *j;
                                         *v5 = v10->offset_24;
                                         std::shared_ptr<std::string> str(new std::string());
                                         *str = a2->offset_148[0];
@@ -403,10 +405,10 @@ namespace WXSS
                                     }
                                     continue;
                                 }
-                                if (!strcmp((*i)->offset_0.data() + 1,"ID"))
+                                if (!strcmp((*j)->offset_0.data() + 1,"ID"))
                                 {
                                     auto v5 = a2->offset_156;
-                                    auto v10 = *i;
+                                    auto v10 = *j;
                                     *v5 = v10->offset_24;
                                     std::shared_ptr<std::string> str(new std::string());
                                     *str = a2->offset_148[0];
