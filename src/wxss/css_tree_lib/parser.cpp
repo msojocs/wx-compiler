@@ -70,6 +70,7 @@ namespace WXSS
             v9[1].assign(a5);
             std::shared_ptr<WXSS::Token> v14(new WXSS::Token());
             v14->offset_4.reset(new std::string());
+            v14->offset_12 = -1;
 
             // Parse - 20
             int v75 = 0;
