@@ -15,10 +15,8 @@ namespace night
     {
         return this->compile_binary(a3);
     }
-    int compile_binary_i = 0;
     std::string NSCompileJs::compile_binary(night::ns_node *a3)
     {
-        int inner_compile_binary_i = ++compile_binary_i;
         std::string ret = this->compile(a3->offset_180);
         std::string v10 = " " + a3->offset_156;
         std::string v3 = v10.append(" ");
@@ -314,10 +312,8 @@ namespace night
         
         return result;
     }
-    int compile_obj_property_i = 0;
     std::string NSCompileJs::compile_obj_property(night::ns_node *a3)
     {
-        int inner_compile_obj_property_i = ++compile_obj_property_i;
         std::string v26 = night::nst_ + std::to_string(this->offset_32);
         this->offset_32++;
         
@@ -492,10 +488,8 @@ namespace night
         result += this->compile(a3->offset_216);
         return result;
     }
-    int compile_prog_i = 0;
     std::string NSCompileJs::compile_prog(night::ns_node *a3)
     {
-        int inner_compile_prog_i = ++compile_prog_i;
         std::string result = "";
         std::string v9 = a3->offset_108;
         if (v9.size() == 0)
@@ -539,10 +533,8 @@ namespace night
         return result;
     }
     
-    int compile_i = 0;
     std::string NSCompileJs::compile(night::ns_node * a3)
     {
-        int inner_compile_i = ++compile_i;
         if (this->offset_0.size() == 0)
         {
             std::string v9 = a3->offset_0;

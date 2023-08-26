@@ -11,10 +11,9 @@ namespace night
     {
     }
 
-    int peek_i= 0;
+    // int peek_i= 0;
     night::ns_node* NSToken::peek(void)
     {
-        int inner_peek_i = ++peek_i;
         auto result = this->offset_8;
         if (!result)
         {
@@ -97,10 +96,8 @@ namespace night
         return ret;
     }
 
-    int next_i = 0;
     night::ns_node* NSToken::next(void)
     {
-        int inner_next_i = ++next_i; // 396
         auto result = this->offset_8;
         this->offset_8 = nullptr;
         if (!result)

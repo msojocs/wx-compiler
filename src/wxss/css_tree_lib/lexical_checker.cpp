@@ -9,12 +9,9 @@ namespace WXSS
 {
     namespace CSSTreeLib
     {
-        int off_519A58_i = 0;
         // WXSS::CSSTreeLib::MarkHostRule::MarkGood
         int off_519A58(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            off_519A58_i++;
-            int inner_off_519A58_i = off_519A58_i;
             for (auto lt = a2->offset_120.begin(); lt != a2->offset_120.end(); lt++)
             {
                 if ((*lt)->offset_0 == "SELECTORS")
@@ -241,12 +238,9 @@ namespace WXSS
             return 0;
         }
 
-        int MarkSelectorRule_i = 0;
         // WXSS::CSSTreeLib::MarkSelectorRule::MarkGood
         int off_519AD0(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            MarkSelectorRule_i++;
-            int inner_MarkSelectorRule_i = MarkSelectorRule_i; // 771有问题
             // MarkSelectorRule - 0
             for (int i = 0; i < a2->offset_120.size(); i++)
             {
@@ -490,12 +484,9 @@ namespace WXSS
             return 0;
         }
 
-        int off_519B00_i = 0;
         // WXSS::CSSTreeLib::RewriteSelectorRule::MarkGood
         int off_519B00(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            off_519B00_i++;
-            int inner_off_519B00_i = off_519B00_i;
             std::string v14;
             std::string lit = a2->offset_24.GetLiteral();
             if (lit.length())
@@ -560,15 +551,8 @@ namespace WXSS
 
         }
         // WXSS::CSSTreeLib::AndRules::MarkGood
-        int off_519B40_i = 0;
         int off_519B40(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            off_519B40_i++;
-            int inner_off_519B40_i = off_519B40_i;
-            if (inner_off_519B40_i >= 3611)
-            {
-                int a = 0;
-            }
             for (int i=0; i < a1->offset_4_vecPtr.size(); i++)
             {
                 auto cur = a1->offset_4_vecPtr[i];
@@ -590,18 +574,11 @@ namespace WXSS
             return 1;
         }
 
-        int off_519B84_i = 0;
         /**
          * WXSS::CSSTreeLib::ChildRule::MarkGood
         */
         int off_519B84(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            off_519B84_i++;
-            int inner_off_519B84_i = off_519B84_i;
-            if (inner_off_519B84_i >= 9100)
-            {
-                int a = 0;
-            }
             int v8 = 1;
             for (int j = 0; j < a2->offset_120.size(); j++)
             {
@@ -627,15 +604,8 @@ namespace WXSS
          * 00519BB4 - WXSS::CSSTreeLib::RuleChain::MarkGood
          * 
         */
-        int off_519BB4_i = 0;
         int off_519BB4(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            off_519BB4_i++;
-            int inner_off_519BB4_i = off_519BB4_i;
-            if (inner_off_519BB4_i >= 4218)
-            {
-                int a = 0;
-            }
             int ret = 0;
             for (int i = 0; i < a1->offset_4_vecPtr.size(); i++)
             {

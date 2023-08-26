@@ -297,11 +297,8 @@ namespace WXSS
         }
     }
 
-    int GetTokens_i = 0;
     int Tokenizer::GetTokens(std::vector<WXSS::Token> &a2, std::string &a3, int a4)
     {
-        GetTokens_i++;
-        int inner_GetTokens_i = GetTokens_i;
         // GetTokens - 0
         this->InitTransitTable();
         this->InitSubStrCheckingCaluseTable();
@@ -322,10 +319,6 @@ namespace WXSS
         WXSS::TokenType AnotherTypeByAnySubStr = 0;
         for (int sa = 0;; sa = v31)
         {
-            if (inner_GetTokens_i == 2 && a2.size() == 75)
-            {
-                int a = 1;
-            }
             if (v47 > this->offset_0.length())
             {
                 return 0;

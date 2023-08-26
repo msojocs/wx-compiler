@@ -15,11 +15,8 @@ namespace WXSS
         {
         }
 
-        int RenderCode_i = 0;
         void CSSSyntaxTree::RenderCode(std::string & a2, bool a3)
         {
-            RenderCode_i++;
-            int inner_RenderCode_i = RenderCode_i; // 10296
             if (this->offset_116)
             {
                 if (!this->offset_172)

@@ -231,11 +231,8 @@ namespace WXML {
             return ToStringCode3(src.data(), src.size());
         }
         
-        int GetToken_i = 0;
         void GetToken(std::string const& a1,std::vector<std::pair<int,std::string>> & a2)
         {
-            GetToken_i++;
-            int inner_GetToken_i = GetToken_i;
             for (int i = 0; i < a1.length(); )
             {
                 int v9 = a1.length() - i;

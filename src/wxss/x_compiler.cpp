@@ -350,14 +350,11 @@ namespace WXSS
         return ret;
     }
 
-    int GenExpr_i = 0;
     /**
      * a4 参数正确
     */
     void XCompiler::GenExpr(std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> a2, std::stringstream & a3, std::string & a4)
     {
-        GenExpr_i++;
-        int inner_GenExpr_i = GenExpr_i;
         auto target = a2->offset_120;
         for (int i = 0; i < target.size(); i++)
         {
@@ -391,11 +388,8 @@ namespace WXSS
         std::string str = a3.str();
         return ;
     }
-    int GetPageCss_i = 0;
     int XCompiler::GetPageCss(std::string const& a2, std::string& a3, uint a4)
     {
-        GetPageCss_i++;
-        int inner_GetPageCss_i = GetPageCss_i;
         // GetPageCss - 0
         if (this->offset_0)
         {

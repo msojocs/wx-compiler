@@ -852,7 +852,6 @@ namespace WXML {
             
         }
 
-        int RenderNonDefine_i = 0;
         void WXMLDom::RenderNonDefine(
             std::string const& a2,
             std::string const& a3,
@@ -870,7 +869,6 @@ namespace WXML {
             std::map<std::string,std::string> * a15
             )
         {
-            int inner_RenderNonDefine_i = ++RenderNonDefine_i;
             // RenderNonDefine - 0
             if (a13 && this->offset_24.size())
             {
