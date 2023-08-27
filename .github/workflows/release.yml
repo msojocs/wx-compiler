@@ -106,7 +106,7 @@ jobs:
           sudo apt install -y fuse
           wget -q https://github.com/TheAssassin/pyuploadtool/releases/download/continuous/pyuploadtool-x86_64.AppImage
           chmod +x pyuploadtool-x86_64.AppImage
-          ./pyuploadtool-x86_64.AppImage tmp/build/wcc tmp/build/wcsc
+          ./pyuploadtool-x86_64.AppImage **build/wcc **build/wcsc
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -117,5 +117,5 @@ jobs:
           name: ${{ steps.tag.outputs.name }}
           tag_name: ${{ steps.tag.outputs.tag }}
           files: |
-            tmp/build/wcc
-            tmp/build/wcsc
+            **build/wcc
+            **build/wcsc
