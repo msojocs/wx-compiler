@@ -9,7 +9,7 @@ on:
   push:
     tags:        
       - v*
-    branches: [ master, dev, ci]
+    branches: [ master, dev, 45-snap-version]
   pull_request:
     branches: [ master ]
   # # Allows you to run this workflow manually from the Actions tab
@@ -50,20 +50,14 @@ jobs:
           echo "tag result: $tag - $name"
           echo "::set-output name=tag::$tag"
           echo "::set-output name=name::$name"
-          
-      - name: Configure the project
-        uses: threeal/cmake-action@v1.3.0
-  
-      - name: Build the project
-        run: cmake --build build
 
-      - name: Upload prepare
+      - name: Compress
         run: |
           ls -l
-          echo "------------------------"
-          ls -l build
           mkdir -p tmp/build
-          mv build/{wcc,wcsc} tmp/build
+          sudo rm -rf test
+          tar -zcf compiler.tar.gz *
+          mv compiler.tar.gz tmp/build
           cd tmp/build
           ls -l
 
@@ -103,10 +97,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          sudo apt install -y fuse
           wget -q https://github.com/TheAssassin/pyuploadtool/releases/download/continuous/pyuploadtool-x86_64.AppImage
           chmod +x pyuploadtool-x86_64.AppImage
-          ./pyuploadtool-x86_64.AppImage **build/wcc **build/wcsc
+          ./pyuploadtool-x86_64.AppImage **build/*.tar.gz
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -117,5 +110,4 @@ jobs:
           name: ${{ steps.tag.outputs.name }}
           tag_name: ${{ steps.tag.outputs.tag }}
           files: |
-            **build/wcc
-            **build/wcsc
+            **build/*.tar.gz
