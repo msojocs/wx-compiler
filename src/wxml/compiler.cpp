@@ -37,7 +37,7 @@ namespace WXML{
                 std::vector<WXML::DOMLib::Token> tokenList; // v102
                 parseResult = v50.Parse(content.c_str(), errorMessage, filePath, tokenList);
 
-                if (parseResult)
+                if (!parseResult)
                 {
                     // ParseSource - 5
                     // GetParsed
@@ -788,18 +788,859 @@ namespace WXML{
         }
     
         int Compile(
-            std::map<std::string,std::string> const&,// a1
-            std::string&, // a2
-            std::string&, // a3
-            std::map<std::string, std::vector<std::string>>,// a4
-            std::map<std::string,std::string> const&,// a5
-            bool,// a6
-            std::string const& gwxMark,// a7
-            uint mark, // a8
-            char lineEndMark, // a9
-            std::string const&, // a10
-            std::string const&, // a11
-            std::string const& , // a12
+            std::map<std::string,std::string> const& a2,// a2
+            std::string& a3, // a3
+            std::string& a4, // a4
+            std::map<std::string, std::vector<std::string>> a5,// a5
+            std::map<std::string, std::string> const& a6,// a6
+            bool a7,// a7
+            std::string const& gwxMark,// a8
+            uint mark, // a9
+            char lineEndMark, // a10
+            std::string const& eMark1, // a11
+            std::string const& sMark, // a12
+            std::string const& ggMark, // a13
+            std::string const& eMark2, // a14
+            std::string const& dMark, // a15
+            std::string const& pMark, // a16
+            std::string const& endMark, // a17
+            std::string const& boxMark, // a18
+            std::string const& gdwxMark, // a19
+            std::string const& fMark) // a20
+        {
+            std::stringstream v317;
+            std::shared_ptr<WXML::DOMLib::StrCache> lb(new WXML::DOMLib::StrCache());
+            std::map<std::string,std::shared_ptr<WXML::DOMLib::WXMLDom>> v286;
+            std::map<std::string,std::string> v290;
+            std::map<std::string, int> v292;
+            for (auto i = a2.begin(); i != a2.end(); i++)
+            {
+                auto key = i->first;
+                std::string suffix = key.substr(key.length() - 5);
+                if (suffix == ".wxml")
+                {
+                    WXML::DOMLib::Parser v228;
+                    std::vector<WXML::DOMLib::Token> v283;
+                    int v266 = v228.Parse(i->second.data(), a3, key, v283);
+                    if (v266)
+                    {
+                        return v266;
+                    }
+                    auto v323 = v228.GetParsed();
+                    v286[key] = v323;
+                    std::stringstream v320;
+                    if (v283.begin() != v283.end())
+                    {
+                        v320 << "f_['";
+                        v320 << WXML::Rewrite::ToStringCode(key);
+                        v320 << "']={};" << lineEndMark;
+                    }
+                    for (int j = 0; j < v283.size(); j++)
+                    {
+                        auto cur = v283[j];
+                        std::string v299, v304, v301, v306;
+                        int v280;
+                        int v246 = WXML::Compiler::DealWxsTag(key, cur, v299, v301, v304, &v280, a3);
+                        if (v246)
+                        {
+                            return v246;
+                        }
+                        v320 << fMark << "['";
+                        v320 << WXML::Rewrite::ToStringCode(key) << "']['";
+                        v320 << WXML::Rewrite::ToStringCode(v299) << "'] =";
+                        if (v301.length())
+                        {
+                            MMBizWxaAppComm::PathCombine(key, v301, v306);
+                            if (v306[0] == '/')
+                            {
+                                v306 = '.' + v306;
+                            }
+                            if (a2.find(v306) == a2.end())
+                            {
+                                if ((mark & 0x20) != 0 || gwxMark == "$gwx")
+                                {
+                                    std::stringstream v323;
+                                    v323 << key << ":" << v280 << ":" << cur.offset_12;
+                                    v323 << ":" << v301 << " not found from " << key;
+                                    a3 = v323.str();
+                                    return 1;
+                                }
+                            }
+                            v320 << "f_['";
+                            v320 << WXML::Rewrite::ToStringCode(v306);
+                            v320 << "'] || ";
+                            v320 << "nv_require(\"";
+                            v320 << WXML::Rewrite::ToStringCode("p_" + v306);
+                            v320 << "\");" << lineEndMark;
+                            v320 << fMark;
+                            v320 << "['" << WXML::Rewrite::ToStringCode(key) << "']['";
+                            v320 << WXML::Rewrite::ToStringCode(v299) << "']();" << lineEndMark;
+                        }
+                        else
+                        {
+                            std::string v314 = "m_" + key;
+                            v314.append(":");
+                            v314.append(v299);
+                            WXML::Compiler::GetFuncId(v292, v314);
+                            std::string v309, v297;
+                            int v246 = night::compile_ns(key, v309, v304, v280, v297, false);
+                            if(v246)
+                            {
+                                return v246;
+                            }
+                            v320 << "nv_require(\"";
+                            v320 << WXML::Rewrite::ToStringCode(v314);
+                            v320 << "\");" << lineEndMark;
+                            v320 << v297 << lineEndMark;
+                        }
+                        // next
+                    }
+                    std::string v314 = v320.str();
+                    if (v314.length())
+                    {
+                        v290[key].assign(v314);
+                    }
+                    
+                }
+                else
+                {
+                    std::string v316 = key.substr(key.length() - 4);
+                    if (v316 == ".wxs")
+                    {
+                        std::string v311;
+                        std::string v327 = "p_" + key;
+                        std::string v314 = WXML::Compiler::GetFuncId(v292, v327);
+                        int v266 = night::compile_ns(key, v314, i->second, 1, v311, false);
+                        if (v266)
+                        {
+                            return v266;
+                        }
+                        std::stringstream v327_s;
+                        v327_s << "f_['";
+                        v327_s << WXML::Rewrite::ToStringCode(key) << "'] = nv_require(\"";
+                        v327_s << WXML::Rewrite::ToStringCode("p_" + key) << "\");" << lineEndMark;
+                        v327_s << v311 << lineEndMark;
+                        std::string v323 = v327_s.str();
+                        v290[key] = v323;
+                    }
+                }
+            }
+            std::string v323;
+            // Compile - 5
+            if (a7)
+            {
+                v323 = "global";
+            }
+            else
+            {
+                v323 = "window";
+            }
+            std::string v327;
+            WXML::Compiler::GetVersionInfo(v327, v323);
+            v317 << v327 << std::endl;
+            WXML::NameAllocator v323_na(endMark, boxMark);
+            v317 << "var $gwxc" << lineEndMark;
+            v317 << "var $gaic={}" << lineEndMark;
+            v317 << gwxMark << "=function(path,global){" << lineEndMark;
+            v317 << "if(typeof global === 'undefined') global={};";
+            v317 << "if(typeof __WXML_GLOBAL__ === 'undefined') {";
+            v317 << "__WXML_GLOBAL__={};" << lineEndMark;
+            if ((mark & 0x80) != 0)
+            {
+                auto lccc = a6.find("life_cycle_callback_content");
+                if (lccc != a6.end())
+                {
+                    v317 << lccc->second;
+                }
+
+            }
+            v317 << "}";
+            v317 << "__WXML_GLOBAL__.modules = __WXML_GLOBAL__.modules || {};" << lineEndMark;
+            if (gwxMark != "$gwx" && (mark & 0x60) == 0)
+            {
+                v317 << "$gwx('init', global);" << lineEndMark;
+            }
+            // Compile - 15
+            v317 << "function _(a,b){if(typeof(b)!='undefined')a.children.push(b);}" << lineEndMark;
+            v317 << "function _v(k){if(typeof(k)!='undefined')return {tag:'virtual','wxKey':k,children:[]};return {tag:'virtual',children:[]};}" << lineEndMark;
+            v317 << "function _n(tag){$gwxc++;if($gwxc>=16000){throw 'Dom limit exceeded, please check if there\\'s any mistake you"
+                    "\\'ve made.'};return {tag:'wx-'+tag,attr:{},children:[],n:[],raw:{},generics:{}}}" << lineEndMark;
+            v317 << "function _p(a,b){b&&a.properities.push(b);}" << lineEndMark;
+            v317 << "function _s(scope,env,key){return typeof(scope[key])!='undefined'?scope[key]:env[key]}" << lineEndMark;
+            v317 << "function _wp(m){console.warn(\"WXMLRT_" << gwxMark << ":\"+m)}" << lineEndMark;
+            v317 << "function _wl(tname,prefix){_wp(prefix+':-1:-1:-1: Template `' + tname + '` is being called recursively, will be stop.')}" << lineEndMark;
+            v317 << aGwnConsoleWarn << lineEndMark;
+            v317 << "function wfor( to_iter, func, env, _s, global, father, itemname, indexname, keyname )\n"
+                    "{\n"
+                    "var _n = wh.hn( to_iter ) === 'n'; \n"
+                    "var scope = wh.rv( _s ); \n"
+                    "var has_old_item = scope.hasOwnProperty(itemname);\n"
+                    "var has_old_index = scope.hasOwnProperty(indexname);\n"
+                    "var old_item = scope[itemname];\n"
+                    "var old_index = scope[indexname];\n"
+                    "var full = Object.prototype.toString.call(wh.rv(to_iter));\n"
+                    "var type = full[8]; \n"
+                    "if( type === 'N' && full[10] === 'l' ) type = 'X'; \n"
+                    "var _y;\n"
+                    "if( _n )\n"
+                    "{\n"
+                    "if( type === 'A' ) \n"
+                    "{\n"
+                    "var r_iter_item;\n"
+                    "for( var i = 0 ; i < to_iter.length ; i++ )\n"
+                    "{\n"
+                    "scope[itemname] = to_iter[i];\n"
+                    "scope[indexname] = _n ? i : wh.nh(i, 'h');\n"
+                    "r_iter_item = wh.rv(to_iter[i]);\n"
+                    "var key = keyname && r_iter_item ? (keyname===\"*this\" ? r_iter_item : wh.rv(r_iter_item[keyname])) : undefin"
+                    "ed;\n"
+                    "_y = _v(key);\n"
+                    "_(father,_y);\n"
+                    "func( env, scope, _y, global );\n"
+                    "}\n"
+                    "}\n"
+                    "else if( type === 'O' ) \n"
+                    "{\n"
+                    "var i = 0;\n"
+                    "var r_iter_item;\n"
+                    "for( var k in to_iter )\n"
+                    "{\n"
+                    "scope[itemname] = to_iter[k];\n"
+                    "scope[indexname] = _n ? k : wh.nh(k, 'h');\n"
+                    "r_iter_item = wh.rv(to_iter[k]);\n"
+                    "var key = keyname && r_iter_item ? (keyname===\"*this\" ? r_iter_item : wh.rv(r_iter_item[keyname])) : undefin"
+                    "ed;\n"
+                    "_y = _v(key);\n"
+                    "_(father,_y);\n"
+                    "func( env,scope,_y,global );\n"
+                    "i++;\n"
+                    "}\n"
+                    "}\n"
+                    "else if( type === 'S' ) \n"
+                    "{\n"
+                    "for( var i = 0 ; i < to_iter.length ; i++ )\n"
+                    "{\n"
+                    "scope[itemname] = to_iter[i];\n"
+                    "scope[indexname] = _n ? i : wh.nh(i, 'h');\n"
+                    "_y = _v( to_iter[i] + i );\n"
+                    "_(father,_y);\n"
+                    "func( env,scope,_y,global );\n"
+                    "}\n"
+                    "}\n"
+                    "else if( type === 'N' ) \n"
+                    "{\n"
+                    "for( var i = 0 ; i < to_iter ; i++ )\n"
+                    "{\n"
+                    "scope[itemname] = i;\n"
+                    "scope[indexname] = _n ? i : wh.nh(i, 'h');\n"
+                    "_y = _v( i );\n"
+                    "_(father,_y);\n"
+                    "func(env,scope,_y,global);\n"
+                    "}\n"
+                    "}\n"
+                    "else\n"
+                    "{\n"
+                    "}\n"
+                    "}\n"
+                    "else\n"
+                    "{\n"
+                    "var r_to_iter = wh.rv(to_iter);\n"
+                    "var r_iter_item, iter_item;\n"
+                    "if( type === 'A' ) \n"
+                    "{\n"
+                    "for( var i = 0 ; i < r_to_iter.length ; i++ )\n"
+                    "{\n"
+                    "iter_item = r_to_iter[i];\n"
+                    "iter_item = wh.hn(iter_item)==='n' ? wh.nh(iter_item,'h') : iter_item;\n"
+                    "r_iter_item = wh.rv( iter_item );\n"
+                    "scope[itemname] = iter_item\n"
+                    "scope[indexname] = _n ? i : wh.nh(i, 'h');\n"
+                    "var key = keyname && r_iter_item ? (keyname===\"*this\" ? r_iter_item : wh.rv(r_iter_item[keyname])) : undefin"
+                    "ed;\n"
+                    "_y = _v(key);\n"
+                    "_(father,_y);\n"
+                    "func( env, scope, _y, global );\n"
+                    "}\n"
+                    "}\n"
+                    "else if( type === 'O' ) \n"
+                    "{\n"
+                    "var i=0;\n"
+                    "for( var k in r_to_iter )\n"
+                    "{\n"
+                    "iter_item = r_to_iter[k];\n"
+                    "iter_item = wh.hn(iter_item)==='n'? wh.nh(iter_item,'h') : iter_item;\n"
+                    "r_iter_item = wh.rv( iter_item );\n"
+                    "scope[itemname] = iter_item;\n"
+                    "scope[indexname] = _n ? k : wh.nh(k, 'h');\n"
+                    "var key = keyname && r_iter_item ? (keyname===\"*this\" ? r_iter_item : wh.rv(r_iter_item[keyname])) : undefin"
+                    "ed;\n"
+                    "_y=_v(key);\n"
+                    "_(father,_y);\n"
+                    "func( env, scope, _y, global );\n"
+                    "i++\n"
+                    "}\n"
+                    "}\n"
+                    "else if( type === 'S' ) \n"
+                    "{\n"
+                    "for( var i = 0 ; i < r_to_iter.length ; i++ )\n"
+                    "{\n"
+                    "iter_item = wh.nh(r_to_iter[i],'h');\n"
+                    "scope[itemname] = iter_item;\n"
+                    "scope[indexname] = _n ? i : wh.nh(i, 'h');\n"
+                    "_y = _v( to_iter[i] + i );\n"
+                    "_(father,_y);\n"
+                    "func( env, scope, _y, global );\n"
+                    "}\n"
+                    "}\n"
+                    "else if( type === 'N' ) \n"
+                    "{\n"
+                    "for( var i = 0 ; i < r_to_iter ; i++ )\n"
+                    "{\n"
+                    "iter_item = wh.nh(i,'h');\n"
+                    "scope[itemname] = iter_item;\n"
+                    "scope[indexname]= _n ? i : wh.nh(i,'h');\n"
+                    "_y = _v( i );\n"
+                    "_(father,_y);\n"
+                    "func(env,scope,_y,global);\n"
+                    "}\n"
+                    "}\n"
+                    "else\n"
+                    "{\n"
+                    "}\n"
+                    "}\n"
+                    "if(has_old_item)\n"
+                    "{\n"
+                    "scope[itemname]=old_item;\n"
+                    "}\n"
+                    "else\n"
+                    "{\n"
+                    "delete scope[itemname];\n"
+                    "}\n"
+                    "if(has_old_index)\n"
+                    "{\n"
+                    "scope[indexname]=old_index;\n"
+                    "}\n"
+                    "else\n"
+                    "{\n"
+                    "delete scope[indexname];\n"
+                    "}\n"
+                    "}\n" << lineEndMark;
+            // Compile - 20
+            v317 << "function _ca(o)\n"
+                    "{ \n"
+                    "if ( wh.hn(o) == 'h' ) return true;\n"
+                    "if ( typeof o !== \"object\" ) return false;\n"
+                    "for(var i in o){ \n"
+                    "if ( o.hasOwnProperty(i) ){\n"
+                    "if (_ca(o[i])) return true;\n"
+                    "}\n"
+                    "}\n"
+                    "return false;\n"
+                    "}\n"
+                    "function _da( node, attrname, opindex, raw, o )\n"
+                    "{\n"
+                    "var isaffected = false;\n"
+                    "var value = $gdc( raw, \"\", 2 );\n"
+                    "if ( o.ap && value && value.constructor===Function ) \n"
+                    "{\n"
+                    "attrname = \"$wxs:\" + attrname; \n"
+                    "node.attr[\"$gdc\"] = $gdc;\n"
+                    "}\n"
+                    "if ( o.is_affected || _ca(raw) ) \n"
+                    "{\n"
+                    "node.n.push( attrname );\n"
+                    "node.raw[attrname] = raw;\n"
+                    "}\n"
+                    "node.attr[attrname] = value;\n"
+                    "}\n"
+                    "function _r( node, attrname, opindex, env, scope, global ) \n"
+                    "{\n"
+                    "global.opindex=opindex;\n"
+                    "var o = {}, _env;\n"
+                    "var a = grb( z[opindex], env, scope, global, o );\n"
+                    "_da( node, attrname, opindex, a, o );\n"
+                    "}\n"
+                    "function _rz( z, node, attrname, opindex, env, scope, global ) \n"
+                    "{\n"
+                    "global.opindex=opindex;\n"
+                    "var o = {}, _env;\n"
+                    "var a = grb( z[opindex], env, scope, global, o );\n"
+                    "_da( node, attrname, opindex, a, o );\n"
+                    "}\n"
+                    "function _o( opindex, env, scope, global )\n"
+                    "{\n"
+                    "global.opindex=opindex;\n"
+                    "var nothing = {};\n"
+                    "var r = grb( z[opindex], env, scope, global, nothing );\n"
+                    "return (r&&r.constructor===Function) ? undefined : r;\n"
+                    "}\n"
+                    "function _oz( z, opindex, env, scope, global )\n"
+                    "{\n"
+                    "global.opindex=opindex;\n"
+                    "var nothing = {};\n"
+                    "var r = grb( z[opindex], env, scope, global, nothing );\n"
+                    "return (r&&r.constructor===Function) ? undefined : r;\n"
+                    "}\n"
+                    "function _1( opindex, env, scope, global, o )\n"
+                    "{\n"
+                    "var o = o || {};\n"
+                    "global.opindex=opindex;\n"
+                    "return gra( z[opindex], env, scope, global, o );\n"
+                    "}\n"
+                    "function _1z( z, opindex, env, scope, global, o )\n"
+                    "{\n"
+                    "var o = o || {};\n"
+                    "global.opindex=opindex;\n"
+                    "return gra( z[opindex], env, scope, global, o );\n"
+                    "}\n"
+                    "function _2( opindex, func, env, scope, global, father, itemname, indexname, keyname )\n"
+                    "{\n"
+                    "var o = {};\n"
+                    "var to_iter = _1( opindex, env, scope, global );\n"
+                    "wfor( to_iter, func, env, scope, global, father, itemname, indexname, keyname );\n"
+                    "}\n"
+                    "function _2z( z, opindex, func, env, scope, global, father, itemname, indexname, keyname )\n"
+                    "{\n"
+                    "var o = {};\n"
+                    "var to_iter = _1z( z, opindex, env, scope, global );\n"
+                    "wfor( to_iter, func, env, scope, global, father, itemname, indexname, keyname );\n"
+                    "}\n" << lineEndMark;
+            v317 << "\n"
+                    "function _m(tag,attrs,generics,env,scope,global)\n"
+                    "{\n"
+                    "var tmp=_n(tag);\n"
+                    "var base=0;\n"
+                    "for(var i = 0 ; i < attrs.length ; i+=2 )\n"
+                    "{\n"
+                    "if(base+attrs[i+1]<0)\n"
+                    "{\n"
+                    "tmp.attr[attrs[i]]=true;\n"
+                    "}\n"
+                    "else\n"
+                    "{\n"
+                    "_r(tmp,attrs[i],base+attrs[i+1],env,scope,global);\n"
+                    "if(base===0)base=attrs[i+1];\n"
+                    "}\n"
+                    "}\n"
+                    "for(var i=0;i<generics.length;i+=2)\n"
+                    "{\n"
+                    "if(base+generics[i+1]<0)\n"
+                    "{\n"
+                    "tmp.generics[generics[i]]=\"\";\n"
+                    "}\n"
+                    "else\n"
+                    "{\n"
+                    "var $t=grb(z[base+generics[i+1]],env,scope,global);\n"
+                    "if ($t!=\"\") $t=\"wx-\"+$t;\n"
+                    "tmp.generics[generics[i]]=$t;\n"
+                    "if(base===0)base=generics[i+1];\n"
+                    "}\n"
+                    "}\n"
+                    "return tmp;\n"
+                    "}\n"
+                    "function _mz(z,tag,attrs,generics,env,scope,global)\n"
+                    "{\n"
+                    "var tmp=_n(tag);\n"
+                    "var base=0;\n"
+                    "for(var i = 0 ; i < attrs.length ; i+=2 )\n"
+                    "{\n"
+                    "if(base+attrs[i+1]<0)\n"
+                    "{\n"
+                    "tmp.attr[attrs[i]]=true;\n"
+                    "}\n"
+                    "else\n"
+                    "{\n"
+                    "_rz(z, tmp,attrs[i],base+attrs[i+1],env,scope,global);\n"
+                    "if(base===0)base=attrs[i+1];\n"
+                    "}\n"
+                    "}\n"
+                    "for(var i=0;i<generics.length;i+=2)\n"
+                    "{\n"
+                    "if(base+generics[i+1]<0)\n"
+                    "{\n"
+                    "tmp.generics[generics[i]]=\"\";\n"
+                    "}\n"
+                    "else\n"
+                    "{\n"
+                    "var $t=grb(z[base+generics[i+1]],env,scope,global);\n"
+                    "if ($t!=\"\") $t=\"wx-\"+$t;\n"
+                    "tmp.generics[generics[i]]=$t;\n"
+                    "if(base===0)base=generics[i+1];\n"
+                    "}\n"
+                    "}\n"
+                    "return tmp;\n"
+                    "}\n" << lineEndMark;
+            v317 << aVarNfInitFunct << lineEndMark;
+            v317 << "function _af(p, a, r, c){\n"
+                    "p.extraAttr = {\"t_action\": a, \"t_rawid\": r };\n"
+                    "if ( typeof(c) != 'undefined' ) p.extraAttr.t_cid = c;\n"
+                    "}\n" << lineEndMark;
+            // Compile - 25
+            if (!a7)
+            {
+                v317 << "function _gv( )" << lineEndMark;
+                v317 << "{if( typeof( window.__webview_engine_version__) == 'undefined' ) return 0.0;" << lineEndMark;
+                v317 << "return window.__webview_engine_version__;}" << lineEndMark;
+            }
+            v317 << "function _ai(i,p,e,me,r,c){var x=_grp(p,e,me);if(x)i.push(x);else{i.push('');_wp(me+':import:'+r+':'+c+': Path"
+                    " `'+p+'` not found from `'+me+'`.')}}" << lineEndMark;
+            v317 << "function _grp(p,e,me){if(p[0]!='/'){var mepart=me.split('/');mepart.pop();var ppart=p.split('/');for(var i=0;i"
+                    "<ppart.length;i++){if( ppart[i]=='..')mepart.pop();else if(!ppart[i]||ppart[i]=='.')continue;else mepart.push("
+                    "ppart[i]);}p=mepart.join('/');}if(me[0]=='.'&&p[0]=='/')p='.'+p;if(e[p])return p;if(e[p+'.wxml'])return p+'.wxml';}";
+            v317 << lineEndMark;
+            // Compile - 30
+            v317 << "function _gd(p,c,e,d){if(!c)return;if(d[p][c])return d[p][c];for(var x=e[p].i.length-1;x>=0;x--){if(e[p].i[x]&&d[e[p"
+                    "].i[x]][c])return d[e[p].i[x]][c]};";
+            v317 << "for(var x=e[p].ti.length-1;x>=0;x--){var q=_grp(e[p].ti[x],e,p);if(q&&d[q][c])return d[q][c]}";
+            v317 << "var ii=_gapi(e,p);for(var x=0;x<ii.length;x++){if(ii[x]&&d[ii[x]][c])return d[ii[x]][c]}";
+            v317 << "for(var k=e[p].j.length-1;k>=0;k--)if(e[p].j[k]){for(var q=e[e[p].j[k]].ti.length-1;q>=0;q--){var pp=_grp(e[e[p].j[k"
+                    "]].ti[q],e,p);if(pp&&d[pp][c]){return d[pp][c]}}}";
+            v317 << "}" << lineEndMark;
+            v317 << "function _gapi(e,p){if(!p)return [];if($gaic[p]){return $gaic[p]};var ret=[],q=[],h=0,t=0,put={},visited={};q.push(p"
+                    ");visited[p]=true;t++;while(h<t){";
+            v317 << "var a=q[h++];for(var i=0;i<e[a].ic.length;i++){";
+            v317 << "var nd=e[a].ic[i];var np=_grp(nd,e,a);if(np&&!visited[np]){visited[np]=true;q.push(np);t++;}}for(var i=0;a!=p&&i<e[a"
+                    "].ti.length;i++){";
+            v317 << "var ni=e[a].ti[i];var nm=_grp(ni,e,a);if(nm&&!put[nm]){put[nm]=true;ret.push(nm);}}";
+            v317 << "}$gaic[p]=ret;return ret;}" << lineEndMark;
+            v317 << "var $ixc={};";
+            v317 << "function _ic(p,ent,me,e,s,r,gg){var x=_grp(p,ent,me);ent[me].j.push(x);if(x){if($ixc[x]){_wp('-1:include:-1:-1"
+                    ": `'+p+'` is being included in a loop, will be stop.');return;}$ixc[x]=true;try{ent[x].f(e,s,r,gg)}catch(e){}$"
+                    "ixc[x]=false;}else{_wp(me+':include:-1:-1: Included path `'+p+'` not found from `'+me+'`.')}}";
+            v317 << lineEndMark;
+            v317 << "function _w(tn,f,line,c){_wp(f+':template:'+line+':'+c+': Template `'+tn+'` not found.');}";
+            v317 << "function _ev(dom){var changed=false;delete dom.properities;delete dom.n;if(dom.children){do{changed=false;var "
+                    "newch = [];for(var i=0;i<dom.children.length;i++){var ch=dom.children[i];if( ch.tag=='virtual'){changed=true;f"
+                    "or(var j=0;ch.children&&j<ch.children.length;j++){newch.push(ch.children[j]);}}else { newch.push(ch); } } dom."
+                    "children = newch; }while(changed);for(var i=0;i<dom.children.length;i++){_ev(dom.children[i]);}} return dom; }";
+            v317 << lineEndMark;
+            // Compile - 35
+            v317 << "function _tsd( root )\n"
+                    "{\n"
+                    "if( root.tag == \"wx-wx-scope\" ) \n"
+                    "{\n"
+                    "root.tag = \"virtual\";\n"
+                    "root.wxCkey = \"11\";\n"
+                    "root['wxScopeData'] = root.attr['wx:scope-data'];\n"
+                    "delete root.n;\n"
+                    "delete root.raw;\n"
+                    "delete root.generics;\n"
+                    "delete root.attr;\n"
+                    "}\n"
+                    "for( var i = 0 ; root.children && i < root.children.length ; i++ )\n"
+                    "{\n"
+                    "_tsd( root.children[i] );\n"
+                    "}\n"
+                    "return root;\n"
+                    "}\n";
+            v317 << lineEndMark;
+            v317 << "var " << eMark2 << "={}" << lineEndMark;
+            v317 << "if(typeof(global.entrys)==='undefined')global.entrys={};" << eMark2;
+            v317 << "=global.entrys;" << lineEndMark;
+            v317 << "var " << dMark << "={}" << lineEndMark;
+            v317 << "if(typeof(global.defines)==='undefined')global.defines={};" << dMark << "=global.defines;"; 
+            v317 << lineEndMark;
+            v317 << "var " << fMark << "={}" << lineEndMark;
+            v317 << "if(typeof(global.modules)==='undefined')global.modules={};" << fMark << "=global.modules || {};" << lineEndMark;
+            v317 << "var " << pMark << "={}" << lineEndMark;
+            // Compile - 40
+            if ((mark & 2) != 0)
+            {
+                v317 << "var cs" << lineEndMark;
+            }
+            for (auto j = v286.begin(); j != v286.end(); j++)
+            {
+                j->second->RewriteTree();
+                std::string v327 = "ALL";
+                std::vector<std::string> v113 = a5[v327];
+                j->second->MarkIfHasDescendant(v113);
+                if (a7)
+                {
+                    j->second->CutDomsForCustomComponent(v113);
+                }
+            }
+            // Compile - 45
+            v317 << "__WXML_GLOBAL__.ops_cached = __WXML_GLOBAL__.ops_cached || {}" << lineEndMark;
+            v317 << "__WXML_GLOBAL__.ops_set = __WXML_GLOBAL__.ops_set || {};" << lineEndMark;
+            v317 << "__WXML_GLOBAL__.ops_init = __WXML_GLOBAL__.ops_init || {};" << lineEndMark;
+            v317 << "var z=__WXML_GLOBAL__.ops_set." << gwxMark << " || [];" << lineEndMark;
+            if ((mark & 4) != 0)
+            {
+                v317 << "__WXML_GLOBAL__.debuginfo_set = __WXML_GLOBAL__.debuginfo_set || {};" << lineEndMark;
+                v317 << "var debugInfo=__WXML_GLOBAL__.debuginfo_set." << gwxMark << " || [];" << lineEndMark;
+            }
+            // Compile - 50
+            int v254 = 0;
+            for (auto k = v286.begin(); k != v286.end(); k++)
+            {
+                v254++;
+                std::stringstream v327;
+                v327 << gwxMark << "_" << v254;
+                std::string v314 = v327.str();
+                std::string v316 = "gz" + v314;
+                v317 << "function " << v316 << "(){" << lineEndMark;
+                v317 << "if( __WXML_GLOBAL__.ops_cached." << v314 << ")";
+                v317 << "return __WXML_GLOBAL__.ops_cached." << v314 << lineEndMark;
+                v317 << "__WXML_GLOBAL__.ops_cached." << v314 << "=[];" << lineEndMark;
+                v317 << "(function(z){var a=11;";
+                if ((mark & 4) != 0)
+                {
+                    v317 << "function Z(ops,debugLine){z.push(['11182016',ops,debugLine])}";
+                }
+                else
+                {
+                    v317 << "function Z(ops){z.push(ops)}";
+                }
+                v317 << lineEndMark;
+                std::map<std::string, WXML::DOMLib::RVMOpCodePosition> v311;
+                WXML::DOMLib::RVMOpCodePositionRecorder v306;
+                k->second->RenderAllOpsAndRecord(k->first, a3, v317, v311, &v306, (mark & 4) != 0, a6);
+                v317 << "})(__WXML_GLOBAL__.ops_cached." << v314 << ");";
+                v317 << "return __WXML_GLOBAL__.ops_cached." << v314 << lineEndMark;
+                v317 << "}" << lineEndMark;
+                k->second->offset_272["get_page_z_name"].assign(v316);
+
+            }
+            // Compile - 55
+            v317 << "__WXML_GLOBAL__.ops_set." << gwxMark << "=z;" << lineEndMark;
+            v317 << "__WXML_GLOBAL__.ops_init." << gwxMark << "=true;" << lineEndMark;
+            if ((mark & 4) != 0)
+            {
+                v317 << "__WXML_GLOBAL__.debuginfo_set." << gwxMark << "=debugInfo;" << lineEndMark;
+
+            }
+            v317 << "var nv_require=function(){var nnm={";
+            for (auto m = v292.rbegin(); m != v292.rend(); m++)
+            {
+                v317 << "\"";
+                v317 << WXML::Rewrite::ToStringCode(m->first);
+                v317 << "\":np_";
+                v317 << m->second << ",";
+            }
+            // Compile - 60
+            v317 << "};var nom={};return function(n){";
+            v317 << "if(n[0]==='p'&&n[1]==='_'&&f_[n.slice(2)])return f_[n.slice(2)];";
+            v317 << "return function(){if(!nnm[n]) return undefined;";
+            v317 << "try{if(!nom[n])nom[n]=nnm[n]();return nom[n];}" << "catch(e){";
+            v317 << "e.message=e.message.replace(/nv_/g,'');";
+            v317 << "var tmp = e.stack.substring(0,e.stack.lastIndexOf(n));";
+            v317 << "e.stack = tmp.substring(0,tmp.lastIndexOf('\\n'));";
+            v317 << "e.stack = e.stack.replace(/\\snv_/g,' ');";
+            v317 << "e.stack = $gstack(e.stack);";
+            v317 << "e.stack += '\\n    at ' + n.substring(2);console.error(e);}" << lineEndMark;
+            v317 << "}}}()" << lineEndMark;
+            for (auto n = v290.rbegin(); n != v290.rend(); n++)
+            {
+                v317 << n->second << lineEndMark;
+            }
+            // Compile - 65
+            std::shared_ptr<WXML::DOMLib::StrCache> v281(new WXML::DOMLib::StrCache());
+            for (auto ii = v286.begin(); ii != v286.end(); ii++)
+            {
+                v281->Insert(ii->first);
+                ii->second->offset_248 = v281;
+                ii->second->RecordAllPath();
+            }
+            v281->RenderPathDefine(v317);
+            int inc = 0;
+            for (auto i = v286.begin(); i != v286.end(); i++)
+            {
+                std::map<std::string, std::string> v309;
+                v317 << dMark << "[x[";
+                int strId = v281->GetStrID(i->first);
+                v317 << strId << "]]={}" << lineEndMark;
+                std::string v165 = i->second->offset_272["get_page_z_name"];
+                int v266 = WXML::Compiler::RenderDefine(
+                    *i->second,
+                    i->first,
+                    v309,
+                    a3,
+                    v317,
+                    a6,
+                    (mark & 2) != 0,
+                    mark,
+                    lineEndMark,
+                    eMark1,
+                    sMark,
+                    ggMark,
+                    gwxMark,
+                    eMark2,
+                    dMark,
+                    pMark,
+                    endMark,
+                    boxMark,
+                    gdwxMark,
+                    v165
+                );
+                if (v266)
+                {
+                    return v266;
+                }
+                std::stringstream v327;
+                v327 << "m";
+                inc++;
+                v327 << inc;
+                std::string v314 = v327.str();
+                auto v276 = i->second->offset_272["get_page_z_name"];
+                std::string v320 = "r";
+                i->second->RenderMeAsFunction(
+                    i->first,
+                    eMark2,
+                    a3,
+                    v314,
+                    v317,
+                    &v323_na,
+                    eMark1,
+                    sMark,
+                    ggMark,
+                    v320,
+                    dMark,
+                    lineEndMark,
+                    pMark,
+                    false,
+                    (mark & 2) != 0,
+                    mark,
+                    v276
+                );
+                // if (v266)
+                // {
+                //     return v266;
+                // }
+                v317 << eMark2 << "[x[";
+                int v167 = v281->GetStrID(i->first);
+                v317 << v167 << "]]={f:" << v314 << ",j:[],i:[],ti:[";
+                auto v171 = i->second->offset_72;
+                for (int j = 0; j < v171.size(); j++)
+                {
+                    auto cur = v171[j];
+                    if (cur->offset_0 == "import")
+                    {
+                        if (cur->offset_48.find("src") != cur->offset_48.end())
+                        {
+                            if (j)
+                            {
+                                v317 << ",";
+                            }
+                            v317 << "x[";
+                            auto v172 = cur->offset_48.find("src");
+                            auto v173 = v172->second.ToAttrContent();
+                            int v174 = v281->GetStrID(v173);
+                            v317 << v174 << "]";
+                        }
+                    }
+                }
+                v317 << "],ic:[";
+                for (int jj = 0; jj < i->second->offset_72.size(); jj++)
+                {
+                    auto cur = i->second->offset_72[jj];
+                    if (cur->offset_0 == "include")
+                    {
+                        auto src = cur->offset_48.find("src");
+                        if (src != cur->offset_48.end())
+                        {
+                            if (jj)
+                            {
+                                v317 << ",";
+                            }
+                            auto v178 = src->second.ToAttrContent();
+                            int v179 = v281->GetStrID(v178);
+                            v317 << v179 << "]";
+                        }
+                    }
+                }
+                v317 << "]}" << lineEndMark;
+                
+            }
+            // Compile - 70
+            v317 << "if(path&&" << eMark2 << "[path]){" << lineEndMark;
+            if (!a7)
+            {
+                v317 << "window.__wxml_comp_version__=0.02" << lineEndMark;
+            }
+            v317 << "return function(env,dd,global){$gwxc=0;var root={\"tag\":\"wx-page\"};root.children=[]" << lineEndMark;
+            v317 << "var main=" << eMark2 << "[path].f" << lineEndMark;
+            if ((mark & 2) != 0)
+            {
+                v317 << "cs=[]" << lineEndMark;
+            }
+            if ((mark & 0x10) != 0)
+            {
+                v317 << "console.log(path+': benv:\\n'+JSON.stringify(env))" << lineEndMark;
+            }
+            v317 << "if (typeof global===\"undefined\")global={};";
+            v317 << "global.f=$gdc(" << fMark << "[path],\"\",1);" << lineEndMark;
+            if (!a7)
+            {
+                v317 << "if(typeof(window.__webview_engine_version__)!='undefined'&&window.__webview_engine_version__+1e-6>=0.02+1e-"
+                        "6&&window.__mergeData__)" << lineEndMark;
+                v317 << "{" << lineEndMark;
+                v317 << "env=window.__mergeData__(env,dd);" << lineEndMark;
+                v317 << "}" << lineEndMark;
+            }
+            v317 << "try{" << lineEndMark;
+            if ((mark & 0x10) != 0)
+            {
+                v317 << "console.log(path+': aenv:\\n'+JSON.stringify(env)+', '+JSON.stringify(dd))" << lineEndMark;
+            }
+            // Compile - 75
+            if ((mark & 0x80) != 0)
+            {
+                v317 << "if(__WXML_GLOBAL__.before_calculate)__WXML_GLOBAL__.before_calculate(path, env)" << lineEndMark;
+            }
+            v317 << "main(env,{},root,global);" << lineEndMark;
+            if ((mark & 0x80) != 0)
+            {
+                v317 << "if(__WXML_GLOBAL__.after_calculate)__WXML_GLOBAL__.after_calculate(path, root)" << lineEndMark;
+            }
+            v317 << "_tsd(root)" << lineEndMark;
+            if (!a7)
+            {
+                v317 << "if(typeof(window.__webview_engine_version__)=='undefined'|| window.__webview_engine_version__+1e-6<0.01+1e-"
+                        "6){return _ev(root);}" << lineEndMark;
+            }
+            // Compile - 80
+            v317 << "}catch(err){" << lineEndMark;
+            if ((mark & 2) != 0)
+            {
+                v317 << "console.log(cs, env);" << lineEndMark;
+            }
+            v317 << "console.log(err)" << lineEndMark;
+            if ((mark & 2) != 0)
+            {
+                v317 << "throw err" << lineEndMark;
+            }
+            v317 << "}" << lineEndMark;
+            if ((mark & 0x10) != 0)
+            {
+                v317 << "console.log(path+': resp:\\n'+JSON.stringify(root))" << lineEndMark;
+            }
+            v317 << "return root;" << lineEndMark;
+            v317 << "}" << lineEndMark;
+            v317 << "}" << lineEndMark;
+            v317 << "}" << lineEndMark;
+            if ( (mark & 8) != 0 )
+            {
+                for (auto kk = v286.begin(); kk != v286.end(); kk++)
+                {
+                    v317 << "//" << kk->first << ":" << std::endl;
+                    kk->second->Print(0, "//", &v317);
+                }
+                
+            }
+            a4 = v317.str();
+
+            /*
+            std::map<std::string,std::string> const& a2,// a2
+            std::string& a3, // a3
+            std::string& a4, // a4
+            std::map<std::string, std::vector<std::string>> a5,// a5
+            std::map<std::string, std::string> const& a6,// a6
+            bool a7,// a7
+            std::string const& gwxMark,// a8
+            uint mark, // a9
+            char lineEndMark, // a10
+            std::string const& a11, // a11
+            std::string const& a12, // a12
             std::string const& ggMark, // a13
             std::string const& eMark, // a14
             std::string const& dMark, // a15
@@ -808,7 +1649,7 @@ namespace WXML{
             std::string const& boxMark, // a18
             std::string const& gdwxMark, // a19
             std::string const& fMark) // a20
-        {
+            */
             return 0;
         }
         int DealWxsTag(
@@ -851,7 +1692,7 @@ namespace WXML{
             std::vector<WXML::DOMLib::Token> v50;
             bool parseResult = p.Parse(data.data(), errorMessage, filePath, v50);
             // DealWxsTag - 10
-            if (parseResult)
+            if (!parseResult)
             {
                 auto dom = p.GetParsed();
                 *a6 = a2.offset_8;

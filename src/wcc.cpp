@@ -64,9 +64,7 @@ int main(int argc, const char **argv)
         int mark = 0;
         bool isReadFromStdin = false;
         bool version = false;
-        bool hasXCParam = false;
-        bool hasCompleteCodeParam = false;
-        bool isLLA = false;
+        bool v53 = false;
         bool hasLL = false;
         string xc_Or_completeCode_Param;
         string outputFileName;
@@ -132,7 +130,7 @@ int main(int argc, const char **argv)
                 /* code */
                 if (param[2] == 'c' && i + 1 < paramList.size())
                 {
-                    hasXCParam = true;
+                    v53 = true;
                     if (paramList[i + 1][0] != '-')
                     {
                         xc_Or_completeCode_Param.assign(paramList[i + 1]);
@@ -146,7 +144,7 @@ int main(int argc, const char **argv)
                 /* code */
                 if (param[2] == 'c' && i + 1 < paramList.size())
                 {
-                    hasCompleteCodeParam = true;
+                    v53 = false;
                     if (paramList[i + 1][0] != '-')
                     {
                         xc_Or_completeCode_Param.assign(paramList[i + 1]);
@@ -244,7 +242,7 @@ int main(int argc, const char **argv)
                             printf("Error: expected -llw or -lla, but got %s\n", param.c_str());
                             return -1;
                         }
-                        isLLA = true;
+                        v53 = true;
                     }
                     string splitMark;
                     if (!splitMarkStr.compare(" "))
@@ -368,7 +366,7 @@ int main(int argc, const char **argv)
                 componentListMap,  // componentListMap
                 splitedData,
                 mapData1,
-                isLLA,
+                v53,
                 gwxMark,
                 mark,
                 10,
@@ -458,28 +456,32 @@ int main(int argc, const char **argv)
         {
             std::string errorMessage;
             const char off_5403C3[] = {'s', '\0', 'e', '\0'};
+            std::string v111;
+            std::string v113;
+            std::map<std::string, std::vector<std::string>> v126;
             int compilerResult = 0;
-            // compilerResult = WXML::Compiler::Compile(
-            //            v3,
-            //            &v107,
-            //            errorMessage
-            //            (unsigned __int8 **)v113,
-            //            v126,
-            //            &v105,
-            //            v53,
-            //            (int *)gwxMark,
-            //            mark,
-            //            '\n',
-            //            off_5403C3[2],   // off_5403C3[2]
-            //            off_5403C3,   // off_5403C3
-            //            "gg",    // "gg"
-            //            "e_",    // "e_"
-            //            "d_",          // "d_"
-            //            "p_",  // "p_"
-            //            '\0',   // '\0'
-            //           "boxofchocolate",   // "boxofchocolate"
-            //             "$gdwx",   // "$gdwx"
-            //            "f_"); // "f_"
+            std::map<std::string,std::string> v105;
+            
+            compilerResult = WXML::Compiler::Compile(
+                        fileContentMap, // a2
+                        v111, // a3
+                        v113,   // a4
+                        v126,  // a5
+                        v105,   // a6
+                        v53, // a7
+                        gwxMark, // a8
+                        mark,  // a9
+                        '\n',   // 
+                        "e",   // off_5403C3[2]
+                        "s",   // off_5403C3
+                        "gg",    // "gg"  a13
+                        "e_",    // "e_"
+                        "d_",          // "d_"
+                        "p_",  // "p_"
+                        "",   // '\0'
+                        "boxofchocolate",   // "boxofchocolate"
+                        "$gdwx",   // "$gdwx"
+                        "f_"); // "f_"
             FILE *f;
             if (compilerResult)
             {
@@ -493,7 +495,7 @@ int main(int argc, const char **argv)
                 {
                     f = fopen(outputFileName.data(), "w");
                 }
-                fprintf(f, "%s\n", "result...");
+                fprintf(f, "%s\n", v113.data());
                 fclose(f);
             }
         }

@@ -486,14 +486,13 @@ namespace WXML
         int Compile(
             std::map<std::string,std::string> const&,// a1
             std::string&, // a2
-            std::string&, // a3
+            std::string&, // a3  result
             std::map<std::string, std::vector<std::string>>,// a4
             std::map<std::string,std::string> const&,// a5
             bool,// a6
             std::string const& gwxMark,// a7
             uint mark, // a8
             char lineEndMark, // a9
-            std::string const&, // a10
             std::string const&, // a11
             std::string const& , // a12
             std::string const& ggMark, // a13

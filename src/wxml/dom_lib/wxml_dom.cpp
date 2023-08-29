@@ -252,7 +252,7 @@ namespace WXML {
             std::string const& a2,
             std::string& a3,
             std::stringstream & a4,
-            std::map<std::string,WXML::DOMLib::RVMOpCodePosition> &a5,
+            std::map<std::string, WXML::DOMLib::RVMOpCodePosition> &a5,
             WXML::DOMLib::RVMOpCodePositionRecorder *a6,
             bool a7,
             const std::map<std::string,std::string> & a8
@@ -293,6 +293,7 @@ namespace WXML {
             }
             return;
         }
+        int RenderMeAsFunction_i = 0;
         void WXMLDom::RenderMeAsFunction(
             std::string const& a2,
             std::string const& a3,
@@ -313,8 +314,10 @@ namespace WXML {
             std::string const& a18
             )
         {
-            try
-            {
+            RenderMeAsFunction_i++;
+            int inner_RenderMeAsFunction_i = RenderMeAsFunction_i;
+            // try
+            // {
                 std::string name;
                 a7->GetNextName(name);
                 if (a15)
@@ -371,11 +374,11 @@ namespace WXML {
                     a6 << a13 << a14 << "[" << name << "]=false" << a13;
                 }
                 a6 << "return " << a11 << a13 << "}" << a13;
-            }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
-            }
+            // }
+            // catch(const std::exception& e)
+            // {
+            //     std::cerr << e.what() << '\n';
+            // }
             
 
         }

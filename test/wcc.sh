@@ -2,7 +2,7 @@
 
 root_dir=$(cd `dirname $0`/.. && pwd -P)
 
-cd /mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram
+cd /mnt/d/Work/WeChatProjects/miniprogram-1
 
 # list="cmd1 cmd2"
 # for cmd in $list;
@@ -11,6 +11,6 @@ cd /mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram
 #     /root/github/wx-compiler/build/wcc "--config-path" "/mnt/d/Work/disassembly/wcc-exec/wcc/config/$cmd.txt" > /root/github/wx-compiler/test/wcc_linux.json
 #     /mnt/d/Work/disassembly/wcc-exec/wcc/wcc.exe "--config-path" "d:/Work/disassembly/wcc-exec/wcc/config/$cmd.txt" > /root/github/wx-compiler/test/wcc_win.json
 # done;
-filename="llw2.txt"
-/root/github/wx-compiler/build/wcc "--config-path" "/mnt/d/Work/disassembly/wcc-exec/wcc/config/$filename" > /root/github/wx-compiler/test/wcc_linux.json
-/mnt/d/Work/disassembly/wcc-exec/wcc/wcc.exe "--config-path" "d:/Work/disassembly/wcc-exec/wcc/config/$filename" > /root/github/wx-compiler/test/wcc_win.json
+filename="WeChatProjects/miniprogram-1/wcc/99a9bac3c05fc25dd070298212c4a7d3"
+/root/github/wx-compiler/build/wcc "--config-path" "/mnt/d/Work/$filename" > /root/github/wx-compiler/test/wcc_linux.json
+/mnt/d/Work/disassembly/wcc-exec/wcc/wcc.exe "--config-path" "d:/Work/$filename" > /root/github/wx-compiler/test/wcc_win.json

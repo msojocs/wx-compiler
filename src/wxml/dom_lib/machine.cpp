@@ -367,13 +367,11 @@ namespace WXML
                     }
                     if (bittest(&v46, 0x16u)) // 0x16 -> 22
                     {
-                        throw "not implement";
-                        // WXML::DOMLib::Token token(*(a5.end() - 1));
+                        auto v49 = a5.back();
                         a5.pop_back();
-                        
-                        // ----
-                        // this->offset_4 = 
-                        // this->offset_5 = 
+                        this->offset_16 = v49.offset_8;
+                        this->offset_20 = v49.offset_12;
+                        this->offset_4 = v49.offset_16;
 
                     }
                 }while(bittest(&v46, 0x14u)); // 0x14 -> 20

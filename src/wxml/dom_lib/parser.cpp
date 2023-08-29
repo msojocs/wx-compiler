@@ -100,7 +100,7 @@ namespace WXML
                 // DOMS
                 this->DOMS();
             }
-            return ret == 0;
+            return ret;
         }
         
         std::shared_ptr<WXML::DOMLib::WXMLDom> Parser::GetParsed()

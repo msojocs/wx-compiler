@@ -57,10 +57,10 @@
         "variant": "cpp"
     },
     "cmake.debugConfig": {
-        "cwd": "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram",
+        "cwd": "/mnt/d/Work/WeChatProjects/miniprogram-1",
         "args": [
             "\"--config-path\"",
-            "\"/mnt/d/Work/disassembly/wcc-exec/wcsc/config/ll2.txt\""
+            "\"/mnt/d/Work/WeChatProjects/miniprogram-1/wcc/99a9bac3c05fc25dd070298212c4a7d3\""
         ]
     },
     "cmake.configureSettings": {

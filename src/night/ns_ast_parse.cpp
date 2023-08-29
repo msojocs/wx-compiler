@@ -297,7 +297,32 @@ namespace night
     }
     night::ns_node *NSASTParse::ast_for()
     {
-        throw "not implement";
+        this->offset_28->next();
+        auto v7 = this->offset_24->gen_son(night::NS_TYPE_FOR);
+        v7->offset_216 = nullptr;
+        v7->offset_228 = nullptr;
+        
+        v7->offset_228 = this->make_list_by_parser("(", ")", ";", "ast_expression", false, 2, "");
+        auto v5 = v7->offset_228;
+        if (!v5)
+        {
+            this->offset_28->err("Expected `for(xxx;xxx;xxx)`", 0, 0, 0);
+        }
+        if (v5->size() == 2)
+        {
+            auto t = this->offset_24->gen_son(night::NS_TYPE_SKIP);
+            v5->emplace_back(t);
+        }
+        if (v5->size() != 3)
+        {
+            this->offset_28->err("Expected `for(xxx;xxx;xxx)`", 0, 0, 0);
+        }
+        this->offset_36++;
+        this->offset_40++;
+        v7->offset_216 = this->ast_expression();
+        this->offset_36--;
+        this->offset_40--;
+        return v7;
     }
     night::ns_node *NSASTParse::ast_while()
     {
