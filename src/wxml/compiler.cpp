@@ -185,7 +185,7 @@ namespace WXML{
             }
             return pResult;
         }
-      
+
         int CompileLazy(
             std::map<std::string,std::string> const& fileContentMap, // a1
             std::string& errorMessage,  // 错误信息 a2
@@ -881,8 +881,8 @@ namespace WXML{
                             std::string v314 = "m_" + key;
                             v314.append(":");
                             v314.append(v299);
-                            WXML::Compiler::GetFuncId(v292, v314);
-                            std::string v309, v297;
+                            std::string v309 = WXML::Compiler::GetFuncId(v292, v314);
+                            std::string v297;
                             int v246 = night::compile_ns(key, v309, v304, v280, v297, false);
                             if(v246)
                             {

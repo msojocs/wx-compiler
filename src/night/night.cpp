@@ -49,11 +49,11 @@ namespace night
     std::string nst_ = "nt_";
 
     int compile_ns(
-        std::string const& a1,
-        std::string const& a2,
-        std::string const& a3,
+        std::string const& a1, // 文件名
+        std::string const& a2, // 函数名
+        std::string const& a3, // 文件内容
         uint a4,
-        std::string& a5,
+        std::string& a5, // 结果
         bool a6)
     {
         a5 = "";
