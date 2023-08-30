@@ -871,18 +871,27 @@ namespace WXML
                 keyList.push_back("$DECIMAL");
                 keyList.push_back("$STRING");
                 keyList.push_back("(");
-                keyList.push_back("-");
-                keyList.push_back("$KEYWORD");
-                keyList.push_back("[");
-                keyList.push_back("$VAR");
-                keyList.push_back("{");
-                
                 for (auto &&i : keyList)
                 {
                     t.clear();
                     t.push_back(19);
                     Init_55F1E4(root, i, t);
                 }
+                target = "-";
+                Init_55F220_0(root, target, target);
+
+                keyList.clear();
+                keyList.push_back("$KEYWORD");
+                keyList.push_back("[");
+                keyList.push_back("$VAR");
+                keyList.push_back("{");
+                for (auto &&i : keyList)
+                {
+                    t.clear();
+                    t.push_back(19);
+                    Init_55F1E4(root, i, t);
+                }
+                
                 target = "-";
                 t.clear();
                 t.push_back(23);

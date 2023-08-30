@@ -458,7 +458,6 @@ int main(int argc, const char **argv)
             const char off_5403C3[] = {'s', '\0', 'e', '\0'};
             std::string v111;
             std::string v113;
-            std::map<std::string, std::vector<std::string>> v126;
             int compilerResult = 0;
             std::map<std::string,std::string> v105;
             
@@ -466,7 +465,7 @@ int main(int argc, const char **argv)
                         fileContentMap, // a2
                         v111, // a3
                         v113,   // a4
-                        v126,  // a5
+                        componentListMap,  // a5
                         v105,   // a6
                         v53, // a7
                         gwxMark, // a8

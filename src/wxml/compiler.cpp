@@ -1410,7 +1410,7 @@ namespace WXML{
 
             }
             v317 << "var nv_require=function(){var nnm={";
-            for (auto m = v292.rbegin(); m != v292.rend(); m++)
+            for (auto m = v292.begin(); m != v292.end(); m++)
             {
                 v317 << "\"";
                 v317 << WXML::Rewrite::ToStringCode(m->first);
@@ -1429,7 +1429,7 @@ namespace WXML{
             v317 << "e.stack = $gstack(e.stack);";
             v317 << "e.stack += '\\n    at ' + n.substring(2);console.error(e);}" << lineEndMark;
             v317 << "}}}()" << lineEndMark;
-            for (auto n = v290.rbegin(); n != v290.rend(); n++)
+            for (auto n = v290.begin(); n != v290.end(); n++)
             {
                 v317 << n->second << lineEndMark;
             }
@@ -1478,8 +1478,8 @@ namespace WXML{
                 }
                 std::stringstream v327;
                 v327 << "m";
-                inc++;
                 v327 << inc;
+                inc++;
                 std::string v314 = v327.str();
                 auto v276 = i->second->offset_272["get_page_z_name"];
                 std::string v320 = "r";
