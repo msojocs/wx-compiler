@@ -30,6 +30,8 @@ namespace WXML
         Parser::~Parser()
         {
         }
+        int Parse_i = 0;
+        int offset_0_push_i = 0;
         int Parser::Parse(
             std::string const& a2,
             std::string const& a3,
@@ -38,6 +40,8 @@ namespace WXML
             std::string& a6,
             bool a7)
         {
+            Parse_i++;
+            int inner_Parse_i = Parse_i;
             // WXML::EXPRLib::Parser::Parse - 0
             this->offset_0.clear();
             this->offset_40.clear();
@@ -82,6 +86,7 @@ namespace WXML
                 v70->offset_4_int = WXML::EXPRLib::TransitTable::GetExprNTType();
             }
             this->offset_0.push_back(v70);
+            offset_0_push_i += 2;
             // WXML::EXPRLib::Parser::Parse - 20
             int v49 = 0;
             while (true)
@@ -222,6 +227,7 @@ namespace WXML
                             std::shared_ptr<WXML::EXPRLib::Base> cur1 = baseList[i];
                             if( cur1->offset_0() == 4)
                                 break;
+                            offset_0_push_i++;
                             this->offset_0.push_back(cur1);
                         }
                         

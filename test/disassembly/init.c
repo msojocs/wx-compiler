@@ -8776,6 +8776,7 @@ void __fastcall WXML::EXPRLib::TransitTable::Init(int a1)
     v968 = std::vector<WXML::EXPRLib::BNF>::push_back(&v1982);
     std::__shared_count<(__gnu_cxx::_Lock_policy)2>::~__shared_count(&v1980, v968);
     std::vector<zcc::shared_ptr<WXML::EXPRLib::Base>>::~vector(&v1982);
+    
     v1979 = 0;
     v1980 = 0;
     v1981 = 0;
@@ -8786,6 +8787,7 @@ void __fastcall WXML::EXPRLib::TransitTable::Init(int a1)
     std::vector<WXML::EXPRLib::BNF>::_M_move_assign(&v1979);
     std::string::_M_dispose(&v1982, v969);
     std::vector<WXML::EXPRLib::BNF>::~vector(&v1979);
+
     v1979 = 0;
     v1980 = 0;
     v1981 = 0;

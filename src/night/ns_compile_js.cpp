@@ -190,17 +190,19 @@ namespace night
         this->offset_48++;
         if (v29)
         {
-            result += ")";
+            result += "{";
             this->offset_48++;
             auto v10 = a3->offset_244;
+            
             for (int i = 0; i < v10->size(); i++)
             {
                 auto cur = v10->at(i);
                 if (night::NS_TYPE_ASSIGN == cur->offset_0)
                 {
                     std::string v41 = cur->offset_180->offset_60;
+                    std::string _v41 = v41;
                     v41.append("=undefined===");
-                    v41.append(v41);
+                    v41.append(_v41);
                     v41.append("?");
                     result += v41;
                     this->offset_48 += v41.length();
@@ -533,8 +535,11 @@ namespace night
         return result;
     }
     
+    int compile_i = 0;
     std::string NSCompileJs::compile(night::ns_node * a3)
     {
+        compile_i++;
+        int inner_compile_i = compile_i;
         if (this->offset_0.size() == 0)
         {
             std::string v9 = a3->offset_0;

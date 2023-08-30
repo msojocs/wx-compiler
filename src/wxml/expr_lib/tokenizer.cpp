@@ -177,8 +177,11 @@ namespace WXML {
             }
         }
         
+        int GetTokens_i = 0;
         int Tokenizer::GetTokens(std::vector<WXML::EXPRLib::Token> & a2, std::string &a3)
         {
+            GetTokens_i++;
+            int inner_GetTokens_i = GetTokens_i;
             int v21 = 18899;
             WXML::EXPRLib::Tokenizer::InitTransitTable();
             int v24 = 1;

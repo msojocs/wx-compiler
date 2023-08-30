@@ -16,6 +16,7 @@ namespace WXML {
         {
         }
 
+        int DealSingleTokenToOps_i = 0;
         int WXMLDom::DealSingleTokenToOps(
             std::string const& a1,
             std::string& a2,
@@ -30,6 +31,8 @@ namespace WXML {
             const std::map<std::string,std::string> & a11
             )
         {
+            DealSingleTokenToOps_i++;
+            int inner_DealSingleTokenToOps_i = DealSingleTokenToOps_i;
             // DealSingleTokenToOps - 0
             std::string v11;
             if (a8)
@@ -248,6 +251,7 @@ namespace WXML {
             }
             return 0;
         }
+        int RenderAllOpsAndRecord_i = 0;
         void WXMLDom::RenderAllOpsAndRecord(
             std::string const& a2,
             std::string& a3,
@@ -258,6 +262,8 @@ namespace WXML {
             const std::map<std::string,std::string> & a8
             )
         {
+            RenderAllOpsAndRecord_i++;
+            int inner_RenderAllOpsAndRecord_i = RenderAllOpsAndRecord_i;
             if (this->offset_0 == "TEXTNODE")
             {
                 this->DealSingleTokenToOps(a2, a3, a4, a5, &this->offset_84, 0, 0, 1, a6, a7, a8);
@@ -382,8 +388,11 @@ namespace WXML {
             
 
         }
+        int RewriteTree_i = 0;
         void WXMLDom::RewriteTree(void)
         {
+            RewriteTree_i++;
+            int inner_RewriteTree_i = RewriteTree_i;
             // RewriteTree - 0
             for (int i = 0; i < this->offset_72.size(); i++)
             {
@@ -548,7 +557,7 @@ namespace WXML {
             {
                 this->offset_72[i]->RewriteTree();
             }
-            
+            return;
         }
         
         void WXMLDom::RenderChildren(
@@ -607,6 +616,7 @@ namespace WXML {
                             a6 << "var " << v147 << "=" << a3;
                             a6 << "[x[" << this->offset_248->GetStrID(a2) << "]].j" << a12;
                         }
+                        v109++;
                     }
                 }
             }
@@ -855,6 +865,7 @@ namespace WXML {
             
         }
 
+        int RenderNonDefine_i = 0;
         void WXMLDom::RenderNonDefine(
             std::string const& a2,
             std::string const& a3,
@@ -872,6 +883,8 @@ namespace WXML {
             std::map<std::string,std::string> * a15
             )
         {
+            RenderNonDefine_i++;
+            int inner_RenderNonDefine_i = RenderNonDefine_i;
             // RenderNonDefine - 0
             if (a13 && this->offset_24.size())
             {
@@ -1301,7 +1314,7 @@ namespace WXML {
                 if ( v161[0] != 'w'
                     || v161[1] != 'x'
                     || v161[2] != ':' && v161[2] != '-'
-                    || v161 != "wx:scope-data")
+                    || v161 == "wx:scope-data")
                 {
                     // pos: 搜索 -> !__stricmp((const char *)v161, "wx:scope-data")
                     // ++emplace_back_i;
@@ -1399,6 +1412,10 @@ namespace WXML {
                 
             }
             // RenderNonDefine - 35
+            if (a5 == "o2J")
+            {
+                int a = 0;
+            }
             a6 << "var " << a5 << "=_mz(z,'" << this->offset_0 << "',[";
             v259 = "";
             for (auto jj = v324.begin(); jj < v324.end(); jj++)

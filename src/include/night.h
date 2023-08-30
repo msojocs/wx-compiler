@@ -325,7 +325,10 @@ namespace night
         std::string compile_obj_dot(night::ns_node *);
         std::string compile_obj_property(night::ns_node *);
         std::string compile_obj_self_op(night::ns_node *);
-        std::string compile_once(std::string &, std::vector<std::string> *, bool);
+        /**
+         * @param a3 结果
+        */
+        std::string compile_once(std::string &a3, std::vector<std::string> *a4, bool a5);
         std::string compile_op_self(night::ns_node *);
         std::string compile_prog(night::ns_node *);
         std::string compile_prog_no_sem(night::ns_node *);

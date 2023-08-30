@@ -12,10 +12,10 @@
             "program": "${workspaceFolder}/build/wcc",
             "args": [
                 "\"--config-path\"",
-                "\"/mnt/d/Work/disassembly/wcc-exec/wcc/cmd1.txt\""
+                "\"/mnt/d/Work/WeChatProjects/miniprogram-1/wcc/99a9bac3c05fc25dd070298212c4a7d3\""
             ],
             "stopAtEntry": false,
-            "cwd": "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram",
+            "cwd": "/mnt/d/Work/WeChatProjects/miniprogram-1",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
