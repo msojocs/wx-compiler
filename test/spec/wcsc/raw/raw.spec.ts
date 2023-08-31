@@ -1,7 +1,7 @@
 import assert from "assert";
 import path from "path";
-import node from '../../../runner/node'
-import wine from '../../../runner/wine'
+import linux from '../../../runner/linux'
+import windows from '../../../runner/windows'
 import * as fs from 'fs'
 
 describe("wcsc", function () {
@@ -39,8 +39,8 @@ describe("wcsc", function () {
                 "./page/common/index-skyline.wxss",
                 // "-ll",
             ];
-            const w = await wine.wcsc(args, projectPath);
-            const n = await node.wcsc(args, projectPath);
+            const w = await windows.wcsc(args, projectPath);
+            const n = await linux.wcsc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test?.title}`
@@ -162,8 +162,8 @@ describe("wcsc", function () {
                 "packageAPI",
                 // "-ll",
             ];
-            const w = await wine.wcsc(args, projectPath);
-            const n = await node.wcsc(args, projectPath);
+            const w = await windows.wcsc(args, projectPath);
+            const n = await linux.wcsc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test?.title}`

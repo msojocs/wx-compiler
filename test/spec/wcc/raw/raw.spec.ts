@@ -1,8 +1,8 @@
 
 import assert from 'assert';
 import path from 'path';
-import node from '../../../runner/node'
-import wine from '../../../runner/wine'
+import linux from '../../../runner/linux'
+import windows from '../../../runner/windows'
 import * as fs from 'fs'
 
 describe("wcc - raw", function () {
@@ -42,8 +42,8 @@ describe("wcc - raw", function () {
                 "-gn",
                 "$gwx",
             ];
-            const w = (await wine.wcc(args, projectPath)).replace(/\r\n/g, '\n')
-            const n = await node.wcc(args, projectPath);
+            const w = (await windows.wcc(args, projectPath)).replace(/\r\n/g, '\n')
+            const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test?.title}`
@@ -93,8 +93,8 @@ describe("wcc - raw", function () {
                 "-gn",
                 "$7061636b616765536b796c696e652f",
             ];
-            const w = (await wine.wcc(args, projectPath)).replace(/\r\n/g, "\n");
-            const n = await node.wcc(args, projectPath);
+            const w = (await windows.wcc(args, projectPath)).replace(/\r\n/g, "\n");
+            const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test?.title}`
@@ -136,8 +136,8 @@ describe("wcc - raw", function () {
                 "-gn",
                 "$gwx",
             ];
-            const w = (await wine.wcc(args, projectPath)).replace(/\r\n/g, "\n");
-            const n = await node.wcc(args, projectPath);
+            const w = (await windows.wcc(args, projectPath)).replace(/\r\n/g, "\n");
+            const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test?.title}`
@@ -186,8 +186,8 @@ describe("wcc - raw", function () {
                 "-gn",
                 "$7061636b616765536b796c696e652f",
             ];
-            const w = (await wine.wcc(args, projectPath)).replace(/\r\n/g, "\n");
-            const n = await node.wcc(args, projectPath);
+            const w = (await windows.wcc(args, projectPath)).replace(/\r\n/g, "\n");
+            const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
                 `miniprogram-demo/${this.test?.title}`

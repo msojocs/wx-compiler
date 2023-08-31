@@ -1,7 +1,7 @@
 import assert from "assert"
 import path from "path"
-import node from '../../../runner/node'
-import wine from '../../../runner/wine'
+import linux from '../../../runner/linux'
+import windows from '../../../runner/windows'
 import * as fs from 'fs'
 
 describe("wcc - lla", function () {
@@ -50,9 +50,9 @@ describe("wcc - lla", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
-            const nodeRet = await node.wcc(args, projectPath, storagePath)
+            const nodeRet = await linux.wcc(args, projectPath, storagePath)
             const n = JSON.parse(nodeRet);
-            const w = JSON.parse(await wine.wcc(args, projectPath));
+            const w = JSON.parse(await windows.wcc(args, projectPath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -123,9 +123,9 @@ describe("wcc - lla", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
-            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const n = JSON.parse(await linux.wcc(args, projectPath, storagePath));
             // console.log(n)
-            const w = JSON.parse(await wine.wcc(args, projectPath));
+            const w = JSON.parse(await windows.wcc(args, projectPath));
             // console.log(w)
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
@@ -168,8 +168,8 @@ describe("wcc - lla", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await windows.wcc(args, projectPath));
+            const n = JSON.parse(await linux.wcc(args, projectPath, storagePath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -219,8 +219,8 @@ describe("wcc - lla", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await windows.wcc(args, projectPath));
+            const n = JSON.parse(await linux.wcc(args, projectPath, storagePath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -312,8 +312,8 @@ describe("wcc - lla", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await windows.wcc(args, projectPath));
+            const n = JSON.parse(await linux.wcc(args, projectPath, storagePath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -427,8 +427,8 @@ describe("wcc - lla", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
-            const w = JSON.parse(await wine.wcc(args, projectPath));
-            const n = JSON.parse(await node.wcc(args, projectPath, storagePath));
+            const w = JSON.parse(await windows.wcc(args, projectPath));
+            const n = JSON.parse(await linux.wcc(args, projectPath, storagePath));
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
