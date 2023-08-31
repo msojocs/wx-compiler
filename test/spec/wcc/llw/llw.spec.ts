@@ -15,7 +15,7 @@ describe("wcc - llw", function () {
         it("初次加载1   # 变量名不同，需要手动检测", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -66,7 +66,7 @@ describe("wcc - llw", function () {
         it("组件 - 视图容器", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -138,7 +138,7 @@ describe("wcc - llw", function () {
         it("组件 - skyline", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -180,7 +180,7 @@ describe("wcc - llw", function () {
         it("组件 - skyline - 自定义路由   # 变量名不同，需要手动检测", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -231,7 +231,7 @@ describe("wcc - llw", function () {
         it("扩展能力 - 表单 - cell    # 变量名不同，需要手动检测", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -282,7 +282,7 @@ describe("wcc - llw", function () {
         it("接口 - 微信登录", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-ds",

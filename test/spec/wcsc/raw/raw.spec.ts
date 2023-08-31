@@ -14,7 +14,7 @@ describe("wcsc", function () {
         it("主界面", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-db",
@@ -61,7 +61,7 @@ describe("wcsc", function () {
         it("接口-设置界面标题", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram/"
+                "../../../projects/miniprogram-demo/miniprogram/"
             );
             const args = [
                 "-db",
