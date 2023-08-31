@@ -1,0 +1,22 @@
+#! /bin/bash
+
+test_dir=$(cd `dirname $0`/../.. && pwd -P)
+project_dir="$test_dir/projects/${0##*/}"
+
+cd "$project_dir"
+
+git submodule set-url miniprogram/packageSkylineExamples https://github.com/wechat-miniprogram/awesome-skyline.git
+git submodule update
+
+echo "remove @tencent/eslint-config-wxapp"
+pnpm remove @tencent/eslint-config-wxapp
+echo "add eslint-config-wxapp"
+pnpm add eslint-config-wxapp -D
+
+cd miniprogram
+
+echo "pnpm install"
+pnpm install
+
+echo "build miniprogram_npm"
+node "$test_dir/spec/build-npm-mini.js" "$project_dir"

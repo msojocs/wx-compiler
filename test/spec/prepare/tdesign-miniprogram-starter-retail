@@ -1,0 +1,13 @@
+#! /bin/bash
+
+set -e
+test_dir=$(cd `dirname $0`/../.. && pwd -P)
+project_dir="$test_dir/projects/${0##*/}"
+
+cd "$project_dir"
+
+echo "exec pnpm install"
+pnpm install
+
+echo "build miniprogram_npm"
+node "$test_dir/spec/build-npm-mini.js" "$project_dir"

@@ -1,0 +1,6 @@
+[submodule "test/projects/tdesign-miniprogram-starter-retail"]
+	path = test/projects/tdesign-miniprogram-starter-retail
+	url = https://github.com/Tencent/tdesign-miniprogram-starter-retail.git
+[submodule "test/projects/miniprogram-demo"]
+	path = test/projects/miniprogram-demo
+	url = https://github.com/wechat-miniprogram/miniprogram-demo.git

@@ -7,4 +7,4 @@ node_modules
 *err.js
 *stderr.json
 .cache
-*/spec/**/*.js
+*/spec/**/*output.js

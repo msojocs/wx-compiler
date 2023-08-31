@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter-option maxDiffSize=1e9",
-    "start": "nw ./test/node-modules"
+    "start": "nw ./test/node-modules",
+    "test-prepare": "test/spec/prepare.sh",
+    "test": "mocha --reporter-option maxDiffSize=1e9"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.4.5",
     "assert": "^2.0.0",
+    "miniprogram-ci": "^1.9.8",
     "mocha": "^10.0.0",
     "ts-node": "^10.9.1"
   }

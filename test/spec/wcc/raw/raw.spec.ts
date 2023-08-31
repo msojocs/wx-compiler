@@ -15,7 +15,7 @@ describe("wcc - raw", function () {
         it("初次加载1", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -59,7 +59,7 @@ describe("wcc - raw", function () {
         it("初次加载2", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -109,7 +109,7 @@ describe("wcc - raw", function () {
         it("组件 - skyline - 自定义路由", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -152,7 +152,7 @@ describe("wcc - raw", function () {
         it("组件 - skyline - 自定义路由 -2", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
+                "../../../projects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
