@@ -11,6 +11,6 @@ cd /mnt/d/Work/WeChatProjects/miniprogram-1
 #     /root/github/wx-compiler/build/wcc "--config-path" "/mnt/d/Work/disassembly/wcc-exec/wcc/config/$cmd.txt" > /root/github/wx-compiler/test/wcc_linux.json
 #     /mnt/d/Work/disassembly/wcc-exec/wcc/wcc.exe "--config-path" "d:/Work/disassembly/wcc-exec/wcc/config/$cmd.txt" > /root/github/wx-compiler/test/wcc_win.json
 # done;
-filename="WeChatProjects/miniprogram-1/wcc/99a9bac3c05fc25dd070298212c4a7d3"
+filename="WeChatProjects/miniprogram-1/wcc/2535335225445086ae78aa14d79fe1d5"
 /root/github/wx-compiler/build/wcc "--config-path" "/mnt/d/Work/$filename" > /root/github/wx-compiler/test/wcc_linux.json
 /mnt/d/Work/disassembly/wcc-exec/wcc/wcc.exe "--config-path" "d:/Work/$filename" > /root/github/wx-compiler/test/wcc_win.json

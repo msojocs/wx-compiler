@@ -1,8 +1,9 @@
-const assert = require("assert");
-const node = require("../../runner/node");
-const wine = require("../../runner/wine");
-const path = require("path");
-const fs = require("fs");
+
+import assert from 'assert';
+import path from 'path';
+import node from '../../../runner/node'
+import wine from '../../../runner/wine'
+import * as fs from 'fs'
 
 describe("wcc - raw", function () {
     describe("Raw: node output should equal with wine", function () {
@@ -14,7 +15,7 @@ describe("wcc - raw", function () {
         it("初次加载1", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "../../examples/miniprogram-demo/miniprogram"
+                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -41,11 +42,11 @@ describe("wcc - raw", function () {
                 "-gn",
                 "$gwx",
             ];
-            const w = (await wine.wcc(args, projectPath)).replaceAll("\r\n", "\n");
+            const w = (await wine.wcc(args, projectPath)).replace(/\r\n/g, '\n')
             const n = await node.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test.title}`
+                `miniprogram-demo/${this.test?.title}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -58,7 +59,7 @@ describe("wcc - raw", function () {
         it("初次加载2", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "../../examples/miniprogram-demo/miniprogram/"
+                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -92,11 +93,11 @@ describe("wcc - raw", function () {
                 "-gn",
                 "$7061636b616765536b796c696e652f",
             ];
-            const w = (await wine.wcc(args, projectPath)).replaceAll("\r\n", "\n");
+            const w = (await wine.wcc(args, projectPath)).replace(/\r\n/g, "\n");
             const n = await node.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test.title}`
+                `miniprogram-demo/${this.test?.title}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -108,7 +109,7 @@ describe("wcc - raw", function () {
         it("组件 - skyline - 自定义路由", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "../../examples/miniprogram-demo/miniprogram/"
+                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -135,11 +136,11 @@ describe("wcc - raw", function () {
                 "-gn",
                 "$gwx",
             ];
-            const w = (await wine.wcc(args, projectPath)).replaceAll("\r\n", "\n");
+            const w = (await wine.wcc(args, projectPath)).replace(/\r\n/g, "\n");
             const n = await node.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test.title}`
+                `miniprogram-demo/${this.test?.title}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -151,7 +152,7 @@ describe("wcc - raw", function () {
         it("组件 - skyline - 自定义路由 -2", async function () {
             const projectPath = path.resolve(
                 __dirname,
-                "../../examples/miniprogram-demo/miniprogram/"
+                "/mnt/d/Work/WeChatProjects/miniprogram-demo/miniprogram"
             );
             const args = [
                 "-d",
@@ -185,11 +186,11 @@ describe("wcc - raw", function () {
                 "-gn",
                 "$7061636b616765536b796c696e652f",
             ];
-            const w = (await wine.wcc(args, projectPath)).replaceAll("\r\n", "\n");
+            const w = (await wine.wcc(args, projectPath)).replace(/\r\n/g, "\n");
             const n = await node.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test.title}`
+                `miniprogram-demo/${this.test?.title}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
