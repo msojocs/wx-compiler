@@ -500,6 +500,11 @@ int main(int argc, const char **argv)
         }
         // main - 55
     }
+    catch (const std::string &e)
+    {
+        // TODO: 把string异常换成exception
+        std::cerr << e << '\n';
+    }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
