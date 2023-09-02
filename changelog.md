@@ -1,3 +1,13 @@
+## 🌈 v0.0.4 / 2023-08-31
+
+🐞 Bug Fixes
+
+- `WXML::Rewrite::RewriteImg`: 变量赋值的错误
+- `WXSS::CSSTreeLib::RewriteSelectorRule::MarkGood`: 比较字符串错误
+
+🚀Features
+- feat: 添加新的`wcsc`的测试用例
+
 ## 🌈 v0.0.3 / 2023-08-31
 
 🐞 Bug Fixes

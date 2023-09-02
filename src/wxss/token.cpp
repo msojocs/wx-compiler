@@ -12,8 +12,11 @@ namespace WXSS
     {
     }
     
+    int GetLiteral_i = 0;
     std::string Token::GetLiteral(void)
     {
+        GetLiteral_i++;
+        int inner_GetLiteral_i = GetLiteral_i; // 9
         if (this->offset_0 == 1)
         {
             return this->offset_28;

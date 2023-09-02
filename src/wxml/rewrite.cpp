@@ -269,16 +269,16 @@ namespace WXML {
             a2 = "";
             bool v17 = 1;
             int result = 0;
-            for (int i=0; i < v21.size() - 1; i++)
+            for (int i=1; i < v21.size(); i++)
             {
-                auto cur = v21[i];
+                auto cur = v21[i - 1];
                 if (
-                    v21[i].second == "url"
-                    && v21[i + 1].second == "("
+                    cur.second == "url"
+                    && v21[i].second == "("
                 )
                 {
                     std::string v24 = "";
-                    while (v21.size() - 1 > ++i)
+                    while (v21.size() > ++i)
                     {
                         if (v21[i].second == ")")
                         {
@@ -319,11 +319,11 @@ namespace WXML {
                             if (v5.first == 2)
                             {
                                 std::string v29 = v5.second.substr(1, v5.second.length() - 2);
-                                a2 += v29;
+                                v24 += v29;
                             }
                             else
                             {
-                                a2 += v5.second;
+                                v24 += v5.second;
                             }
                         }
                     }

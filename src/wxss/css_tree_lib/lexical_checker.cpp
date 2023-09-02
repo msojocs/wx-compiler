@@ -73,9 +73,12 @@ namespace WXSS
             return 1;
         }
     
+        int off_519A70_i = 0;
         // WXSS::CSSTreeLib::AttrDebugRule::MarkGood
         int off_519A70(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
+            off_519A70_i++;
+            int inner_off_519A70_i = off_519A70_i;
             auto v9 = a2->offset_168;
             std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> la(new WXSS::CSSTreeLib::CSSSyntaxTree());
             std::stringstream v26;
@@ -486,9 +489,12 @@ namespace WXSS
             return 0;
         }
 
+        int off_519B00_i = 0;
         // WXSS::CSSTreeLib::RewriteSelectorRule::MarkGood
         int off_519B00(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
+            off_519B00_i++;
+            int inner_off_519B00_i = off_519B00_i;
             std::string v14;
             std::string lit = a2->offset_24.GetLiteral();
             if (lit.length())
@@ -517,7 +523,7 @@ namespace WXSS
                     *str = "body";
                     a2->offset_132 = str;
                 }
-                else if(strcasecmp(v14.data(), "f"))
+                else if(strcasecmp(v14.data(), "from"))
                 {
                     if(strcasecmp(v14.data(), "to"))
                     {
@@ -544,6 +550,10 @@ namespace WXSS
                     }
                 }
                 a2->offset_116 = 1;
+                // if (lit == "from" && *a2->offset_132 == "wx-from")
+                // {
+                //     int a = 0;
+                // }
                 return 1;
             }
             else
@@ -576,11 +586,14 @@ namespace WXSS
             return 1;
         }
 
+        int off_519B84_i = 0;
         /**
          * WXSS::CSSTreeLib::ChildRule::MarkGood
         */
         int off_519B84(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
+            off_519B84_i++;
+            int inner_off_519B84_i = off_519B84_i;
             int v8 = 1;
             for (int j = 0; j < a2->offset_120.size(); j++)
             {
@@ -602,13 +615,17 @@ namespace WXSS
             throw "not implement";
         }
 
+        int off_519BB4_i = 0;
         /**
          * 00519BB4 - WXSS::CSSTreeLib::RuleChain::MarkGood
          * 
         */
         int off_519BB4(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
+            off_519BB4_i++;
+            int inner_off_519BB4_i = off_519BB4_i;
             int ret = 0;
+            // 注意：此处循环会第二次进入 WXSS::Token::GetLiteral(void)10
             for (int i = 0; i < a1->offset_4_vecPtr.size(); i++)
             {
                 auto cur = a1->offset_4_vecPtr[i];
@@ -775,7 +792,7 @@ namespace WXSS
                 v29->offset_0 = off_519B84;
                 std::shared_ptr<WXSS::CSSTreeLib::Rule> v30(new WXSS::CSSTreeLib::Rule());
                 v30->offset_0 = off_519AE8;
-                v29->offset_4_vecPair.emplace_back("$ESV", v29);
+                v29->offset_4_vecPair.emplace_back("$ESV", v30);
 
                 v24->offset_4_vecPtr.push_back(v29);
                 v24->offset_4_vecPtr.push_back(v3);
