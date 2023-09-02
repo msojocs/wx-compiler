@@ -300,8 +300,12 @@ namespace night
         this->offset_48++;
         return result;
     }
+
+    int compile_obj_dot_i = 0;
     std::string NSCompileJs::compile_obj_dot(night::ns_node * a3)
     {
+        compile_obj_dot_i++;
+        int inner_compile_obj_dot_i = compile_obj_dot_i;
         std::string result = "";
         result += this->compile(a3->offset_192);
         for (int i = 0; i < a3->offset_196->size(); i++)
@@ -314,8 +318,12 @@ namespace night
         
         return result;
     }
+
+    int compile_obj_property_i = 0;
     std::string NSCompileJs::compile_obj_property(night::ns_node *a3)
     {
+        compile_obj_property_i++;
+        int inner_compile_obj_property_i = compile_obj_property_i; // 3
         std::string v26 = night::nst_ + std::to_string(this->offset_32);
         this->offset_32++;
         
@@ -679,8 +687,11 @@ namespace night
         return "";
     }
 
+    int compile_once_i = 0;
     std::string NSCompileJs::compile_once(std::string &a3, std::vector<std::string> *a4, bool a5)
     {
+        compile_once_i++;
+        int inner_compile_once_i = compile_once_i;
         this->offset_28 = a4;
         a3 = "";
         night::ns_node* v5 = this->offset_24->top_down();

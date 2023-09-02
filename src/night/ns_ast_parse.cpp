@@ -543,8 +543,11 @@ namespace night
         return v6;
     }
 
+    int ast_dispatch_i = 0;
     night::ns_node *NSASTParse::ast_dispatch(bool a3)
     {
+        ast_dispatch_i++;
+        int inner_ast_dispatch_i = ast_dispatch_i;
         // ast_dispatch - 0
         auto v42 = this->is_punctuation("(");
         if (!v42)
@@ -964,7 +967,7 @@ namespace night
             v21
             && !this->is_op_self(false)
             && !this->is_obj_op_self(false)
-            &&this->is_exp(a2)
+            && this->is_exp(a2)
         )
         {
             auto v3 = this->offset_28->next();
@@ -1024,14 +1027,16 @@ namespace night
         return a2;
     }
 
+    int make_call_or_just_expression_i = 0;
     night::ns_node *NSASTParse::make_call_or_just_expression(night::ns_node * a2)
     {
+        make_call_or_just_expression_i++;
+        int inner_make_call_or_just_expression_i = make_call_or_just_expression_i;
         if (
             night::NS_TYPE_PROG != a2->offset_0
             && night::NS_TYPE_B_TYPE != a2->offset_0
             && night::NS_TYPE_KW != a2->offset_0
-            && night::NS_TYPE_FUNC != a2->offset_0
-            || a2->offset_132 == ""
+            && (night::NS_TYPE_FUNC != a2->offset_0 || a2->offset_132 == "")
             )
         {
             if (this->is_punctuation("("))
@@ -1066,8 +1071,11 @@ namespace night
         return lb;
     }
     
+    int ast_obj_dot_i = 0;
     night::ns_node *NSASTParse::ast_obj_dot(night::ns_node* a2)
     {
+        ast_obj_dot_i++;
+        int inner_ast_obj_dot_i = ast_obj_dot_i;
         auto v11 = this->offset_24;
         auto v9 = v11->gen_girl(night::std_v_n);
         auto v10 = v11->gen_son(night::NS_TYPE_OBJ_DOT);
@@ -1096,15 +1104,18 @@ namespace night
                 this->offset_28->err(msg, v7, v8, true);
             }
             auto v18 = this->ast_expression_no_comma();
-            v9.vec->push_back(v18);
+            v9.vec->emplace_back(v18);
             v5 = this->offset_28->peek();
 
         } while (v5 && "." == v5->offset_60);
         return v10;
     }
 
+    int ast_obj_op_i = 0;
     night::ns_node *NSASTParse::ast_obj_op(night::ns_node* a2)
     {
+        ast_obj_op_i++;
+        int inner_ast_obj_op_i = ast_obj_op_i;
         auto v9 = this->offset_24->gen_girl(night::std_v_n);
         auto v13 = this->offset_24->gen_son(night::NS_TYPE_OBJ_PROPERTY);
         v13->offset_192 = a2;
@@ -1134,15 +1145,18 @@ namespace night
             return this->ast_obj_op_self(v13);
         }
         auto v5 = this->offset_28->peek();
-        if (v5 && "." == v5->offset_0)
+        if (v5 && "." == v5->offset_60)
         {
             return this->ast_obj_dot(v13);
         }
         return v13;
     }
 
+    int ast_call_i = 0;
     night::ns_node *NSASTParse::ast_call(night::ns_node* a2)
     {
+        ast_call_i++;
+        int inner_ast_call_i = ast_call_i;
         auto v10 = this->offset_24->gen_girl(night::std_v_v_n);
         auto v15 = this->offset_24->gen_son(night::NS_TYPE_CALL);
         v15->offset_220 = a2;
@@ -1172,7 +1186,7 @@ namespace night
             night::ns_node * v5;
             if ("[" == v4->offset_60)
             {
-                this->ast_obj_op(v15);
+                v15 = this->ast_obj_op(v15);
                 v5 = this->is_punctuation("(");
             }
             else
@@ -1465,8 +1479,11 @@ namespace night
         return lt;
     }
 
+    long is_punctuation_i = 0;
     night::ns_node * NSASTParse::is_punctuation(std::string const &a2)
     {
+        is_punctuation_i++;
+        long inner_is_punctuation_i = is_punctuation_i; // 20906
         auto v2 = this->offset_28->peek();
         if (v2)
         {
@@ -1753,8 +1770,11 @@ namespace night
             this->offset_28->err(msg, 0, v6, false);
         }
     }
+    int ignore_punc_i = 0;
     void NSASTParse::ignore_punc(std::string const& a2)
     {
+        ignore_punc_i++;
+        int inner_ignore_punc_i = ignore_punc_i;
         if (!this->is_punctuation(a2))
         {
             auto node = this->offset_28->peek();

@@ -60,6 +60,29 @@ describe("[tdesign-miniprogram-starter-retail] wcc - raw", function () {
             fs.writeFileSync(`${storagePath}/node-output.js`, n);
             assert.equal(w, n);
         });
+        it("case3", async function () {
+            const configPath = resolve(__dirname, './tdesign-miniprogram-starter-retail/case3-cmd.txt')
+            const projectPath = path.resolve(
+                __dirname,
+                "../../../projects/tdesign-miniprogram-starter-retail"
+            );
+            const args = [
+                "--config-path",
+                configPath,
+            ];
+            const w = (await windows.wcc(args, projectPath)).replace(/\r\n/g, "\n");
+            const n = await linux.wcc(args, projectPath);
+            const storagePath = path.resolve(
+                __dirname,
+                `tdesign-miniprogram-starter-retail/${this.test?.title}`
+            );
+            try {
+                fs.mkdirSync(storagePath, { recursive: true });
+            } catch (error) {}
+            fs.writeFileSync(`${storagePath}/wine-output.js`, w);
+            fs.writeFileSync(`${storagePath}/node-output.js`, n);
+            assert.equal(w, n);
+        });
         
     });
 });
