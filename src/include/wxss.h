@@ -113,7 +113,7 @@ namespace WXSS
             static TransitTable* instance;
             static std::mutex m;
             std::map<int,std::map<std::string,std::vector<WXSS::CSSTreeLib::BNF>>> offset_0;
-            bool offset_24;
+            bool offset_24 = false;
             TransitTable(/* args */);
             ~TransitTable();
             static TransitTable* GetInstance();

@@ -625,7 +625,7 @@ namespace WXML
             void Init_55F20C(int root, std::string & key, std::string & offset_4, int offset_32, std::string &offset_36);
         public:
             std::map<int,std::map<std::string,std::vector<WXML::EXPRLib::BNF>>> ret;
-            bool offset_24;
+            bool offset_24 = false;
             TransitTable(/* args */);
             ~TransitTable();
             static TransitTable* GetInstance();
