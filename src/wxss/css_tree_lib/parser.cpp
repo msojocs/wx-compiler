@@ -60,9 +60,9 @@ namespace WXSS
             this->offset_8.push_back(v104);
 
             // Parse - 15
-            std::shared_ptr<std::string[3]> v9(new std::string[3]());
-            v9[0].assign(a3);
-            v9[1].assign(a5);
+            std::shared_ptr<std::array<std::string, 3>> v9(new std::array<std::string, 3>());
+            (*v9)[0].assign(a3);
+            (*v9)[1].assign(a5);
             std::shared_ptr<WXSS::Token> v14(new WXSS::Token());
             v14->offset_4.reset(new std::string());
             *v14->offset_4 = a3;

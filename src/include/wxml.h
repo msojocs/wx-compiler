@@ -42,10 +42,10 @@ namespace WXML
         {
             bool inited = false;
             int *nextPos;
-            int canAccept[266];
+            uint8_t *canAccept;
         };
         
-        int accept(int *,int *[266],int &,char const*);
+        int accept(int *,uint8_t *[266],int &,char const*);
         int acceptID(char const*,int &);
         int acceptStr(char const*,int &);
         int acceptNum(char const*,int &);

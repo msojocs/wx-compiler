@@ -134,7 +134,7 @@ namespace WXSS
             std::vector<std::shared_ptr<CSSSyntaxTree>> offset_120;
             std::shared_ptr<std::string> offset_132; // 类型未确定，不是布尔值
             std::shared_ptr<std::string> offset_140;
-            std::shared_ptr<std::string[3]> offset_148;
+            std::shared_ptr<std::array<std::string, 3>> offset_148;
             std::shared_ptr<Token> offset_156;
             int offset_164 = 0;
             int offset_168 = 0;

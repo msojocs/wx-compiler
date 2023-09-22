@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(wx_complier VERSION 0.1.0 LANGUAGES C CXX)
 
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# set (CMAKE_CXX_STANDARD 14)
+# set(CMAKE_VERBOSE_MAKEFILE ON)
+# message("before: ${CMAKE_CXX_FLAGS_DEBUG}")
+# set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O1")
+# message("after: ${CMAKE_CXX_FLAGS_DEBUG}")
 
 include(CTest)
 enable_testing()

@@ -203,7 +203,7 @@ namespace WXSS
             {
                 std::stringstream v31;
                 v31 << ";wxcs_fileinfo: ";
-                v31 << a2->offset_148[0];
+                v31 << (*a2->offset_148)[0];
                 v31 << " " << v25->offset_24.offset_20;
                 v31 << " " << v25->offset_24.offset_24 << ";";
 
@@ -314,7 +314,7 @@ namespace WXSS
                                             auto v10 = *j;
                                             *v5 = v10->offset_24;
                                             std::shared_ptr<std::string> str(new std::string());
-                                            *str = a2->offset_148[0];
+                                            *str = (*a2->offset_148)[0];
                                             a2->offset_156->offset_4 = str;
                                             return 1;
                                         }
@@ -326,7 +326,7 @@ namespace WXSS
                                         auto v10 = *j;
                                         *v5 = v10->offset_24;
                                         std::shared_ptr<std::string> str(new std::string());
-                                        *str = a2->offset_148[0];
+                                        *str = (*a2->offset_148)[0];
                                         a2->offset_156->offset_4 = str;
                                         return 1;
                                     }
@@ -402,7 +402,7 @@ namespace WXSS
                                         auto v10 = *j;
                                         *v5 = v10->offset_24;
                                         std::shared_ptr<std::string> str(new std::string());
-                                        *str = a2->offset_148[0];
+                                        *str = (*a2->offset_148)[0];
                                         a2->offset_156->offset_4 = str;
                                         return 1;
                                     }
@@ -414,7 +414,7 @@ namespace WXSS
                                     auto v10 = *j;
                                     *v5 = v10->offset_24;
                                     std::shared_ptr<std::string> str(new std::string());
-                                    *str = a2->offset_148[0];
+                                    *str = (*a2->offset_148)[0];
                                     a2->offset_156->offset_4 = str;
                                     return 1;
                                 }
@@ -462,7 +462,7 @@ namespace WXSS
                 }
             }
             std::shared_ptr<std::string> str(new std::string());
-            *str = a2->offset_148[0];
+            *str = (*a2->offset_148)[0];
             a2->offset_156->offset_4 = str;
 
             return 1;
@@ -474,7 +474,7 @@ namespace WXSS
             std::string lit = a2->offset_24.GetLiteral();
             std::string v10;
             auto la = a2->offset_24.offset_24;
-            int v5 = WXML::Rewrite::RewriteImg(lit, v10, a2->offset_148[0], a2->offset_24.offset_20, la);
+            int v5 = WXML::Rewrite::RewriteImg(lit, v10, (*a2->offset_148)[0], a2->offset_24.offset_20, la);
             if (!v5)
             {
                 return 1;

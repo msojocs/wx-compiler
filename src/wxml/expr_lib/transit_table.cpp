@@ -137,7 +137,6 @@ namespace WXML
             if (!this->offset_24)
             {
                 this->offset_24 = true;
-                std::map<std::string,std::vector<WXML::EXPRLib::BNF>> map1 = this->ret[1];
 
                 int root;
                 std::vector<std::string> keyList;
