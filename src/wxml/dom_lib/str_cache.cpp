@@ -32,7 +32,10 @@ namespace WXML {
         {
             if (!this->offset_0.count(s))
             {
-                this->offset_0[s] = this->offset_0.size();
+                // Note: 不能合成一行，否则数量会错误（比实际值大1）
+                int size = this->offset_0.size();
+                this->offset_0[s] = size;
+                // this->offset_0[s] = this->offset_0.size(); // 会导致size的值比实际大1
                 this->offset_24.push_back(s);
             }
         }
@@ -42,6 +45,7 @@ namespace WXML {
             int result = -1;
             if(this->offset_0.count(s))
             {
+                // printf("GetStrID: %s, size: %d\n", s.data(), this->offset_0[s]);
                 return this->offset_0[s];
             }
             return result;

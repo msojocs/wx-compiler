@@ -23,7 +23,7 @@ namespace WXML
         Table num;
 
         /**
-         * TODO: 逻辑待验证
+         * 
          */
         int accept(int *a1, uint8_t a2[266], int &a3, char const *a4)
         {
@@ -41,7 +41,7 @@ namespace WXML
                 a4++;
             }
 
-            if (((char *)a2)[v7])
+            if (a2[v7])
             {
                 a3 = i;
                 return 0;

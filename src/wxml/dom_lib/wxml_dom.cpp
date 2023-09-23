@@ -1498,7 +1498,9 @@ namespace WXML {
                     std::string attr = this->offset_48[v13].ToAttrContent();
                     if(!this->offset_248->offset_0.count(attr))
                     {
-                        this->offset_248->offset_0[attr] = this->offset_248->offset_0.size();
+                        // Note: 不能合成一行，否则数量会错误
+                        int size = this->offset_248->offset_0.size();
+                        this->offset_248->offset_0[attr] = size;
                         this->offset_248->offset_24.push_back(attr);
                     }
                 }

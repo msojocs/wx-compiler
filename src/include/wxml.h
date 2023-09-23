@@ -75,7 +75,7 @@ namespace WXML
         private:
             /* data */
         public:
-            bool offset_0;
+            bool offset_0 = false;
             std::string offset_4;
             Token(/* args */);
             ~Token();
