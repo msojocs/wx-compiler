@@ -1,5 +1,4 @@
 #!/bin/bash
-apt install cmake -y
 gcc --version
 g++ --version
 cmake --verion
