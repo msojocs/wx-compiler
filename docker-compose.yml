@@ -1,0 +1,18 @@
+version: "3"
+services:
+  wx_compiler:
+    image: jiyecafe/wechat-devtools-build:v3 
+    # build:
+    #   context: ./docker
+    #   dockerfile: Dockerfile
+    volumes:
+      - .:/workspace
+    environment:
+      # - ACTION_MODE=${ACTION_MODE:-false}
+      # - https_proxy=${https_proxy:-}
+      - WINE=${WINE:-false}
+      - LOCAL_USER_ID=${DOCKER_UID:-1000}
+      - LOCAL_GROUP_ID=${DOCKER_GID:-1000}
+      # - BUILD_VERSION=${BUILD_VERSION:-v0}
+    entrypoint: /workspace/docker/docker-entrypoint
+    userns_mode: "host"

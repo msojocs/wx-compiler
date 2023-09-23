@@ -1,0 +1,35 @@
+#!/bin/bash
+
+strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBC
+echo "----"
+strings /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC_
+
+notice() {
+    echo -e "\033[36m $1 \033[0m "
+}
+
+rm -rf /tmp/vscode-ripgrep-cache-1.13.2/ripgrep-v13.0.0-4-x86_64-unknown-linux-musl.tar.gz
+
+if [ "$(id -u)" -eq '0' ];then
+    USER_ID=${LOCAL_USER_ID:-1000}
+    GROUP_ID=${LOCAL_GROUP_ID:-1000}
+    notice "$USER_ID, $GROUP_ID"
+    usermod -u ${USER_ID} -g ${GROUP_ID} user > /dev/null 2>&1
+    chown -R ${USER_ID}:${GROUP_ID} /workspace > /dev/null 2>&1
+    # apt install software-properties-common -y
+    # add-apt-repository ppa:ubuntu-toolchain-r/test
+    # apt update
+    # apt install gcc-6 g++-6 -y
+    # cd /usr/bin
+    # rm gcc g++
+    # ln -s ./gcc-6 gcc
+    # ln -s ./g++-6 g++
+    # ls -l
+    # cat /etc/passwd
+    apt install cmake -y
+    exec gosu user docker/entrypoint
+
+fi
+
+echo "nothing"
+# exec /usr/local/bin/gosu user entrypoint

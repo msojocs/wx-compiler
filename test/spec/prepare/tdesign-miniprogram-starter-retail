@@ -5,9 +5,12 @@ test_dir=$(cd `dirname $0`/../.. && pwd -P)
 project_dir="$test_dir/projects/${0##*/}"
 
 cd "$project_dir"
+echo "prepare for ${project_dir}"
 
 echo "exec pnpm install"
+sed -i 's#"^#"~#g' ./package.json
 pnpm install
+pnpm add tdesign-miniprogram@1.0.0
 
 echo "build miniprogram_npm"
 node "$test_dir/spec/build-npm-mini.js" "$project_dir"
