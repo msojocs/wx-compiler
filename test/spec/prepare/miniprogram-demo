@@ -4,6 +4,7 @@ test_dir=$(cd `dirname $0`/../.. && pwd -P)
 project_dir="$test_dir/projects/${0##*/}"
 
 cd "$project_dir"
+echo "prepare for ${project_dir}"
 
 git submodule set-url miniprogram/packageSkylineExamples https://github.com/wechat-miniprogram/awesome-skyline.git
 git submodule update
