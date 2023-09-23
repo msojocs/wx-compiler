@@ -1,3 +1,9 @@
+## 🌈 v0.0.5 / 2023-09-23
+
+🐞 Bug Fixes
+
+- `WXMLDom::RenderNonDefine`: 内部逻辑错误，感谢 @Silentdoer [issue ref](https://github.com/msojocs/wechat-web-devtools-linux/issues/91)
+
 ## 🌈 v0.0.4 / 2023-08-31
 
 🐞 Bug Fixes

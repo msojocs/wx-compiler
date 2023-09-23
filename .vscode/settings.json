@@ -57,10 +57,10 @@
         "variant": "cpp"
     },
     "cmake.debugConfig": {
-        "cwd": "/mnt/d/Work/WeChatProjects/tdesign-miniprogram-starter-retail",
+        "cwd": "/mnt/d/Work/WeChatProjects/issue/91/build",
         "args": [
             "\"--config-path\"",
-            "\"/mnt/d/Work/WeChatProjects/case4-cmd.txt\""
+            "\"/mnt/d/Work/WeChatProjects/issue/91/cmd/case1-cmd.txt\""
         ]
     },
     "cmake.configureSettings": {

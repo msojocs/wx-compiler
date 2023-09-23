@@ -1418,7 +1418,7 @@ namespace WXML {
             }
             a6 << "var " << a5 << "=_mz(z,'" << this->offset_0 << "',[";
             v259 = "";
-            for (auto jj = v324.begin(); jj < v324.end(); jj++)
+            for (auto jj = v324.begin(); jj != v324.end(); jj++)
             {
                 std::string str1c = jj->first;
                 std::string v342;
@@ -1428,7 +1428,8 @@ namespace WXML {
                     if (!strncmp(str1c.data(), "generic:", 8u))
                     {
                         // jj->second.
-                        _v339.emplace_back(jj->first, jj->second);
+                        _v339.emplace_back(jj->first.substr(8), jj->second);
+                        continue;
                     }
                 }
                 else
@@ -1461,7 +1462,11 @@ namespace WXML {
                 a6 << "',";
                 if(i.second.offset_20)
                 {
-                    a6 << i.second.offset_56;
+                    a6 << (i.second.offset_56 - v274);
+                    if (!v274)
+                    {
+                        v274 = i.second.offset_56;
+                    }
                 }
                 else
                 {
