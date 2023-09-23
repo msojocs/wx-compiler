@@ -58,7 +58,10 @@ jobs:
       #   run: cmake --build build
       
       - name: Build the project
-        run: docker-compose up
+        run: |
+          export DOCKER_UID=$UID
+          export DOCKER_GID=$GID  
+          docker-compose up
 
       - name: Upload prepare
         run: |
