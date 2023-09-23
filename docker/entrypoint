@@ -1,7 +1,7 @@
 #!/bin/bash
 gcc --version
 g++ --version
-cmake --verion
+# cmake --verion
 cd /workspace
 rm -rf ./build
 mkdir build
