@@ -1,0 +1,14 @@
+#!/bin/bash
+apt install cmake -y
+gcc --version
+g++ --version
+cmake --verion
+cd /workspace
+rm -rf ./build
+mkdir build
+cd build
+cmake ..
+cmake --build . --config Release --target wcc
+cmake --build . --config Release --target wcsc
+readelf -s ./wcc  | grep -oP "GLIBC.*" | sort | uniq
+readelf -s ./wcsc  | grep -oP "GLIBC.*" | sort | uniq

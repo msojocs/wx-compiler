@@ -26,19 +26,7 @@ if [ "$(id -u)" -eq '0' ];then
     # ln -s ./g++-6 g++
     # ls -l
     # cat /etc/passwd
-    apt install cmake -y
-    gcc --version
-    g++ --version
-    cmake --verion
-    cd /workspace
-    rm -rf ./build
-    mkdir build
-    cd build
-    cmake ..
-    cmake --build . --config Release --target wcc
-    cmake --build . --config Release --target wcsc
-    readelf -s ./wcc  | grep -oP "GLIBC.*" | sort | uniq
-    readelf -s ./wcsc  | grep -oP "GLIBC.*" | sort | uniq
+    exec gosu user docker/entrypoint
 
 fi
 
