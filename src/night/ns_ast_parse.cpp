@@ -560,7 +560,7 @@ namespace night
                 auto v28 = this->offset_28->next();
                 auto v37 = this->offset_28->next();
                 auto v31 = this->offset_28->next();
-                int v46 = 0;
+                bool v46 = false;
                 if (v37)
                 {
                     if (night::NS_TYPE_VAR == v37->offset_0 || (v46 = night::NS_TYPE_STR == v37->offset_0))
@@ -577,7 +577,7 @@ namespace night
                     }
                     if (night::NS_TYPE_PUNC == v37->offset_0)
                     {
-                        if ("}" == v37->offset_0)
+                        if ("}" == v37->offset_60)
                         {
                             v46 = true;
                         }
@@ -589,7 +589,7 @@ namespace night
                 if (v46)
                 {
                     auto v11 = this->ast_obj_block();
-                LABEL_113:
+                // LABEL_113:
                     auto v65 = this->make_call_or_just_expression(v11);
                     return v65;
                 }

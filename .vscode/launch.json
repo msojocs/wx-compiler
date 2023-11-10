@@ -12,10 +12,10 @@
             "program": "${workspaceFolder}/build/wcc",
             "args": [
                 "\"--config-path\"",
-                "\"/mnt/d/Work/WeChatProjects/miniprogram-1/wcc/99a9bac3c05fc25dd070298212c4a7d3\""
+                "\"/mnt/d/Work/WeChatProjects/issue/97/wcc-cmd2.txt\""
             ],
             "stopAtEntry": false,
-            "cwd": "/mnt/d/Work/WeChatProjects/miniprogram-1",
+            "cwd": "/mnt/d/Work/WeChatProjects/issue/97/ThorUI-applets-vip",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

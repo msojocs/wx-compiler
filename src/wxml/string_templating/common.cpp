@@ -3,7 +3,7 @@ namespace WXML
 {
     namespace StringTemplating
     {
-        
+        int Deal_i = 0;
         int Deal(
             char const* Str,
             std::string &a2,
@@ -11,6 +11,8 @@ namespace WXML
             bool & a4
             )
         {
+            Deal_i++;
+            int inner_Deal_i = Deal_i;
             int v4 = strlen(Str);
             int v5 = 0;
             int v12 = 0;

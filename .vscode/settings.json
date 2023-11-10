@@ -57,10 +57,10 @@
         "variant": "cpp"
     },
     "cmake.debugConfig": {
-        "cwd": "/mnt/d/Work/WeChatProjects/issue/91/build",
+        "cwd": "/mnt/d/Work/WeChatProjects/issue/97/ThorUI-applets-vip",
         "args": [
             "\"--config-path\"",
-            "\"/mnt/d/Work/WeChatProjects/issue/91/cmd/case1-cmd.txt\""
+            "\"/mnt/d/Work/WeChatProjects/issue/97/wcc-cmd2.txt\""
         ]
     },
     "cmake.configureSettings": {

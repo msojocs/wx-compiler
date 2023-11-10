@@ -149,9 +149,11 @@ namespace WXML
             return -1;
             
         }
-        
+        int ToAttrContent_i = 0;
         std::string Token::ToAttrContent()
         {
+            ToAttrContent_i++;
+            int inner_ToAttrContent_i = ToAttrContent_i;
             // 有缓存（offset_84），直接返回
             if( this->offset_0.size() == 0 || this->offset_84)
                 return this->offset_88;
@@ -163,7 +165,7 @@ namespace WXML
             {
                 char v1 = v6[v8 - 1];
                 if ( v1 == '"'/*34*/ || v1 == '\''/*39*/ )
-                --v8;
+                    --v8;
             }
             int v2 = 0;
             int v3 = 0;
@@ -179,6 +181,7 @@ namespace WXML
                         v2 = 1;
                         continue;
                     }
+                    Src[v3] = v4;
                 }
                 else if ( v2 )
                 {
@@ -193,6 +196,10 @@ namespace WXML
                         case 'r':
                             Src[v3] = 13; // \r "\\r" -> "\r"
                             break;
+                        default:
+                            Src[v3] = v4;
+                            break;
+
                     }
                 }
                 else
