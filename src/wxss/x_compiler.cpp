@@ -203,14 +203,56 @@ namespace WXSS
         }
         return 0;
     }
-    int XCompiler::GetCompiled(std::string const&, std::string&)
+    int XCompiler::GetCompiled(std::string const& a2, std::string& a3)
     {
         if (this->offset_0)
         {
             return 6;
         }
+        int v14 = this->offset_0;
+        auto v15 = this->offset_104.find(a2);
+        if (v15 == this->offset_104.end())
+        {
+            if (this->offset_32.find(a2) == this->offset_32.end())
+            {
+                v14 = 1;
+                a3 = "";
+            }
+            else
+            {
+                a3 = "";
+                auto v7 = this->offset_32[a2];
+                auto vec = v7->offset_120;
+                for (int i = 0; i < vec.size(); i++)
+                {
+                    auto cur = vec[i];
+                    if (
+                        cur->offset_0 == "DIRECTIVE"
+                        && cur->offset_120.size() > 0
+                        && cur->offset_120[0]->offset_0 == "@import"
+                        && cur->offset_140.get() != nullptr
+                    )
+                    {
+                        std::string v21(*cur->offset_140);
+                        std::string v22;
+                        this->GetCompiled(v21, v22);
+                        a3 = v22;
+                    }
+                    else
+                    {
+                        cur->RenderCode(a3, true);
+                    }
+                }
+                this->offset_104[a2].assign(a3);
+                
+            }
+        }
+        else
+        {
+            a3.assign(this->offset_104[a2]);
+        }
         
-        throw "not implement";
+        return v14;
     }
     int XCompiler::GetJSCompiled(std::string const& a2, std::string& a3)
     {

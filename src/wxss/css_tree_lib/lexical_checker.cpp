@@ -612,7 +612,8 @@ namespace WXSS
         }
         int off_519B9C(std::shared_ptr<WXSS::CSSTreeLib::Rule>& a1, std::shared_ptr<WXSS::CSSTreeLib::CSSSyntaxTree> &a2)
         {
-            throw "not implement";
+            a2->offset_116 = 0;
+            return 0;
         }
 
         int off_519BB4_i = 0;

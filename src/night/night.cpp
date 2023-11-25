@@ -94,26 +94,84 @@ namespace night
         return 0;
     }
 
+    /**
+     * 此函数只有定义实现，没有调用
+     * 所以，没有必要实现
+     * 
+    */
     void compile_ns_with_sourcemap(
-        std::string const&,
-        std::string const&,
-        std::string const&,
-        std::string const&,
-        uint,
-        std::string&,
-        std::string&
+        std::string const& a1,
+        std::string const& a2,
+        std::string const& a3,
+        std::string const& a4,
+        uint a5,
+        std::string& a6,
+        std::string& a7
         )
     {
-        
+        int retcode = 0;
+        a6 = "";
+        night::NSStream v80(a1, a4, a5);
+        night::NSToken v69;
+        night::NSGod v36;
+        night::NSASTParse v81(a1, &v69, &v36);
+
+        night::NSCompileJs v71;
+        v71.offset_24 = &v81;
+
+        std::string v41;
+        std::vector<std::string> v37;
+        std::string v43 = v71.compile_once(v41, &v37, false);
+        v36.hamlet();
+
+        // if (v43.length())
+        // {
+        //     a6.assign(v43);
+        //     retcode = 121;
+        // }
+        // else
+        // {
+        //     std::string ret = "";
+        //     std::string v51 = ";return " + night::nsv_;
+        //     v51.append("module.");
+        //     v51.append(night::nsv_);
+        //     v51.append("exports;");
+
+        //     std::string v57 = "function " + a3 + "(){";
+        //     a6 = v57;
+
+        //     std::string v45 = "var " + night::nsv_ + "module={" + night::nsv_ + "exports:{}};";
+        //     ret += v45;
+
+        //     std::string v63 = v41 + v51;
+        //     ret += v63;
+
+        //     ret += "}";
+        //     v63 = "\n//# sourceMappingURL=" + a2;
+        //     ret += v63;
+
+        //     // ...
+        // }
+
         throw "not implement";
     }
 
+    /**
+     * 此函数只有定义实现，没有调用
+     * 所以，没有必要实现
+     * 
+    */
     void readfile(char const*, std::string &)
     {
 
         throw "not implement";
     }
 
+    /**
+     * 此函数只有定义实现，没有调用
+     * 所以，没有必要实现
+     * 
+    */
     void writefile(char const*, std::string &)
     {
 

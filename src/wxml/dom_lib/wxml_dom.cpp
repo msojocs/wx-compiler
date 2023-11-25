@@ -467,15 +467,16 @@ namespace WXML {
             }
             
             // RewriteTree - 15
-            for (int i = 0; i < this->offset_72.size(); i++)
-            {
-                auto cur = this->offset_72[i];
-                if (cur->offset_0 == "block")
-                {
-                    // this->offset_72[i]
-                    // throw "not implement";
-                }
-            }
+            // 看起来似乎是多余的代码
+            // for (int i = 0; i < this->offset_72.size(); i++)
+            // {
+            //     auto cur = this->offset_72[i];
+            //     if (cur->offset_0 == "block")
+            //     {
+            //         // this->offset_72[i]
+            //         // throw "not implement";
+            //     }
+            // }
 
             // RewriteTree - 20
             for (int i = 0; i < this->offset_72.size(); i++)
@@ -1384,8 +1385,23 @@ namespace WXML {
                         if (!strncmp(&i->first[0], "generic:", 8u))
                         {
                             a6 << "var $tmp=";
-                            // if (i->second.)
-                            throw "not implement";
+                            if (i->second.offset_0.length())
+                            {
+                                a6 << "grb(z[";
+                                a6 << i->second.offset_0;
+                                a6 << "]," << a8 << "," << a9 << "," << a10 << ")" << a12;
+                                a6 << "if ($tmp!=\"\") $tmp=\"wx-\"+$tmp";
+                            }
+                            else
+                            {
+                                a6 << "\"\"";
+                            }
+                            a6 << a12;
+                            a6 << a5 << ".generics['" << "wx-";
+                            a6 << i->first;
+                            a6 << "']=$tmp";
+                            a6 << a12;
+                            continue;
                         }
                     }
                     else

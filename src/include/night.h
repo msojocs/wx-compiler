@@ -154,13 +154,13 @@ namespace night
         int offset_52 = 0; // 当前行数
         int offset_56 = 0; // 当前行第几个字符位置
         NSStream(/* args */);
-        NSStream(std::string const&,std::string const&,uint);
+        NSStream(std::string const&, std::string const&, uint);
         ~NSStream();
         NSStream(NSStream const&);
         NSStream& operator=(NSStream const&);
         bool eof(void);
         bool eof_2(void);
-        void err(std::string const&,int,int,bool);
+        void err(std::string const&, int, int, bool);
         PeekData next(void);
         PeekData peek(void);
         PeekData peek_2(void);

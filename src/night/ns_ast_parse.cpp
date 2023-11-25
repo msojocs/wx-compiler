@@ -139,8 +139,6 @@ namespace night
         }
         auto v8 = this->ast_obj_op(v25);
         return this->make_call_or_just_expression(v8);
-
-        // throw "not implement";
     }
     night::ns_node *NSASTParse::ast_code_block()
     {
@@ -326,11 +324,42 @@ namespace night
     }
     night::ns_node *NSASTParse::ast_while()
     {
-        throw "not implement";
+        this->offset_28->next();
+        night::ns_node * v7 = this->offset_24->gen_son(night::NS_TYPE_WHILE);
+        v7->offset_204 = nullptr;
+        v7->offset_216 = nullptr;
+        this->ignore_punc("(");
+        v7->offset_204 = this->ast_expression();
+        this->ignore_punc(")");
+        this->offset_36++;
+        this->offset_40++;
+        v7->offset_216 = this->ast_expression();
+        this->offset_36--;
+        this->offset_40--;
+        return v7;
     }
     night::ns_node *NSASTParse::ast_do_while()
     {
-        throw "not implement";
+        this->offset_28->next();
+        auto v1 = this->offset_28->offset_4;
+        night::ns_node * v12 = this->offset_24->gen_son(night::NS_TYPE_DO_WHILE);
+        if (!this->is_punctuation("{"))
+        {
+            this->offset_28->err("Expected `{`", v1->offset_52, v1->offset_56, true);
+        }
+        this->offset_36++;
+        this->offset_40++;
+        v12->offset_216 = this->ast_expression();
+        this->offset_36--;
+        this->offset_40--;
+
+        this->ignore_buildin_kw("while");
+        this->ignore_punc("(");
+
+        v12->offset_204 = this->ast_expression();
+        this->ignore_punc(")");
+
+        return v12;
     }
     night::ns_node *NSASTParse::ast_switch()
     {
