@@ -1510,6 +1510,7 @@ namespace WXML{
                 int v167 = v281->GetStrID(i->first);
                 v317 << v167 << "]]={f:" << v314 << ",j:[],i:[],ti:[";
                 auto v171 = i->second->offset_72;
+                bool isNeedComma = false;
                 for (int j = 0; j < v171.size(); j++)
                 {
                     auto cur = v171[j];
@@ -1517,7 +1518,7 @@ namespace WXML{
                     {
                         if (cur->offset_48.find("src") != cur->offset_48.end())
                         {
-                            if (j)
+                            if (isNeedComma)
                             {
                                 v317 << ",";
                             }
@@ -1526,10 +1527,12 @@ namespace WXML{
                             auto v173 = v172->second.ToAttrContent();
                             int v174 = v281->GetStrID(v173);
                             v317 << v174 << "]";
+                            isNeedComma = true;
                         }
                     }
                 }
                 v317 << "],ic:[";
+                isNeedComma = false;
                 for (int jj = 0; jj < i->second->offset_72.size(); jj++)
                 {
                     auto cur = i->second->offset_72[jj];
@@ -1538,13 +1541,15 @@ namespace WXML{
                         auto src = cur->offset_48.find("src");
                         if (src != cur->offset_48.end())
                         {
-                            if (jj)
+                            if (isNeedComma)
                             {
                                 v317 << ",";
                             }
+                            v317 << "x[";
                             auto v178 = src->second.ToAttrContent();
                             int v179 = v281->GetStrID(v178);
                             v317 << v179 << "]";
+                            isNeedComma = true;
                         }
                     }
                 }

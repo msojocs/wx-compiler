@@ -254,12 +254,13 @@ namespace WXML
                             if ( v5 <= 'Z'/*90*/ )
                                 continue;
                             if ( v5 != '_' )
-                                return 0;
+                                return false;
+                            continue;
                         }
                         if ( v5 <= '/'/*47*/ )
                         {
                             if ( v5 != '$' )
-                                return 0;
+                                return false;
                             continue;
                         }
                         v6 = v5 <= '9'/*57*/;

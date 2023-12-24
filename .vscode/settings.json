@@ -57,18 +57,18 @@
         "variant": "cpp"
     },
     "cmake.debugConfig": {
-        "cwd": "/mnt/d/Work/WeChatProjects/issue/97/ThorUI-applets-vip",
+        "cwd": "/home/msojocs/github/wx-compiler/test/spec/issue/102/wxapp",
         "args": [
             "\"--config-path\"",
-            "\"/mnt/d/Work/WeChatProjects/issue/97/wcc-cmd2.txt\""
+            "\"/home/msojocs/github/wx-compiler/test/spec/issue/102/case1.txt\""
         ]
     },
     "cmake.configureSettings": {
-        "CMAKE_TOOLCHAIN_FILE": "/root/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "/home/msojocs/github/vcpkg/scripts/buildsystems/vcpkg.cmake"
     },
     "clangd.arguments": [
         "--background-index",
         "--compile-commands-dir=${workspaceFolder}/build/"
     ],
-    "cmake.sourceDirectory": "/root/github/wx-compiler"
+    "cmake.sourceDirectory": "/home/msojocs/github/wx-compiler"
 }

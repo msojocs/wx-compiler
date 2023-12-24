@@ -12,10 +12,10 @@
             "program": "${workspaceFolder}/build/wcc",
             "args": [
                 "\"--config-path\"",
-                "\"/mnt/d/Work/WeChatProjects/issue/97/wcc-cmd2.txt\""
+                "\"/home/msojocs/github/wx-compiler/test/spec/issue/102/case1.txt\""
             ],
             "stopAtEntry": false,
-            "cwd": "/mnt/d/Work/WeChatProjects/issue/97/ThorUI-applets-vip",
+            "cwd": "/home/msojocs/github/wx-compiler/test/spec/issue/102/wxapp",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
