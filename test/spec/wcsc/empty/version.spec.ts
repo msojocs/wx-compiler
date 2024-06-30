@@ -18,7 +18,7 @@ describe("wcsc - empty", function () {
                 __dirname,
                 `version/${this.test?.title}`
             );
-            w = w.replace('wcsc.exe', '')
+            w = w.replace(/[A-Z]:.*?wcsc\.exe/, '').replace('wcsc.exe', '')
             n = n.replace(/\/.*?\/wcsc/, '')
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
