@@ -62,7 +62,8 @@ const wcc = (args: string[], projectPath: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         wine.on("close", (n) => {
             // console.log("wine n: ", n);
-            if (0 === n) {
+            const errMsg = Buffer.concat(errData).toString()
+            if (0 === n || errMsg.length == 0) {
                 let result = Buffer.concat(spwanData).toString();
                 // result = JSON.parse(result);
                 resolve(result);

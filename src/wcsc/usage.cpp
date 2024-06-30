@@ -3,7 +3,7 @@
 //----- (00401726) --------------------------------------------------------
 int usage(int argc, const char **argv)
 {
-  printf("*** WeChat Stylesheet Compiler, Version %s ***\n", "v0.4me_20190328_db");
+  printf("*** WeChat Stylesheet Compiler, Version %s ***\n", "v0.4me_20200724_db");
   printf(
     "Usage: %s [-lc] [-o OUTPUT] [-s <NAME OF FILE>] [-st] [-js] [-db] [-cp <CLASS PREFIX>] [-pc <FILE COUNT>] <[-sd <SOU"
     "RCE DIRECTLY>] | <root_css_file..> [import_css_files..]>\n",

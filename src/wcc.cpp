@@ -268,13 +268,17 @@ int main(int argc, const char **argv)
         {
             std::string versionInfo;
             WXML::Compiler::GetVersionInfo(versionInfo, "global");
+                FILE *f;
             if (!outputFileName.empty())
             {
-                FILE *f;
                 f = fopen(outputFileName.c_str(), "w");
-                fprintf(f, "%s\n", versionInfo.c_str());
-                fclose(f);
             }
+            else
+            {
+                f = stdout;
+            }
+            fprintf(f, "%s\n", versionInfo.c_str());
+            fclose(f);
         }
 
         // main - 30

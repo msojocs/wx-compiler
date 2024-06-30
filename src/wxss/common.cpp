@@ -40,7 +40,7 @@ namespace WXSS
         int ret = v12.offset_0;
         if (!v12.offset_0)
         {
-            a3 = "/*v0.4me_20190328_db*/\n";
+            a3 = "/*v0.4me_20200724_db*/\n";
             if (a8)
             {
                 ret = v12.ShowTree(a3);
@@ -75,7 +75,7 @@ namespace WXSS
             ret = v32.GetCommHead(a2, v21, true, a8);
             if (!ret)
             {
-                a3 = "version=v0.4me_20190328_db=";
+                a3 = "version=v0.4me_20200724_db=";
                 std::string v28 = WXML::Rewrite::ToStringCode2(v21);
                 v28 = v28.insert(0, "comm=");
                 v28.append("=");

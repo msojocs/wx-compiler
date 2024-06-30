@@ -1,3 +1,9 @@
+## 🌈 v0.0.6 / 2024-06-30
+
+🚀Features
+
+- 版本：更新至 -> 3c3eb3ac0ec1f85e5a72a9e7608a770a  wcc.exe, 472fef6c6e0f6b3217e3d3dfa85188b2  wcsc.exe
+
 ## 🌈 v0.0.5 / 2023-09-23
 
 🐞 Bug Fixes
@@ -12,6 +18,7 @@
 - `WXSS::CSSTreeLib::RewriteSelectorRule::MarkGood`: 比较字符串错误
 
 🚀Features
+
 - feat: 添加新的`wcsc`的测试用例
 
 ## 🌈 v0.0.3 / 2023-08-31

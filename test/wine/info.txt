@@ -1,3 +1,3 @@
-root@DESKTOP-AL3TQTI:~/github/wx-compiler/test/wine# md5sum wcc.exe wcsc.exe
-a310e176feb4bff40eb6d901d7b8e083  wcc.exe
-1a9ed324400861c62d2d22c709bab105  wcsc.exe
+msojocs@DESKTOP-1TV4OAG:~/github/wx-compiler/test/wine$ md5sum wcc.exe wcsc.exe
+3c3eb3ac0ec1f85e5a72a9e7608a770a  wcc.exe
+472fef6c6e0f6b3217e3d3dfa85188b2  wcsc.exe

@@ -447,7 +447,7 @@ namespace WXML{
                     *ss << "__WXML_GLOBAL__.modules = __WXML_GLOBAL__.modules || {};" << lineEndMark;
                     if (v225 && gwxMark != "$gwx" && (mark & 0x60) == 0)
                     {
-                        *ss << "$gwx('init', global);" << lineEndMark;
+                        *ss << "if (typeof $gwx === 'function') $gwx('init', global);" << lineEndMark;
                     }
                     *ss << "var " << eMark << "={}" << lineEndMark;
                     *ss << "if(typeof(global.entrys)==='undefined')global.entrys={};" << eMark << "=global.entrys;" << lineEndMark;
@@ -1782,12 +1782,12 @@ namespace WXML{
         {
             std::stringstream result;
             result << "/*";
-            result << "v0.5vv_20200413_syb_scopedata";
+            result << "v0.5vv_20211229_syb_scopedata";
             result << "*/";
 
             result << a2;
             result << ".__wcc_version__='";
-            result << "v0.5vv_20200413_syb_scopedata";
+            result << "v0.5vv_20211229_syb_scopedata";
             result << "';";
             result << a2;
             result << ".__wcc_version_info__={\"customComponents\":true,\"fixZeroRpx\":true,\"propValueDeepCopy\":false};";
