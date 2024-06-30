@@ -22,7 +22,6 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
         ARCH: ['x86_64']
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
@@ -85,7 +84,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
         ARCH: ['x86_64']
     steps:
       - uses: actions/checkout@v2
@@ -97,7 +96,7 @@ jobs:
           # Version Spec of the version to use in SemVer notation.
           # It also emits such aliases as lts, latest, nightly and canary builds
           # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
-          node-version: '16.20.2'
+          node-version: '18.12.0'
           check-latest: false
       - name: Download artifacts
         uses: actions/download-artifact@v2
