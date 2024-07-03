@@ -1,16 +1,12 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(wx_complier VERSION 0.1.0 LANGUAGES C CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-# set (CMAKE_CXX_STANDARD 14)
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 # message("before: ${CMAKE_CXX_FLAGS_DEBUG}")
 # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O1")
 # message("after: ${CMAKE_CXX_FLAGS_DEBUG}")
-
-include(CTest)
-enable_testing()
 
 add_executable(wcc
     src/wcc.cpp
@@ -99,9 +95,13 @@ add_executable(test1
 #     src/wxml/expr_lib/transit_table.cpp
 #     )
 
+include(CTest)
+enable_testing()
 add_test(transit_table_test
     $<TARGET_FILE:transit_table>
     )
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
+
+add_subdirectory(./src/nwjs)
