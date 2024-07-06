@@ -52,7 +52,7 @@ until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8083/che
     curl http://127.0.0.1:8083/check
     sleep 1
     let i=$i+1
-    if [ $i -ge 5 ];then
+    if [ $i -ge 50 ];then
         echo "error"
         docker ps -a
         exit 1
