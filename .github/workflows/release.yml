@@ -139,6 +139,7 @@ jobs:
           mkdir build
           cp **build/wcc build
           cp **build/wcsc build
+          cp **build/wcc_module.node build
           chmod +x build/*
           ls -l build
           node -v
