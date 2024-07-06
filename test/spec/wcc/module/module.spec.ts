@@ -6,13 +6,8 @@ import linux from '../../../runner/module-linux'
 import windows from '../../../runner/module-windows'
 import * as fs from 'fs'
 
+windows.start()
 describe("wcc - module", function () {
-    this.beforeAll(function(done) {
-        this.timeout(120000)
-        windows.start()
-        console.log('start success!')
-        done()
-    })
     this.afterAll(() => {
         windows.close()
     })

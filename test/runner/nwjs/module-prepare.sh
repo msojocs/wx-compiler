@@ -37,7 +37,6 @@ docker run -d -i\
     --env=XVFB_SCREEN=0\
     --env=XVFB_RESOLUTION=320x240x8\
     --env=DISPLAY=:95\
-    --rm\
     --hostname=DESKTOP-1TV4OA1\
     --name=wine\
     --shm-size=1g\
@@ -47,9 +46,16 @@ docker run -d -i\
     -p 8083:8083\
     scottyhardy/docker-wine:latest\
     wine /workspace/cache/nwjs-sdk-v$nw_version-win-x64/nw.exe
+i=0
 until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8083/check); do
     printf '.'
     curl http://127.0.0.1:8083/check
     sleep 1
+    let i=$i+1
+    if [ $i -ge 5 ];then
+        echo "error"
+        docker ps -a
+        exit 1
+    fi
 done
 echo "success"
