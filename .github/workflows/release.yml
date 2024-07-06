@@ -149,6 +149,7 @@ jobs:
           ls -l test/wine
           # ./test/wine/wcc.exe
           pnpm run test-prepare
+          sudo apt install -y xvfb
           # pnpm run test
       - uses: ./.github/actions/test
         with:

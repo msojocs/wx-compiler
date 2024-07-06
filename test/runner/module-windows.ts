@@ -13,7 +13,7 @@ const HTTP = {
             const postData = JSON.stringify(compilerOptions);
 
             const options = {
-                hostname: 'localhost',
+                hostname: '127.0.0.1',
                 port: 8083,
                 path: `/${type}`,
                 method: 'POST',
@@ -71,9 +71,9 @@ export default {
     wcsc: wcscNative,
     wcc: wccNative,
     start: () => {
-        execFileSync(path.resolve(__dirname, './nwjs/module-prepare.sh'))
+        execFileSync(path.resolve(__dirname, './nwjs/module-prepare.sh'), { stdio: 'inherit' })
     },
     close: () => {
-        request('http://localhost:8083/close').end()
+        request('http://127.0.0.1:8083/close').end()
     }
 }

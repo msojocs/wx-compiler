@@ -36,9 +36,17 @@ const server = createServer(async (req, resp) => {
     // and the second param is response header info
     try {
         console.log("server is working...");
+        if (req.url?.includes("check")) {
+          resp.writeHead(200, { "Content-Type": "text/plain" });
+          resp.end('ok');
+          return;
+        }
         if(req.url?.includes("close"))
         {
+          resp.writeHead(200, { "Content-Type": "text/plain" });
+          resp.end('ok');
           nw.App.quit()
+          return;
         }
         const body = JSON.parse(await Handle.readBody(req));
 

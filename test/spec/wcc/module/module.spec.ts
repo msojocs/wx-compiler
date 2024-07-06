@@ -7,8 +7,10 @@ import windows from '../../../runner/module-windows'
 import * as fs from 'fs'
 
 describe("wcc - module", function () {
-    this.beforeAll(() => {
+    this.beforeAll(function(done) {
+        this.timeout(60000)
         windows.start()
+        done()
     })
     this.afterAll(() => {
         windows.close()
