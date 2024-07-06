@@ -8,8 +8,9 @@ import * as fs from 'fs'
 
 describe("wcc - module", function () {
     this.beforeAll(function(done) {
-        this.timeout(60000)
+        this.timeout(120000)
         windows.start()
+        console.log('start success!')
         done()
     })
     this.afterAll(() => {
