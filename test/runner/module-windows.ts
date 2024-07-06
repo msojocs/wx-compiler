@@ -35,6 +35,7 @@ const HTTP = {
                 });
                 res.on('end', () => {
                     // console.log('No more data in response.');
+                    console.log('end:', ret?.substring(0, 10))
                     if (compilerOptions.lazyloadConfig)
                     {
                         resolve(JSON.parse(ret))
