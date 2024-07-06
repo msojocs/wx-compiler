@@ -5,11 +5,13 @@ import path from 'path';
 import linux from '../../../runner/module-linux'
 import windows from '../../../runner/module-windows'
 import * as fs from 'fs'
-import { execFileSync } from 'child_process';
 
 describe("wcc - module", function () {
     this.beforeAll(() => {
-        // execFileSync(path.resolve(__dirname, '../../../runner/nwjs/wine-prepare.sh'), { stdio: 'inherit' })
+        windows.start()
+    })
+    this.afterAll(() => {
+        windows.close()
     })
     describe("llw: linux output should deep equal with wine", function () {
         // afterEach(function(){

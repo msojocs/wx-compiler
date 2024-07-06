@@ -9,7 +9,7 @@ on:
   push:
     tags:        
       - v*
-    branches: [ master, dev, ci]
+    branches: [ master, dev, ci, module]
   pull_request:
     branches: [ master ]
   # # Allows you to run this workflow manually from the Actions tab
@@ -66,7 +66,7 @@ jobs:
           echo "------------------------"
           ls -l build
           mkdir -p tmp/build
-          mv build/{wcc,wcsc} tmp/build
+          mv build/{wcc,wcsc,wcc_module.node} tmp/build
           cd tmp/build
           ls -l
 

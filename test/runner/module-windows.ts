@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import { request } from "http";
 import { CompilerOptions } from './types';
 import path from 'path'
+import { execFileSync } from 'child_process';
 
 // 预先启动wine focker环境，再使用HTTP协议，最后销毁容器
 const HTTP = {
@@ -68,5 +69,11 @@ const wccNative = async (optionsPath: string) => {
 
 export default {
     wcsc: wcscNative,
-    wcc: wccNative
+    wcc: wccNative,
+    start: () => {
+        execFileSync(path.resolve(__dirname, './nwjs/wine-prepare.sh'), { stdio: 'inherit' })
+    },
+    close: () => {
+        request('http://localhost:8083/close').end()
+    }
 }
