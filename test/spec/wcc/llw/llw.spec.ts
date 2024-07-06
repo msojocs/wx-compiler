@@ -1,8 +1,8 @@
 
 import assert from 'assert';
 import path from 'path';
-import linux from '../../../runner/linux'
-import windows from '../../../runner/windows'
+import linux from '../../../runner/binary-linux'
+import windows from '../../../runner/binary-windows'
 import * as fs from 'fs'
 
 describe("wcc - llw", function () {

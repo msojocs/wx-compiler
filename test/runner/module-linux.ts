@@ -2,13 +2,16 @@ import { spawn } from "child_process";
 import path from "path";
 import * as fs from 'fs'
 
-const wcsc = (args: string[], projectPath: string, outputPath: string | undefined = undefined): Promise<string> => {
-    if(!fs.existsSync(projectPath)){
+const NW_VERSION = '0.55.0'
+
+const wcscNative = (optionsPath: string, projectPath: string, outputPath: string | undefined = undefined): Promise<string> => {
+    if(!fs.existsSync(projectPath))
+    {
         throw new Error('projectPath not exists.')
     }
-    const node_exec = spawn(
-        path.resolve(__dirname, "../../build/wcsc"),
-        args,
+    const nodeExec = spawn(
+        path.resolve(__dirname, `../../../cache/nwjs-sdk-v${NW_VERSION}-linux-x64/nw`),
+        [ 'wcsc.js', optionsPath ],
         {
             cwd: projectPath,
             env: {
@@ -19,16 +22,16 @@ const wcsc = (args: string[], projectPath: string, outputPath: string | undefine
     );
     const spwanData: any[] = [],
         errData: any[] = [];
-    node_exec.stdout.on("data", (e) => {
+    nodeExec.stdout.on("data", (e) => {
         spwanData.push(e);
         // console.log(e.toString())
     });
-    node_exec.stderr.on("data", (e) => {
+    nodeExec.stderr.on("data", (e) => {
         errData.push(e);
         // console.log(e.toString())
     });
     return new Promise((resolve, reject) => {
-        node_exec.on("close", (n) => {
+        nodeExec.on("close", (n) => {
             outputPath && require('fs').writeFileSync(`${outputPath}/linux_err.js`, Buffer.concat(errData).toString())
             
             if (0 === n) {
@@ -43,13 +46,13 @@ const wcsc = (args: string[], projectPath: string, outputPath: string | undefine
         });
     });
 };
-const wcc = (args: string[], projectPath: string, outputPath: string | undefined = undefined): Promise<string> => {
+const wccNative = (optionsPath: string, projectPath: string, outputPath: string | undefined = undefined): Promise<string> => {
     if(!fs.existsSync(projectPath)){
         throw new Error('projectPath not exists.')
     }
-    const node_exec = spawn(
-        path.resolve(__dirname, "../../build/wcc"),
-        args,
+    const nodeExec = spawn(
+        path.resolve(__dirname, `../../../cache/nwjs-sdk-v${NW_VERSION}-linux-x64/nw`),
+        ['wcc.js', optionsPath],
         {
             cwd: projectPath,
             env: {
@@ -60,16 +63,16 @@ const wcc = (args: string[], projectPath: string, outputPath: string | undefined
     );
     const spwanData: any[] = [],
         errData: any[] = [];
-    node_exec.stdout.on("data", (e) => {
+    nodeExec.stdout.on("data", (e) => {
         spwanData.push(e);
         // console.log(e.toString())
     });
-    node_exec.stderr.on("data", (e) => {
+    nodeExec.stderr.on("data", (e) => {
         errData.push(e);
         // console.log(e.toString())
     });
     return new Promise((resolve, reject) => {
-        node_exec.on("close", (n) => {
+        nodeExec.on("close", (n) => {
             // console.log("node n: ", n);
             outputPath && require('fs').writeFileSync(`${outputPath}/linux_err.js`, Buffer.concat(errData).toString())
             if (0 === n) {
@@ -87,6 +90,6 @@ const wcc = (args: string[], projectPath: string, outputPath: string | undefined
 };
 
 export default {
-    wcsc,
-    wcc
+    wcsc: wcscNative,
+    wcc: wccNative
 }
