@@ -71,7 +71,7 @@ export default {
     wcsc: wcscNative,
     wcc: wccNative,
     start: () => {
-        execFileSync(path.resolve(__dirname, './nwjs/wine-prepare.sh'), { stdio: 'inherit' })
+        execFileSync(path.resolve(__dirname, './nwjs/module-prepare.sh'))
     },
     close: () => {
         request('http://localhost:8083/close').end()
