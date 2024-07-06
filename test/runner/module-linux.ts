@@ -46,15 +46,12 @@ const wcscNative = (optionsPath: string, projectPath: string, outputPath: string
         });
     });
 };
-const wccNative = (optionsPath: string, projectPath: string, outputPath: string | undefined = undefined): Promise<string> => {
-    if(!fs.existsSync(projectPath)){
-        throw new Error('projectPath not exists.')
-    }
+const wccNative = (optionsPath: string, outputPath: string | undefined = undefined): Promise<string | Record<string, any>> => {
+
     const nodeExec = spawn(
-        path.resolve(__dirname, `../../../cache/nwjs-sdk-v${NW_VERSION}-linux-x64/nw`),
-        ['wcc.js', optionsPath],
+        path.resolve(__dirname, `../../cache/nwjs-sdk-v${NW_VERSION}-linux-x64/nw`),
+        [path.resolve(__dirname, './nwjs/compiler.js'), 'wcc', optionsPath],
         {
-            cwd: projectPath,
             env: {
                 WX_DEBUG_COMPILER_OUTPUT: outputPath,
             },
@@ -77,8 +74,10 @@ const wccNative = (optionsPath: string, projectPath: string, outputPath: string 
             outputPath && require('fs').writeFileSync(`${outputPath}/linux_err.js`, Buffer.concat(errData).toString())
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
-                // process.stdout.write(result);
-                // result = JSON.parse(result);
+                result = result.split('---------------result------------------\n')[1]
+                process.stdout.write(result);
+                if (result[0] === '{')
+                    result = JSON.parse(result);
                 resolve(result);
             } else {
                 process.stderr.write(Buffer.concat(errData).toString());

@@ -1,9 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <iomanip>
 #include <map>
-#include <set>
 #include "include/file.h"
 #include "include/usage.h"
 #include "include/string_utils.h"
@@ -64,7 +62,7 @@ int main(int argc, const char **argv)
         int mark = 0;
         bool isReadFromStdin = false;
         bool version = false;
-        bool v53 = false;
+        bool isLLA = false;
         bool hasLL = false;
         string xc_Or_completeCode_Param;
         string outputFileName;
@@ -88,15 +86,16 @@ int main(int argc, const char **argv)
             switch (param[1])
             {
             case 'd':
-                // output code for debug
                 /* code */
                 if (!param[2])
                 {
+                    // output code for debug
                     mark |= 2u;
                     continue;
                 }
                 if (param[2] == 's')
                 {
+                    // insert debug wxs info
                     mark |= 4u;
                     continue;
                 }
@@ -130,7 +129,7 @@ int main(int argc, const char **argv)
                 /* code */
                 if (param[2] == 'c' && i + 1 < paramList.size())
                 {
-                    v53 = true;
+                    isLLA = true;
                     if (paramList[i + 1][0] != '-')
                     {
                         xc_Or_completeCode_Param.assign(paramList[i + 1]);
@@ -144,7 +143,7 @@ int main(int argc, const char **argv)
                 /* code */
                 if (param[2] == 'c' && i + 1 < paramList.size())
                 {
-                    v53 = false;
+                    isLLA = false;
                     if (paramList[i + 1][0] != '-')
                     {
                         xc_Or_completeCode_Param.assign(paramList[i + 1]);
@@ -242,7 +241,7 @@ int main(int argc, const char **argv)
                             printf("Error: expected -llw or -lla, but got %s\n", param.c_str());
                             return -1;
                         }
-                        v53 = true;
+                        isLLA = true;
                     }
                     string splitMark;
                     if (!splitMarkStr.compare(" "))
@@ -370,7 +369,7 @@ int main(int argc, const char **argv)
                 componentListMap,  // componentListMap
                 splitedData,
                 mapData1,
-                v53,
+                isLLA,
                 gwxMark,
                 mark,
                 10,
@@ -467,11 +466,11 @@ int main(int argc, const char **argv)
             
             compilerResult = WXML::Compiler::Compile(
                         fileContentMap, // a2
-                        v111, // a3
+                        errorMessage, // a3
                         v113,   // a4
                         componentListMap,  // a5
                         v105,   // a6
-                        v53, // a7
+                        isLLA, // a7
                         gwxMark, // a8
                         mark,  // a9
                         '\n',   // 

@@ -26,5 +26,8 @@ struct WCCOptions
     std::string lazyloadConfig;
 };
 
-bool parse_wcc_options(v8::Isolate *isolate, v8::Local<v8::Object> &src, WCCOptions *result);
+namespace wcc_options
+{
+    bool parse_wcc_options(v8::Isolate *isolate, v8::Local<v8::Object> &src, WCCOptions *result);
+}
 #endif

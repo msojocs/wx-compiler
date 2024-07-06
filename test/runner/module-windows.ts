@@ -1,12 +1,14 @@
 import * as fs from 'fs'
 import { request } from "http";
 import { CompilerOptions } from './types';
+import path from 'path'
 
 // 预先启动wine focker环境，再使用HTTP协议，最后销毁容器
 const HTTP = {
-    POST: (type: 'wcc' | 'wcsc', compilerOptions: CompilerOptions): Promise<string>  => {
+    POST: (type: 'wcc' | 'wcsc', compilerOptions: CompilerOptions): Promise<string | Record<string, any>>  => {
         return new Promise((resolve, reject) => {
 
+            compilerOptions.cwd = compilerOptions.cwd.replace(path.resolve(__dirname, '../../'), '/wrokspace')
             const postData = JSON.stringify(compilerOptions);
 
             const options = {
@@ -22,17 +24,24 @@ const HTTP = {
     
                 
             const req = request(options, (res) => {
-                console.log(`STATUS: ${res.statusCode}`);
-                console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+                // console.log(`STATUS: ${res.statusCode}`);
+                // console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
                 res.setEncoding('utf8');
                 let ret = ""
                 res.on('data', (chunk) => {
-                    console.log(`BODY: ${chunk}`);
+                    // console.log(`BODY: ${chunk}`);
                     ret += chunk
                 });
                 res.on('end', () => {
-                    console.log('No more data in response.');
-                    resolve(ret)
+                    // console.log('No more data in response.');
+                    if (compilerOptions.lazyloadConfig)
+                    {
+                        resolve(JSON.parse(ret))
+                    }
+                    else
+                    {
+                        resolve(ret)
+                    }
                 });
             });
     

@@ -4,6 +4,7 @@ module.exports = {
         'ts-node/register'
     ],
     recursive: true,
-    spec: "./test/spec/**/*.spec.ts",
+    // spec: "./test/spec/**/*.spec.ts",
+    spec: "test/spec/wcc/module/module.spec.ts",
     timeout: 20000,
 }

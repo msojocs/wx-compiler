@@ -1,5 +1,6 @@
 
 import assert from 'assert';
+import { describe } from "mocha";
 import path from 'path';
 import linux from '../../../runner/module-linux'
 import windows from '../../../runner/module-windows'
@@ -8,8 +9,7 @@ import { execFileSync } from 'child_process';
 
 describe("wcc - module", function () {
     this.beforeAll(() => {
-        // TODO: 启动docker wine容器
-        execFileSync(path.resolve(__dirname, '../../../runner/nwjs/wine-prepare.sh'), { stdio: 'inherit' })
+        // execFileSync(path.resolve(__dirname, '../../../runner/nwjs/wine-prepare.sh'), { stdio: 'inherit' })
     })
     describe("llw: linux output should deep equal with wine", function () {
         // afterEach(function(){
@@ -26,17 +26,37 @@ describe("wcc - module", function () {
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
             } catch (error) {}
-            const n = JSON.parse(await linux.wcc(p, ''));
-            const w = JSON.parse(await windows.wcc(p));
-            fs.writeFileSync(
-                `${storagePath}/wine-output.json`,
-                JSON.stringify(w, null, 4)
-            );
-            fs.writeFileSync(
-                `${storagePath}/node-output.json`,
-                JSON.stringify(n, null, 4)
-            );
-            assert.deepEqual(w, n);
+
+            const w = await windows.wcc(p);
+            const n = await linux.wcc(p, '');
+            console.log('windows:', typeof w)
+            console.log('linux:', typeof n)
+
+            assert.equal(typeof n, typeof w);
+            if (typeof w == 'string')
+            {
+                fs.writeFileSync(
+                    `${storagePath}/wine-output.json`,
+                    w
+                );
+                fs.writeFileSync(
+                    `${storagePath}/node-output.json`,
+                    n as string
+                );
+                assert.equal(n, w);
+            }
+            else
+            {
+                fs.writeFileSync(
+                    `${storagePath}/wine-output.json`,
+                    JSON.stringify(w, null, 4)
+                );
+                fs.writeFileSync(
+                    `${storagePath}/node-output.json`,
+                    JSON.stringify(n, null, 4)
+                );
+                assert.deepEqual(n, w);
+            }
         });
     });
 });
