@@ -1,3 +1,0 @@
-[submodule "test/examples/miniprogram-demo"]
-	path = test/examples/miniprogram-demo
-	url = https://github.com/wechat-miniprogram/miniprogram-demo.git
