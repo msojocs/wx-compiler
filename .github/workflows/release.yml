@@ -149,7 +149,10 @@ jobs:
           ls -l test/wine
           # ./test/wine/wcc.exe
           pnpm run test-prepare
-          pnpm run test
+          # pnpm run test
+      - uses: ./.github/actions/test
+        with:
+          who-to-greet: 'Mona the Octocat'
         
   upload:
     name: Create release and upload artifacts

@@ -43,6 +43,7 @@ docker run -d -it\
 
 sleep 10
 curl http://localhost:8083
+docker ps
 exit 0
 # curl http://localhost:8083/close
 # docker stop wine
