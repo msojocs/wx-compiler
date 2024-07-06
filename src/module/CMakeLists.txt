@@ -1,5 +1,8 @@
 set(NW_VERSION "0.55.0")
 message("current dir: ${CMAKE_CURRENT_SOURCE_DIR}")
+execute_process(
+    COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/cache;
+)
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cache/nw-headers-v${NW_VERSION}.tar.gz")
     execute_process(
         COMMAND wget -c -O nw-headers-v${NW_VERSION}.tar.gz.tmp https://dl.nwjs.io/v${NW_VERSION}/nw-headers-v${NW_VERSION}.tar.gz;
