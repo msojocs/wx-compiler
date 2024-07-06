@@ -98,7 +98,7 @@ int compile(Isolate *isolate, WCCOptions &options, Local<Value> &result,
         dependencyListMap, // std::map<std::string,std::vector<std::string>>
         componentListMap,  // componentListMap
         splitedData, mapData1,
-        true, // isLLA,
+        options.isCut, // isLLA,
         options.genfuncname, mark, 10, &off_5403C3[2], off_5403C3, "gg", "e_",
         "d_", "p_", "\0", "boxofchocolate", "$gdwx", "f_");
     if (outputContentMap.count("__COMMON__") == 0) {

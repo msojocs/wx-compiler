@@ -75,7 +75,7 @@ const wccNative = (optionsPath: string, outputPath: string | undefined = undefin
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
                 result = result.split('---------------result------------------\n')[1]
-                process.stdout.write(result);
+                // process.stdout.write(result);
                 if (result[0] === '{')
                     result = JSON.parse(result);
                 resolve(result);
