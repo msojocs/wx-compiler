@@ -35,7 +35,10 @@ const HTTP = {
                 });
                 res.on('end', () => {
                     // console.log('No more data in response.');
-                    console.log('end:', ret?.substring(0, 10))
+                    if (ret?.startsWith('server error'))
+                    {
+                        console.log('error:', ret)
+                    }
                     if (compilerOptions.lazyloadConfig)
                     {
                         resolve(JSON.parse(ret))
