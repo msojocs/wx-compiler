@@ -295,6 +295,7 @@ int main(int argc, const char **argv) {
     // main - 40
     if (v36)
     {
+        // lazyload
         goto LABEL_102;
     }
     int v25 = WXSS::NewLintAndParseCSSList(v77, v72, v88, errMsg, 0, v37, v75, v76);

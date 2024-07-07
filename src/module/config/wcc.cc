@@ -17,6 +17,11 @@ namespace wcc_options
             isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("Failed to get '" + std::string(property_name) + "' property").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
             return false;
         }
+        if (value->IsUndefined())
+        {
+            out_value = false;
+            return true;
+        }
         if (!value->IsBoolean())
         {
             isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("The '" + std::string(property_name) + "' property must be a boolean").c_str(), v8::NewStringType::kNormal).ToLocalChecked());

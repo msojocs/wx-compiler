@@ -36,13 +36,18 @@ int compile(Isolate *isolate, WCSCOptions &options, Local<Value> &result,
     v77[options.files[i]] = options.contents[i];
   }
   std::string v76 = "./app.wxss";
+  std::vector<std::string> v72;
+  std::string v75;
+  for (int i=0; i<options.pageCount; i++) {
+    v72.push_back(options.files[i]);
+  }
 
   if (options.lazyload) {
     // 懒加载
 
     std::string v96;
 
-    std::string v94, v75;
+    std::string v94;
     WXSS::XCompiler lt(v77, options.debug, v75);
     // lt.offset_136.erase()
     // lt.offset_136.erase()
@@ -50,10 +55,6 @@ int compile(Isolate *isolate, WCSCOptions &options, Local<Value> &result,
     v96.assign(lt.offset_8);
     std::map<std::string, std::string> v92;
     if (!lt.offset_0) {
-      std::vector<std::string> v72;
-      for (int i=0; i<options.pageCount; i++) {
-        v72.push_back(options.files[i]);
-      }
       int ret = lt.GetCommHead(v72, v94, true, v76);
       if (ret) {
         fprintf(stderr, "ERR: GetCommHead ret %d", ret);
@@ -113,6 +114,13 @@ int compile(Isolate *isolate, WCSCOptions &options, Local<Value> &result,
     return 1;
   } else {
     // 普通
+    std::string v88;
+    int ret = WXSS::NewLintAndParseCSSList(v77, v72, v88, errMsg, 0, options.debug, v75, v76);
+    if (ret)
+    {
+      return 1;
+    }
+    result = String::NewFromUtf8(isolate, v88.c_str(), NewStringType::kNormal).ToLocalChecked();
   }
   return 0;
 }

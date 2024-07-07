@@ -34,7 +34,8 @@ const wcscNative = (optionsPath: string, projectPath: string, outputPath: string
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
                 result = result.split('---------------result------------------\n')[1]
-                if (result[0] === '{')
+                const options = JSON.parse(fs.readFileSync(optionsPath).toString())
+                if (options.lazyloadConfig || options.lazyload)
                     result = JSON.parse(result);
                 resolve(result);
             } else {
