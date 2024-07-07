@@ -2,7 +2,7 @@
 
 set -e
 test_dir=$(cd `dirname $0`/.. && pwd -P)
-
+"$test_dir/runner/nwjs/module-prepare.sh"
 "$test_dir/spec/issue/prepare.sh"
 project_dir="$test_dir/projects"
 

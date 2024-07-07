@@ -6,11 +6,7 @@ import linux from '../../../runner/module-linux'
 import windows from '../../../runner/module-windows'
 import * as fs from 'fs'
 
-windows.start()
 describe("wcsc - module", function () {
-    this.afterAll(() => {
-        windows.close()
-    })
     describe("linux output should deep equal with wine", function () {
         // afterEach(function(){
         //   if(this.currentTest.state === 'failed'){
