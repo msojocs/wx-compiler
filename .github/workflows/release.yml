@@ -204,3 +204,5 @@ jobs:
           files: |
             **build/wcc
             **build/wcsc
+            **build/wcc_module.node
+            **build/wcsc_module.node
