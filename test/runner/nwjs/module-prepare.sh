@@ -55,7 +55,7 @@ docker_start(){
         curl http://127.0.0.1:8083/check
         sleep 1
         let i=$i+1
-        if [ $i -ge 50 ];then
+        if [ $i -ge 20 ];then
             echo "error"
             docker ps -a
             docker logs wine
@@ -65,12 +65,12 @@ docker_start(){
     return 0
 }
 
-for ((i=0; i<5; i++));
+for ((j=0; j<5; j++));
 do
     if docker_start; then
         printf "Docker started successfully.\n"
         break
-    elif [[ $i -eq 4 ]]; then
+    elif [[ $j -eq 4 ]]; then
         printf "Failed to start Docker after 5 attempts.\n"
         docker ps -a
         docker logs wine

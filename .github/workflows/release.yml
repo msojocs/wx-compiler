@@ -153,10 +153,10 @@ jobs:
           sudo apt install -y xvfb
           ls -l build
           ls -l test/runner/nwjs/wcc/build/Release
-          # pnpm run test
-      - uses: ./.github/actions/test
-        with:
-          who-to-greet: 'Mona the Octocat'
+          pnpm run test
+      # - uses: ./.github/actions/test
+      #   with:
+      #     who-to-greet: 'Mona the Octocat'
         
   upload:
     name: Create release and upload artifacts
