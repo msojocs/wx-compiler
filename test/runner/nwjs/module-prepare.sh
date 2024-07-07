@@ -67,13 +67,11 @@ docker_start(){
 
 for ((i=0; i<5; i++));
 do
-    ret=$(docker_start)
-    if [ "$ret" -eq 0 ];then
-        echo "Docker started successfully."
+    if docker_start; then
+        printf "Docker started successfully.\n"
         break
-    fi
-    if [ "$i" -eq 4 ];then
-        echo "Failed to start Docker after 5 attempts."
+    elif [[ $i -eq 4 ]]; then
+        printf "Failed to start Docker after 5 attempts.\n"
         docker ps -a
         docker logs wine
         exit 1
