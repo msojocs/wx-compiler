@@ -39,7 +39,7 @@ const HTTP = {
                     {
                         console.log('error:', ret)
                     }
-                    if (compilerOptions.lazyloadConfig)
+                    if (compilerOptions.lazyloadConfig || compilerOptions.lazyload)
                     {
                         resolve(JSON.parse(ret))
                     }

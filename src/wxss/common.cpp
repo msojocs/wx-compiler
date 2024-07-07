@@ -28,7 +28,7 @@ namespace WXSS
         std::map<std::string,std::string> const& a1,
         std::string& a2,
         std::string& a3,
-        std::string& a4,
+        std::string& errMsg,
         int a5,
         bool a6,
         bool a7,
@@ -36,7 +36,7 @@ namespace WXSS
         std::string const& a9)
     {
         WXSS::XCompiler v12(a1, a7, a9);
-        a4.assign(v12.offset_8);
+        errMsg.assign(v12.offset_8);
         int ret = v12.offset_0;
         if (!v12.offset_0)
         {

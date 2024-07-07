@@ -5,13 +5,10 @@ import * as fs from 'fs'
 const NW_VERSION = '0.55.0'
 
 const wcscNative = (optionsPath: string, projectPath: string, outputPath: string | undefined = undefined): Promise<string> => {
-    if(!fs.existsSync(projectPath))
-    {
-        throw new Error('projectPath not exists.')
-    }
+
     const nodeExec = spawn(
-        path.resolve(__dirname, `../../../cache/nwjs-sdk-v${NW_VERSION}-linux-x64/nw`),
-        [ 'wcsc.js', optionsPath ],
+        path.resolve(__dirname, `../../cache/nwjs-sdk-v${NW_VERSION}-linux-x64/nw`),
+        [ path.resolve(__dirname, './nwjs/compiler.js'), 'wcsc', optionsPath ],
         {
             cwd: projectPath,
             env: {
@@ -36,7 +33,9 @@ const wcscNative = (optionsPath: string, projectPath: string, outputPath: string
             
             if (0 === n) {
                 let result = Buffer.concat(spwanData).toString();
-                // result = JSON.parse(result);
+                result = result.split('---------------result------------------\n')[1]
+                if (result[0] === '{')
+                    result = JSON.parse(result);
                 resolve(result);
             } else {
                 // process.stderr.write(Buffer.concat(errData).toString());

@@ -8,5 +8,6 @@ export interface CompilerOptions {
     wxmlCompileConfigSplit: string
     replaceContent: Record<string, string>
     cwd: string
+    lazyload: boolean
     lazyloadConfig: string
 }

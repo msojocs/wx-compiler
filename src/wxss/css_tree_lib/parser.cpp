@@ -13,12 +13,12 @@ namespace WXSS
         {
         }
         
-        int Parser::Parse(std::string const& a2, std::string const& a3, std::string& a4, std::string const& a5)
+        int Parser::Parse(std::string const& a2, std::string const& a3, std::string& errMsg, std::string const& a5)
         {
             // Parse - 0
             WXSS::Tokenizer v125(a2.data(), a3);
             std::vector<WXSS::Token> v118;
-            int ret = v125.GetTokens(v118, a4, -1);
+            int ret = v125.GetTokens(v118, errMsg, -1);
             if (ret)
             {
                 return ret;
@@ -155,7 +155,7 @@ namespace WXSS
                             }
                             v135 << v41;
                             v135 << "`";
-                            a4 = v135.str();
+                            errMsg = v135.str();
                         }
                         else
                         {
@@ -164,7 +164,7 @@ namespace WXSS
                             v135 << ":";
                             v135 << cur.offset_24;
                             v135 << "): unexpected end of input or bad input";
-                            a4 = v135.str();
+                            errMsg = v135.str();
                         }
                         return -1;
                     }
@@ -190,14 +190,14 @@ namespace WXSS
                     {
                         if (this->offset_48.begin() == this->offset_48.end())
                         {
-                            a4 = "interal error: 1001";
+                            errMsg = "interal error: 1001";
                             return 1001;
                         }
                         auto v44 = this->offset_48.back();
                         this->offset_48.pop_back();
                         if (this->offset_48.begin() == this->offset_48.end())
                         {
-                            a4 = "interal error: 1002";
+                            errMsg = "interal error: 1002";
                             return 1002;
                         }
                         auto v45 = this->offset_48.back();
@@ -219,7 +219,7 @@ namespace WXSS
                         {
                             if (this->offset_48.begin() == this->offset_48.end())
                             {
-                                a4 = "interal error: 1003";
+                                errMsg = "interal error: 1003";
                                 return 1003;
                             }
                             auto v47 = this->offset_48.back();
@@ -283,7 +283,7 @@ namespace WXSS
                             }
                         }
                         v135 << v63 << "`";
-                        a4 = v135.str();
+                        errMsg = v135.str();
                         return -1;
                     }
                     this->offset_8.pop_back();
@@ -304,7 +304,7 @@ namespace WXSS
             // Parse - 25
             if (this->offset_48.begin() == this->offset_48.end())
             {
-                a4 = "interal error: 1004";
+                errMsg = "interal error: 1004";
                 return 1004;
             }
             else

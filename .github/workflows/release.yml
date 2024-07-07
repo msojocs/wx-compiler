@@ -66,7 +66,7 @@ jobs:
           echo "------------------------"
           ls -l build
           mkdir -p tmp/build
-          mv build/{wcc,wcsc,wcc_module.node} tmp/build
+          mv build/{wcc,wcsc,wcc_module.node,wcsc_module.node} tmp/build
           cd tmp/build
           ls -l
 
@@ -140,6 +140,7 @@ jobs:
           cp **build/wcc build
           cp **build/wcsc build
           cp **build/wcc_module.node build
+          cp **build/wcsc_module.node build
           chmod +x build/*
           ls -l build
           node -v
