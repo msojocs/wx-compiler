@@ -151,6 +151,8 @@ jobs:
           # ./test/wine/wcc.exe
           pnpm run test-prepare
           sudo apt install -y xvfb
+          ls -l build
+          ls -l test/runner/nwjs/wcc/build/Release
           # pnpm run test
       - uses: ./.github/actions/test
         with:

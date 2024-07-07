@@ -30,33 +30,54 @@ fi
 rm -rf "$root_dir/cache/nwjs-sdk-v$nw_version-win-x64/package.nw"
 cp -r "$cur_dir/package.nw" "$root_dir/cache/nwjs-sdk-v$nw_version-win-x64"
 
-docker run -d -i\
-    --volume=$root_dir:/workspace\
-    --env=USE_XVFB=yes\
-    --env=XVFB_SERVER=:95\
-    --env=XVFB_SCREEN=0\
-    --env=XVFB_RESOLUTION=320x240x8\
-    --env=DISPLAY=:95\
-    --hostname=DESKTOP-1TV4OA1\
-    --name=wine\
-    --shm-size=1g\
-    --workdir=/home/wineuser\
-    --env=TZ=Asia/Shanghai\
-    --volume=winehome:/home/wineuser\
-    -p 8083:8083\
-    scottyhardy/docker-wine:latest\
-    wine /workspace/cache/nwjs-sdk-v$nw_version-win-x64/nw.exe
-i=0
-until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8083/check); do
-    printf '.'
-    curl http://127.0.0.1:8083/check
-    sleep 1
-    let i=$i+1
-    if [ $i -ge 50 ];then
-        echo "error"
+docker_start(){
+    docker run -d -i\
+        --rm\
+        --volume=$root_dir:/workspace\
+        --env=USE_XVFB=yes\
+        --env=XVFB_SERVER=:95\
+        --env=XVFB_SCREEN=0\
+        --env=XVFB_RESOLUTION=320x240x8\
+        --env=DISPLAY=:95\
+        --hostname=DESKTOP-1TV4OA1\
+        --name=wine\
+        --shm-size=1g\
+        --workdir=/home/wineuser\
+        --env=TZ=Asia/Shanghai\
+        --volume=winehome:/home/wineuser\
+        -p 8083:8083\
+        scottyhardy/docker-wine:latest\
+        wine /workspace/cache/nwjs-sdk-v$nw_version-win-x64/nw.exe
+
+    i=0
+    until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8083/check); do
+        printf '.'
+        curl http://127.0.0.1:8083/check
+        sleep 1
+        let i=$i+1
+        if [ $i -ge 50 ];then
+            echo "error"
+            docker ps -a
+            docker logs wine
+            return 1
+        fi
+    done
+    return 0
+}
+
+for ((i=0; i<5; i++));
+do
+    ret=$(docker_start)
+    if [ "$ret" -eq 0 ];then
+        echo "Docker started successfully."
+        break
+    fi
+    if [ "$i" -eq 4 ];then
+        echo "Failed to start Docker after 5 attempts."
         docker ps -a
         docker logs wine
         exit 1
     fi
+    sleep 1
 done
 echo "success"
