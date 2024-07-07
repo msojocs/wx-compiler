@@ -9,7 +9,7 @@ on:
   push:
     tags:        
       - v*
-    branches: [ master, dev, ci]
+    branches: [ master, dev, ci, module]
   pull_request:
     branches: [ master ]
   # # Allows you to run this workflow manually from the Actions tab
@@ -66,7 +66,7 @@ jobs:
           echo "------------------------"
           ls -l build
           mkdir -p tmp/build
-          mv build/{wcc,wcsc} tmp/build
+          mv build/{wcc,wcsc,wcc_module.node,wcsc_module.node} tmp/build
           cd tmp/build
           ls -l
 
@@ -139,6 +139,8 @@ jobs:
           mkdir build
           cp **build/wcc build
           cp **build/wcsc build
+          cp **build/wcc_module.node build
+          cp **build/wcsc_module.node build
           chmod +x build/*
           ls -l build
           node -v
@@ -149,7 +151,13 @@ jobs:
           ls -l test/wine
           # ./test/wine/wcc.exe
           pnpm run test-prepare
+          sudo apt install -y xvfb
+          ls -l build
+          ls -l test/runner/nwjs/wcc/build/Release
           pnpm run test
+      # - uses: ./.github/actions/test
+      #   with:
+      #     who-to-greet: 'Mona the Octocat'
         
   upload:
     name: Create release and upload artifacts

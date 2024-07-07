@@ -1,5 +1,3 @@
-
-#include <iostream>
 #include <vector>
 #include <map>
 #include "./include/usage.h"
@@ -57,7 +55,7 @@ int main(int argc, const char **argv) {
     std::vector<std::string> v66;
     std::string v75, v83;
     int v29 = 0;
-    bool v30 = false;
+    bool hasPageCount = false;
     bool v31 = false;
     bool v32 = false;
     bool v34 = false;
@@ -75,8 +73,8 @@ int main(int argc, const char **argv) {
                 v66.emplace_back(v69[i]);
                 continue;
             }
-            v75 = i;
             v56 = false;
+            // v75 = i;
             continue;
         }
         switch(cur[1])
@@ -96,12 +94,14 @@ int main(int argc, const char **argv) {
             {
                 if (cur[2] == 't')
                 {
+                    // print tree
                     v56 = false;
                     v34 = true;
                     continue;
                 }
                 if (cur[2] == 'd')
                 {
+                    // 'someclass { font-size: 18px }'
                     if (v69.size() > i + 1)
                     {
                         i++;
@@ -136,6 +136,7 @@ int main(int argc, const char **argv) {
             case 'd':
                 if (cur[2] == 'b')
                 {
+                    // add debug attr
                     v56 = false;
                     v37 = true;
                     continue;
@@ -144,6 +145,7 @@ int main(int argc, const char **argv) {
             case 'j':
                 if (cur[2] == 's')
                 {
+                    // js formate output
                     v56 = false;
                     v31 = true;
                     continue;
@@ -152,6 +154,7 @@ int main(int argc, const char **argv) {
             case 'c':
                 if (cur[2] == 'p')
                 {
+                    // add class prefix
                     v56 = true;
                     continue;
                 }
@@ -159,7 +162,8 @@ int main(int argc, const char **argv) {
             default:
                 if (cur[1] == 'p' && cur[2] == 'c')
                 {
-                    v30 = true;
+                    // page wxss files count
+                    hasPageCount = true;
                     v29 = atoi(v69[i + 1].data());
                     i++;
                     v56 = false;
@@ -208,17 +212,17 @@ int main(int argc, const char **argv) {
     }
 
     // main - 25
-    std::string v88, v90;
+    std::string v88, errMsg;
     std::vector<std::string> v72;
-    if (!v30)
+    if (!hasPageCount)
     {
         if (!v36)
         {
             int v25;
-            v25 = WXSS::LintAndParseCSSList(v77, v66[0], v88, v90, 0, v31, v37, v34, v75);
+            v25 = WXSS::LintAndParseCSSList(v77, v66[0], v88, errMsg, 0, v31, v37, v34, v75);
             if (v25)
             {
-                fprintf(stderr, "ERR: %s\nerror file count: %d\n", v90.data(), 0);
+                fprintf(stderr, "ERR: %s\nerror file count: %d\n", errMsg.data(), 0);
                 return 1;
             }
             return 0;
@@ -264,7 +268,7 @@ int main(int argc, const char **argv) {
             
             if (ret)
             {
-                fprintf(stderr, "ERR: %s\nerror file count: %d\n", v90.data(), 0);
+                fprintf(stderr, "ERR: %s\nerror file count: %d\n", errMsg.data(), 0);
                 return 1;
             }
             fprintf(f, "%s", v101.data());
@@ -291,13 +295,14 @@ int main(int argc, const char **argv) {
     // main - 40
     if (v36)
     {
+        // lazyload
         goto LABEL_102;
     }
-    int v25 = WXSS::NewLintAndParseCSSList(v77, v72, v88, v90, 0, v37, v75, v76);
+    int v25 = WXSS::NewLintAndParseCSSList(v77, v72, v88, errMsg, 0, v37, v75, v76);
     
     if (v25)
     {
-        fprintf(stderr, "ERR: %s\nerror file count: %d\n", v90.data(), 0);
+        fprintf(stderr, "ERR: %s\nerror file count: %d\n", errMsg.data(), 0);
         return 1;
     }
     fprintf(f, "%s", v88.data());

@@ -9,5 +9,9 @@ cd build
 cmake ..
 cmake --build . --config Release --target wcc
 cmake --build . --config Release --target wcsc
+cmake --build . --config Release --target wcc_module
+cmake --build . --config Release --target wcsc_module
 readelf -s ./wcc  | grep -oP "GLIBC.*" | sort | uniq
 readelf -s ./wcsc  | grep -oP "GLIBC.*" | sort | uniq
+readelf -s ./wcc_module.node  | grep -oP "GLIBC.*" | sort | uniq
+readelf -s ./wcsc_module.node  | grep -oP "GLIBC.*" | sort | uniq

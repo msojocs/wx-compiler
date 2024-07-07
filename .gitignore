@@ -1,4 +1,5 @@
-build
+/build
+cache
 test/*.json
 wcc.exe.c
 
