@@ -6,4 +6,5 @@
 std::string DictToJsonString(std::map<std::string,std::string> const&);
 
 std::string EscapeToJsonString(std::string const&);
+int GetJsonDict(std::string &a1, std::map<std::string, std::string>& a2);
 #endif

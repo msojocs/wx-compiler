@@ -54,6 +54,7 @@ namespace night
 
     int compile_ns(std::string const&,std::string const&,std::string const&,uint,std::string&,bool);
     void compile_ns_with_sourcemap(std::string const&,std::string const&,std::string const&,std::string const&,uint,std::string&,std::string&);
+    int compile_ns_no_wrapper(std::string const& a1, std::string const& a2, uint a5, std::string& a6, bool a7);
     void readfile(char const*, std::string &);
     void writefile(char const*, std::string &);
 
@@ -310,7 +311,7 @@ namespace night
         std::vector<std::string> * offset_28 = nullptr;
         int offset_32 = 0;
         std::vector<night::ns_sourcemap> offset_36;
-        int offset_48;
+        int offset_48 = 1;
         NSCompileJs(/* args */);
         ~NSCompileJs();
         std::string compile(night::ns_node *);

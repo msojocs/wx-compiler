@@ -1,4 +1,6 @@
+#include <cstdio>
 #include <iostream>
+#include <string>
 #include <vector>
 #include <algorithm>
 #include <map>
@@ -7,6 +9,7 @@
 #include "include/string_utils.h"
 #include "include/wxml.h"
 #include "include/json.h"
+#include "include/night.h"
 
 using namespace std;
 
@@ -64,6 +67,9 @@ int main(int argc, const char **argv)
         bool version = false;
         bool isLLA = false;
         bool hasLL = false;
+        bool isWxs = false;
+        bool isGDC = false;
+        bool isWxsEnv = false;
         string xc_Or_completeCode_Param;
         string outputFileName;
         vector<string> fileList;
@@ -218,17 +224,18 @@ int main(int argc, const char **argv)
                     mapData1["life_cycle_callback_content"] = callbackData;
                 }
             }
+            else if (!param.compare("--pm"))
+            {
+                // 参数是--pm
+                if (i + 1 < paramList.size())
+                {
+                    mapData1["plain_text_marker"] = paramList[i + 1];
+                    continue;
+                }
+            }
             else
             {
-                if (!param.compare("--pm"))
-                {
-                    // 参数是--pm
-                    if (i + 1 < paramList.size())
-                    {
-                        mapData1["plain_text_marker"] = paramList[i + 1];
-                        continue;
-                    }
-                }
+                
                 if (param[1] == 'l' && param[2] == 'l')
                 {
                     // -ll
@@ -259,6 +266,19 @@ int main(int argc, const char **argv)
                     i++;
                     hasLL = true;
                 }
+                else if (!param.compare("--wxs"))
+                {
+                    isWxs = true;
+                }
+                else if (!param.compare("--gdc"))
+                {
+                    isGDC = true;
+                }
+                else if (!param.compare("--wxs-env"))
+                {
+                    isWxsEnv = true;
+                }
+                
             }
         }
 
@@ -278,6 +298,74 @@ int main(int argc, const char **argv)
             }
             fprintf(f, "%s\n", versionInfo.c_str());
             fclose(f);
+        }
+
+        if (isWxs)
+        {
+            std::string wxs;
+            if (fileList.size() == 0)
+            {
+                fprintf(stderr, "WXS file is needed\n");
+                return -1;
+            }
+            if ( readFile(fileList[0].c_str(), wxs))
+            {
+                fprintf(stderr, "Failed to read input from %s\n", fileList[0].c_str());
+                return -1;
+            }
+            std::map<std::string, std::string> cfg;
+            int ret = GetJsonDict(wxs, cfg);
+            if (ret)
+            {
+                fprintf(stderr, "Failed to read JSON at position %d (%c)", ret, wxs[ret]);
+                return -2;
+            }
+
+            for (auto m=cfg.begin(); m != cfg.end(); m++) {
+                auto v152 = m->first;
+                auto v156 = m->second;
+                std::string v146;
+                if ( night::compile_ns_no_wrapper(v152, v156, 1, v146, 0) )
+                {
+                    fprintf(stderr, "Error in file %s: %s\n", v152.c_str(), v146.c_str());
+                    return -2;
+                }
+                auto v31 = snprintf(0, 0, WXML::GlassEaselWxs::sWrapper.c_str(), v146.c_str()) + 1;
+                char *v32 = (char *)operator new[](v31);
+                snprintf(v32, v31, WXML::GlassEaselWxs::sWrapper.c_str(), v146.c_str());
+                cfg[v152] = v32;
+                delete[] v32;
+            }
+            std::string v136 = DictToJsonString(cfg);
+            FILE *f = stdout;
+            if (!outputFileName.empty())
+                f = fopen(outputFileName.c_str(), "w");
+            fprintf(f, "%s\n", v136.data());
+            if (f != stdout)
+                return fclose(f);
+            return 0;
+        }
+        if (isGDC)
+        {
+            std::string v136 = WXML::GlassEaselWxs::sGenFuncDeepCopy.c_str();
+            FILE *f = stdout;
+            if (!outputFileName.empty())
+                f = fopen(outputFileName.c_str(), "w");
+            fprintf(f, "%s\n", v136.data());
+            if (f != stdout)
+                return fclose(f);
+            return 0;
+        }
+        if (isWxsEnv)
+        {
+            std::string v136 = WXML::GlassEaselWxs::sWxsEnvInit.c_str();
+            FILE *f = stdout;
+            if (!outputFileName.empty())
+                f = fopen(outputFileName.c_str(), "w");
+            fprintf(f, "%s\n", v136.data());
+            if (f != stdout)
+                return fclose(f);
+            return 0;
         }
 
         // main - 30
@@ -498,7 +586,8 @@ int main(int argc, const char **argv)
                     f = fopen(outputFileName.data(), "w");
                 }
                 fprintf(f, "%s\n", v113.data());
-                fclose(f);
+                if (f != stdout)
+                    fclose(f);
             }
         }
         // main - 55

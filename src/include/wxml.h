@@ -1,10 +1,12 @@
 #ifndef __WXML_H_
 #define __WXML_H_
 
+#include "define.h"
 #include <iostream>
 #include <sstream>
 #include <map>
 #include <set>
+#include <string>
 #include <vector>
 #include <cstring>
 #include <memory>
@@ -711,6 +713,19 @@ namespace WXML
         
     } // namespace EXPRLib
     
-    
+    namespace GlassEaselWxs {
+        const std::string sWrapper = "function n(nv_require,nv_exports,nv_module){%s}const t={nv_exports:{}};n((function(n){n.startsWith(\"p_\")&&(n=\"/\"+n.slice(2)),n.endsWith(\".wxs\")&&(n=n.slice(0,n.length-4));const t=gdc(require(n),\"nv_\");return function(){return t}}),t.nv_exports,t),Object.assign(module,gdc(t,void 0));";
+        const std::string sGenFuncDeepCopy = "var gdc=function(){var e=function(){return void 0!==this?this:\"undefined\"!=typeof globalThis?globalThis:\"undefine"
+            "d\"!=typeof self?self:\"undefined\"!=typeof window?window:\"undefined\"!=typeof global?global:{}}();return function("
+            "n,t,o,i=e){if(null==n)return n;if(\"undefined\"!=typeof __wxCodeSpace__&&\"function\"==typeof __wxCodeSpace__.isWxsS"
+            "tateObject&&__wxCodeSpace__.isWxsStateObject(n))return n;if(\"string\"==typeof n||\"boolean\"==typeof n||\"number\"="
+            "=typeof n)return n;if(Array.isArray(n)){const e=[];for(let i=0;i<n.length;i++)e.push(gdc(n[i],t,o,n));return e}if(n "
+            "instanceof Date){const e=new Date;return e.setTime(n.getTime()),e}if(n instanceof RegExp){let e=\"\";return n.global"
+            "&&(e+=\"g\"),n.ignoreCase&&(e+=\"i\"),n.multiline&&(e+=\"m\"),new RegExp(n.source,e)}if(\"object\"==typeof n){const "
+            "e={};for(let i in n)Object.prototype.hasOwnProperty.call(n,i)&&(void 0===t?e[i.substring(3)]=gdc(n[i],t,o,n):e[t+i]="
+            "gdc(n[i],t,o,n));return e}return\"function\"==typeof n?1===o?null:function(...e){const o=gdc(e,void 0===t?\"nv_\":vo"
+            "id 0),r=n.apply(i,o);return gdc(r,t)}:null}}();";
+        const std::string sWxsEnvInit = aUndefinedTypeo;
+    };
 }
 #endif

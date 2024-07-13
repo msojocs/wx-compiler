@@ -320,12 +320,12 @@ namespace night
 
     bool NSToken::tk_is_whitespace(char ch, void *)
     {
-        auto v1 = night::NS_BUILTIN_SPACE.find(ch, 0);
+        int v1 = night::NS_BUILTIN_SPACE.find(ch, 0);
         return v1 != -1;
     }
     bool NSToken::tk_is_not_line_break(char ch, void *)
     {
-        return ch != 10;
+        return ch != 10; // \n
     }
     bool NSToken::tk_is_valid_op_str(char ch, void *t)
     {

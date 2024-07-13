@@ -31,11 +31,11 @@ namespace night
         {
             if (this->offset_24.length())
             {
-                sprintf(str, "(%d,%d)type[%s] value[%s]", this->offset_48, this->offset_52, this->offset_0, this->offset_60);
+                sprintf(str, "(%d,%d)type[%s] value[%s]", this->offset_48, this->offset_52, this->offset_0.c_str(), this->offset_60.c_str());
             }
             else
             {
-                sprintf(str, "type[%s] value[%s]", this->offset_0, this->offset_60);
+                sprintf(str, "type[%s] value[%s]", this->offset_0.c_str(), this->offset_60.c_str());
             }
         }
         if (
@@ -49,22 +49,22 @@ namespace night
         {
             if (this->offset_24.length())
             {
-                sprintf(str, "(%d,%d)type[%s] value[%s]", this->offset_48, this->offset_52, this->offset_0, this->offset_60);
+                sprintf(str, "(%d,%d)type[%s] value[%s]", this->offset_48, this->offset_52, this->offset_0.c_str(), this->offset_60.c_str());
             }
             else
             {
-                sprintf(str, "type[%s] value[%s]", this->offset_0, this->offset_60);
+                sprintf(str, "type[%s] value[%s]", this->offset_0.c_str(), this->offset_60.c_str());
             }
         }
         if ("var" == this->offset_0)
         {
             if (this->offset_24.length())
             {
-                sprintf(str, "(%d,%d)type[%s] value[%s] flag[%d]", this->offset_48, this->offset_52, this->offset_0, this->offset_60, this->offset_56);
+                sprintf(str, "(%d,%d)type[%s] value[%s] flag[%d]", this->offset_48, this->offset_52, this->offset_0.c_str(), this->offset_60.c_str(), this->offset_56);
             }
             else
             {
-                sprintf(str, "type[%s] value[%s] flag[%d]", this->offset_0, this->offset_60, this->offset_56);
+                sprintf(str, "type[%s] value[%s] flag[%d]", this->offset_0.c_str(), this->offset_60.c_str(), this->offset_56);
             }
         }
         // debug_no_space - 5

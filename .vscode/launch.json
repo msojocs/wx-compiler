@@ -6,16 +6,115 @@
     "configurations": [
         
         {
+            "name": "wcc wxs sample2",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/wcc",
+            "args": [
+                "--wxs",
+                "${workspaceRoot}/test/spec/wcc/wxs/sample2.json"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "sourceFileMap":{
+                "${workspaceRoot}": {
+                    "editorPath": "${workspaceRoot}",
+                    "useForBreakpoints": true
+                }
+            }
+        },
+        {
+            "name": "wcc wxs sample3",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/wcc",
+            "args": [
+                "--wxs",
+                "${workspaceRoot}/test/spec/wcc/wxs/sample3.json"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "sourceFileMap":{
+                "${workspaceRoot}": {
+                    "editorPath": "${workspaceRoot}",
+                    "useForBreakpoints": true
+                }
+            }
+        },
+        {
+            "name": "wcc wxs sample4",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/wcc",
+            "args": [
+                "--wxs",
+                "${workspaceRoot}/test/spec/wcc/wxs/sample4.json"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "sourceFileMap":{
+                "${workspaceRoot}": {
+                    "editorPath": "${workspaceRoot}",
+                    "useForBreakpoints": true
+                }
+            }
+        },
+        {
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/wcc",
             "args": [
                 "\"--config-path\"",
-                "\"/home/msojocs/github/wx-compiler/test/spec/issue/102/case1.txt\""
+                "\"${workspaceRoot}/test/spec/issue/102/case1.txt\""
             ],
             "stopAtEntry": false,
-            "cwd": "/home/msojocs/github/wx-compiler/test/spec/issue/102/wxapp",
+            "cwd": "${workspaceRoot}/test/spec/issue/102/wxapp",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

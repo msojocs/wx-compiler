@@ -1,0 +1,3 @@
+{
+    "pages/comm": "// /pages/comm.wxs\n\nvar foo = \"'hello world' from comm.wxs\";\nvar bar = function(d) {\n  return d;\n}\nmodule.exports = {\n  foo: foo,\n  bar: bar\n};"
+}

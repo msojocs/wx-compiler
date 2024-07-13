@@ -37,7 +37,7 @@ const HTTP = {
                     // console.log('No more data in response.');
                     if (ret?.startsWith('server error'))
                     {
-                        console.log('error:', ret)
+                        console.log('response error:\n', ret)
                     }
                     if (compilerOptions.lazyloadConfig || compilerOptions.lazyload)
                     {

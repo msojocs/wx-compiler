@@ -26,7 +26,7 @@ describe("wcc - module", function () {
             const w = await windows.wcc(p);
             const n = await linux.wcc(p, '');
             // console.log('windows:', typeof w)
-            // console.log('linux:', typeof n)
+            // console.log('linux:', n)
 
             assert.equal(typeof n, typeof w);
             if (typeof w == 'string')

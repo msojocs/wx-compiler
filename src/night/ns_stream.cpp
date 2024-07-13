@@ -1,4 +1,6 @@
 #include "../include/night.h"
+#include <exception>
+#include <stdexcept>
 
 namespace night
 {
@@ -128,7 +130,8 @@ namespace night
         v12.append(":");
         v10 += v12;
         v10 += a2;
-        throw v10;
+        
+        throw std::runtime_error(v10.c_str());
     }
 
 }

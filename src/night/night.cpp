@@ -1,4 +1,5 @@
 #include "../include/night.h"
+#include <vector>
 
 namespace night
 {
@@ -156,6 +157,42 @@ namespace night
         throw "not implement";
     }
 
+    int compile_ns_no_wrapper(
+        std::string const& a1,
+        std::string const& a2,
+        uint a3,
+        std::string& a4,
+        bool a5
+        )
+    {
+        const char off_51B9E4[] = { '\0', '%', 'u', '\0' }; // idb
+        a4 = off_51B9E4;
+        // a4 = "";
+        night::NSStream v22(a1, a2, a3);
+        night::NSGod v8;
+
+        night::NSToken v11;
+        v11.offset_0 = &v8;
+        v11.offset_4 = &v22;
+
+        std::string v13 = a1;
+        night::NSASTParse v23(v13, &v11, &v8);
+        v13 = "";
+        
+        night::NSCompileJs compile;
+        compile.offset_24 = &v23;
+        std::vector<std::string> v9;
+        std::string v10 = compile.compile_once(a4, &v9, a5);
+        v8.hamlet();
+
+        int v5 =0;
+        if(v10.length())
+        {
+            a4 = v10;
+            v5 = 121;
+        }
+        return v5;
+    }
     /**
      * 此函数只有定义实现，没有调用
      * 所以，没有必要实现

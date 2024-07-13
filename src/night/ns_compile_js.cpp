@@ -1,4 +1,6 @@
 #include "../include/night.h"
+#include <cstdio>
+#include <exception>
 
 namespace night
 {
@@ -694,14 +696,22 @@ namespace night
         int inner_compile_once_i = compile_once_i;
         this->offset_28 = a4;
         a3 = "";
-        night::ns_node* v5 = this->offset_24->top_down();
-        if (a5)
-        {
-            std::string ret = v5->debug_no_space();
-            printf("ast :%s\n", ret.data());
+        try {
+            night::ns_node* v5 = this->offset_24->top_down();
+            if (a5)
+            {
+                std::string ret = v5->debug_no_space();
+                printf("ast :%s\n", ret.data());
+            }
+            std::string v9 = this->compile(v5);
+            a3.assign(v9);
         }
-        std::string v9 = this->compile(v5);
-        a3.assign(v9);
+        catch(const std::exception& err)
+        {
+            // printf("%s\n", err.what());
+            std::string ret(err.what());
+            return ret;
+        }
         return this->offset_0;
     }
 
