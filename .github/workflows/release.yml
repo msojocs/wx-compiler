@@ -18,7 +18,7 @@ on:
 jobs:
   build:
     name: Build Base Packages
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
@@ -58,7 +58,7 @@ jobs:
         run: |
           export DOCKER_UID=$UID
           export DOCKER_GID=$GID  
-          docker-compose up
+          docker compose up
 
       - name: Upload prepare
         run: |
