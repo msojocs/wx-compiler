@@ -12,6 +12,8 @@ const options = JSON.parse(optionsData);
   console.log('---------------result------------------')
   if (typeof result === "string") {
     process.stdout.write(result);
+    process.exitCode = 1
+    process.exit(1)
   } else {
     process.stdout.write(JSON.stringify(result));
   }

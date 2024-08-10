@@ -1,0 +1,16 @@
+{
+    "files": [
+        "./pages/index/index.wxml"
+    ],
+    "debugWXS": false,
+    "debug": true,
+    "genfuncname": "$gwx",
+    "wxmlCompileConfig": "1>_<7122./pages/index/index.wxml>_<71220",
+    "wxmlCompileConfigSplit": ">_<7122",
+    "replaceContent": {
+        "pages/index/index.wxml": "<!--index.wxml-->\n<scroll-view class=\"scrollarea\" scroll-y type=\"list\">\n  <view class=\"container\">\n    <view class=\"usermotto\">\n      <view class=\"user-motto\">test\n    </view>\n  </view>\n</scroll-view>\n",
+        "./pages/index/index.wxml": "<!--index.wxml-->\n<scroll-view class=\"scrollarea\" scroll-y type=\"list\">\n  <view class=\"container\">\n    <view class=\"usermotto\">\n      <view class=\"user-motto\">test\n    </view>\n  </view>\n</scroll-view>\n"
+    },
+    "cwd": "/home/msojocs/WeChatProjects/miniprogram-3",
+    "lazyloadConfig": "./pages/index/index"
+}

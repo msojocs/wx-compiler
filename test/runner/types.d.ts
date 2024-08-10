@@ -11,3 +11,13 @@ export interface CompilerOptions {
     lazyload: boolean
     lazyloadConfig: string
 }
+
+export interface RequestResult {
+    success: boolean
+    data: string
+}
+export interface CompilerResult {
+    success: boolean
+    type: 'string' | 'object'
+    data: any
+}

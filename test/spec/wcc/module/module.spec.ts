@@ -29,30 +29,15 @@ describe("wcc - module", function () {
             // console.log('linux:', n)
 
             assert.equal(typeof n, typeof w);
-            if (typeof w == 'string')
-            {
-                fs.writeFileSync(
-                    `${storagePath}/wine-output.json`,
-                    w
-                );
-                fs.writeFileSync(
-                    `${storagePath}/node-output.json`,
-                    n as string
-                );
-                assert.equal(n, w);
-            }
-            else
-            {
-                fs.writeFileSync(
-                    `${storagePath}/wine-output.json`,
-                    JSON.stringify(w, null, 4)
-                );
-                fs.writeFileSync(
-                    `${storagePath}/node-output.json`,
-                    JSON.stringify(n, null, 4)
-                );
-                assert.deepEqual(n, w);
-            }
+            fs.writeFileSync(
+                `${storagePath}/wine-output.json`,
+                JSON.stringify(w, null, 4)
+            );
+            fs.writeFileSync(
+                `${storagePath}/node-output.json`,
+                JSON.stringify(n, null, 4)
+            );
+            assert.deepEqual(n, w);
         });
         it("初次加载2", async function () {
             const p = path.resolve(__dirname, './data/options-1719836863260.json')
@@ -66,34 +51,19 @@ describe("wcc - module", function () {
 
             const w = await windows.wcc(p);
             const n = await linux.wcc(p, '');
-            console.log('windows:', typeof w)
-            console.log('linux:', typeof n)
+            // console.log('windows:', typeof w)
+            // console.log('linux:', typeof n)
 
             assert.equal(typeof n, typeof w);
-            if (typeof w == 'string')
-            {
-                fs.writeFileSync(
-                    `${storagePath}/wine-output.json`,
-                    w
-                );
-                fs.writeFileSync(
-                    `${storagePath}/node-output.json`,
-                    n as string
-                );
-                assert.equal(n, w);
-            }
-            else
-            {
-                fs.writeFileSync(
-                    `${storagePath}/wine-output.json`,
-                    JSON.stringify(w, null, 4)
-                );
-                fs.writeFileSync(
-                    `${storagePath}/node-output.json`,
-                    JSON.stringify(n, null, 4)
-                );
-                assert.deepEqual(n, w);
-            }
+            fs.writeFileSync(
+                `${storagePath}/wine-output.json`,
+                JSON.stringify(w, null, 4)
+            );
+            fs.writeFileSync(
+                `${storagePath}/node-output.json`,
+                JSON.stringify(n, null, 4)
+            );
+            assert.deepEqual(n, w);
         });
     });
 });

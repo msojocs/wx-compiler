@@ -7,6 +7,7 @@
 #include "v8.h"
 #include <algorithm>
 #include <cstdio>
+#include <exception>
 #include <node.h>
 #include <string>
 
@@ -279,9 +280,17 @@ int compile(Isolate *isolate, WCCOptions &options, Local<Value> &result,
                    .ToLocalChecked();
       return compilerResult;
     }
-  } catch (std::string err) {
-    fprintf(stderr, "err: %s\n", err.c_str());
+  } catch (std::string& err) {
+    fprintf(stderr, "Error: %s", err.c_str());
     errMsg = err;
+    return 1;
+  } catch (WXML::DOMLib::ParseException& err) {
+    fprintf(stderr, "Error: %s", err.what());
+    errMsg = err.what();
+    return 1;
+  } catch (std::exception& err) {
+    fprintf(stderr, "Error: %s", err.what());
+    errMsg = err.what();
     return 1;
   }
   return 0;

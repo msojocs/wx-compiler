@@ -1,5 +1,7 @@
 #include "../../include/wxml.h"
+#include <cstdio>
 #include <cstring>
+#include <sstream>
 
 namespace WXML 
 {
@@ -168,7 +170,7 @@ namespace WXML
                             if (!v47.IsMatch(&v40[0]))
                             {
                                 std::string msg = "expect end-tag `" + v40;
-                                msg += v40 + "`.";
+                                msg += "`.";
                                 auto err = this->Error(&msg[0], 0);
                                 throw err;
                             }
@@ -232,9 +234,51 @@ namespace WXML
             return this->offset_104;
         }
 
-        WXML::DOMLib::ParseException Parser::Error(char const*, WXML::DOMLib::Token *)
+        WXML::DOMLib::ParseException Parser::Error(char const* msg, WXML::DOMLib::Token *token)
         {
-            return WXML::DOMLib::ParseException();
+            // printf("error: %s\n", msg);
+            std::stringstream ss;
+            auto t = this->Peek();
+            if (t.offset_24 == 4)
+            {
+                if (!token)
+                {
+                    token = &this->tokenList[this->peekIndex - 1];
+                }
+                msg = "end tag missing";
+            }
+            ss << this->filePath.c_str();
+            ss << ":";
+            ss << t.offset_8;
+            ss << ":";
+            ss << t.offset_12;
+            ss << ": " << msg << ", near `";
+            for (int v12 = 0; t.offset_20 > v12; v12++) {
+                if (v12 == 7)
+                {
+                    if (t.offset_20 > 7)
+                    {
+                        ss << "...";
+                    }
+                    break;
+                }
+                char v13 = t.offset_0[t.offset_16 + v12];
+                if (v13 == '\r')
+                {
+                    ss << "\\r";
+                }
+                else if (v13 == '\n')
+                {
+                    ss << "\\n";
+                }
+                else {
+                    ss << v13;
+                }
+            }
+            ss << "`";
+            std::string v18 = ss.str();
+            // printf("-->%s\n", v18.c_str());
+            return WXML::DOMLib::ParseException(v18);
         }
         void Parser::DOMS()
         {

@@ -71,9 +71,9 @@ const server = createServer(async (req, resp) => {
         }
 
     } catch (e) {
-        console.error('server error:', e)
+        // console.error('server error:', e)
         resp.writeHead(500, { "Content-Type": "text/plain" });
-        resp.end("server error:" + e);
+        resp.end(`${e}`);
     }
 });
 

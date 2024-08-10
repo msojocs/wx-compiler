@@ -2,6 +2,7 @@
 #define __WXML_H_
 
 #include "define.h"
+#include <exception>
 #include <iostream>
 #include <sstream>
 #include <map>
@@ -195,13 +196,16 @@ namespace WXML
             std::pair<std::string,WXML::DOMLib::Token> const& a1,
             std::pair<std::string,WXML::DOMLib::Token> const& a2);
 
-        class ParseException
+        class ParseException: public std::exception
         {
         private:
             /* data */
+            std::string msg;
         public:
             ParseException(/* args */);
+            ParseException(std::string& msg);
             ~ParseException();
+            const char* what(/* args */);
         };
 
         class Machine

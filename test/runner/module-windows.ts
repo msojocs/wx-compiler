@@ -1,12 +1,12 @@
 import * as fs from 'fs'
 import { request } from "http";
-import { CompilerOptions } from './types';
+import { CompilerOptions, CompilerResult, RequestResult } from './types';
 import path from 'path'
 import { execFileSync } from 'child_process';
 
 // 预先启动wine focker环境，再使用HTTP协议，最后销毁容器
 const HTTP = {
-    POST: (type: 'wcc' | 'wcsc', compilerOptions: CompilerOptions): Promise<string | Record<string, any>>  => {
+    POST: (type: 'wcc' | 'wcsc', compilerOptions: CompilerOptions): Promise<RequestResult>  => {
         return new Promise((resolve, reject) => {
 
             compilerOptions.cwd = compilerOptions.cwd.replace(path.resolve(__dirname, '../../'), '/wrokspace')
@@ -35,17 +35,20 @@ const HTTP = {
                 });
                 res.on('end', () => {
                     // console.log('No more data in response.');
-                    if (ret?.startsWith('server error'))
+                    if (res.statusCode != 200)
                     {
-                        console.log('response error:\n', ret)
-                    }
-                    if (compilerOptions.lazyloadConfig || compilerOptions.lazyload)
-                    {
-                        resolve(JSON.parse(ret))
+                        // console.log('response error:\n', ret)
+                        resolve({
+                            success: false,
+                            data: ret
+                        })
                     }
                     else
                     {
-                        resolve(ret)
+                        resolve({
+                            success: true,
+                            data: ret
+                        })
                     }
                 });
             });
@@ -62,13 +65,37 @@ const HTTP = {
     }
 }
 
-const wcscNative = async (optionsPath: string) => {
+const wcscNative = async (optionsPath: string): Promise<CompilerResult> => {
     const options = JSON.parse(fs.readFileSync(optionsPath).toString())
-    return await HTTP.POST('wcsc', options)
+    const result = await HTTP.POST('wcsc', options)
+    const r: CompilerResult = {
+        success: result.success,
+        type: 'string',
+        data: result.data
+    }
+    if (!result.success) return r;
+    if (options.lazyloadConfig || options.lazyload)
+    {
+        r.type = 'object'
+        r.data = JSON.parse(result.data)
+    }
+    return r
 };
-const wccNative = async (optionsPath: string) => {
-    const options = JSON.parse(fs.readFileSync(optionsPath).toString())
-    return await HTTP.POST('wcc', options)
+const wccNative = async (optionsPath: string): Promise<CompilerResult> => {
+    const options = JSON.parse(fs.readFileSync(optionsPath).toString()) as CompilerOptions
+    const result = await HTTP.POST('wcc', options)
+    const r: CompilerResult = {
+        success: result.success,
+        type: 'string',
+        data: result.data
+    }
+    if (!result.success) return r;
+    if (options.lazyloadConfig || options.lazyload)
+    {
+        r.type = 'object'
+        r.data = JSON.parse(result.data)
+    }
+    return r
 };
 
 export default {
