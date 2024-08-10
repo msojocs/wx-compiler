@@ -1,3 +1,9 @@
+## 🌈 v0.1.1 / 2024-08-10
+
+🐞 Bug Fixes
+
+- `WXML::DOMLib::Parser::Error`: 标签未闭合的异常导致崩溃，感谢 [@yutent](https://github.com/yutent) ( [issue ref](https://github.com/msojocs/wechat-web-devtools-linux/issues/115) )
+
 ## 🌈 v0.1.0 / 2024-07-13
 
 🚀Features
