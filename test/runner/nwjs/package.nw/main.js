@@ -1,7 +1,9 @@
 // initialize your app
 // and ...
 
-console.log("main.js");
+console.log("====================================================================");
+console.log("==============================main.js===============================");
+console.log("====================================================================");
 const fs = require("fs");
 console.log("fs:", fs);
 const wcc = require("./wcc");
@@ -10,7 +12,7 @@ console.log("wcc:", wcc);
 const { createServer } = require("http");
 
 const HOST = "0.0.0.0";
-const PORT = "8083";
+const PORT = 8083;
 
 const Handle = {
   /**

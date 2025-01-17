@@ -46,7 +46,7 @@ docker_start(){
         --env=TZ=Asia/Shanghai\
         --volume=winehome:/home/wineuser\
         -p 8083:8083\
-        scottyhardy/docker-wine:latest\
+        scottyhardy/docker-wine:stable-9.0-20240804\
         wine /workspace/cache/nwjs-sdk-v$nw_version-win-x64/nw.exe
 
     i=0
