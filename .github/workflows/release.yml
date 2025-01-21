@@ -118,7 +118,10 @@ jobs:
           sudo apt install --install-recommends winehq-stable -y
           sudo apt-get install wine-binfmt -y
           sudo update-binfmts --import /usr/share/binfmts/wine
+          echo :windows:M::MZ::/usr/bin/wine: > /proc/sys/fs/binfmt_misc/register
+          echo :windowsPE:M::PE::/usr/bin/wine: > /proc/sys/fs/binfmt_misc/register
           wine --version
+          ./test/wine/wcc.exe
 
           corepack enable
           ls -l
