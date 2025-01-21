@@ -116,6 +116,8 @@ jobs:
           sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
           sudo apt update
           sudo apt install --install-recommends winehq-stable -y
+          sudo apt-get install wine-binfmt -y
+          sudo update-binfmts --import /usr/share/binfmts/wine
           wine --version
 
           corepack enable
