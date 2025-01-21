@@ -119,7 +119,6 @@ jobs:
           sudo apt-get install wine-binfmt wine32 -y
           sudo update-binfmts --import /usr/share/binfmts/wine
           wine --version
-          ./test/wine/wcc.exe
 
           corepack enable
           ls -l
