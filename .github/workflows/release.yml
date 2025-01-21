@@ -115,11 +115,11 @@ jobs:
           sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
           sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
           sudo apt update
-          sudo apt install --install-recommends winehq-stable -y
+          sudo apt install winehq-stable -y
           sudo apt-get install wine-binfmt -y
           sudo update-binfmts --import /usr/share/binfmts/wine
-          echo :windows:M::MZ::/usr/bin/wine: > /proc/sys/fs/binfmt_misc/register
-          echo :windowsPE:M::PE::/usr/bin/wine: > /proc/sys/fs/binfmt_misc/register
+          sudo echo :windows:M::MZ::/usr/bin/wine: > /proc/sys/fs/binfmt_misc/register
+          sudo echo :windowsPE:M::PE::/usr/bin/wine: > /proc/sys/fs/binfmt_misc/register
           wine --version
           ./test/wine/wcc.exe
 
