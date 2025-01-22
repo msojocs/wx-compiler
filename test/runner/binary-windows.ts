@@ -78,7 +78,11 @@ const wcc = (args: string[], projectPath: string): Promise<string> => {
                     Buffer.concat(spwanData).toString()
                 );
                 // process.stderr.write(Buffer.concat(spwanData).toString());
-                reject(n);
+                reject({
+                    code: n,
+                    stdout: Buffer.concat(spwanData).toString(),
+                    stderr: Buffer.concat(errData).toString(),
+                });
             }
         });
     });
