@@ -49,6 +49,7 @@ const wcc = (args: string[], projectPath: string): Promise<string> => {
         args,
         {
             cwd: projectPath,
+            env: process.env,
         }
     );
     const spwanData: any[] = [],
