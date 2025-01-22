@@ -70,8 +70,12 @@ const wcc = (args: string[], projectPath: string): Promise<string> => {
                 resolve(result);
             } else {
                 process.stderr.write(
-                    "wine error:" + 
+                    "wine error:\n" + 
                     Buffer.concat(errData).toString()
+                );
+                process.stderr.write(
+                    "stdout:\n" + 
+                    Buffer.concat(spwanData).toString()
                 );
                 // process.stderr.write(Buffer.concat(spwanData).toString());
                 reject(n);
