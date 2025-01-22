@@ -130,7 +130,7 @@ jobs:
           chmod +x build/*
           ls -l build
           node -v
-          pnpm install
+          pnpm install --no-frozen-lockfile
 
       - name: Test
         run: |
@@ -140,6 +140,8 @@ jobs:
           pnpm run test-prepare
           ls -l build
           ls -l test/runner/nwjs/wcc/build/Release
+          # fix: 预先运行，做一下配置，不然
+          ./test/wine/wcc.exe
           # 需要wine64
           pnpm run test
         
