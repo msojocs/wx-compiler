@@ -16,7 +16,10 @@ describe("wcc - empty", function () {
             try
             {
                 w = (await windows.wcc(args, projectPath)).replace(/\r\n/g, '\n')
-            }catch{}
+            }
+            catch(err){
+                console.error('error:', err)
+            }
             const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
