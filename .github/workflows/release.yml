@@ -119,6 +119,8 @@ jobs:
           sudo apt-get install wine-binfmt wine32 -y
           sudo update-binfmts --import /usr/share/binfmts/wine
           wine --version
+          # fix: 预先运行，做一下配置，不然第一次执行会有问题
+          winecfg
 
           corepack enable
           ls -l
@@ -140,8 +142,6 @@ jobs:
           pnpm run test-prepare
           ls -l build
           ls -l test/runner/nwjs/wcc/build/Release
-          # fix: 预先运行，做一下配置，不然
-          ./test/wine/wcc.exe 2>0
           # 需要wine64
           pnpm run test
         
