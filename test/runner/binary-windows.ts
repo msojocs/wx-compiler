@@ -49,6 +49,7 @@ const wcc = (args: string[], projectPath: string): Promise<string> => {
         args,
         {
             cwd: projectPath,
+            env: process.env,
         }
     );
     const spwanData: any[] = [],
@@ -69,11 +70,19 @@ const wcc = (args: string[], projectPath: string): Promise<string> => {
                 resolve(result);
             } else {
                 process.stderr.write(
-                    "wine error:" + 
+                    "wine error:\n" + 
                     Buffer.concat(errData).toString()
                 );
+                process.stderr.write(
+                    "stdout:\n" + 
+                    Buffer.concat(spwanData).toString()
+                );
                 // process.stderr.write(Buffer.concat(spwanData).toString());
-                reject(n);
+                reject({
+                    code: n,
+                    stdout: Buffer.concat(spwanData).toString(),
+                    stderr: Buffer.concat(errData).toString(),
+                });
             }
         });
     });

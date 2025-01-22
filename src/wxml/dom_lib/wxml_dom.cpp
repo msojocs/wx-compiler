@@ -1300,7 +1300,7 @@ namespace WXML {
                 /* code */
                 if (j->second.offset_56 == -3)
                 {
-                    if (a14 & 1 == 0)
+                    if ((a14 & 1) == 0)
                     {
                         auto err = this->Error(a2, j->second, j->first, j->second.offset_60);
                         throw "RenderException" + err;

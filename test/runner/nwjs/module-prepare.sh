@@ -2,7 +2,7 @@
 
 Xvfb :98 & # Start xvfb on display :98
 export DISPLAY=:98
-set -x
+set -ex
 root_dir=$(cd `dirname $0`/../../.. && pwd -P)
 cur_dir=$(cd `dirname $0` && pwd -P)
 
@@ -46,7 +46,7 @@ docker_start(){
         --env=TZ=Asia/Shanghai\
         --volume=winehome:/home/wineuser\
         -p 8083:8083\
-        scottyhardy/docker-wine:stable-9.0-20240804\
+        scottyhardy/docker-wine\
         wine /workspace/cache/nwjs-sdk-v$nw_version-win-x64/nw.exe
 
     i=0

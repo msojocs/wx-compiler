@@ -106,33 +106,19 @@ jobs:
 
       - name: Prepare
         run: |
-          set -x -u -o pipefail
-          source /etc/os-release
-          
-          # Get rid of packages installed from ppa:ondrej/php so that we will be able to install wine32:i386 without conflicts
-          # (see issue https://github.com/actions/virtual-environments/issues/4589)
-          # In detail we:
-          #   1. Remove all packages that ppa:ondrej/php has but plain Ubuntu doesn't, e.g. everything PHP
-          #   2. Revert (remaining) packages that ppa:ondrej/php and plain Ubuntu share, back to the plain Ubuntu version
-          #   3. Assert that no packages from ppa:ondrej/php are left installed
-          dpkg -l | grep '^ii' | grep -F deb.sury.org | awk '{print $2}' | grep '^php' \
-          | xargs -r -t sudo apt-get remove --yes libpcre2-posix3 libzip4
-          dpkg -l | grep '^ii' | grep -F deb.sury.org | awk '{print $2}' | sed "s,\$,/${UBUNTU_CODENAME}," \
-          | xargs -r -t sudo apt-get install --yes --no-install-recommends --allow-downgrades -V
-          ! dpkg -l | grep '^ii' | grep -F deb.sury.org
+          set -x
           
           sudo apt update
-          sudo apt install -y wine64
-          sudo apt-add-repository universe
+          sudo apt upgrade -y
           sudo dpkg --add-architecture i386
-          dpkg --print-foreign-architectures
-          
-          sudo apt update 
-          sudo apt install libwine
-          echo "install wine32..."
-          sudo apt install wine32
-          sudo apt-get install wine-binfmt
+          sudo mkdir -pm755 /etc/apt/keyrings
+          sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+          sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+          sudo apt update
+          sudo apt install winehq-stable -y
+          sudo apt-get install wine-binfmt wine32 -y
           sudo update-binfmts --import /usr/share/binfmts/wine
+          wine --version
 
           corepack enable
           ls -l
@@ -144,20 +130,21 @@ jobs:
           chmod +x build/*
           ls -l build
           node -v
-          pnpm install
+          pnpm install --no-frozen-lockfile
 
       - name: Test
         run: |
           ls -l test/wine
           # ./test/wine/wcc.exe
+          sudo apt install -y xvfb curl
           pnpm run test-prepare
-          sudo apt install -y xvfb
           ls -l build
           ls -l test/runner/nwjs/wcc/build/Release
+          # fix: 预先运行，做一下配置，不然第一次执行会有问题
+          ./test/wine/wcc.exe || true
+          ./test/wine/wcc.exe -v || true
+          # 需要wine64
           pnpm run test
-      # - uses: ./.github/actions/test
-      #   with:
-      #     who-to-greet: 'Mona the Octocat'
         
   upload:
     name: Create release and upload artifacts

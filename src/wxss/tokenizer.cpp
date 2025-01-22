@@ -21,7 +21,7 @@ namespace WXSS
     }
 
     const char *DIRECTIVES[] = {"@import", "@charset", "@media", "@keyframes", "@-webkit-keyframes", "@supports", "nth-child", "nth-last-child", "nth-of-type", "nth-last-of-type"};
-    int Tokenizer::TT[26113] = {0};
+    int Tokenizer::TT[26114] = {0};
     bool Tokenizer::bInited = false;
     void Tokenizer::InitTransitTable(/* args */)
     {

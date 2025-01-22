@@ -16,7 +16,11 @@ describe("wcc - empty", function () {
             try
             {
                 w = (await windows.wcc(args, projectPath)).replace(/\r\n/g, '\n')
-            }catch{}
+            }
+            catch(err: any){
+                console.error('error:', err)
+                w = err.stdout.replace(/\r\n/g, '\n')
+            }
             const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
@@ -28,7 +32,7 @@ describe("wcc - empty", function () {
 
             fs.writeFileSync(`${storagePath}/wine-output.js`, w);
             fs.writeFileSync(`${storagePath}/node-output.js`, n);
-            assert.equal(w, n);
+            assert.equal(n, w, `wine: ${w}\n\nlinux: ${n}`);
         });
     });
 });

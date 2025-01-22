@@ -46,7 +46,7 @@ namespace WXSS
         /* data */
     public:
         using STATE = int;
-        static int TT[26113];
+        static int TT[26114];
         static bool bInited;
         std::string offset_0; // 文件内容
         std::string offset_24; // 文件路径
