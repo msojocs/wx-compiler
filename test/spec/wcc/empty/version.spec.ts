@@ -28,7 +28,7 @@ describe("wcc - empty", function () {
 
             fs.writeFileSync(`${storagePath}/wine-output.js`, w);
             fs.writeFileSync(`${storagePath}/node-output.js`, n);
-            assert.equal(w, n);
+            assert.equal(n, w, `wine: ${w}\n\nlinux: ${n}`);
         });
     });
 });

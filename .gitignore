@@ -9,3 +9,4 @@ node_modules
 *stderr.json
 .cache
 */spec/**/*output.js
+tmp
