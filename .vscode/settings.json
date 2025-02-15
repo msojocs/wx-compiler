@@ -86,5 +86,6 @@
         "--background-index",
         "--compile-commands-dir=${workspaceFolder}/build/"
     ],
-    "cmake.sourceDirectory": "/home/msojocs/github/wx-compiler"
+    "cmake.sourceDirectory": "/home/msojocs/github/wx-compiler",
+    "clangd.path": "clangd-18"
 }

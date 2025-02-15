@@ -33,7 +33,7 @@ namespace WXML
             for (i = a3; i > 0; i--)
             {
                 v7 = v4;
-                v4 = a1[266 * v4 + *a4]; // 266 * 4 = 0x428
+                v4 = a1[266 * v4 + (uint8_t)*a4]; // 266 * 4 = 0x428
                 if (v4 == -1)
                 {
                     break;

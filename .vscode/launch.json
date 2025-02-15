@@ -4,6 +4,18 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Linux module test",
+            "program": "${workspaceFolder}/cache/nwjs-sdk-v0.55.0-linux-x64/nw",
+            "args": [
+                "${workspaceFolder}/test/runner/nwjs/compiler.js",
+                "wcsc",
+                "${workspaceFolder}/test/spec/issue/129/data/example.json"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
         
         {
             "name": "wcc wxs sample2",

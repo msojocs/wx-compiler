@@ -7,6 +7,7 @@ module.exports = {
     // spec: "./test/spec/**/*.spec.ts",
     spec: [
         "./test/spec/**/*.spec.ts",
+        // 'test/spec/issue/129/issue129.spec.ts',
         // 'test/spec/issue/115/issue115.spec.ts',
         // 'test/spec/wcc/module/module.spec.ts',
     ],

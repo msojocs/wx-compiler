@@ -1,3 +1,10 @@
+## 🌈 v0.1.2 / 2025-02-16
+
+🐞 Bug Fixes
+
+- `WXML::RPX::accept`: 数组出现负数的问题。
+- `WXML::Rewrite::RewriteImg`: 输出了多余的右括号。
+
 ## 🌈 v0.1.1 / 2024-08-10
 
 🐞 Bug Fixes
