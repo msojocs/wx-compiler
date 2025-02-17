@@ -1,5 +1,6 @@
 
 #include "../include/wxml.h"
+#include <cstdio>
 
 namespace WXML {
     
@@ -301,12 +302,12 @@ namespace WXML {
                             {
                                 std::stringstream v29;
                                 v29 << "url(" << sa << "-do-not-use-local-path-" << a3;
-                                v29 << "&" << a4 << "&" << a5;
+                                v29 << "&" << a4 << "&" << a5 << ")";
                                 std::string v26 = v29.str();
                                 a2 += v26;
                                 result = 1;
                             }
-                            if (++i == v21.size() - 1)
+                            if (++i == v21.size())
                             {
                                 v17 = 0;
                             }

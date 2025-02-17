@@ -1,3 +1,9 @@
+## 🌈 v0.1.3 / 2025-02-17
+
+🐞 Bug Fixes
+
+- `WXML::Rewrite::RewriteImg`: 输出了多余的右括号。（上个版本修改不正确）
+
 ## 🌈 v0.1.2 / 2025-02-16
 
 🐞 Bug Fixes
