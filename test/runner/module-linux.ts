@@ -48,8 +48,6 @@ const wcscNative = (optionsPath: string, projectPath: string, outputPath: string
                 }
                 resolve(r);
             } else {
-                // process.stderr.write(Buffer.concat(errData).toString());
-                // process.stderr.write(Buffer.concat(spwanData).toString());
                 const err = Buffer.concat(errData).toString()
                 process.stderr.write(err);
                 const r: CompilerResult = {

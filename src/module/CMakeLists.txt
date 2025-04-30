@@ -3,47 +3,65 @@ message("current dir: ${CMAKE_CURRENT_SOURCE_DIR}")
 execute_process(
     COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/cache;
 )
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cache/nw-headers-v${NW_VERSION}.tar.gz")
-    execute_process(
-        COMMAND wget -c -O nw-headers-v${NW_VERSION}.tar.gz.tmp https://dl.nwjs.io/v${NW_VERSION}/nw-headers-v${NW_VERSION}.tar.gz;
-        COMMAND mv nw-headers-v${NW_VERSION}.tar.gz.tmp nw-headers-v${NW_VERSION}.tar.gz;
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cache
-        OUTPUT_VARIABLE CMAKE_JS_VERSION
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-endif()
-execute_process(COMMAND rm -rf ${CMAKE_CURRENT_SOURCE_DIR}/node WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/node")
-    execute_process(COMMAND tar -zxf nw-headers-v${NW_VERSION}.tar.gz -C ${CMAKE_CURRENT_SOURCE_DIR} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cache)
-endif()
-# if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/lib/node-v${NW_VERSION}.lib")
-#     execute_process(
-#         COMMAND wget -c -O node-v${NW_VERSION}.lib.tmp https://dl.nwjs.io/v${NW_VERSION}/node.lib;
-#         COMMAND mv node-v${NW_VERSION}.lib.tmp node-v${NW_VERSION}.lib;
-#         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib
-#         OUTPUT_VARIABLE CMAKE_JS_VERSION
-#         OUTPUT_STRIP_TRAILING_WHITESPACE
-#     )
-# endif()
-# if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/lib/nw-v${NW_VERSION}.lib")
-#     execute_process(
-#         COMMAND wget -c -O nw-v${NW_VERSION}.lib.tmp https://dl.nwjs.io/v${NW_VERSION}/nw.lib;
-#         COMMAND mv nw-v${NW_VERSION}.lib.tmp nw-v${NW_VERSION}.lib;
-#         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib
-#         OUTPUT_VARIABLE CMAKE_JS_VERSION
-#         OUTPUT_STRIP_TRAILING_WHITESPACE
-#     )
-# endif()
 
-include_directories(node/src)
-include_directories(node/include/node)
-include_directories(node/deps/v8/include)
-include_directories(node/deps/uv/include)
+find_program(PNPM_EXECUTABLE pnpm)
+if(NOT PNPM_EXECUTABLE)
+    message(FATAL_ERROR "pnpm not found!")
+endif()
+if(WIN32)
+    set(PNPM_EXECUTABLE "${PNPM_EXECUTABLE}.CMD")
+endif()
+
+message("CMAKE_CXX_FLAGS:${CMAKE_CXX_FLAGS}")
+message("获取 cmake-js 配置")
+message(${PROJECT_SOURCE_DIR})
+execute_process(COMMAND
+    ${PNPM_EXECUTABLE} --silent cmake-js --version
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    OUTPUT_VARIABLE CMAKE_JS_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(COMMAND
+    ${PNPM_EXECUTABLE} cmake-js print-cmakejs-src --arch ${TARGET_ARCH} --silent -l error
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    OUTPUT_VARIABLE CMAKE_JS_SRC
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+message("获取 CMAKE_JS_SRC 配置: ${CMAKE_JS_SRC}")
+
+message("PNPM_EXECUTABLE: " ${PNPM_EXECUTABLE})
+execute_process(COMMAND
+    ${PNPM_EXECUTABLE} cmake-js print-cmakejs-include --silent -l error
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    OUTPUT_VARIABLE CMAKE_JS_INC
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+message("CMAKE_JS_INC:" ${CMAKE_JS_INC})
+foreach(item IN LISTS CMAKE_JS_INC)
+    message("include: ${item}")
+    include_directories(${item})
+endforeach()
+
+message("获取 node-addon-api 配置")
+execute_process(COMMAND
+    node -p "require('node-addon-api').include"
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    OUTPUT_VARIABLE NODE_ADDON_API_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+message("node-addon-api 路径:${NODE_ADDON_API_DIR}")
+
+message("CMAKE_JS_INC: " ${CMAKE_JS_INC})
+message("CMAKE_JS_SRC: " ${CMAKE_JS_SRC})
+message("CMAKE_JS_LIB: " ${CMAKE_JS_LIB})
+
+include_directories(${CMAKE_JS_SRC})
+include_directories(${NODE_ADDON_API_DIR})
 
 add_library(wcc_module
     SHARED
     ./wcc.cpp
-    ./include/wcc.hh
+    ./config/wcc.hh
     ./config/wcc.cc
     ../include/wxml.h
     ../include/night.h
@@ -85,11 +103,10 @@ add_library(wcc_module
     ../utils/json.cpp
     ../utils/string_utils.cpp
     ../utils/file.cpp
+    ${CMAKE_JS_SRC}
 )
-
+target_link_libraries(wcc_module PRIVATE rt pthread)
 set_target_properties(wcc_module PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-# DV8_COMPRESS_POINTERS: 缺少会导致IsString崩溃
-target_compile_options(wcc_module PRIVATE "-DNODE_GYP_MODULE_NAME=binding" "-DUSING_UV_SHARED=1" "-DUSING_V8_SHARED=1" "-DV8_DEPRECATION_WARNINGS=1" "-DV8_DEPRECATION_WARNINGS" "-DV8_REVERSE_JSARGS" "-D_GLIBCXX_USE_CXX11_ABI=1" "-D_LIBCPP_HAS_NO_VENDOR_AVAILABILITY_ANNOTATIONS" "-D_LARGEFILE_SOURCE" "-D_FILE_OFFSET_BITS=64" "-DV8_COMPRESS_POINTERS" "-DV8_31BIT_SMIS_ON_64BIT_ARCH" "-D__STDC_FORMAT_MACROS" "-DOPENSSL_NO_PINSHARED" "-DOPENSSL_THREADS" "-DOPENSSL_NO_ASM" "-DBUILDING_NODE_EXTENSION")
 set_target_properties(wcc_module PROPERTIES PREFIX "" SUFFIX ".node")
 # target_link_libraries(wcc_module ${CMAKE_CURRENT_SOURCE_DIR}/lib/nw-v${NW_VERSION}.lib)
 # target_link_libraries(wcc_module ${CMAKE_CURRENT_SOURCE_DIR}/lib/node-v${NW_VERSION}.lib)
@@ -98,6 +115,7 @@ set_target_properties(wcc_module PROPERTIES PREFIX "" SUFFIX ".node")
 add_library(wcsc_module
     SHARED
     ./wcsc.cpp
+    ./config/wcsc.hh
     ./config/wcsc.cc
     ../wcsc/usage.cpp
     ../wxa/wxa.cpp
@@ -119,8 +137,8 @@ add_library(wcsc_module
     ../utils/json.cpp
     ../utils/string_utils.cpp
     ../utils/file.cpp
+    ${CMAKE_JS_SRC}
 )
+target_link_libraries(wcsc_module PRIVATE rt pthread)
 set_target_properties(wcsc_module PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-# DV8_COMPRESS_POINTERS: 缺少会导致IsString崩溃
-target_compile_options(wcsc_module PRIVATE "-DNODE_GYP_MODULE_NAME=binding" "-DUSING_UV_SHARED=1" "-DUSING_V8_SHARED=1" "-DV8_DEPRECATION_WARNINGS=1" "-DV8_DEPRECATION_WARNINGS" "-DV8_REVERSE_JSARGS" "-D_GLIBCXX_USE_CXX11_ABI=1" "-D_LIBCPP_HAS_NO_VENDOR_AVAILABILITY_ANNOTATIONS" "-D_LARGEFILE_SOURCE" "-D_FILE_OFFSET_BITS=64" "-DV8_COMPRESS_POINTERS" "-DV8_31BIT_SMIS_ON_64BIT_ARCH" "-D__STDC_FORMAT_MACROS" "-DOPENSSL_NO_PINSHARED" "-DOPENSSL_THREADS" "-DOPENSSL_NO_ASM" "-DBUILDING_NODE_EXTENSION")
 set_target_properties(wcsc_module PROPERTIES PREFIX "" SUFFIX ".node")
