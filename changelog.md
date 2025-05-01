@@ -1,6 +1,11 @@
 ## 🌈 v0.1.3 / 2025-02-17
 
 🐞 Bug Fixes
+- `WXSS::CSSTreeLib::CSSSyntaxTree::RenderCode`: Arch linux会崩溃.(数组访问越界)
+
+## 🌈 v0.1.3 / 2025-02-17
+
+🐞 Bug Fixes
 
 - `WXML::Rewrite::RewriteImg`: 输出了多余的右括号。（上个版本修改不正确）
 

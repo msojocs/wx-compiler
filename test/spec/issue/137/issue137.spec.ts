@@ -7,7 +7,7 @@ import * as fs from 'fs'
 
 describe("issue - 137", function () {
     describe("issue: linux output should equal with wine", function () {
-        it("crash", async function () {
+        it("Arch linux crash", async function () {
             const p = path.resolve(__dirname, './data/example.json')
             const storagePath = path.resolve(
                 __dirname,

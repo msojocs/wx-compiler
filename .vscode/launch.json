@@ -12,7 +12,7 @@
             "args": [
                 "${workspaceFolder}/test/runner/nwjs/compiler.js",
                 "wcsc",
-                "${workspaceFolder}/test/spec/issue/129/data/example.json"
+                "${workspaceFolder}/test/spec/issue/137/data/example.json"
             ],
             "cwd": "${workspaceFolder}"
         },

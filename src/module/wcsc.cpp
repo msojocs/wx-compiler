@@ -7,6 +7,7 @@
 #include "napi.h"
 #include <algorithm>
 #include <cstdio>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -116,8 +117,11 @@ Napi::Value wcsc(const Napi::CallbackInfo &info) {
   catch (std::string& err) {
     fprintf(stderr, "Error: %s", err.c_str());
     throw Napi::Error::New(env, err);
+  }catch (std::runtime_error &err) {
+    fprintf(stderr, "Runtime error: %s",err.what());
+    throw Napi::Error::New(env, err.what());
   } catch (std::exception& err) {
-    fprintf(stderr, "Error: %s", err.what());
+    fprintf(stderr, "Exception: %s", err.what());
     throw Napi::Error::New(env, err.what());
   }
   catch (...) {
