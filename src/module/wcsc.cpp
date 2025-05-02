@@ -1,36 +1,25 @@
 // hello.cc
-#include "./include/wcsc.hh"
+#include "./config/wcsc.hh"
 #include "../include/file.h"
 #include "../include/string_utils.h"
 #include "../include/wxss.h"
 #include "../include/wxml.h"
-#include "v8.h"
+#include "napi.h"
 #include <algorithm>
-#include <node.h>
+#include <cstdio>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
 namespace wx_compiler {
-
-using v8::Function;
-using v8::FunctionCallbackInfo;
-using v8::FunctionTemplate;
-using v8::Isolate;
-using v8::Local;
-using v8::NewStringType;
-using v8::Object;
-using v8::String;
-using v8::Value;
-
 using std::map;
 using std::string;
 using std::vector;
 
-int compile(Isolate *isolate, WCSCOptions &options, Local<Value> &result,
-            std::string &errMsg) {
+Napi::Value compile(const Napi::Env &env, WCSCOptions &options) {
   /**
-    * 文件内容map filename -> fileContent
-  */
+   * 文件内容map filename -> fileContent
+   */
   std::map<std::string, std::string> v77;
   for (int i=0; i<options.files.size(); i++) {
     v77[options.files[i]] = options.contents[i];
@@ -41,7 +30,7 @@ int compile(Isolate *isolate, WCSCOptions &options, Local<Value> &result,
   for (int i=0; i<options.pageCount; i++) {
     v72.push_back(options.files[i]);
   }
-
+  std::string errMsg;
   if (options.lazyload) {
     // 懒加载
 
@@ -58,6 +47,7 @@ int compile(Isolate *isolate, WCSCOptions &options, Local<Value> &result,
       int ret = lt.GetCommHead(v72, v94, true, v76);
       if (ret) {
         fprintf(stderr, "ERR: GetCommHead ret %d", ret);
+        throw Napi::Error::New(env, "ERR: GetCommHead ret " + std::to_string(ret));
       }
       for (int i = 0; i < v72.size(); i++) {
         std::string v98;
@@ -69,131 +59,88 @@ int compile(Isolate *isolate, WCSCOptions &options, Local<Value> &result,
         }
         v92.emplace(cur, v98);
       }
-      v8::Local<v8::Object> pageWxss = v8::Object::New(isolate);
-      for (auto func : v92) {
-        pageWxss
-            ->Set(isolate->GetCurrentContext(),
-                  String::NewFromUtf8(isolate, func.first.c_str(),
-                                      v8::NewStringType::kNormal)
-                      .ToLocalChecked(),
-                  String::NewFromUtf8(isolate, func.second.c_str(),
-                                      v8::NewStringType::kNormal)
-                      .ToLocalChecked())
-            .Check();
+      
+      // Create stable N-API objects for return
+      auto result = Napi::Object::New(env);
+      auto pageWxss = Napi::Object::New(env);
+      
+      // Add properties to the pageWxss object
+      for (auto const& pair : v92) {
+        pageWxss.Set(
+          Napi::String::New(env, pair.first),
+          Napi::String::New(env, pair.second)
+        );
       }
-
-      v8::Local<v8::Object> object_instance = v8::Object::New(isolate);
-      auto _ = object_instance->Set(isolate->GetCurrentContext(),
-                           String::NewFromUtf8(isolate, "common",
-                                               v8::NewStringType::kNormal)
-                               .ToLocalChecked(),
-                           String::NewFromUtf8(isolate, v94.c_str(),
-                                               v8::NewStringType::kNormal).ToLocalChecked());
-      _ = object_instance->Set(isolate->GetCurrentContext(),
-                           String::NewFromUtf8(isolate,
-                                               "pageWxss",
-                                               v8::NewStringType::kNormal)
-                               .ToLocalChecked(),
-                           pageWxss);
-      result = object_instance;
+      
+      // Set the common and pageWxss properties on the result object
+      result.Set("common", Napi::String::New(env, v94));
+      result.Set("pageWxss", pageWxss);
 
       if (ret) {
         fprintf(stderr, "ERR: %s\nerror file count: %d\n", "", 0);
-        return 1;
+        throw Napi::Error::New(env, "ERR: \nerror file count: " + std::to_string(0));
       }
-      // main - 25 - 9
-      return 0;
+      
+      return result;
     }
     std::string ret = "ERR: wxss GetCompiledResult: " + v96 + ", error file count: " + std::to_string(lt.offset_4) + ", ret " + std::to_string(lt.offset_0);
-    auto r = String::NewFromUtf8(isolate, ret.c_str(),
-                                      v8::NewStringType::kNormal)
-                      .ToLocalChecked();
     fprintf(stderr,
             "ERR: wxss GetCompiledResult: %s, error file count: %d, ret %d",
             v96.data(), lt.offset_4, lt.offset_0);
-    return 1;
+    throw Napi::Error::New(env, ret);
   } else {
     // 普通
     std::string v88;
     int ret = WXSS::NewLintAndParseCSSList(v77, v72, v88, errMsg, 0, options.debug, v75, v76);
-    if (ret)
-    {
-      return 1;
+    if (ret) {
+      throw Napi::Error::New(env, "ERR: wxss GetCompiledResult: " + errMsg + ", error file count: " + std::to_string(ret));
     }
-    result = String::NewFromUtf8(isolate, v88.c_str(), NewStringType::kNormal).ToLocalChecked();
+    
+    // Create a String object with proper lifetime
+    return Napi::String::New(env, v88);
   }
-  return 0;
 }
 
-void wcc(const FunctionCallbackInfo<Value> &args) {
-  Isolate *isolate = args.GetIsolate();
-  v8::HandleScope scope(isolate); // Ensure we have a proper handle scope.
+Napi::Value wcsc(const Napi::CallbackInfo &info) {
+  auto env = info.Env();
 
   // Check if the first argument is an object.
-  if (args.Length() < 1 || !args[0]->IsObject()) {
-    isolate->ThrowException(String::NewFromUtf8(isolate,
-                                                "Argument must be an object",
-                                                NewStringType::kNormal)
-                                .ToLocalChecked());
-    return;
+  if (info.Length() < 1 || !info[0].IsObject()) {
+    throw Napi::Error::New(env, Napi::String::New(env, "Argument must be an object"));
   }
 
   // Cast the first argument to an Object.
-  Local<v8::Context> context = isolate->GetCurrentContext();
-  Local<Object> obj = args[0]->ToObject(context).ToLocalChecked();
+  auto obj = info[0].As<Napi::Object>();
 
   WCSCOptions options;
-  if (!wcsc_options::parse_wcsc_options(isolate, obj, &options)) {
-    // 选项解析失败
-    return;
+  try {
+    wcsc_options::parse_wcsc_options(env, obj, &options);
+    Napi::Object result;
+    std::string errMsg;
+    return compile(env, options);
+  }
+  catch (std::string& err) {
+    fprintf(stderr, "Error: %s", err.c_str());
+    throw Napi::Error::New(env, err);
+  }catch (std::runtime_error &err) {
+    fprintf(stderr, "Runtime error: %s",err.what());
+    throw Napi::Error::New(env, err.what());
+  } catch (std::exception& err) {
+    fprintf(stderr, "Exception: %s", err.what());
+    throw Napi::Error::New(env, err.what());
+  }
+  catch (...) {
+    fprintf(stderr, "Error: Unknown error");
+    throw Napi::Error::New(env, "Unknown error");
   }
 
-  Local<Value> result;
-  std::string errMsg;
-  int code = compile(isolate, options, result, errMsg);
-
-  // Convert the "msg" property to a C++ string and return it.
-  if (code) {
-    // error
-    args.GetReturnValue().Set(
-        String::NewFromUtf8(isolate, errMsg.c_str(), NewStringType::kNormal)
-            .ToLocalChecked());
-  } else {
-    // ok
-    args.GetReturnValue().Set(result);
-  }
 }
 
-void Initialize(Local<Object> exports, Local<Object> module) {
+static Napi::Object Initialize(Napi::Env env, Napi::Object exports) {
 
-  Isolate *isolate = exports->GetIsolate();
-  auto context = isolate->GetCurrentContext();
-
-  std::string versionInfo;
-  // TODO
-  // WXML::Compiler::GetVersionInfo(versionInfo, "global");
-
-  // Set the module.exports to be a function
-  Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, wcc);
-  Local<Function> fn = tpl->GetFunction(context).ToLocalChecked();
-
-  // Set the 'version' property on the function
-  fn->Set(context,
-          String::NewFromUtf8(isolate, "version", NewStringType::kNormal)
-              .ToLocalChecked(),
-          String::NewFromUtf8(isolate, versionInfo.c_str(),
-                              NewStringType::kNormal)
-              .ToLocalChecked())
-      .Check();
-
-  module
-      ->Set(context,
-            String::NewFromUtf8(isolate, "exports", NewStringType::kNormal)
-                .ToLocalChecked(),
-            fn)
-      .Check();
+  return Napi::Function::New(env, wcsc);
 }
 
-NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
+NODE_API_MODULE(WCSC_MODULE, Initialize)
 
 } // namespace wx_compiler

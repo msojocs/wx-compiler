@@ -8,13 +8,17 @@ const optionsData = fs.readFileSync(p).toString();
 const options = JSON.parse(optionsData);
 
 (async () => {
-  const result = await compiler[type](options);
-  console.log('---------------result------------------')
-  if (typeof result === "string") {
-    process.stdout.write(result);
-    process.exitCode = 1
-    process.exit(1)
-  } else {
-    process.stdout.write(JSON.stringify(result));
+  try {
+    const result = await compiler[type](options);
+    console.log('---------------result------------------')
+    if (typeof result === "string") {
+      process.stdout.write(result);
+      process.exitCode = 1
+      process.exit(1)
+    } else {
+      process.stdout.write(JSON.stringify(result));
+    }
+  }catch (err) {
+    // console.error('conpile.js error ->' + err)
   }
 })();

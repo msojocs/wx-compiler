@@ -1,0 +1,28 @@
+{
+    "files": [
+        "./pages/index/index.wxml",
+        "./pages/logs/logs.wxml"
+    ],
+    "contents": [
+        "<!--index.wxml-->\n<scroll-view class=\"scrollarea\" scroll-y type=\"list\">\n  <view class=\"container\">\n    <view class=\"userinfo\">\n      <block wx:if=\"{{canIUseNicknameComp && !hasUserInfo}}\">\n        <button class=\"avatar-wrapper\" open-type=\"chooseAvatar\" bind:chooseavatar=\"onChooseAvatar\">\n          <image class=\"avatar\" src=\"{{userInfo.avatarUrl}}\"></image>\n        </button>\n        <view class=\"nickname-wrapper\">\n          <text class=\"nickname-label\">昵称</text>\n          <input type=\"nickname\" class=\"nickname-input\" placeholder=\"请输入昵称\" bind:change=\"onInputChange\" />\n        </view>\n      </block>\n      <block wx:elif=\"{{!hasUserInfo}}\">\n        <button wx:if=\"{{canIUseGetUserProfile}}\" bindtap=\"getUserProfile\"> 获取头像昵称 </button>\n        <view wx:else> 请使用2.10.4及以上版本基础库 </view>\n      </block>\n      <block wx:else>\n        <image bindtap=\"bindViewTap\" class=\"userinfo-avatar\" src=\"{{userInfo.avatarUrl}}\" mode=\"cover\"></image>\n        <text class=\"userinfo-nickname\">{{userInfo.nickName}}</text>\n      </block>\n    </view>\n    <view class=\"usermotto\">\n      <text class=\"user-motto\" style=\"color:var(--primary);\">{{motto}}</text>\n    </view>\n  </view>\n</scroll-view>\n",
+        "<!--logs.wxml-->\n<scroll-view class=\"scrollarea\" scroll-y type=\"list\">\n  <block wx:for=\"{{logs}}\" wx:key=\"timeStamp\" wx:for-item=\"log\">\n    <view class=\"log-item\">{{index + 1}}. {{log.date}}</view>\n  </block>\n</scroll-view>\n"
+    ],
+    "replaceContent": {
+        "pages/index/index.wxml": "<!--index.wxml-->\n<scroll-view class=\"scrollarea\" scroll-y type=\"list\">\n  <view class=\"container\">\n    <view class=\"userinfo\">\n      <block wx:if=\"{{canIUseNicknameComp && !hasUserInfo}}\">\n        <button class=\"avatar-wrapper\" open-type=\"chooseAvatar\" bind:chooseavatar=\"onChooseAvatar\">\n          <image class=\"avatar\" src=\"{{userInfo.avatarUrl}}\"></image>\n        </button>\n        <view class=\"nickname-wrapper\">\n          <text class=\"nickname-label\">昵称</text>\n          <input type=\"nickname\" class=\"nickname-input\" placeholder=\"请输入昵称\" bind:change=\"onInputChange\" />\n        </view>\n      </block>\n      <block wx:elif=\"{{!hasUserInfo}}\">\n        <button wx:if=\"{{canIUseGetUserProfile}}\" bindtap=\"getUserProfile\"> 获取头像昵称 </button>\n        <view wx:else> 请使用2.10.4及以上版本基础库 </view>\n      </block>\n      <block wx:else>\n        <image bindtap=\"bindViewTap\" class=\"userinfo-avatar\" src=\"{{userInfo.avatarUrl}}\" mode=\"cover\"></image>\n        <text class=\"userinfo-nickname\">{{userInfo.nickName}}</text>\n      </block>\n    </view>\n    <view class=\"usermotto\">\n      <text class=\"user-motto\" style=\"color:var(--primary);\">{{motto}}</text>\n    </view>\n  </view>\n</scroll-view>\n",
+        "./pages/index/index.wxml": "<!--index.wxml-->\n<scroll-view class=\"scrollarea\" scroll-y type=\"list\">\n  <view class=\"container\">\n    <view class=\"userinfo\">\n      <block wx:if=\"{{canIUseNicknameComp && !hasUserInfo}}\">\n        <button class=\"avatar-wrapper\" open-type=\"chooseAvatar\" bind:chooseavatar=\"onChooseAvatar\">\n          <image class=\"avatar\" src=\"{{userInfo.avatarUrl}}\"></image>\n        </button>\n        <view class=\"nickname-wrapper\">\n          <text class=\"nickname-label\">昵称</text>\n          <input type=\"nickname\" class=\"nickname-input\" placeholder=\"请输入昵称\" bind:change=\"onInputChange\" />\n        </view>\n      </block>\n      <block wx:elif=\"{{!hasUserInfo}}\">\n        <button wx:if=\"{{canIUseGetUserProfile}}\" bindtap=\"getUserProfile\"> 获取头像昵称 </button>\n        <view wx:else> 请使用2.10.4及以上版本基础库 </view>\n      </block>\n      <block wx:else>\n        <image bindtap=\"bindViewTap\" class=\"userinfo-avatar\" src=\"{{userInfo.avatarUrl}}\" mode=\"cover\"></image>\n        <text class=\"userinfo-nickname\">{{userInfo.nickName}}</text>\n      </block>\n    </view>\n    <view class=\"usermotto\">\n      <text class=\"user-motto\" style=\"color:var(--primary);\">{{motto}}</text>\n    </view>\n  </view>\n</scroll-view>\n",
+        "pages/logs/logs.wxml": "<!--logs.wxml-->\n<scroll-view class=\"scrollarea\" scroll-y type=\"list\">\n  <block wx:for=\"{{logs}}\" wx:key=\"timeStamp\" wx:for-item=\"log\">\n    <view class=\"log-item\">{{index + 1}}. {{log.date}}</view>\n  </block>\n</scroll-view>\n",
+        "./pages/logs/logs.wxml": "<!--logs.wxml-->\n<scroll-view class=\"scrollarea\" scroll-y type=\"list\">\n  <block wx:for=\"{{logs}}\" wx:key=\"timeStamp\" wx:for-item=\"log\">\n    <view class=\"log-item\">{{index + 1}}. {{log.date}}</view>\n  </block>\n</scroll-view>\n"
+    },
+    "verbose": false,
+    "debug": true,
+    "debugWXS": false,
+    "showNewTree": false,
+    "addTestAttre": false,
+    "independent": false,
+    "genfuncname": "$gwx",
+    "cwd": "/home/msojocs/WeChatProjects/miniprogram-2",
+    "lazyload": true,
+    "lazyloadConfig": "./pages/index/index>_<2413./pages/logs/logs",
+    "wxmlCompileConfig": "2>_<2413./pages/index/index.wxml>_<24130>_<2413./pages/logs/logs.wxml>_<24130",
+    "wxmlCompileConfigSplit": ">_<2413"
+}

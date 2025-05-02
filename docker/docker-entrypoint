@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -ex
+
+npm install -g pnpm@8
+pnpm install
 strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBC
 echo "----"
 strings /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC_

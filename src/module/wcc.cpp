@@ -1,35 +1,22 @@
 // hello.cc
-#include "./include/wcc.hh"
+#include "./config/wcc.hh"
 #include "../include/file.h"
 #include "../include/night.h"
 #include "../include/string_utils.h"
 #include "../include/wxml.h"
-#include "v8.h"
+#include "napi.h"
 #include <algorithm>
 #include <cstdio>
 #include <exception>
-#include <node.h>
 #include <string>
 
 namespace wx_compiler {
-
-using v8::Function;
-using v8::FunctionCallbackInfo;
-using v8::FunctionTemplate;
-using v8::Isolate;
-using v8::Local;
-using v8::NewStringType;
-using v8::Object;
-using v8::String;
-using v8::Value;
 
 using std::map;
 using std::string;
 using std::vector;
 
-int compile(Isolate *isolate, WCCOptions &options, Local<Value> &result,
-            std::string &errMsg) {
-  try {
+Napi::Value compile(Napi::Env &env, WCCOptions &options) {
     int mark = 0;
     if (options.debug) {
       mark |= 2u;
@@ -41,7 +28,7 @@ int compile(Isolate *isolate, WCCOptions &options, Local<Value> &result,
     std::map<std::string, std::string> wxsMap;
     for (int i = 0; i < options.files.size(); i++) {
       auto file = options.files[i];
-        fileContentMap[file] = options.contents[i];
+      fileContentMap[file] = options.contents[i];
       if (file.find(".wxs") != std::string::npos) {
         wxsMap[file] = options.contents[i];
       }
@@ -90,8 +77,7 @@ int compile(Isolate *isolate, WCCOptions &options, Local<Value> &result,
             std::string v146;
             if ( night::compile_ns_no_wrapper(v152, v156, 1, v146, 0) )
             {
-                errMsg = "Error: " + v146 + "\n";
-                return -2;
+                throw Napi::Error::New(env, "Error: " + v146 + "\n");
             }
             auto v31 = snprintf(0, 0, WXML::GlassEaselWxs::sWrapper.c_str(),
             v146.c_str()) + 1; char *v32 = (char *)operator new[](v31);
@@ -121,7 +107,7 @@ int compile(Isolate *isolate, WCCOptions &options, Local<Value> &result,
       map<string, vector<string>> dependencyListMap;
       map<string, string> mapData1;
       const char off_5403C3[] = {'s', '\0', 'e', '\0'};
-
+      std::string errMsg;
       compilerResult = WXML::Compiler::CompileLazy(
           fileContentMap, errMsg, outputContentMap,
           outputFuncMap,     // map<string, string>
@@ -202,61 +188,38 @@ int compile(Isolate *isolate, WCCOptions &options, Local<Value> &result,
       }
       std::string v140 = dep.str();
       outputContentMap["__COMMON__"].append(v140);
-      if (!compilerResult) {
-
-        v8::Local<v8::Object> funcContent = v8::Object::New(isolate);
-        for (auto content : outputContentMap) {
-          funcContent
-              ->Set(isolate->GetCurrentContext(),
-                    String::NewFromUtf8(isolate, content.first.c_str(),
-                                        v8::NewStringType::kNormal)
-                        .ToLocalChecked(),
-                    String::NewFromUtf8(isolate, content.second.c_str(),
-                                        v8::NewStringType::kNormal)
-                        .ToLocalChecked())
-              .Check();
-        }
-        v8::Local<v8::Object> funcName = v8::Object::New(isolate);
-        for (auto func : outputFuncMap) {
-          funcName
-              ->Set(isolate->GetCurrentContext(),
-                    String::NewFromUtf8(isolate, func.first.c_str(),
-                                        v8::NewStringType::kNormal)
-                        .ToLocalChecked(),
-                    String::NewFromUtf8(isolate, func.second.c_str(),
-                                        v8::NewStringType::kNormal)
-                        .ToLocalChecked())
-              .Check();
-        }
-
-        // 你可以在这里设置对象的属性和方法
-
-        // 创建一个实例
-        v8::Local<v8::Object> object_instance = v8::Object::New(isolate);
-        auto _ = object_instance->Set(
-            isolate->GetCurrentContext(),
-            String::NewFromUtf8(isolate, "generateFunctionName",
-                                v8::NewStringType::kNormal)
-                .ToLocalChecked(),
-            funcName);
-        _ = object_instance->Set(isolate->GetCurrentContext(),
-                                 String::NewFromUtf8(isolate,
-                                                     "generateFunctionContent",
-                                                     v8::NewStringType::kNormal)
-                                     .ToLocalChecked(),
-                                 funcContent);
-
-        result = object_instance;
+      if (compilerResult) {
+        throw Napi::Error::New(env, "Error: " + errMsg + "\n");
       }
-      return compilerResult;
+
+      // Create return objects using proper N-API object creation
+      auto result = Napi::Object::New(env);
+      
+      auto funcContent = Napi::Object::New(env);
+      for (auto content : outputContentMap) {
+        funcContent.Set(Napi::String::New(env, content.first),
+                  Napi::String::New(env, content.second));
+      }
+      
+      auto funcName = Napi::Object::New(env);
+      for (auto func : outputFuncMap) {
+        funcName.Set(Napi::String::New(env, func.first),
+                  Napi::String::New(env, func.second));
+      }
+
+      // Set properties on the result object
+      result.Set("generateFunctionName", funcName);
+      result.Set("generateFunctionContent", funcContent);
+
+      return result;
     } else {
       // 普通
 
-      int compilerResult = 0;
       std::map<std::string, std::string> v105;
       map<string, vector<string>> componentListMap;
       std::string r;
-      compilerResult =
+      std::string errMsg;
+      int compilerResult =
           WXML::Compiler::Compile(fileContentMap,      // a2
                                   errMsg,              // a3
                                   r,                   // a4
@@ -276,98 +239,56 @@ int compile(Isolate *isolate, WCCOptions &options, Local<Value> &result,
                                   "boxofchocolate",    // "boxofchocolate"
                                   "$gdwx",             // "$gdwx"
                                   "f_");               // "f_"
-      result = String::NewFromUtf8(isolate, r.c_str(), NewStringType::kNormal)
-                   .ToLocalChecked();
-      return compilerResult;
+      if (compilerResult) {
+        // error
+        throw Napi::Error::New(env, "Error: " + errMsg + "\n");
+      }
+      return Napi::String::New(env, r);
     }
-  } catch (std::string& err) {
-    fprintf(stderr, "Error: %s", err.c_str());
-    errMsg = err;
-    return 1;
-  } catch (WXML::DOMLib::ParseException& err) {
-    fprintf(stderr, "Error: %s", err.what());
-    errMsg = err.what();
-    return 1;
-  } catch (std::exception& err) {
-    fprintf(stderr, "Error: %s", err.what());
-    errMsg = err.what();
-    return 1;
-  }
-  return 0;
 }
 
-void wcc(const FunctionCallbackInfo<Value> &args) {
-  Isolate *isolate = args.GetIsolate();
-  v8::HandleScope scope(isolate); // Ensure we have a proper handle scope.
+Napi::Value wcc(const Napi::CallbackInfo &info) {
+  auto env = info.Env();
 
   // Check if the first argument is an object.
-  if (args.Length() < 1 || !args[0]->IsObject()) {
-    isolate->ThrowException(String::NewFromUtf8(isolate,
-                                                "Argument must be an object",
-                                                NewStringType::kNormal)
-                                .ToLocalChecked());
-    return;
+  if (info.Length() < 1 || !info[0].IsObject()) {
+    throw Napi::Error::New(env, "Argument must be an object");
   }
-
-  // Cast the first argument to an Object.
-  Local<v8::Context> context = isolate->GetCurrentContext();
-  Local<Object> obj = args[0]->ToObject(context).ToLocalChecked();
-
+  Napi::Object obj = info[0].As<Napi::Object>();
   WCCOptions options;
-  if (!wcc_options::parse_wcc_options(isolate, obj, &options)) {
-    // 选项解析失败
-    return;
+  wcc_options::parse_wcc_options(env, obj, &options);
+
+  try {
+    auto result = Napi::Object::New(env);
+    return compile(env, options);
+  } catch (std::string& err) {
+    fprintf(stderr, "Error: %s", err.c_str());
+    throw Napi::Error::New(env, err);
+  } catch (WXML::DOMLib::ParseException& err) {
+    fprintf(stderr, "Error: %s", err.what());
+    throw Napi::Error::New(env, err.what());
+  } catch (std::exception& err) {
+    fprintf(stderr, "Error: %s", err.what());
+    throw Napi::Error::New(env, err.what());
   }
-
-  Local<Value> result;
-  std::string errMsg;
-  int code = compile(isolate, options, result, errMsg);
-
-  // Convert the "msg" property to a C++ string and return it.
-  if (code) {
-    // error
-    // args.GetReturnValue().Set(
-    //     String::NewFromUtf8(isolate, errMsg.c_str(), NewStringType::kNormal)
-    //         .ToLocalChecked());
-    isolate->ThrowException(String::NewFromUtf8(isolate,
-                                                errMsg.c_str(),
-                                                NewStringType::kNormal)
-                                .ToLocalChecked());
-  } else {
-    // ok
-    args.GetReturnValue().Set(result);
+  catch (...) {
+    fprintf(stderr, "Error: Unknown error");
+    throw Napi::Error::New(env, "Unknown error");
   }
 }
 
-void Initialize(Local<Object> exports, Local<Object> module) {
-
-  Isolate *isolate = exports->GetIsolate();
-  auto context = isolate->GetCurrentContext();
+static Napi::Object Initialize(Napi::Env env, Napi::Object exports) {
 
   std::string versionInfo;
   WXML::Compiler::GetVersionInfo(versionInfo, "global");
 
-  // Set the module.exports to be a function
-  Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, wcc);
-  Local<Function> fn = tpl->GetFunction(context).ToLocalChecked();
-
+  auto func = Napi::Function::New(env, wcc);
   // Set the 'version' property on the function
-  fn->Set(context,
-          String::NewFromUtf8(isolate, "version", NewStringType::kNormal)
-              .ToLocalChecked(),
-          String::NewFromUtf8(isolate, versionInfo.c_str(),
-                              NewStringType::kNormal)
-              .ToLocalChecked())
-      .Check();
+  exports.Set("version", Napi::String::New(env, versionInfo));
 
-  module
-      ->Set(context,
-            String::NewFromUtf8(isolate, "exports", NewStringType::kNormal)
-                .ToLocalChecked(),
-            fn)
-      .Check();
+  return func;
 }
 
-NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
+NODE_API_MODULE(WCC_MODULE, Initialize)
 
 } // namespace wx_compiler

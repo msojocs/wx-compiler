@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include <node.h>
+#include <napi.h>
 
 struct WCCOptions
 {
@@ -18,7 +18,7 @@ struct WCCOptions
     bool addTestAttre = false;
     bool independent = false;
     std::string genfuncname;
-    bool isCut;
+    bool isCut = false;
     std::string cwd;
     bool lazyload = false;
     std::string wxmlCompileConfig;
@@ -28,6 +28,6 @@ struct WCCOptions
 
 namespace wcc_options
 {
-    bool parse_wcc_options(v8::Isolate *isolate, v8::Local<v8::Object> &src, WCCOptions *result);
+    bool parse_wcc_options(Napi::Env &env, Napi::Object &src, WCCOptions *result);
 }
 #endif

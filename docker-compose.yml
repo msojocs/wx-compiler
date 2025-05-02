@@ -1,4 +1,3 @@
-version: "3"
 services:
   wx_compiler:
     image: jiyecafe/wechat-devtools-build:v3 

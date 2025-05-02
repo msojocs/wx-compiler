@@ -1,179 +1,108 @@
-#include "../include/wcsc.hh"
-#include "v8.h"
+#include "./wcsc.hh"
+#include "napi.h"
 
 namespace wcsc_options
 {
-    using v8::Local;
-    using v8::String;
-    using v8::Value;
-
-    bool get_boolean_property(v8::Isolate *isolate, v8::Local<v8::Object> &src, const char *property_name, bool &out_value)
+    bool parse_wcsc_options(Napi::Env &env, Napi::Object &src, WCSCOptions *result)
     {
-        v8::Local<v8::String> key = v8::String::NewFromUtf8(isolate, property_name, v8::NewStringType::kNormal).ToLocalChecked();
-        v8::Local<v8::Value> value;
-        v8::Local<v8::Context> context = isolate->GetCurrentContext();
+        if (src.Get("debug").IsBoolean())
+        {
+            result->debug = src.Get("debug").As<Napi::Boolean>().Value();
+        }
+        else {
+            throw Napi::Error::New(env, "debug must be a boolean");
+        }
 
-        if (!src->Get(context, key).ToLocal(&value))
+        if (src.Get("lazyload").IsBoolean())
         {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("Failed to get '" + std::string(property_name) + "' property").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
+            result->lazyload = src.Get("lazyload").As<Napi::Boolean>().Value();
         }
-        if (!value->IsBoolean())
+        else {
+            throw Napi::Error::New(env, "lazyload must be a boolean");
+        }
+
+        if (src.Get("cwd").IsString())
         {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("The '" + std::string(property_name) + "' property must be a boolean").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
+            result->cwd = src.Get("cwd").As<Napi::String>().Utf8Value();
         }
-        out_value = value->BooleanValue(isolate);
+        else {
+            throw Napi::Error::New(env, "cwd must be a string");
+        }
+
+        if (src.Get("classPrefix").IsString())
+        {
+            result->classPrefix = src.Get("classPrefix").As<Napi::String>().Utf8Value();
+        }
+        else {
+            throw Napi::Error::New(env, "classPrefix must be a string");
+        }
+
+        if (src.Get("pageCount").IsNumber())
+        {
+            result->pageCount = src.Get("pageCount").As<Napi::Number>().Int32Value();
+        }
+        else {
+            throw Napi::Error::New(env, "pageCount must be a number");
+        }
+
+        if (src.Get("files").IsArray())
+        {
+            Napi::Array arr = src.Get("files").As<Napi::Array>();
+            for (size_t i = 0; i < arr.Length(); i++)
+            {
+                Napi::Value value = arr[i];
+                if (value.IsString())
+                {
+                    result->files.push_back(value.As<Napi::String>().Utf8Value());
+                }
+                else {
+                    throw Napi::Error::New(env, "files must be an array of strings");
+                }
+            }
+        }
+        else {
+            throw Napi::Error::New(env, "files must be an array");
+        }
+
+        if (src.Get("contents").IsArray())
+        {
+            Napi::Array arr = src.Get("contents").As<Napi::Array>();
+            for (size_t i = 0; i < arr.Length(); i++)
+            {
+                Napi::Value value = arr[i];
+                if (value.IsString())
+                {
+                    result->contents.push_back(value.As<Napi::String>().Utf8Value());
+                }
+                else {
+                    throw Napi::Error::New(env, "contents must be an array of strings");
+                }
+            }
+        }
+        else {
+            throw Napi::Error::New(env, "contents must be an array");
+        }
+
+        if (src.Get("replaceContent").IsObject())
+        {
+            Napi::Object obj = src.Get("replaceContent").As<Napi::Object>();
+            Napi::Array keys = obj.GetPropertyNames();
+            for (size_t i = 0; i < keys.Length(); i++)
+            {
+                Napi::Value k = keys[i];
+                std::string key = k.As<Napi::String>().Utf8Value();
+                if (obj.Get(key).IsString())
+                {
+                    result->replaceContent[key] = obj.Get(key).As<Napi::String>().Utf8Value();
+                }
+                else {
+                    throw Napi::Error::New(env, "replaceContent must be an object of strings");
+                }
+            }
+        }
+        else {
+            throw Napi::Error::New(env, "replaceContent must be an object");
+        }
         return true;
-    }
-
-    bool get_string_property(v8::Isolate *isolate, v8::Local<v8::Object> &src, const char *property_name, std::string &out_value)
-    {
-        v8::Local<v8::String> key = v8::String::NewFromUtf8(isolate, property_name, v8::NewStringType::kNormal).ToLocalChecked();
-        v8::Local<v8::Value> value;
-        v8::Local<v8::Context> context = isolate->GetCurrentContext();
-
-        if (!src->Get(context, key).ToLocal(&value))
-        {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("Failed to get '" + std::string(property_name) + "' property").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
-        }
-        if (!value->IsString())
-        {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("The '" + std::string(property_name) + "' property must be a string").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
-        }
-        v8::String::Utf8Value utf8Value(isolate, value);
-        std::string str(*utf8Value, utf8Value.length());
-        out_value = str;
-        return true;
-    }
-    
-    bool get_integer_property(v8::Isolate *isolate, v8::Local<v8::Object> &src, const char *property_name, int &out_value)
-    {
-        v8::Local<v8::String> key = v8::String::NewFromUtf8(isolate, property_name, v8::NewStringType::kNormal).ToLocalChecked();
-        v8::Local<v8::Value> value;
-        v8::Local<v8::Context> context = isolate->GetCurrentContext();
-
-        if (!src->Get(context, key).ToLocal(&value))
-        {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("Failed to get '" + std::string(property_name) + "' property").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
-        }
-        if (!value->IsInt32())
-        {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("The '" + std::string(property_name) + "' property must be a int32").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
-        }
-        out_value = value->Int32Value(isolate->GetCurrentContext()).ToChecked();
-        return true;
-    }
-
-    bool get_vector_string_property(v8::Isolate *isolate, v8::Local<v8::Object> &src, const char *property_name, std::vector<std::string> &out_value)
-    {
-        v8::Local<v8::String> key = v8::String::NewFromUtf8(isolate, property_name, v8::NewStringType::kNormal).ToLocalChecked();
-        v8::Local<v8::Value> value;
-        v8::Local<v8::Context> context = isolate->GetCurrentContext();
-
-        if (!src->Get(context, key).ToLocal(&value))
-        {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("Failed to get '" + std::string(property_name) + "' property").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
-        }
-        if (!value->IsArray())
-        {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("The '" + std::string(property_name) + "' property must be a array").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
-        }
-        auto arr = value.As<v8::Array>();
-        for (int i=0; i < arr->Length(); i++)
-        {
-            v8::Local<v8::Value> v;
-            if (!arr->Get(context, i).ToLocal(&v))
-            {
-                isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("Failed to get '" + std::string(property_name) + "' property").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-                return false;
-            }
-            if (!v->IsString())
-            {
-                isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("The '" + std::string(property_name) + std::string("[") + std::to_string(i) +"]' property must be a string").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-                return false;
-            }
-            v8::String::Utf8Value utf8Value(isolate, v);
-            std::string str(*utf8Value, utf8Value.length());
-            out_value.emplace_back(str);
-        }
-        return true;
-    }
-
-    bool get_map_string_property(v8::Isolate *isolate, v8::Local<v8::Object> &src, const char *property_name, std::map<std::string, std::string> &out_value)
-    {
-        v8::Local<v8::String> key = v8::String::NewFromUtf8(isolate, property_name, v8::NewStringType::kNormal).ToLocalChecked();
-        v8::Local<v8::Value> value;
-        v8::Local<v8::Context> context = isolate->GetCurrentContext();
-
-        if (!src->Get(context, key).ToLocal(&value))
-        {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("Failed to get '" + std::string(property_name) + "' property").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
-        }
-        if (!value->IsObject())
-        {
-            isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("The '" + std::string(property_name) + "' property must be a object").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-            return false;
-        }
-        auto obj = value.As<v8::Object>();
-        auto keys = obj->GetPropertyNames(context).ToLocalChecked();
-
-        for (int i = 0; i < keys->Length(); i++)
-        {
-            // key
-            v8::Local<v8::Value> k;
-            if (!keys->Get(context, i).ToLocal(&k))
-            {
-                isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("Failed to get '" + std::string(property_name) + "' property").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-                return false;
-            }
-            if (!k->IsString())
-            {
-                isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("The '" + std::string(property_name) + std::string("[") + std::to_string(i) +"]' property must be a string").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-                return false;
-            }
-
-            // value
-            v8::Local<v8::Value> v;
-            if (!obj->Get(context, k).ToLocal(&v))
-            {
-                isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("Failed to get '" + std::string(property_name) + "' property").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-                return false;
-            }
-            if (!v->IsString())
-            {
-                isolate->ThrowException(v8::String::NewFromUtf8(isolate, ("The '" + std::string(property_name) + std::string("[") + std::to_string(i) +"]' property must be a string").c_str(), v8::NewStringType::kNormal).ToLocalChecked());
-                return false;
-            }
-            v8::String::Utf8Value utf8Value(isolate, k);
-            std::string kr(*utf8Value, utf8Value.length());
-            v8::String::Utf8Value utf8Value2(isolate, v);
-            std::string vr(*utf8Value2, utf8Value2.length());
-            out_value.emplace(kr, vr);
-        }
-        
-        return true;
-    }
-
-    bool parse_wcsc_options(v8::Isolate *isolate, v8::Local<v8::Object> &src, WCSCOptions *result)
-    {
-        Local<v8::Context> context = isolate->GetCurrentContext();
-        bool ret = get_boolean_property(isolate, src, "debug", result->debug) &&
-                   get_boolean_property(isolate, src, "lazyload", result->lazyload) &&
-                   get_string_property(isolate, src, "cwd", result->cwd) &&
-                   get_string_property(isolate, src, "classPrefix", result->classPrefix) &&
-                   get_integer_property(isolate, src, "pageCount", result->pageCount) &&
-                   get_vector_string_property(isolate, src, "files", result->files) &&
-                   get_vector_string_property(isolate, src, "contents", result->contents) &&
-                   get_map_string_property(isolate, src, "replaceContent", result->replaceContent);
-
-        return ret;
     }
 }

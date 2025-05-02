@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include <node.h>
+#include <napi.h>
 
 struct WCSCOptions
 {
@@ -14,11 +14,11 @@ struct WCSCOptions
     std::string cwd;
     bool debug = false;
     std::string classPrefix;
-    bool lazyload;
+    bool lazyload = false;
 };
 
 namespace wcsc_options
 {
-    bool parse_wcsc_options(v8::Isolate *isolate, v8::Local<v8::Object> &src, WCSCOptions *result);
+    bool parse_wcsc_options(Napi::Env &env, Napi::Object &src, WCSCOptions *result);
 }
 #endif

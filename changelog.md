@@ -1,7 +1,7 @@
-## 🌈 v0.1.4 / 2025-05-02
+## 🌈 v0.1.4 / 2025-05-01
 
 🐞 Bug Fixes
-- 修正：Arch Linux崩溃
+- `WXSS::CSSTreeLib::CSSSyntaxTree::RenderCode`: Arch linux会崩溃.(数组访问越界)
 
 ## 🌈 v0.1.3 / 2025-02-17
 
