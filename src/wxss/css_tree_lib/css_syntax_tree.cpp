@@ -38,7 +38,7 @@ namespace WXSS
                         if (
                             i
                             && cur->offset_164 > this->offset_120[i - 1]->offset_168
-                            && a2[a2.length() - 1] != '\n'
+                            && (a2.length() == 0 || a2[a2.length() - 1] != '\n')
                         )
                         {
                             a2 += " ";
