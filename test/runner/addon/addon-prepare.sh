@@ -19,7 +19,7 @@ if [ ! -f "$root_dir/cache/node.dll" ];then
 fi
 
 docker_start(){
-    docker run -d -i\
+    docker run -d -it\
         --rm\
         --volume=$root_dir:/workspace\
         --env=USE_XVFB=yes\
