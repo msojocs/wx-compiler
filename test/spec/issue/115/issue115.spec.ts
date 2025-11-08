@@ -22,8 +22,8 @@ describe("issue - 115", function () {
             // console.log('windows:', typeof w)
             // console.log('linux:', typeof n)
 
-            assert.equal(typeof n, typeof w);
-            assert.equal(w.success, false)
+            assert.equal(typeof n, typeof w, 'Type mismatch');
+            assert.equal(w.success, false, 'Success flag mismatch');
             fs.writeFileSync(
                 `${storagePath}/wine-output.json`,
                 JSON.stringify(w, null, 4)
@@ -32,7 +32,7 @@ describe("issue - 115", function () {
                 `${storagePath}/node-output.json`,
                 JSON.stringify(n, null, 4)
             );
-            assert.deepEqual(n, w);
+            assert.deepEqual(n, w, 'Output data mismatch');
         });
     });
 });
