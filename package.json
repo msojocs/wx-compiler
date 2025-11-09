@@ -27,6 +27,7 @@
     "@babel/core": "^7.18.13",
     "@babel/preset-env": "^7.18.10",
     "@babel/register": "^7.18.9",
+    "@types/jest": "^30.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.4.5",
     "assert": "^2.0.0",

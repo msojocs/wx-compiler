@@ -102,7 +102,7 @@ export default {
     wcsc: wcscNative,
     wcc: wccNative,
     start: () => {
-        execFileSync(path.resolve(__dirname, './nwjs/module-prepare.sh'), { stdio: 'inherit' })
+        execFileSync(path.resolve(__dirname, './addon/addon-prepare.sh'), { stdio: 'inherit' })
     },
     close: () => {
         request('http://127.0.0.1:8083/close').end()

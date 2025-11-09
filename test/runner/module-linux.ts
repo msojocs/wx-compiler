@@ -8,12 +8,13 @@ const NW_VERSION = '0.55.0'
 const wcscNative = (optionsPath: string, projectPath: string, outputPath: string | undefined = undefined): Promise<CompilerResult> => {
 
     const nodeExec = spawn(
-        path.resolve(__dirname, `../../cache/nwjs-sdk-v${NW_VERSION}-linux-x64/nw`),
-        [ path.resolve(__dirname, './nwjs/compiler.js'), 'wcsc', optionsPath ],
+        'node',
+        [ path.resolve(__dirname, './addon/compiler.js'), 'wcsc', optionsPath ],
         {
             cwd: projectPath,
             env: {
                 WX_DEBUG_COMPILER_OUTPUT: outputPath,
+                ...process.env
             },
             // stdio: 'inherit'
         }
@@ -63,11 +64,12 @@ const wcscNative = (optionsPath: string, projectPath: string, outputPath: string
 const wccNative = (optionsPath: string, outputPath: string | undefined = undefined): Promise<CompilerResult> => {
 
     const nodeExec = spawn(
-        path.resolve(__dirname, `../../cache/nwjs-sdk-v${NW_VERSION}-linux-x64/nw`),
-        [path.resolve(__dirname, './nwjs/compiler.js'), 'wcc', optionsPath],
+        'node',
+        [path.resolve(__dirname, './addon/compiler.js'), 'wcc', optionsPath],
         {
             env: {
                 WX_DEBUG_COMPILER_OUTPUT: outputPath,
+                ...process.env
             },
             // stdio: 'inherit'
         }

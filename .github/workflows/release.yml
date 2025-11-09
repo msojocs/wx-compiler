@@ -139,7 +139,7 @@ jobs:
           sudo apt install -y xvfb curl
           pnpm run test-prepare
           ls -l build
-          ls -l test/runner/nwjs/wcc/build/Release
+          ls -l test/runner/addon/wcc/build/Release
           # fix: 预先运行，做一下配置，不然第一次执行会有问题
           ./test/wine/wcc.exe || true
           ./test/wine/wcc.exe -v || true

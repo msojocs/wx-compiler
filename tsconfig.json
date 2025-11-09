@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "esnext",
+    "allowJs": false,
+    "lib": ["ES6"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noImplicitThis": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "types": ["jest", "node"],
+  "include": [
+    "test/**/*.ts"
+  ],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}

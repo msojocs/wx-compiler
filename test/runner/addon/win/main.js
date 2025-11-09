@@ -4,10 +4,11 @@
 console.log("====================================================================");
 console.log("==============================main.js===============================");
 console.log("====================================================================");
-const fs = require("fs");
-console.log("fs:", fs);
-const wcc = require("./wcc");
+const path = require("path");
+const wcc = require(path.resolve(__dirname, "./wcc"));
 console.log("wcc:", wcc);
+require(path.resolve(__dirname, "./wcc/build/Release/wcc.node"));
+require(path.resolve(__dirname, "./wcc/build/Release/wcsc.node"));
 
 const { createServer } = require("http");
 
