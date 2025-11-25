@@ -58,7 +58,7 @@ jobs:
         run: |
           export DOCKER_UID=$UID
           export DOCKER_GID=$GID  
-          docker compose up
+          tools/build-with-docker.sh
 
       - name: Upload prepare
         run: |
