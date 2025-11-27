@@ -321,7 +321,11 @@ namespace WXSS
             "{\n"
             "var op = content[0];\n"
             "if ( op == 0 )\n"
+            #ifdef __ADDON__
             "res = transformRPX(content[1], opt.deviceWidth) + \"px\" + res;\n"
+            #else
+            "res = transformRPX(content[1], opt.deviceWidth) + (window.__convertRpxToVw__ ? \"vw\" : \"px\") + res;\n"
+            #endif
             "else if ( op == 1)\n"
             "res = opt.suffix + res;\n"
             "else if ( op == 2 )\n"
@@ -590,7 +594,7 @@ namespace WXSS
             v29 += "();";
         }
         std::string v33 = v37.str();
-        int v23 = v33.length() + 3022;
+        int v23 = v33.length() + 3059;
         char buf[v23];
         snprintf(buf, v23, "var BASE_DEVICE_WIDTH = 750;\n"
             "var isIOS=navigator.userAgent.match(\"iPhone\");\n"
@@ -642,7 +646,11 @@ namespace WXSS
             "{\n"
             "var op = content[0];\n"
             "if ( op == 0 )\n"
+            #ifdef __ADDON__
             "res = transformRPX(content[1], opt.deviceWidth) + \"px\" + res;\n"
+            #else
+            "res = transformRPX(content[1], opt.deviceWidth) + (window.__convertRpxToVw__ ? \"vw\" : \"px\") + res;\n"
+            #endif
             "else if ( op == 1)\n"
             "res = opt.suffix + res;\n"
             "else if ( op == 2 )\n"

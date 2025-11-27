@@ -12,6 +12,8 @@ module.exports = {
         // 'test/spec/issue/129/issue129.spec.ts',
         // 'test/spec/issue/115/issue115.spec.ts',
         // 'test/spec/wcc/module/module.spec.ts',
+        // 'test/spec/wcc/wxs/wxs.spec.ts',
+        // 'test/spec/wcsc/raw/raw.spec.ts',
     ],
     // spec: "test/spec/wcc/wxs/wxs.spec.ts",
     timeout: 20000,

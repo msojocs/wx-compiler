@@ -963,8 +963,11 @@ namespace WXML{
             // Compile - 15
             v317 << "function _(a,b){if(typeof(b)!='undefined')a.children.push(b);}" << lineEndMark;
             v317 << "function _v(k){if(typeof(k)!='undefined')return {tag:'virtual','wxKey':k,children:[]};return {tag:'virtual',children:[]};}" << lineEndMark;
-            v317 << "function _n(tag){$gwxc++;if($gwxc>=16000){throw 'Dom limit exceeded, please check if there\\'s any mistake you"
-                    "\\'ve made.'};return {tag:'wx-'+tag,attr:{},children:[],n:[],raw:{},generics:{}}}" << lineEndMark;
+            v317 << "function _n(tag){";
+            #ifdef __ADDON__
+            v317 << "$gwxc++;if($gwxc>=16000){throw 'Dom limit exceeded, please check if there\\'s any mistake you\\'ve made.'};";
+            #endif
+            v317 << "return {tag:'wx-'+tag,attr:{},children:[],n:[],raw:{},generics:{}}}" << lineEndMark;
             v317 << "function _p(a,b){b&&a.properities.push(b);}" << lineEndMark;
             v317 << "function _s(scope,env,key){return typeof(scope[key])!='undefined'?scope[key]:env[key]}" << lineEndMark;
             v317 << "function _wp(m){console.warn(\"WXMLRT_" << gwxMark << ":\"+m)}" << lineEndMark;

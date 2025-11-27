@@ -105,6 +105,7 @@ add_library(wcc_module
     ../utils/file.cpp
     ${CMAKE_JS_SRC}
 )
+target_compile_definitions(wcc_module PUBLIC -D__ADDON__)
 target_link_libraries(wcc_module PRIVATE rt pthread)
 set_target_properties(wcc_module PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set_target_properties(wcc_module PROPERTIES PREFIX "" SUFFIX ".node")
@@ -139,6 +140,7 @@ add_library(wcsc_module
     ../utils/file.cpp
     ${CMAKE_JS_SRC}
 )
+target_compile_definitions(wcsc_module PUBLIC -D__ADDON__)
 target_link_libraries(wcsc_module PRIVATE rt pthread)
 set_target_properties(wcsc_module PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set_target_properties(wcsc_module PROPERTIES PREFIX "" SUFFIX ".node")
