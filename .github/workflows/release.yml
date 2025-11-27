@@ -55,13 +55,13 @@ jobs:
       #   run: cmake --build build
       
       - name: Build the project
-        if: ${{ matrix.ARCH }} == 'x86_64'
+        if: ${{ matrix.ARCH == 'x86_64' }}
         run: |
           export DOCKER_UID=$UID
           export DOCKER_GID=$GID  
           tools/build-with-docker.sh
       - name: Build the project
-        if: ${{ matrix.ARCH }} == 'loong64'
+        if: ${{ matrix.ARCH == 'loong64' }}
         run: |
           export DOCKER_UID=$UID
           export DOCKER_GID=$GID  
