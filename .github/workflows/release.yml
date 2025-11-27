@@ -60,6 +60,21 @@ jobs:
           export DOCKER_UID=$UID
           export DOCKER_GID=$GID  
           tools/build-with-docker.sh
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        if: matrix.ARCH == 'loong64'
+        uses: actions/setup-node@v3
+        with:
+          # Version Spec of the version to use in SemVer notation.
+          # It also emits such aliases as lts, latest, nightly and canary builds
+          # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+          node-version: '22'
+          check-latest: false
+      - name: Prepare PNPM
+        if: matrix.ARCH == 'loong64'
+        run: |
+          corepack enable
+          pnpm install --no-frozen-lockfile
       - name: Build the project
         if: matrix.ARCH == 'loong64'
         run: |
