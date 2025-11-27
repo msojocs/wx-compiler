@@ -8,6 +8,7 @@
 #include <vector>
 #include <deque>
 #include <mutex>
+#include <array>
 
 namespace WXSS
 {
