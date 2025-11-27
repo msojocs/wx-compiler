@@ -4,7 +4,7 @@ import linux from '../../../runner/binary-linux'
 import windows from '../../../runner/binary-windows'
 import * as fs from 'fs'
 
-describe("wcsc", function () {
+describe("wcsc - raw", function () {
     describe("Raw: node output should equal with wine", function () {
         // afterEach(function(){
         //   if(this.currentTest.state === 'failed'){

@@ -718,7 +718,7 @@ namespace WXML
     } // namespace EXPRLib
     
     namespace GlassEaselWxs {
-        const std::string sWrapper = "function n(nv_require,nv_exports,nv_module){%s}const t={nv_exports:{}};n((function(n){n.startsWith(\"p_\")&&(n=\"/\"+n.slice(2)),n.endsWith(\".wxs\")&&(n=n.slice(0,n.length-4));const t=gdc(require(n),\"nv_\");return function(){return t}}),t.nv_exports,t),Object.assign(module,gdc(t,void 0));";
+        const std::string sWrapper = "function e(nv_require,nv_exports,nv_module){\u000a%s\u000a}const n={nv_exports:{}};e((function(e){return e.startsWith(\u0022p_\u0022)&&(e=\u0022/\u0022+e.slice(2)),e.endsWith(\u0022.wxs\u0022)&&(e=e.slice(0,e.length-4)),()=>gdc(require(e)(),\u0022nv_\u0022,2)}),n.nv_exports,n),Object.assign(module,gdc(n,void 0,2));";
         const std::string sGenFuncDeepCopy = "var gdc=function(){var e=function(){return void 0!==this?this:\"undefined\"!=typeof globalThis?globalThis:\"undefine"
             "d\"!=typeof self?self:\"undefined\"!=typeof window?window:\"undefined\"!=typeof global?global:{}}();return function("
             "n,t,o,i=e){if(null==n)return n;if(\"undefined\"!=typeof __wxCodeSpace__&&\"function\"==typeof __wxCodeSpace__.isWxsS"
