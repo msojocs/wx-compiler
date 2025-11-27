@@ -2,7 +2,7 @@
 set -ex
 
 root_dir=$(cd `dirname $0`/.. && pwd -P)
-
+mkdir -p $root_dir/cache
 if [ ! -f "$root_dir/cache/x86_64-cross-tools-loongarch64-binutils_2.45-gcc_15.1.0-glibc_2.42.tar.xz" ]; then
     cd $root_dir/cache
     wget -c https://github.com/loongson/build-tools/releases/download/2025.08.08/x86_64-cross-tools-loongarch64-binutils_2.45-gcc_15.1.0-glibc_2.42.tar.xz
