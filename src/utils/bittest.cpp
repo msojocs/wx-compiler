@@ -1,6 +1,6 @@
 #include "../include/bittest.h"
 
-unsigned char bittest(std::int32_t const *a, std::int32_t b)
+unsigned char bittest(int32_t const *a, int32_t b)
 {
     auto const bits{ reinterpret_cast<unsigned char const*>(a) };
     auto const value{ bits[b >> 3] };

@@ -22,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        ARCH: ['x86_64']
+        ARCH: ['x86_64', 'loong64']
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -55,10 +55,17 @@ jobs:
       #   run: cmake --build build
       
       - name: Build the project
+        if: ${{ matrix.ARCH }} == 'x86_64'
         run: |
           export DOCKER_UID=$UID
           export DOCKER_GID=$GID  
           tools/build-with-docker.sh
+      - name: Build the project
+        if: ${{ matrix.ARCH }} == 'loong64'
+        run: |
+          export DOCKER_UID=$UID
+          export DOCKER_GID=$GID  
+          tools/build-loong64.sh
 
       - name: Upload prepare
         run: |
@@ -68,6 +75,10 @@ jobs:
           mkdir -p tmp/build
           mv build/{wcc,wcsc,wcc_module.node,wcsc_module.node} tmp/build
           cd tmp/build
+          mv wcc wcc-${{ matrix.ARCH }}
+          mv wcsc wcsc-${{ matrix.ARCH }}
+          mv wcc_module.node wcc-${{ matrix.ARCH }}.node
+          mv wcsc_module.node wcsc-${{ matrix.ARCH }}.node
           ls -l
 
       - name: Upload artifact
@@ -123,10 +134,10 @@ jobs:
           corepack enable
           ls -l
           mkdir build
-          cp **build/wcc build
-          cp **build/wcsc build
-          cp **build/wcc_module.node build
-          cp **build/wcsc_module.node build
+          cp **-${{ matrix.ARCH }}.build/wcc-${{ matrix.ARCH }} build/wcc
+          cp **-${{ matrix.ARCH }}.build/wcsc-${{ matrix.ARCH }} build/wcsc
+          cp **-${{ matrix.ARCH }}.build/wcc-${{ matrix.ARCH }}.node build/wcc_module.node
+          cp **-${{ matrix.ARCH }}.build/wcsc-${{ matrix.ARCH }}.node build/wcsc_module.node
           chmod +x build/*
           ls -l build
           node -v
@@ -178,7 +189,7 @@ jobs:
           sudo apt install -y fuse
           wget -q https://github.com/TheAssassin/pyuploadtool/releases/download/continuous/pyuploadtool-x86_64.AppImage
           chmod +x pyuploadtool-x86_64.AppImage
-          ./pyuploadtool-x86_64.AppImage **build/wcc **build/wcsc **build/wcc_module.node **build/wcsc_module.node
+          ./pyuploadtool-x86_64.AppImage **build/wcc* **build/wcsc*
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -189,7 +200,5 @@ jobs:
           name: ${{ steps.tag.outputs.name }}
           tag_name: ${{ steps.tag.outputs.tag }}
           files: |
-            **build/wcc
-            **build/wcsc
-            **build/wcc_module.node
-            **build/wcsc_module.node
+            **build/wcc*
+            **build/wcsc*
