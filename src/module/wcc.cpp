@@ -79,9 +79,9 @@ Napi::Value compile(Napi::Env &env, WCCOptions &options) {
             {
                 throw Napi::Error::New(env, "Error: " + v146 + "\n");
             }
-            auto v31 = snprintf(0, 0, WXML::GlassEaselWxs::sWrapper.c_str(),
+            auto v31 = snprintf(0, 0, WXML::GlassEasel::WXS::sWrapper.c_str(),
             v146.c_str()) + 1; char *v32 = (char *)operator new[](v31);
-            snprintf(v32, v31, WXML::GlassEaselWxs::sWrapper.c_str(),
+            snprintf(v32, v31, WXML::GlassEasel::WXS::sWrapper.c_str(),
             v146.c_str()); wxsMap[v152] = v32; delete[] v32;
         }
     }
