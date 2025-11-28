@@ -68,8 +68,8 @@ int main(int argc, const char **argv)
         bool isLLA = false;
         bool hasLL = false;
         bool isWxs = false;
-        bool isGDC = false;
         bool isWxsEnv = false;
+        bool isRuntimeGlobals = false;
         string xc_Or_completeCode_Param;
         string outputFileName;
         vector<string> fileList;
@@ -270,13 +270,13 @@ int main(int argc, const char **argv)
                 {
                     isWxs = true;
                 }
-                else if (!param.compare("--gdc"))
-                {
-                    isGDC = true;
-                }
                 else if (!param.compare("--wxs-env"))
                 {
                     isWxsEnv = true;
+                }
+                else if (!param.compare("--runtime-globals"))
+                {
+                    isRuntimeGlobals = true;
                 }
                 
             }
@@ -330,9 +330,9 @@ int main(int argc, const char **argv)
                     fprintf(stderr, "Error in file %s: %s\n", v152.c_str(), v146.c_str());
                     return -2;
                 }
-                auto v31 = snprintf(0, 0, WXML::GlassEaselWxs::sWrapper.c_str(), v146.c_str()) + 1;
+                auto v31 = snprintf(0, 0, WXML::GlassEasel::WXS::sWrapper.c_str(), v146.c_str()) + 1;
                 char *v32 = (char *)operator new[](v31);
-                snprintf(v32, v31, WXML::GlassEaselWxs::sWrapper.c_str(), v146.c_str());
+                snprintf(v32, v31, WXML::GlassEasel::WXS::sWrapper.c_str(), v146.c_str());
                 cfg[v152] = v32;
                 delete[] v32;
             }
@@ -345,9 +345,9 @@ int main(int argc, const char **argv)
                 return fclose(f);
             return 0;
         }
-        if (isGDC)
+        if (isWxsEnv)
         {
-            std::string v136 = WXML::GlassEaselWxs::sGenFuncDeepCopy.c_str();
+            std::string v136 = WXML::GlassEasel::WXS::sEnvInit.c_str();
             FILE *f = stdout;
             if (!outputFileName.empty())
                 f = fopen(outputFileName.c_str(), "w");
@@ -356,9 +356,9 @@ int main(int argc, const char **argv)
                 return fclose(f);
             return 0;
         }
-        if (isWxsEnv)
+        if (isRuntimeGlobals)
         {
-            std::string v136 = WXML::GlassEaselWxs::sWxsEnvInit.c_str();
+            std::string v136 = WXML::GlassEasel::sRuntimeGlobals.c_str();
             FILE *f = stdout;
             if (!outputFileName.empty())
                 f = fopen(outputFileName.c_str(), "w");

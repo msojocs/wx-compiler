@@ -195705,7 +195705,7 @@ int __cdecl main(int argc, const char **argv, const char **envp)
     else
     {
       v12 = *(_DWORD *)v103;
-      if ( *(_BYTE *)(*(_DWORD *)v103 + 1) == 99 && *(_BYTE *)(v12 + 2) == 98 )
+      if ( *(_BYTE *)(*(_DWORD *)v103 + 1) == 99/*c*/ && *(_BYTE *)(v12 + 2) == 98 /*b*/)
       {
         ++v5;
         LOBYTE(v170[0]) = 0;
@@ -195733,7 +195733,7 @@ int __cdecl main(int argc, const char **argv, const char **envp)
           std::string::_M_dispose((void **)&String);
           ++v5;
         }
-        else if ( v89 == 108 && *(_BYTE *)(v12 + 2) == 108 )
+        else if ( v89 == 108/*l*/ && *(_BYTE *)(v12 + 2) == 108/*l*/ )
         {
           v16 = *(_BYTE *)(v12 + 3);
           if ( v16 != 119 )
@@ -195811,15 +195811,15 @@ LABEL_91:
     fclose(v24);
     std::string::_M_dispose((void **)&v168);
   }
-  if ( !v88 )
+  if ( !v88 ) // wxs
   {
-    if ( v87 )
+    if ( v87 ) // isRuntimeGlobals
     {
       v39 = (const char **)&WXML::GlassEasel::sRuntimeGlobals;
 LABEL_112:
       main::{lambda(std::string const&)#1}::operator()((const char **)&FileName, v39);
       v111 = 0;
-      goto LABEL_192;
+      goto LABEL_192; // return
     }
     v39 = (const char **)&WXML::GlassEasel::WXS::sEnvInit;
     if ( v93 )

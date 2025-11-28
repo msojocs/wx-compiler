@@ -717,19 +717,31 @@ namespace WXML
         
     } // namespace EXPRLib
     
-    namespace GlassEaselWxs {
-        const std::string sWrapper = "function e(nv_require,nv_exports,nv_module){\u000a%s\u000a}const n={nv_exports:{}};e((function(e){return e.startsWith(\u0022p_\u0022)&&(e=\u0022/\u0022+e.slice(2)),e.endsWith(\u0022.wxs\u0022)&&(e=e.slice(0,e.length-4)),()=>gdc(require(e)(),\u0022nv_\u0022,2)}),n.nv_exports,n),Object.assign(module,gdc(n,void 0,2));";
-        const std::string sGenFuncDeepCopy = "var gdc=function(){var e=function(){return void 0!==this?this:\"undefined\"!=typeof globalThis?globalThis:\"undefine"
-            "d\"!=typeof self?self:\"undefined\"!=typeof window?window:\"undefined\"!=typeof global?global:{}}();return function("
-            "n,t,o,i=e){if(null==n)return n;if(\"undefined\"!=typeof __wxCodeSpace__&&\"function\"==typeof __wxCodeSpace__.isWxsS"
-            "tateObject&&__wxCodeSpace__.isWxsStateObject(n))return n;if(\"string\"==typeof n||\"boolean\"==typeof n||\"number\"="
-            "=typeof n)return n;if(Array.isArray(n)){const e=[];for(let i=0;i<n.length;i++)e.push(gdc(n[i],t,o,n));return e}if(n "
-            "instanceof Date){const e=new Date;return e.setTime(n.getTime()),e}if(n instanceof RegExp){let e=\"\";return n.global"
-            "&&(e+=\"g\"),n.ignoreCase&&(e+=\"i\"),n.multiline&&(e+=\"m\"),new RegExp(n.source,e)}if(\"object\"==typeof n){const "
-            "e={};for(let i in n)Object.prototype.hasOwnProperty.call(n,i)&&(void 0===t?e[i.substring(3)]=gdc(n[i],t,o,n):e[t+i]="
-            "gdc(n[i],t,o,n));return e}return\"function\"==typeof n?1===o?null:function(...e){const o=gdc(e,void 0===t?\"nv_\":vo"
-            "id 0),r=n.apply(i,o);return gdc(r,t)}:null}}();";
-        const std::string sWxsEnvInit = aUndefinedTypeo;
+    namespace GlassEasel{
+        const std::string sRuntimeGlobals = "var X=function(n){return null==n?Object.create(null):n},Y=function(n){return null==n?\"\":String(n)},Z=function(n,t)"
+    "{return!0===n||(n?n[t]:void 0)},P=function(n){return function(...t){if(\"function\"==typeof n)try{return gdc(n.apply"
+    "(null,gdc(t,\"nv_\")))}catch(n){return console.error(\"WXS Error:\"),void console.error(n)}}},Q={a:function(n){for(v"
+    "ar t=0;t<n.length;t++)if(n[t])return n},b:function(n){for(var t=Object.values(n),r=0;r<t.length;r++)if(t[r])return t"
+    "},A:function(n){return n},B:function(n){return n}},D=function(){const n={},t=t=>{const o=n[t];if(void 0===o)throw ne"
+    "w Error(`no such WXS module: ${t}`);if(!o.t){const n={exports:{}};let e;o.o=n.exports,o.t=!0;try{e=o.u(r(t),n.export"
+    "s,n)}catch(n){throw o.t=!1,n}o.o=void 0!==n.exports?n.exports:e}return o.o},r=n=>function(r){if(\"string\"!=typeof r"
+    ")throw new Error(\"WXS require args must be a string\");if(r.startsWith(\"p_\")&&r.endsWith(\".wxs\")){const n=r.sli"
+    "ce(2,-4);return()=>gdc(t(n),\"nv_\",2)}{const o=((n,t)=>{let r;r=\"/\"!==n[0]?t.split(\"/\").slice(0,-1).concat(n.sp"
+    "lit(\"/\")):n.split(\"/\");const o=[];for(let n=0;n<r.length;n+=1){const t=r[n];\"\"!==t&&\".\"!==t&&(\"..\"!==t?o.p"
+    "ush(t):o.pop())}return o.join(\"/\")})(r,n);return()=>t(o)}};return(r,o)=>(((t,r)=>{void 0===n[t]&&(n[t]={t:!1,u:r,o"
+    ":null})})(r,o),()=>t(r))}(),gdc=function(n,t,r){if(null==n)return n;if(\"string\"==typeof n||\"boolean\"==typeof n||"
+    "\"number\"==typeof n)return n;if(Array.isArray(n)){const o=[];for(let e=0;e<n.length;e++)o.push(gdc(n[e],t,r));retur"
+    "n o}if(n instanceof Date){const t=new Date;return t.setTime(n.getTime()),t}if(n instanceof RegExp){let t=\"\";return"
+    " n.global&&(t+=\"g\"),n.ignoreCase&&(t+=\"i\"),n.multiline&&(t+=\"m\"),new RegExp(n.source,t)}if(\"function\"==typeo"
+    "f n)return 1==r?gdc(n(),void 0,2):2==r?n:null;if(\"object\"==typeof n){const o={};for(let e in n)Object.prototype.ha"
+    "sOwnProperty.call(n,e)&&(void 0===t?o[e.substring(3)]=gdc(n[e],t,r):o[t+e]=gdc(n[e],t,r));return o}return null};";
+        const std::string sGitHash = "";
+        namespace WXS {
+            const std::string sWrapper = "function e(nv_require,nv_exports,nv_module){\u000a%s\u000a}const n={nv_exports:{}};e((function(e){return e.startsWith(\u0022p_\u0022)&&(e=\u0022/\u0022+e.slice(2)),e.endsWith(\u0022.wxs\u0022)&&(e=e.slice(0,e.length-4)),()=>gdc(require(e)(),\u0022nv_\u0022,2)}),n.nv_exports,n),Object.assign(module,gdc(n,void 0,2));";
+            
+            const std::string sEnvInit = aUndefinedTypeo;
+            const std::string sGitHash = "e8f2c53f408bfdf50d9acfef2cfe46b9358589d6";
+        };
     };
 }
 #endif
