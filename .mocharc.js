@@ -14,6 +14,7 @@ module.exports = {
         // 'test/spec/wcc/module/module.spec.ts',
         // 'test/spec/wcc/wxs/wxs.spec.ts',
         // 'test/spec/wcsc/raw/raw.spec.ts',
+        // 'test/spec/wcc/empty/version.spec.ts'
     ],
     // spec: "test/spec/wcc/wxs/wxs.spec.ts",
     timeout: 20000,
