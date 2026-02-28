@@ -17,7 +17,7 @@ cd $root_dir
 rm -rf build/*
 mkdir -p build
 cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE=$root_dir/tools/toolchain.cmake
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$root_dir/tools/toolchains/toolchain-loong64.cmake
 cmake --build . --config Release --target wcsc
 cmake --build . --config Release --target wcc
 cmake --build . --config Release --target wcc_module

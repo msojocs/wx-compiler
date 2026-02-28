@@ -22,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        ARCH: ['x86_64', 'loong64']
+        ARCH: ['x86_64', 'loong64', 'arm64']
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -81,6 +81,24 @@ jobs:
           export DOCKER_UID=$UID
           export DOCKER_GID=$GID  
           tools/build-loong64.sh
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        if: matrix.ARCH == 'arm64'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          check-latest: false
+      - name: Prepare PNPM
+        if: matrix.ARCH == 'arm64'
+        run: |
+          corepack enable
+          pnpm install --no-frozen-lockfile
+      - name: Build the project
+        if: matrix.ARCH == 'arm64'
+        run: |
+          export DOCKER_UID=$UID
+          export DOCKER_GID=$GID  
+          tools/build-arm64.sh
 
       - name: Upload prepare
         run: |
