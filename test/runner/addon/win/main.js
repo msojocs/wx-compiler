@@ -48,7 +48,7 @@ const server = createServer(async (req, resp) => {
         {
           resp.writeHead(200, { "Content-Type": "text/plain" });
           resp.end('ok');
-          nw.App.quit()
+          server.close(() => process.exit(0));
           return;
         }
         const body = JSON.parse(await Handle.readBody(req));
@@ -88,7 +88,3 @@ server.listen(PORT, HOST, (error) => {
 
   console.log(`server is listening on http://${HOST}:${PORT} ...`);
 });
-
-// nw.Window.open("index.html", {}, function (win) {});
-// nw.process.exit(0)
-// process.exit(0)

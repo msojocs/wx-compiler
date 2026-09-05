@@ -181,6 +181,8 @@ jobs:
           ls -l test/wine
           # ./test/wine/wcc.exe
           sudo apt install -y xvfb curl
+          tools/install-electron-dependency.sh
+          pnpm run test-electron
           pnpm run test-prepare
           ls -l build
           ls -l test/runner/addon/wcc/build/Release

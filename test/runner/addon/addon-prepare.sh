@@ -2,12 +2,10 @@
 
 set -ex
 
-Xvfb :98 & # Start xvfb on display :98
-export DISPLAY=:98
 root_dir=$(cd `dirname $0`/../../.. && pwd -P)
 cur_dir=$(cd `dirname $0` && pwd -P)
 
-nw_version="0.55.0"
+# The official Windows addons import node.dll from this custom Node runtime.
 mkdir -p "$root_dir/cache"
 if [ ! -f "$root_dir/cache/node.exe" ];then
     wget -c -O "$root_dir/cache/node.exe.tmp" "https://github.com/msojocs/skyline-node/releases/download/v16.4.0-1/node.exe"

@@ -3,18 +3,19 @@ import path from "path";
 import * as fs from 'fs'
 import { CompilerResult } from "./types";
 
-const NW_VERSION = '0.55.0'
+const electronPath: string = require('electron')
 
 const wcscNative = (optionsPath: string, projectPath: string, outputPath: string | undefined = undefined): Promise<CompilerResult> => {
 
     const nodeExec = spawn(
-        'node',
+        electronPath,
         [ path.resolve(__dirname, './addon/compiler.js'), 'wcsc', optionsPath ],
         {
             cwd: projectPath,
             env: {
+                ...process.env,
                 WX_DEBUG_COMPILER_OUTPUT: outputPath,
-                ...process.env
+                ELECTRON_RUN_AS_NODE: '1'
             },
             // stdio: 'inherit'
         }
@@ -30,6 +31,7 @@ const wcscNative = (optionsPath: string, projectPath: string, outputPath: string
         // console.log(e.toString())
     });
     return new Promise((resolve, reject) => {
+        nodeExec.on("error", reject);
         nodeExec.on("close", (n) => {
             outputPath && require('fs').writeFileSync(`${outputPath}/linux_err.js`, Buffer.concat(errData).toString())
             
@@ -64,12 +66,13 @@ const wcscNative = (optionsPath: string, projectPath: string, outputPath: string
 const wccNative = (optionsPath: string, outputPath: string | undefined = undefined): Promise<CompilerResult> => {
 
     const nodeExec = spawn(
-        'node',
+        electronPath,
         [path.resolve(__dirname, './addon/compiler.js'), 'wcc', optionsPath],
         {
             env: {
+                ...process.env,
                 WX_DEBUG_COMPILER_OUTPUT: outputPath,
-                ...process.env
+                ELECTRON_RUN_AS_NODE: '1'
             },
             // stdio: 'inherit'
         }
@@ -85,6 +88,7 @@ const wccNative = (optionsPath: string, outputPath: string | undefined = undefin
         // console.log(e.toString())
     });
     return new Promise((resolve, reject) => {
+        nodeExec.on("error", reject);
         nodeExec.on("close", (n) => {
             // console.log("node n: ", n);
             outputPath && require('fs').writeFileSync(`${outputPath}/linux_err.js`, Buffer.concat(errData).toString())

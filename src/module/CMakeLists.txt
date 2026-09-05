@@ -1,4 +1,3 @@
-set(NW_VERSION "0.55.0")
 message("current dir: ${CMAKE_CURRENT_SOURCE_DIR}")
 execute_process(
     COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/cache;
@@ -109,8 +108,6 @@ target_compile_definitions(wcc_module PUBLIC -D__ADDON__)
 target_link_libraries(wcc_module PRIVATE rt pthread)
 set_target_properties(wcc_module PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set_target_properties(wcc_module PROPERTIES PREFIX "" SUFFIX ".node")
-# target_link_libraries(wcc_module ${CMAKE_CURRENT_SOURCE_DIR}/lib/nw-v${NW_VERSION}.lib)
-# target_link_libraries(wcc_module ${CMAKE_CURRENT_SOURCE_DIR}/lib/node-v${NW_VERSION}.lib)
 
 
 add_library(wcsc_module

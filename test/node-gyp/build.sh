@@ -1,10 +1,12 @@
-export npm_config_target=0.55.0
-# Setup build architecture, ia32 or x64
-export npm_config_arch=x64
-export npm_config_target_arch=x64
-# Setup env for modules built with node-pre-gyp
-export npm_config_runtime=node-webkit
+#!/bin/bash
+set -euo pipefail
+
+cd "$(dirname "$0")"
+npm_config_target=$(node -p "require('electron/package.json').version")
+npm_config_arch=${npm_config_arch:-$(node -p 'process.arch')}
+export npm_config_target npm_config_arch
+export npm_config_target_arch=$npm_config_arch
+export npm_config_runtime=electron
+export npm_config_disturl=https://electronjs.org/headers
 export npm_config_build_from_source=true
-# Setup nw-gyp as node-gyp
-export npm_config_node_gyp=$(which nw-gyp)
-nw-gyp rebuild --loglevel verbose
+pnpm exec node-gyp rebuild --loglevel verbose

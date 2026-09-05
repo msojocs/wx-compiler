@@ -9,3 +9,27 @@
 1. 使用 IDA 取得伪代码，与函数地址
 2. 使用frida配合函数地址，对各个函数进行hook，参见 [frida-wx-compiler](https://github.com/msojocs/frida-wx-compiler)
 3. 在Linux下根据伪代码复现逻辑，使用frida来校对函数处理前和处理后的数据是否符合实际
+
+# Electron 运行环境
+
+Linux 模块测试使用 Electron 的 Node 模式（`ELECTRON_RUN_AS_NODE=1`），不创建窗口，也不需要 DISPLAY 或 Xvfb。Electron 固定为 36.6.0。
+
+```bash
+pnpm install
+# Debian/Ubuntu 缺少运行库时执行
+tools/install-electron-dependency.sh
+
+# 构建 Node-API 模块，产物可直接由 Electron 加载
+cmake -S . -B build
+cmake --build build --target wcc_module wcsc_module
+
+pnpm start wcsc test/spec/issue/137/data/example.json
+pnpm start wcc test/spec/wcc/module/data/options-202505012307.json
+pnpm run test-electron
+```
+
+`pnpm start <wcc|wcsc> <options.json>` 执行一次编译并退出，成功返回 0，参数或编译错误返回非零状态。`pnpm test` 中的 Linux 模块测试同样使用 Electron。
+
+`pnpm --dir test/node-gyp install` 会调用 `test/node-gyp/build.sh`，使用根目录安装的 Electron 版本及其官方头文件构建 V8 原生模块示例。该示例需要支持 C++20 的编译器。编译器本身使用 Node-API，仍沿用现有 CMake 构建流程。
+
+Windows 官方对照模块依赖定制的 `node.dll`，继续通过 Docker/Wine 和 skyline-node 执行；`pnpm run test-prepare` 会准备该环境。完整对照测试还需要 Wine 和测试项目数据。

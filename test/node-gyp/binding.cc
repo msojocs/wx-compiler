@@ -50,21 +50,18 @@ namespace demo
         args.GetReturnValue().Set(String::NewFromUtf8(isolate, *utf8, NewStringType::kNormal).ToLocalChecked());
     }
 
-    void Initialize(Local<Object> exports, Local<Object> module)
+    NODE_MODULE_INIT(/* exports, module, context */)
     {
         
-        Isolate* isolate = exports->GetIsolate();
-        auto context = isolate->GetCurrentContext();
+        Isolate* isolate = Isolate::GetCurrent();
 
         
         // std::string versionInfo;
         // WXML::Compiler::GetVersionInfo(versionInfo, "global");
-        module->Set(context, String::NewFromUtf8(isolate, "exports", NewStringType::kNormal).ToLocalChecked(),
+        module.As<Object>()->Set(context, String::NewFromUtf8(isolate, "exports", NewStringType::kNormal).ToLocalChecked(),
                FunctionTemplate::New(isolate, MsgMethod)->GetFunction(context).ToLocalChecked()).Check();
         auto _ = exports->Set(context, String::NewFromUtf8(isolate, "version", NewStringType::kNormal).ToLocalChecked(),
                  String::NewFromUtf8(isolate, "v1.0.0", NewStringType::kNormal).ToLocalChecked());
     }
-
-    NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
 
 } // namespace demo

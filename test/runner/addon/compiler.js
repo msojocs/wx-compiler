@@ -1,24 +1,22 @@
 const fs = require("fs");
 const compiler = require("./wcc");
 
-const args = process.argv.slice(2);
-const [type, p] = args;
-// console.log('type:', type, '; options path:', p)
-const optionsData = fs.readFileSync(p).toString();
-const options = JSON.parse(optionsData);
-
 (async () => {
   try {
+    const [type, optionsPath] = process.argv.slice(2);
+    if (!["wcc", "wcsc"].includes(type) || !optionsPath) {
+      throw new Error("Usage: pnpm start <wcc|wcsc> <options.json>");
+    }
+    const options = JSON.parse(fs.readFileSync(optionsPath, "utf8"));
     const result = await compiler[type](options);
     console.log('---------------result------------------')
     if (typeof result === "string") {
       process.stdout.write(result);
-      process.exitCode = 1
-      process.exit(1)
     } else {
       process.stdout.write(JSON.stringify(result));
     }
-  }catch (err) {
-    // console.error('conpile.js error ->' + err)
+  } catch (err) {
+    console.error(String(err));
+    process.exitCode = 1;
   }
 })();

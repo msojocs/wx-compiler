@@ -7,10 +7,13 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Linux module test",
-            "program": "${workspaceFolder}/cache/nwjs-sdk-v0.55.0-linux-x64/nw",
+            "name": "Linux module test (Electron)",
+            "program": "${workspaceFolder}/node_modules/electron/dist/electron",
+            "env": {
+                "ELECTRON_RUN_AS_NODE": "1"
+            },
             "args": [
-                "${workspaceFolder}/test/runner/nwjs/compiler.js",
+                "${workspaceFolder}/test/runner/addon/compiler.js",
                 "wcsc",
                 "${workspaceFolder}/test/spec/issue/137/data/example.json"
             ],
