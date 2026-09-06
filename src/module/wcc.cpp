@@ -77,7 +77,7 @@ Napi::Value compile(Napi::Env &env, WCCOptions &options) {
             std::string v146;
             if ( night::compile_ns_no_wrapper(v152, v156, 1, v146, 0) )
             {
-                throw Napi::Error::New(env, "Error: " + v146 + "\n");
+                throw Napi::Error::New(env, "Error: " + v146);
             }
             auto v31 = snprintf(0, 0, WXML::GlassEasel::WXS::sWrapper.c_str(),
             v146.c_str()) + 1; char *v32 = (char *)operator new[](v31);
@@ -189,7 +189,7 @@ Napi::Value compile(Napi::Env &env, WCCOptions &options) {
       std::string v140 = dep.str();
       outputContentMap["__COMMON__"].append(v140);
       if (compilerResult) {
-        throw Napi::Error::New(env, "Error: " + errMsg + "\n");
+        throw Napi::Error::New(env, "Error: " + errMsg);
       }
 
       // Create return objects using proper N-API object creation
@@ -241,7 +241,7 @@ Napi::Value compile(Napi::Env &env, WCCOptions &options) {
                                   "f_");               // "f_"
       if (compilerResult) {
         // error
-        throw Napi::Error::New(env, "Error: " + errMsg + "\n");
+        throw Napi::Error::New(env, "Error: " + errMsg);
       }
       return Napi::String::New(env, r);
     }
@@ -262,17 +262,13 @@ Napi::Value wcc(const Napi::CallbackInfo &info) {
     auto result = Napi::Object::New(env);
     return compile(env, options);
   } catch (std::string& err) {
-    fprintf(stderr, "Error: %s", err.c_str());
     throw Napi::Error::New(env, err);
   } catch (WXML::DOMLib::ParseException& err) {
-    fprintf(stderr, "Error: %s", err.what());
     throw Napi::Error::New(env, err.what());
   } catch (std::exception& err) {
-    fprintf(stderr, "Error: %s", err.what());
     throw Napi::Error::New(env, err.what());
   }
   catch (...) {
-    fprintf(stderr, "Error: Unknown error");
     throw Napi::Error::New(env, "Unknown error");
   }
 }

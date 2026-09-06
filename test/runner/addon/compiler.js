@@ -16,7 +16,8 @@ const compiler = require("./wcc");
       process.stdout.write(JSON.stringify(result));
     }
   } catch (err) {
-    console.error(String(err));
+    const message = err instanceof Error ? err.message : String(err);
+    process.stderr.write(message);
     process.exitCode = 1;
   }
 })();
