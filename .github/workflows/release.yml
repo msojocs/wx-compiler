@@ -180,10 +180,11 @@ jobs:
         run: |
           ls -l test/wine
           # ./test/wine/wcc.exe
-          sudo apt install -y xvfb curl
+          sudo apt install -y curl unzip
           tools/install-electron-dependency.sh
           pnpm run test-electron
           pnpm run test-prepare
+          pnpm run test-windows-electron
           ls -l build
           ls -l test/runner/addon/wcc/build/Release
           # fix: 预先运行，做一下配置，不然第一次执行会有问题

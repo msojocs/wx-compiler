@@ -32,7 +32,21 @@ pnpm run test-electron
 
 `pnpm --dir test/node-gyp install` 会调用 `test/node-gyp/build.sh`，使用根目录安装的 Electron 版本及其官方头文件构建 V8 原生模块示例。该示例需要支持 C++20 的编译器。编译器本身使用 Node-API，仍沿用现有 CMake 构建流程。
 
-Windows 官方对照模块依赖定制的 `node.dll`，继续通过 Docker/Wine 和 skyline-node 执行；`pnpm run test-prepare` 会准备该环境。完整对照测试还需要 Wine 和测试项目数据。
+Windows 官方对照测试使用 `test/runner/addon/win/wcc-electron/build/Release` 中的 Electron 版模块，通过本机 Wine 运行 Windows Electron，同样设置 `ELECTRON_RUN_AS_NODE=1`。不再需要 Docker、NW.js、skyline-node、`node.dll`、DISPLAY 或 Xvfb，也不启动 HTTP 服务。
+
+本机需安装 64 位 Wine（包含 `wine` 和 `winepath`）、curl 和 unzip。准备脚本根据已安装的 Electron 版本下载 Windows x64 运行时，校验 SHA-256 后缓存到 `cache/electron-v<版本>-win32-x64`，并检查两个官方模块能否加载。
+
+```bash
+# 仅准备 Windows 模块运行环境
+test/runner/addon/addon-prepare.sh
+pnpm start:windows wcsc test/spec/issue/137/data/example.json
+pnpm run test-windows-electron
+
+# 准备完整对照测试，包括测试项目数据
+pnpm run test-prepare
+```
+
+`pnpm start:windows <wcc|wcsc> <options.json>` 每次启动一个编译进程并在完成后退出，自动转换选项文件和 `cwd` 的 Linux 路径。Wine 下通过临时文件接收标准输出和错误输出，以兼容 Electron 的 Node 流，进程结束后自动清理。
 
 # 测试
 
@@ -41,10 +55,11 @@ Windows 官方对照模块依赖定制的 `node.dll`，继续通过 Docker/Wine 
 ```bash
 pnpm test                              # 运行编译器对照测试
 pnpm run test-electron                  # 运行 Electron 运行环境测试
+pnpm run test-windows-electron          # 运行 Windows Electron/Wine 运行环境测试
 pnpm run test:watch                     # 监听并重跑编译器测试
 pnpm test test/spec/wcc/module          # 按文件路径筛选
 pnpm test -t 'issue - 137'              # 按测试名称筛选
 pnpm exec vitest run                    # 运行全部测试
 ```
 
-Vitest 仅收集 `test/spec/**/*.spec.ts` 和 `test/runner/electron.spec.js`，不运行 `test/projects` 子模块自带的测试。对照测试共用 Wine 环境，因此测试文件串行执行。
+Vitest 仅收集 `test/spec/**/*.spec.ts`、`test/runner/electron.spec.js` 和 `test/runner/windows-electron.spec.ts`，不运行 `test/projects` 子模块自带的测试。对照测试共用 Wine 环境，因此测试文件串行执行。

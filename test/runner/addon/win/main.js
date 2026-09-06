@@ -1,90 +1,28 @@
-// initialize your app
-// and ...
-
-console.log("====================================================================");
-console.log("==============================main.js===============================");
-console.log("====================================================================");
+const fs = require("fs");
 const path = require("path");
-const wcc = require(path.resolve(__dirname, "./wcc"));
-console.log("wcc:", wcc);
-require(path.resolve(__dirname, "./wcc/build/Release/wcc.node"));
-require(path.resolve(__dirname, "./wcc/build/Release/wcsc.node"));
+const compiler = require("./wcc");
 
-const { createServer } = require("http");
-
-const HOST = "0.0.0.0";
-const PORT = 8083;
-
-const Handle = {
-  /**
-   *
-   * @param {IncomingMessage} req
-   * @returns
-   */
-  readBody: (req) => {
-    return new Promise((resolve, reject) => {
-      let body = "";
-      req.on("data", (d) => {
-        body += d;
-      });
-      req.on("end", () => {
-        resolve(body);
-      });
-    });
-  },
-};
-
-const server = createServer(async (req, resp) => {
-    // the first param is status code it returns
-    // and the second param is response header info
-    try {
-        console.log("server is working...");
-        if (req.url?.includes("check")) {
-          resp.writeHead(200, { "Content-Type": "text/plain" });
-          resp.end('ok');
-          return;
-        }
-        if(req.url?.includes("close"))
-        {
-          resp.writeHead(200, { "Content-Type": "text/plain" });
-          resp.end('ok');
-          server.close(() => process.exit(0));
-          return;
-        }
-        const body = JSON.parse(await Handle.readBody(req));
-
-        let result = {};
-        if (req.url?.includes("wcc")) {
-            result = await wcc.wcc(body);
-        } else if (req.url?.includes("wcsc")){
-            result = await wcc.wcsc(body);
-        }
-        
-        if (typeof result != 'string')
-        {
-            // JSON
-            resp.writeHead(200, { "Content-Type": "application/json" });
-            resp.end(JSON.stringify(result));
-        }
-        else
-        {
-            // call end method to tell server that the request has been fulfilled
-            resp.writeHead(200, { "Content-Type": "text/plain" });
-            resp.end(result);
-        }
-
-    } catch (e) {
-        // console.error('server error:', e)
-        resp.writeHead(500, { "Content-Type": "text/plain" });
-        resp.end(`${e}`);
-    }
-});
-
-server.listen(PORT, HOST, (error) => {
-  if (error) {
-    console.log("Something wrong: ", error);
-    return;
+function windowsPath(value) {
+  if (typeof value === "string" && value.startsWith("/") && process.env.WX_COMPILER_WINE_ROOT) {
+    return path.join(process.env.WX_COMPILER_WINE_ROOT, value);
   }
+  return value;
+}
 
-  console.log(`server is listening on http://${HOST}:${PORT} ...`);
-});
+(async () => {
+  try {
+    const [type, optionsPath] = process.argv.slice(2);
+    if (!["wcc", "wcsc"].includes(type) || !optionsPath) {
+      throw new Error("Usage: pnpm start:windows <wcc|wcsc> <options.json>");
+    }
+    const options = JSON.parse(fs.readFileSync(windowsPath(optionsPath), "utf8"));
+    options.cwd = windowsPath(options.cwd) || process.cwd();
+    if (options.output) options.output = windowsPath(options.output);
+    const result = await compiler[type](options);
+    console.log("---------------result------------------");
+    process.stdout.write(typeof result === "string" ? result : JSON.stringify(result));
+  } catch (error) {
+    process.stderr.write(String(error));
+    process.exitCode = 1;
+  }
+})();

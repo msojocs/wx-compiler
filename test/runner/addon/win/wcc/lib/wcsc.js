@@ -6,7 +6,7 @@ let wcsc
 
 function loadWcscAddon() {
   if (wcsc) return
-  wcsc = require('../build/Release/wcsc.node')
+  wcsc = require('../../wcc-electron/build/Release/wcsc.node')
 }
 
 function tranWcscResultToObject(resultStr) {

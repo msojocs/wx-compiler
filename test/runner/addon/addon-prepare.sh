@@ -1,66 +1,37 @@
-#! /bin/bash
+#!/bin/bash
+set -euo pipefail
 
-set -ex
+root_dir=$(cd "$(dirname "$0")/../../.." && pwd -P)
+version=$(node -p 'require(process.argv[1]).version' "$root_dir/node_modules/electron/package.json")
+archive="electron-v$version-win32-x64.zip"
+runtime_dir="$root_dir/cache/electron-v$version-win32-x64"
 
-root_dir=$(cd `dirname $0`/../../.. && pwd -P)
-cur_dir=$(cd `dirname $0` && pwd -P)
+command -v wine >/dev/null
+command -v winepath >/dev/null
+for type in wcc wcsc; do
+    test -f "$root_dir/test/runner/addon/win/wcc-electron/build/Release/$type.node"
+done
 
-# The official Windows addons import node.dll from this custom Node runtime.
-mkdir -p "$root_dir/cache"
-if [ ! -f "$root_dir/cache/node.exe" ];then
-    wget -c -O "$root_dir/cache/node.exe.tmp" "https://github.com/msojocs/skyline-node/releases/download/v16.4.0-1/node.exe"
-    mv "$root_dir/cache/node.exe.tmp" "$root_dir/cache/node.exe"
-fi
-if [ ! -f "$root_dir/cache/node.dll" ];then
-    wget -c -O "$root_dir/cache/node.dll.tmp" "https://github.com/msojocs/skyline-node/releases/download/v16.4.0-1/node.dll"
-    mv "$root_dir/cache/node.dll.tmp" "$root_dir/cache/node.dll"
-fi
-
-docker_start(){
-    docker run -d -it\
-        --rm\
-        --volume=$root_dir:/workspace\
-        --env=USE_XVFB=yes\
-        --env=XVFB_SERVER=:95\
-        --env=XVFB_SCREEN=0\
-        --env=XVFB_RESOLUTION=320x240x8\
-        --env=DISPLAY=:95\
-        --hostname=DESKTOP-1TV4OA1\
-        --name=wine\
-        --shm-size=1g\
-        --workdir=/workspace/cache\
-        --env=TZ=Asia/Shanghai\
-        -p 8083:8083\
-        scottyhardy/docker-wine\
-        wine node.exe ../test/runner/addon/win/main.js
-
-    i=0
-    until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8083/check); do
-        printf '.'
-        curl http://127.0.0.1:8083/check
-        sleep 1
-        let i=$i+1
-        if [ $i -ge 20 ];then
-            echo "error"
-            docker ps -a
-            docker logs wine
-            return 1
-        fi
-    done
-    return 0
-}
-
-for ((j=0; j<5; j++));
-do
-    if docker_start; then
-        printf "Docker started successfully.\n"
-        break
-    elif [[ $j -eq 4 ]]; then
-        printf "Failed to start Docker after 5 attempts.\n"
-        docker ps -a
-        docker logs wine
+if [ ! -f "$runtime_dir/electron.exe" ] || [ ! -f "$runtime_dir/version" ] || [ "$(cat "$runtime_dir/version")" != "$version" ]; then
+    mkdir -p "$root_dir/cache"
+    expected=$(node -p 'require(process.argv[1])[process.argv[2]]' "$root_dir/node_modules/electron/checksums.json" "$archive")
+    if [ ! -f "$root_dir/cache/$archive" ]; then
+        curl -fL --retry 3 -o "$root_dir/cache/$archive.tmp" \
+            "https://github.com/electron/electron/releases/download/v$version/$archive"
+        mv "$root_dir/cache/$archive.tmp" "$root_dir/cache/$archive"
+    fi
+    actual=$(sha256sum "$root_dir/cache/$archive")
+    if [ "${actual%% *}" != "$expected" ]; then
+        echo "Checksum mismatch: $root_dir/cache/$archive" >&2
         exit 1
     fi
-    sleep 1
-done
-echo "success"
+    staging=$(mktemp -d "$root_dir/cache/electron-win32.XXXXXX")
+    trap 'rm -rf "$staging"' EXIT
+    unzip -q "$root_dir/cache/$archive" -d "$staging"
+    # Publish only a fully extracted runtime; an interrupted unzip can be retried.
+    rm -rf "$runtime_dir"
+    mv "$staging" "$runtime_dir"
+fi
+
+node "$root_dir/tools/run-windows-electron.js" -e \
+    'const path = require("path"); for (const type of ["wcc", "wcsc"]) { const addon = require(path.join(process.env.WX_COMPILER_ROOT, "test/runner/addon/win/wcc-electron/build/Release", type + ".node")); if (typeof addon !== "function") throw new Error("Invalid addon: " + type); } console.log("Windows Electron " + process.versions.electron + " addons ready");'

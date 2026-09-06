@@ -5,7 +5,7 @@ let wcc
 
 function loadWccAddon() {
   if (wcc) return
-  wcc = require('../build/Release/wcc.node')
+  wcc = require('../../wcc-electron/build/Release/wcc.node')
 }
 
 const fs = util.fs

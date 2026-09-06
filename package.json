@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node tools/run-electron.js test/runner/addon/compiler.js",
+    "start:windows": "node tools/run-windows-electron.js test/runner/addon/win/main.js",
     "test-electron": "vitest run --project electron",
+    "test-windows-electron": "vitest run --project windows-electron",
     "test-prepare": "test/spec/prepare.sh",
     "test": "vitest run --project spec",
     "test:watch": "vitest watch --project spec"

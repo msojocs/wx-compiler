@@ -27,6 +27,15 @@ export default defineConfig({
           hookTimeout: 30000,
         },
       },
+      {
+        extends: true,
+        test: {
+          name: "windows-electron",
+          include: ["test/runner/windows-electron.spec.ts"],
+          testTimeout: 30000,
+          hookTimeout: 30000,
+        },
+      },
     ],
   },
 });
