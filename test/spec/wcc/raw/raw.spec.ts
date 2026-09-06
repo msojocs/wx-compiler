@@ -1,3 +1,4 @@
+import { describe, it } from "vitest";
 
 import assert from 'assert';
 import path from 'path';
@@ -7,12 +8,7 @@ import * as fs from 'fs'
 
 describe("wcc - raw", function () {
     describe("Raw: node output should equal with wine", function () {
-        // afterEach(function(){
-        //   if(this.currentTest.state === 'failed'){
-        //     console.error('failed', this.currentTest)
-        //   }
-        // })
-        it("初次加载1", async function () {
+        it("初次加载1", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -46,7 +42,7 @@ describe("wcc - raw", function () {
             const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -56,7 +52,7 @@ describe("wcc - raw", function () {
             fs.writeFileSync(`${storagePath}/node-output.js`, n);
             assert.equal(w, n);
         });
-        it("初次加载2", async function () {
+        it("初次加载2", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -97,7 +93,7 @@ describe("wcc - raw", function () {
             const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -106,7 +102,7 @@ describe("wcc - raw", function () {
             fs.writeFileSync(`${storagePath}/node-output.js`, n);
             assert.equal(w, n);
         });
-        it("组件 - skyline - 自定义路由", async function () {
+        it("组件 - skyline - 自定义路由", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -140,7 +136,7 @@ describe("wcc - raw", function () {
             const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -149,7 +145,7 @@ describe("wcc - raw", function () {
             fs.writeFileSync(`${storagePath}/node-output.js`, n);
             assert.equal(w, n);
         });
-        it("组件 - skyline - 自定义路由 -2", async function () {
+        it("组件 - skyline - 自定义路由 -2", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -190,7 +186,7 @@ describe("wcc - raw", function () {
             const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });

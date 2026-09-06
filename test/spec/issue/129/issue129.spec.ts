@@ -1,17 +1,17 @@
 import assert from "assert"
 import path from "path"
-import { describe } from "mocha";
+import { describe, it } from "vitest";
 import linux from '../../../runner/module-linux'
 import windows from '../../../runner/module-windows'
 import * as fs from 'fs'
 
 describe("issue - 129", function () {
     describe("issue: linux output should equal with wine", function () {
-        it("crash", async function () {
+        it("crash", async function ({ task }) {
             const p = path.resolve(__dirname, './data/example.json')
             const storagePath = path.resolve(
                 __dirname,
-                `issue-129/${this.test?.title}`
+                `issue-129/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });

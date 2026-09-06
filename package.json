@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node tools/run-electron.js test/runner/addon/compiler.js",
-    "test-electron": "mocha --no-config test/runner/electron.spec.js",
+    "test-electron": "vitest run --project electron",
     "test-prepare": "test/spec/prepare.sh",
-    "test": "mocha --reporter-option maxDiffSize=1e9"
+    "test": "vitest run --project spec",
+    "test:watch": "vitest watch --project spec"
   },
   "keywords": [],
   "author": "",
@@ -27,15 +28,12 @@
     "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.13",
     "@babel/preset-env": "^7.18.10",
-    "@babel/register": "^7.18.9",
-    "@types/jest": "^30.0.0",
-    "@types/mocha": "^10.0.1",
     "@types/node": "^20.4.5",
     "assert": "^2.0.0",
     "electron": "36.6.0",
     "miniprogram-ci": "^1.9.8",
-    "mocha": "^10.0.0",
-    "ts-node": "^10.9.1"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
   },
   "packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c"
 }

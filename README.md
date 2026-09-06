@@ -33,3 +33,18 @@ pnpm run test-electron
 `pnpm --dir test/node-gyp install` 会调用 `test/node-gyp/build.sh`，使用根目录安装的 Electron 版本及其官方头文件构建 V8 原生模块示例。该示例需要支持 C++20 的编译器。编译器本身使用 Node-API，仍沿用现有 CMake 构建流程。
 
 Windows 官方对照模块依赖定制的 `node.dll`，继续通过 Docker/Wine 和 skyline-node 执行；`pnpm run test-prepare` 会准备该环境。完整对照测试还需要 Wine 和测试项目数据。
+
+# 测试
+
+测试使用 Vitest，建议使用 Node.js 22.12 或更高的 22.x 版本，与 CI 保持一致。运行前需安装依赖并完成上述构建；完整对照测试还需执行 `pnpm run test-prepare`。
+
+```bash
+pnpm test                              # 运行编译器对照测试
+pnpm run test-electron                  # 运行 Electron 运行环境测试
+pnpm run test:watch                     # 监听并重跑编译器测试
+pnpm test test/spec/wcc/module          # 按文件路径筛选
+pnpm test -t 'issue - 137'              # 按测试名称筛选
+pnpm exec vitest run                    # 运行全部测试
+```
+
+Vitest 仅收集 `test/spec/**/*.spec.ts` 和 `test/runner/electron.spec.js`，不运行 `test/projects` 子模块自带的测试。对照测试共用 Wine 环境，因此测试文件串行执行。

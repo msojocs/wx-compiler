@@ -1,6 +1,6 @@
 
 import assert from 'assert';
-import { describe } from "mocha";
+import { describe, it } from "vitest";
 import path from 'path';
 import linux from '../../../runner/module-linux'
 import windows from '../../../runner/module-windows'
@@ -8,16 +8,11 @@ import * as fs from 'fs'
 
 describe("wcsc - module", function () {
     describe("linux output should deep equal with wine", function () {
-        // afterEach(function(){
-        //   if(this.currentTest.state === 'failed'){
-        //     console.error('failed', this.currentTest)
-        //   }
-        // })
-        it("初次加载1", async function () {
+        it("初次加载1", async function ({ task }) {
             const p = path.resolve(__dirname, './data/1720324528222-wcsc-options.json')
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -38,11 +33,11 @@ describe("wcsc - module", function () {
             );
             assert.deepEqual(n, w);
         });
-        it("初次加载2", async function () {
+        it("初次加载2", async function ({ task }) {
             const p = path.resolve(__dirname, './data/1720337273873-wcsc-options.json')
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });

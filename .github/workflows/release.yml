@@ -128,7 +128,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [22.x]
         ARCH: ['x86_64']
     steps:
       - uses: actions/checkout@v2
@@ -140,7 +140,7 @@ jobs:
           # Version Spec of the version to use in SemVer notation.
           # It also emits such aliases as lts, latest, nightly and canary builds
           # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
-          node-version: '18.12.0'
+          node-version: ${{ matrix.node-version }}
           check-latest: false
       - name: Download artifacts
         uses: actions/download-artifact@v4

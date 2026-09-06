@@ -1,3 +1,4 @@
+import { describe, it } from "vitest";
 import assert from "assert"
 import path from "path"
 import linux from '../../../runner/binary-linux'
@@ -6,12 +7,7 @@ import * as fs from 'fs'
 
 describe("wcc - lla", function () {
     describe("lla: node output should deep equal with wine", function () {
-        // afterEach(function(){
-        //   if(this.currentTest.state === 'failed'){
-        //     console.error('failed', this.currentTest)
-        //   }
-        // })
-        it("初次加载1 #变量名不同导致比较不通过，需要手动检查", async function () {
+        it("初次加载1 #变量名不同导致比较不通过，需要手动检查", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -45,7 +41,7 @@ describe("wcc - lla", function () {
             ];
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -63,7 +59,7 @@ describe("wcc - lla", function () {
             );
             assert.deepEqual(w, n);
         });
-        it("组件 - 视图容器", async function () {
+        it("组件 - 视图容器", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -118,7 +114,7 @@ describe("wcc - lla", function () {
             ];
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -138,7 +134,7 @@ describe("wcc - lla", function () {
             // console.log(w, n)
             assert.deepEqual(w, n);
         });
-        it("组件 - skyline", async function () {
+        it("组件 - skyline", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -163,7 +159,7 @@ describe("wcc - lla", function () {
             ];
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -180,7 +176,7 @@ describe("wcc - lla", function () {
             );
             assert.deepEqual(w, n);
         });
-        it("组件 - skyline - 自定义路由  #变量名不同导致比较不通过，需要手动检查", async function () {
+        it("组件 - skyline - 自定义路由  #变量名不同导致比较不通过，需要手动检查", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -214,7 +210,7 @@ describe("wcc - lla", function () {
             ];
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -231,7 +227,7 @@ describe("wcc - lla", function () {
             );
             assert.deepEqual(w, n);
         });
-        it("扩展能力 - 表单 - cell", async function () {
+        it("扩展能力 - 表单 - cell", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -307,7 +303,7 @@ describe("wcc - lla", function () {
             ];
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -324,7 +320,7 @@ describe("wcc - lla", function () {
             );
             assert.deepEqual(w, n);
         });
-        it("接口 - 微信登录", async function () {
+        it("接口 - 微信登录", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -422,7 +418,7 @@ describe("wcc - lla", function () {
             ];
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });

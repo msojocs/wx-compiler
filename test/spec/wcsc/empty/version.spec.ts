@@ -1,3 +1,4 @@
+import { describe, it } from "vitest";
 
 import assert from 'assert';
 import path from 'path';
@@ -7,7 +8,7 @@ import * as fs from 'fs'
 
 describe("wcsc - empty", function () {
     describe("Empty: default command output", function () {
-        it("使用说明", async function () {
+        it("使用说明", async function ({ task }) {
             const projectPath = __dirname;
             const args: string[] = [
                 "-v"
@@ -16,7 +17,7 @@ describe("wcsc - empty", function () {
             let n = await linux.wcsc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `version/${this.test?.title}`
+                `version/${task.name}`
             );
             w = w.replace(/[A-Z]:.*?wcsc\.exe/, '').replace('wcsc.exe', '')
             n = n.replace(/\/.*?\/wcsc/, '')

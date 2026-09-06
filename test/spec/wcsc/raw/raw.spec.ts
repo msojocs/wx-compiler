@@ -1,3 +1,4 @@
+import { describe, it } from "vitest";
 import assert from "assert";
 import path from "path";
 import linux from '../../../runner/binary-linux'
@@ -6,12 +7,7 @@ import * as fs from 'fs'
 
 describe("wcsc - raw", function () {
     describe("Raw: node output should equal with wine", function () {
-        // afterEach(function(){
-        //   if(this.currentTest.state === 'failed'){
-        //     console.error('failed', this.currentTest)
-        //   }
-        // })
-        it("主界面", async function () {
+        it("主界面", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -43,7 +39,7 @@ describe("wcsc - raw", function () {
             const n = await linux.wcsc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -58,7 +54,7 @@ describe("wcsc - raw", function () {
             );
             assert.equal(w, n);
         });
-        it("接口-设置界面标题", async function () {
+        it("接口-设置界面标题", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram/"
@@ -166,7 +162,7 @@ describe("wcsc - raw", function () {
             const n = await linux.wcsc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });

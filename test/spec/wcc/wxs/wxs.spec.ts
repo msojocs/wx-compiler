@@ -4,16 +4,11 @@ import path from 'path';
 import linux from '../../../runner/binary-linux'
 import windows from '../../../runner/binary-windows'
 import * as fs from 'fs'
-import { describe } from "mocha";
+import { describe, it } from "vitest";
 
 describe("wcc - wxs", function () {
     describe("wxs: node output should equal with wine", function () {
-        // afterEach(function(){
-        //   if(this.currentTest.state === 'failed'){
-        //     console.error('failed', this.currentTest)
-        //   }
-        // })
-        it("sample1", async function () {
+        it("sample1", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -27,7 +22,7 @@ describe("wcc - wxs", function () {
             const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -39,7 +34,7 @@ describe("wcc - wxs", function () {
             assert.equal(w, n);
         });
         
-        it("sample2", async function () {
+        it("sample2", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -53,7 +48,7 @@ describe("wcc - wxs", function () {
             const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });
@@ -64,7 +59,7 @@ describe("wcc - wxs", function () {
             fs.writeFileSync(`${storagePath}/node-output.js`, n);
             assert.equal(w, n);
         });
-        it("sample3", async function () {
+        it("sample3", async function ({ task }) {
             const projectPath = path.resolve(
                 __dirname,
                 "../../../projects/miniprogram-demo/miniprogram"
@@ -78,7 +73,7 @@ describe("wcc - wxs", function () {
             const n = await linux.wcc(args, projectPath);
             const storagePath = path.resolve(
                 __dirname,
-                `miniprogram-demo/${this.test?.title}`
+                `miniprogram-demo/${task.name}`
             );
             try {
                 fs.mkdirSync(storagePath, { recursive: true });

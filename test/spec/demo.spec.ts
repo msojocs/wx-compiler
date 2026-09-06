@@ -1,5 +1,5 @@
 import assert from "assert";
-import { describe } from "mocha";
+import { describe, it } from "vitest";
 
 describe('Demo', () => {
     it('should return -1 when the value is not present', function() {

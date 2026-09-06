@@ -1,3 +1,5 @@
+import { afterAll, beforeAll, describe, it } from "vitest";
+
 const assert = require("assert/strict");
 const { spawnSync } = require("child_process");
 const fs = require("fs");
@@ -10,14 +12,13 @@ const compiler = path.join(__dirname, "addon/compiler.js");
 const marker = "---------------result------------------\n";
 
 describe("Electron compiler runtime", function () {
-  this.timeout(30000);
   let directory;
 
-  before(() => {
+  beforeAll(() => {
     directory = fs.mkdtempSync(path.join(os.tmpdir(), "wx compiler "));
   });
 
-  after(() => {
+  afterAll(() => {
     fs.rmSync(directory, { recursive: true, force: true });
   });
 
@@ -53,8 +54,7 @@ describe("Electron compiler runtime", function () {
     assert.equal(run(["-e", "process.exitCode = 7"]).status, 7);
   });
 
-  it("preserves child termination signals", function () {
-    if (process.platform === "win32") this.skip();
+  it.skipIf(process.platform === "win32")("preserves child termination signals", function () {
     const result = spawnSync(process.execPath, [launcher, "-e", "process.kill(process.pid, 'SIGTERM')"], {
       encoding: "utf8",
       timeout: 20000,
