@@ -48,6 +48,19 @@ pnpm run test-prepare
 
 `pnpm start:windows <wcc|wcsc> <options.json>` 每次启动一个编译进程并在完成后退出，自动转换选项文件和 `cwd` 的 Linux 路径。Wine 下通过临时文件接收标准输出和错误输出，以兼容 Electron 的 Node 流，进程结束后自动清理。
 
+# RPX 单位转换
+
+WXSS 模块版和命令行版生成的运行时均支持 `window.__convertRpxToVw__`：值为真时为 RPX 换算结果添加 `vw`，否则添加 `px`；原本使用 `px` 等其他单位的声明不受影响。这个开关在样式生成和尺寸变化后的重新计算时读取，不是编译选项。
+
+与官方 Electron 模块一致，该开关只选择单位，数值由 `window.__transformRpx__` 或默认换算函数提供。需要按 `750rpx = 100vw` 转换时，应在执行编译生成的 WXSS 运行时代码之前同时设置：
+
+```javascript
+window.__convertRpxToVw__ = true;
+window.__transformRpx__ = (rpx) => rpx / 7.5;
+```
+
+例如 `15rpx` 会生成 `2vw`。只设置开关不会替换默认的像素换算、取整和最小像素逻辑；运行时切换单位时也需要同步调整数值换算钩子的行为。默认换算函数仍保持原有的屏幕宽度适配和 iOS 高分屏半像素规则。
+
 # 测试
 
 测试使用 Vitest，建议使用 Node.js 22.12 或更高的 22.x 版本，与 CI 保持一致。运行前需安装依赖并完成上述构建；完整对照测试还需执行 `pnpm run test-prepare`。
